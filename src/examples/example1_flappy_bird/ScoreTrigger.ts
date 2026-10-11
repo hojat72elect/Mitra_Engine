@@ -1,8 +1,8 @@
 import {Actor, Collider, vec, Vector} from "excalibur";
-import {Level} from "./Level";
-import {Config} from "./Config";
-import {Resources} from "./Resources";
-import {Bird} from "./Bird";
+import {Level} from "./Level.ts";
+import {Config} from "./Config.ts";
+import {Resources} from "./Resources.ts";
+import {Bird} from "./Bird.ts";
 
 export class ScoreTrigger extends Actor {
     level: Level

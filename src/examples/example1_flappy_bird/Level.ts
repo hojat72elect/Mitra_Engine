@@ -1,9 +1,9 @@
 import {Color, Engine, Font, Label, Random, Scene, TextAlign, vec} from "excalibur";
-import {Bird} from "./Bird";
-import {PipeFactory} from "./PipeFactory";
-import {Config} from "./Config";
-import {Ground} from "./Ground";
-import {Resources} from "./Resources";
+import {Bird} from "./Bird.ts";
+import {PipeFactory} from "./PipeFactory.ts";
+import {Config} from "./Config.ts";
+import {Ground} from "./Ground.ts";
+import {Resources} from "./Resources.ts";
 
 export class Level extends Scene {
     score: number = 0;

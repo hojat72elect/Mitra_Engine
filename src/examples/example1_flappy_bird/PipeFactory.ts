@@ -1,8 +1,8 @@
 import {Random, Timer, vec} from "excalibur";
-import {Pipe} from "./Pipe";
-import {Config} from "./Config";
-import {Level} from "./Level";
-import {ScoreTrigger} from "./ScoreTrigger";
+import {Pipe} from "./Pipe.ts";
+import {Config} from "./Config.ts";
+import {Level} from "./Level.ts";
+import {ScoreTrigger} from "./ScoreTrigger.ts";
 
 export class PipeFactory {
     private timer: Timer;

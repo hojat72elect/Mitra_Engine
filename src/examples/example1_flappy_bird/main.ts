@@ -1,7 +1,7 @@
 import {Engine, Color, DisplayMode, Loader, vec} from 'excalibur';
-import {Resources} from './Resources';
-import {Level} from './Level';
-import {initMuteButton} from './Ui';
+import {Resources} from './Resources.ts';
+import {Level} from './Level.ts';
+import {initMuteButton} from './Ui.ts';
 
 const positionUI = (game: Engine) => {
     const ui = document.getElementsByClassName("ui")[0] as HTMLElement;

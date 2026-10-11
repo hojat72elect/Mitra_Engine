@@ -1,6 +1,6 @@
 import {Actor, Color, vec, Vector} from "excalibur";
-import {Config} from "./Config";
-import {Resources} from "./Resources";
+import {Config} from "./Config.ts";
+import {Resources} from "./Resources.ts";
 
 export class Pipe extends Actor {
     constructor(pos: Vector, public type: 'top' | 'bottom') {

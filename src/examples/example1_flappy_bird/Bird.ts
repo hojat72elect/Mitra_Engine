@@ -11,11 +11,11 @@ import {
     SpriteSheet,
     vec
 } from "excalibur";
-import {Resources} from "./Resources";
-import {Config} from "./Config";
-import {Level} from "./Level";
-import {Pipe} from "./Pipe";
-import {Ground} from "./Ground";
+import {Resources} from "./Resources.ts";
+import {Config} from "./Config.ts";
+import {Level} from "./Level.ts";
+import {Pipe} from "./Pipe.ts";
+import {Ground} from "./Ground.ts";
 
 export class Bird extends Actor {
     playing = false;

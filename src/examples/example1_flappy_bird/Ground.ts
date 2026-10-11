@@ -1,6 +1,6 @@
 import {Actor, Engine, ImageWrapping, TiledSprite, vec, Vector} from "excalibur";
-import {Resources} from "./Resources";
-import {Config} from "./Config";
+import {Resources} from "./Resources.ts";
+import {Config} from "./Config.ts";
 
 export class Ground extends Actor {
     groundSprite = Resources.GroundImage.toSprite();

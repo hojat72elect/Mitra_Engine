@@ -1,4 +1,4 @@
-import {Resources} from "./Resources";
+import {Resources} from "./Resources.ts";
 
 export function initMuteButton() {
     const muteButton = document.getElementById('mute');
