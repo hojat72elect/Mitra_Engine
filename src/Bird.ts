@@ -1,4 +1,16 @@
-import {Actor, Color, SpriteSheet, Animation, Sprite, AnimationStrategy, Keys, Engine, vec, clamp, Collider} from "excalibur";
+import {
+    Actor,
+    Animation,
+    AnimationStrategy,
+    clamp,
+    Collider,
+    Color,
+    Engine,
+    Keys,
+    Sprite,
+    SpriteSheet,
+    vec
+} from "excalibur";
 import {Resources} from "./Resources";
 import {Config} from "./Config";
 import {Level} from "./Level";
@@ -11,13 +23,15 @@ export class Bird extends Actor {
     startSprite!: Sprite;
     upAnimation!: Animation;
     downAnimation!: Animation;
+    level: Level
 
-    constructor(private level: Level) {
+    constructor(level: Level) {
         super({
             pos: Config.BirdStartPos,
             radius: 8,
             color: Color.Yellow
         });
+        this.level = level;
     }
 
     override onInitialize(): void {

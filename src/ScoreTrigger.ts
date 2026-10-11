@@ -5,7 +5,9 @@ import {Resources} from "./Resources";
 import {Bird} from "./Bird";
 
 export class ScoreTrigger extends Actor {
-    constructor(pos: Vector, private level: Level) {
+    level: Level
+
+    constructor(pos: Vector, level: Level) {
         super({
             pos,
             width: 32,
@@ -13,6 +15,7 @@ export class ScoreTrigger extends Actor {
             anchor: vec(0, 0),
             vel: vec(-Config.PipeSpeed, 0)
         })
+        this.level = level;
 
         this.on('exitviewport', () => {
             this.kill();
