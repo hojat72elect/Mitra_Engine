@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "example1_flappy_bird": "vite"
+    "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   },
