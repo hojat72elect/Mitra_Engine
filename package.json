@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "example1_flappy_bird": "vite"
   },
   "devDependencies": {
     "typescript": "~6.0.2",
