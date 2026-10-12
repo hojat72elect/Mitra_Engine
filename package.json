@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/",
-    "example2_platformer": "vite --open /examples/example2_platformer/"
+    "example2_platformer": "vite --open /examples/example2_platformer/",
+    "example3_space_shooter": "vite --open /examples/example3_space_shooter/"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
