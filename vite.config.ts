@@ -1,6 +1,49 @@
 import {defineConfig} from 'vite';
 import {resolve} from 'path';
-import {existsSync, readdirSync} from 'fs';
+import {existsSync, readdirSync, readFileSync} from 'fs';
+
+// Custom plugin to handle .tsx files as static assets
+function tiledTsxPlugin() {
+  return {
+    name: 'tiled-tsx',
+    enforce: 'pre',
+    load(id: string) {
+      // Load .tsx files in assets directories as raw text before TypeScript transformation
+      if (id.includes('/assets/') && id.endsWith('.tsx')) {
+        return {
+          code: `export default ${JSON.stringify(readFileSync(id, 'utf-8'))};`,
+          map: null
+        };
+      }
+    },
+    configureServer(server: any) {
+      server.middlewares.use((req: any, res: any, next: any) => {
+        if (req.url && req.url.includes('/assets/') && req.url.endsWith('.tsx')) {
+          console.log('[tiled-tsx] Requesting:', req.url);
+          // Try multiple path resolutions
+          const possiblePaths = [
+            resolve(process.cwd(), req.url.startsWith('/') ? req.url.slice(1) : req.url),
+            resolve(process.cwd(), 'examples', req.url.startsWith('/') ? req.url.slice(1) : req.url),
+            resolve(process.cwd(), req.url)
+          ];
+          
+          console.log('[tiled-tsx] Trying paths:', possiblePaths);
+          
+          for (const filePath of possiblePaths) {
+            if (existsSync(filePath)) {
+              console.log('[tiled-tsx] Found file:', filePath);
+              res.setHeader('Content-Type', 'application/xml');
+              res.end(readFileSync(filePath, 'utf-8'));
+              return;
+            }
+          }
+          console.log('[tiled-tsx] File not found');
+        }
+        next();
+      });
+    }
+  };
+}
 
 // Automatically discover all example HTML files in the examples/ directory.
 // Each example should have its own folder: examples/<name>/index.html
@@ -25,6 +68,8 @@ function discoverExamples(): Record<string, string> {
 }
 
 export default defineConfig({
+    plugins: [tiledTsxPlugin()],
+    assetsInclude: ['**/assets/**/*.tsx'],
     build: {
         rollupOptions: {
             input: discoverExamples(),
