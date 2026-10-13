@@ -7,7 +7,8 @@
     "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/",
     "example2_platformer": "vite --open /examples/example2_platformer/",
     "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
-    "example4_breakout": "vite --open /examples/example4_breakout/"
+    "example4_breakout": "vite --open /examples/example4_breakout/",
+    "example5_jelly_jumper": "vite --open /examples/example5_jelly_jumper/"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -15,6 +16,7 @@
     "vite": "^8.3.0"
   },
   "dependencies": {
+    "@excaliburjs/plugin-tiled": "^0.32.0",
     "excalibur": "^0.32.0"
   }
 }
