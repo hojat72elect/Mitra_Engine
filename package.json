@@ -8,7 +8,8 @@
     "example2_platformer": "vite --open /examples/example2_platformer/",
     "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
     "example4_breakout": "vite --open /examples/example4_breakout/",
-    "example5_islander": "vite --open /examples/example5_islander/"
+    "example5_islander": "vite --open /examples/example5_islander/",
+    "example6_pathfinding": "vite --open /examples/example6_pathfinding/"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -16,7 +17,9 @@
     "vite": "^8.3.0"
   },
   "dependencies": {
-    "excalibur": "^0.32.0",
-    "@excaliburjs/plugin-tiled": "^0.32.0"
+    "@excaliburjs/plugin-pathfinding": "^0.32.0",
+    "@excaliburjs/plugin-tiled": "^0.32.0",
+    "@peasy-lib/peasy-ui": "^0.9.58",
+    "excalibur": "^0.32.0"
   }
 }

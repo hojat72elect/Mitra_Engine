@@ -5,7 +5,9 @@
     "": {
       "name": "mitra_examples",
       "dependencies": {
+        "@excaliburjs/plugin-pathfinding": "^0.32.0",
         "@excaliburjs/plugin-tiled": "^0.32.0",
+        "@peasy-lib/peasy-ui": "^0.9.58",
         "excalibur": "^0.32.0",
       },
       "devDependencies": {
@@ -36,11 +38,15 @@
 
     "@csstools/css-tokenizer": ["@csstools/css-tokenizer@4.0.2", "", {}, "sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw=="],
 
+    "@excaliburjs/plugin-pathfinding": ["@excaliburjs/plugin-pathfinding@0.32.0", "", { "peerDependencies": { "excalibur": "~0.32.0" } }, "sha512-wb67rUln3zZIQzVKYeZkmAmRzEudUCTDD0lxfEITdiPZSRsEBGxjweqfjNrxiuxnsSjf5md2vArVU1cCv0NGSw=="],
+
     "@excaliburjs/plugin-tiled": ["@excaliburjs/plugin-tiled@0.32.0", "", { "dependencies": { "compare-versions": "6.1.1", "pako": "1.0.11", "zod": "4.2.1", "zstddec": "0.1.0" }, "optionalDependencies": { "jsdom": "^27.0.0" }, "peerDependencies": { "excalibur": "~0.32.0" } }, "sha512-FHqRksRF8NBMFnuog7fDAlnFw6RwZ4stiGlTsXwbv5buKIy+RlYFFqFPwXnAHGnw3UJNUIz3qr349evGGfkhoQ=="],
 
     "@exodus/bytes": ["@exodus/bytes@1.16.0", "", { "peerDependencies": { "@noble/hashes": "^1.8.0 || ^2.0.0" }, "optionalPeers": ["@noble/hashes"] }, "sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA=="],
 
     "@oxc-project/types": ["@oxc-project/types@0.153.0", "", {}, "sha512-jSNrRIyvPVLL5E1z/tS5zLAprosGz/FuI1PWwEOz59j3E4TTTzSpqKb/RDGqJhhW0QHYISGXxq582wGx6T11Tw=="],
+
+    "@peasy-lib/peasy-ui": ["@peasy-lib/peasy-ui@0.9.58", "", {}, "sha512-CteZ3iVymM57UeeotZGoPn+99BJAamgezQOkh1GWkck+yaL8Gb4qiIRu1HnIQuWLSdBAO+YXIiZQ39D+chfWHQ=="],
 
     "@rolldown/binding-android-arm-eabi": ["@rolldown/binding-android-arm-eabi@1.2.13", "", { "os": "android", "cpu": "arm" }, "sha512-Vu/NICrgdRvUOeaJZIyB2FP63s6fO/4ud5l8dXmxDx9yDyn+mN0y+gsvsVviSli+T361Aqo0h46EuMoobrwawA=="],
 
