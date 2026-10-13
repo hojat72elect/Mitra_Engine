@@ -19,25 +19,19 @@ function tiledTsxPlugin() {
     configureServer(server: any) {
       server.middlewares.use((req: any, res: any, next: any) => {
         if (req.url && req.url.includes('/assets/') && req.url.endsWith('.tsx')) {
-          console.log('[tiled-tsx] Requesting:', req.url);
-          // Try multiple path resolutions
           const possiblePaths = [
             resolve(process.cwd(), req.url.startsWith('/') ? req.url.slice(1) : req.url),
             resolve(process.cwd(), 'examples', req.url.startsWith('/') ? req.url.slice(1) : req.url),
             resolve(process.cwd(), req.url)
           ];
           
-          console.log('[tiled-tsx] Trying paths:', possiblePaths);
-          
           for (const filePath of possiblePaths) {
             if (existsSync(filePath)) {
-              console.log('[tiled-tsx] Found file:', filePath);
               res.setHeader('Content-Type', 'application/xml');
               res.end(readFileSync(filePath, 'utf-8'));
               return;
             }
           }
-          console.log('[tiled-tsx] File not found');
         }
         next();
       });
