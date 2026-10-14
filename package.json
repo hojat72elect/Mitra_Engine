@@ -9,7 +9,8 @@
     "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
     "example4_breakout": "vite --open /examples/example4_breakout/",
     "example5_islander": "vite --open /examples/example5_islander/",
-    "example6_pathfinding": "vite --open /examples/example6_pathfinding/"
+    "example6_pathfinding": "vite --open /examples/example6_pathfinding/",
+    "example7_menu": "vite --open /examples/example7_menu/"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
