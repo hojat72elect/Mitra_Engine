@@ -10,7 +10,8 @@
     "example4_breakout": "vite --open /examples/example4_breakout/",
     "example5_islander": "vite --open /examples/example5_islander/",
     "example6_pathfinding": "vite --open /examples/example6_pathfinding/",
-    "example7_menu": "vite --open /examples/example7_menu/"
+    "example7_menu": "vite --open /examples/example7_menu/",
+    "example8_matter_js": "vite --open /examples/example8_matter_js/"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -21,6 +22,8 @@
     "@excaliburjs/plugin-pathfinding": "^0.32.0",
     "@excaliburjs/plugin-tiled": "^0.32.0",
     "@peasy-lib/peasy-ui": "^0.9.58",
-    "excalibur": "^0.32.0"
+    "@types/matter-js": "^0.20.2",
+    "excalibur": "^0.32.0",
+    "matter-js": "^0.20.0"
   }
 }
