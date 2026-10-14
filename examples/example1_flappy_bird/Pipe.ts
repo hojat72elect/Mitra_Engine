@@ -1,5 +1,5 @@
 import {Actor, Color, vec, Vector} from "excalibur";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 import {Resources} from "./Resources.ts";
 
 export class Pipe extends Actor {
@@ -10,7 +10,7 @@ export class Pipe extends Actor {
             height: 1000,
             anchor: type === 'bottom' ? vec(0, 0) : vec(0, 1),
             color: Color.Green,
-            vel: vec(-Config.PipeSpeed, 0),
+            vel: vec(-GameConfig.PipeSpeed, 0),
             z: -1
         })
 

@@ -1,6 +1,6 @@
 import {Actor, Collider, vec, Vector} from "excalibur";
 import {Level} from "./Level.ts";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 import {Resources} from "./Resources.ts";
 import {Bird} from "./Bird.ts";
 
@@ -11,9 +11,9 @@ export class ScoreTrigger extends Actor {
         super({
             pos,
             width: 32,
-            height: Config.PipeGap,
+            height: GameConfig.PipeGap,
             anchor: vec(0, 0),
-            vel: vec(-Config.PipeSpeed, 0)
+            vel: vec(-GameConfig.PipeSpeed, 0)
         })
         this.level = level;
 

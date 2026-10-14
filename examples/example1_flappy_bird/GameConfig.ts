@@ -1,6 +1,6 @@
 import {vec} from "excalibur";
 
-export const Config = {
+export const GameConfig = {
     BirdStartPos: vec(200, 300),
     BirdAcceleration: 1200,
     BirdJumpVelocity: -800,

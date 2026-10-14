@@ -1,8 +1,11 @@
-import {Engine, Color, DisplayMode, Loader, vec} from 'excalibur';
+import {Color, DisplayMode, Engine, Loader, vec} from 'excalibur';
 import {Resources} from './Resources.ts';
 import {Level} from './Level.ts';
-import {initMuteButton} from './Ui.ts';
+import {initializeMuteButton} from './Ui.ts';
 
+/**
+ * Positions the mute button in the bottom left of the screen.
+ */
 const positionUI = (game: Engine) => {
     const ui = document.getElementsByClassName("ui")[0] as HTMLElement;
     if (ui) {
@@ -13,7 +16,7 @@ const positionUI = (game: Engine) => {
     }
 }
 
-const game = new Engine({
+const flappyBirdGame = new Engine({
     width: 400,
     height: 500,
     backgroundColor: Color.fromHex("#54C0CA"),
@@ -23,12 +26,13 @@ const game = new Engine({
     scenes: {Level}
 });
 
+// Preloads all assets. We still need to import required assets.
 const loader = new Loader(Object.values(Resources));
 
-game.start(loader).then(() => {
-    game.goToScene('Level');
-    positionUI(game);
-    initMuteButton();
+flappyBirdGame.start(loader).then(() => {
+    flappyBirdGame.goToScene('Level');
+    positionUI(flappyBirdGame);
+    initializeMuteButton();
 });
 
-game.screen.events.on('resize', () => positionUI(game));
+flappyBirdGame.screen.events.on('resize', () => positionUI(flappyBirdGame));

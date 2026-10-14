@@ -12,7 +12,7 @@ import {
     vec
 } from "excalibur";
 import {Resources} from "./Resources.ts";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 import {Level} from "./Level.ts";
 import {Pipe} from "./Pipe.ts";
 import {Ground} from "./Ground.ts";
@@ -27,7 +27,7 @@ export class Bird extends Actor {
 
     constructor(level: Level) {
         super({
-            pos: Config.BirdStartPos,
+            pos: GameConfig.BirdStartPos,
             radius: 8,
             color: Color.Yellow
         });
@@ -71,7 +71,7 @@ export class Bird extends Actor {
 
         // if the space bar or the first pointer was down
         if (!this.jumping && this.isInputActive(engine)) {
-            this.vel.y += Config.BirdJumpVelocity;
+            this.vel.y += GameConfig.BirdJumpVelocity;
             this.jumping = true;
             this.graphics.use('up');
             // rewind
@@ -85,10 +85,10 @@ export class Bird extends Actor {
             this.jumping = false;
         }
 
-        this.vel.y = clamp(this.vel.y, Config.BirdMinVelocity, Config.BirdMaxVelocity);
+        this.vel.y = clamp(this.vel.y, GameConfig.BirdMinVelocity, GameConfig.BirdMaxVelocity);
 
         // The "speed" the bird will move relative to pipes
-        this.rotation = vec(Config.PipeSpeed, this.vel.y).toAngle();
+        this.rotation = vec(GameConfig.PipeSpeed, this.vel.y).toAngle();
 
         if (this.vel.y > 0) {
             this.graphics.use('down');
@@ -97,12 +97,12 @@ export class Bird extends Actor {
 
     start() {
         this.playing = true;
-        this.pos = Config.BirdStartPos; // starting position
-        this.acc = vec(0, Config.BirdAcceleration); // pixels per second per second
+        this.pos = GameConfig.BirdStartPos; // starting position
+        this.acc = vec(0, GameConfig.BirdAcceleration); // pixels per second per second
     }
 
     reset() {
-        this.pos = Config.BirdStartPos; // starting position
+        this.pos = GameConfig.BirdStartPos; // starting position
         this.stop();
     }
 

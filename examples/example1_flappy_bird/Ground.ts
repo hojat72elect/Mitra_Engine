@@ -1,6 +1,6 @@
 import {Actor, Engine, ImageWrapping, TiledSprite, vec, Vector} from "excalibur";
 import {Resources} from "./Resources.ts";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 
 export class Ground extends Actor {
     groundSprite = Resources.GroundImage.toSprite();
@@ -35,7 +35,7 @@ export class Ground extends Actor {
         if (!this.moving) return;
         // scroll the tiled sprite to the right, clamp to the width to keep the uv's small preventing visual
         // artifacts due to floating point
-        this.groundSprite.sourceView.x += Config.PipeSpeed * (elapsedMs / 1000);
+        this.groundSprite.sourceView.x += GameConfig.PipeSpeed * (elapsedMs / 1000);
         this.groundSprite.sourceView.x = this.groundSprite.sourceView.x % Resources.GroundImage.width;
     }
 

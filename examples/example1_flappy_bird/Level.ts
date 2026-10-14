@@ -1,15 +1,15 @@
 import {Color, Engine, Font, Label, Random, Scene, TextAlign, vec} from "excalibur";
 import {Bird} from "./Bird.ts";
 import {PipeFactory} from "./PipeFactory.ts";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 import {Ground} from "./Ground.ts";
 import {Resources} from "./Resources.ts";
 
 export class Level extends Scene {
     score: number = 0;
     best: number = 0;
-    random = new Random();
-    pipeFactory = new PipeFactory(this, this.random, Config.PipeInterval);
+    random:Random = new Random();
+    pipeFactory = new PipeFactory(this, this.random, GameConfig.PipeInterval);
     bird = new Bird(this);
     ground!: Ground;
 

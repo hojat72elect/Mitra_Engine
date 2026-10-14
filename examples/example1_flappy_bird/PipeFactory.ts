@@ -1,16 +1,20 @@
 import {Random, Timer, vec} from "excalibur";
 import {Pipe} from "./Pipe.ts";
-import {Config} from "./Config.ts";
+import {GameConfig} from "./GameConfig.ts";
 import {Level} from "./Level.ts";
 import {ScoreTrigger} from "./ScoreTrigger.ts";
 
+/**
+ * Is in charge of creating all the pipes used in this game.
+ */
 export class PipeFactory {
-    private timer: Timer;
+    private readonly timer: Timer;
+    level: Level;
+    random: Random
 
-    constructor(
-        private level: Level,
-        private random: Random,
-        intervalMs: number) {
+    constructor(level: Level, random: Random, intervalMs: number) {
+        this.level = level;
+        this.random = random;
         this.timer = new Timer({
             interval: intervalMs,
             repeats: true,
@@ -20,10 +24,10 @@ export class PipeFactory {
     }
 
     spawnPipes() {
-        const randomPipePosition = this.random.floating(0, this.level.engine.screen.resolution.height - Config.PipeGap);
+        const randomPipePosition = this.random.floating(0, this.level.engine.screen.resolution.height - GameConfig.PipeGap);
 
         const bottomPipe = new Pipe(
-            vec(this.level.engine.screen.drawWidth, randomPipePosition + Config.PipeGap),
+            vec(this.level.engine.screen.drawWidth, randomPipePosition + GameConfig.PipeGap),
             'bottom'
         );
         this.level.add(bottomPipe);

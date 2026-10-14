@@ -1,6 +1,6 @@
 import {Resources} from "./Resources.ts";
 
-export function initMuteButton() {
+export function initializeMuteButton() {
     const muteButton = document.getElementById('mute');
     if (muteButton) {
         muteButton.addEventListener('click', toggleButtonClickHandler);
