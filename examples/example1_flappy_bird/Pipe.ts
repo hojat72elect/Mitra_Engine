@@ -3,7 +3,9 @@ import {GameConfig} from "./GameConfig.ts";
 import {Resources} from "./Resources.ts";
 
 export class Pipe extends Actor {
-    constructor(pos: Vector, public type: 'top' | 'bottom') {
+    type: 'top' | 'bottom';
+
+    constructor(pos: Vector, type: 'top' | 'bottom') {
         super({
             pos,
             width: 32,
@@ -13,7 +15,7 @@ export class Pipe extends Actor {
             vel: vec(-GameConfig.PipeSpeed, 0),
             z: -1
         })
-
+        this.type = type;
         this.on('exitviewport', () => this.kill());
     }
 

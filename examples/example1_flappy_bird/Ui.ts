@@ -12,22 +12,18 @@ export function initializeMuteButton() {
 /**
  * Toggles the toggle button’s state if it’s actually a button element or has
  * the `role` attribute set to `button`.
- *
- * @param {MouseEvent} event
  */
-function toggleButtonClickHandler(event: any) {
+function toggleButtonClickHandler(event: MouseEvent) {
     toggleButtonState(event!.currentTarget as HTMLButtonElement);
 }
 
 /**
  * Toggles the toggle button’s state with the enter key.
- *
- * @param {KeyboardEvent} event
  */
 function toggleButtonKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 32) {
+    if (event.code === "Space") {
         event.preventDefault();
-    } else if (event.keyCode === 13) {
+    } else if (event.code === "Enter") {
         event.preventDefault();
         toggleButtonState(event!.currentTarget as HTMLButtonElement);
     }
@@ -35,11 +31,9 @@ function toggleButtonKeydownHandler(event: KeyboardEvent) {
 
 /**
  * Toggles the toggle button’s state with space key.
- *
- * @param {KeyboardEvent} event
  */
 function toggleButtonKeyupHandler(event: KeyboardEvent) {
-    if (event.keyCode === 32) {
+    if (event.code === "Space") {
         event.preventDefault();
         toggleButtonState(event!.currentTarget as HTMLButtonElement);
     }
@@ -47,8 +41,6 @@ function toggleButtonKeyupHandler(event: KeyboardEvent) {
 
 /**
  * Toggles the toggle button’s state between *pressed* and *not pressed*.
- *
- * @param {HTMLElement} button
  */
 function toggleButtonState(button: HTMLElement) {
     const isAriaPressed = button.getAttribute('aria-pressed') === 'true';

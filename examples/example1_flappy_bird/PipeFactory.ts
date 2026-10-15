@@ -52,9 +52,7 @@ export class PipeFactory {
 
     reset() {
         for (const actor of this.level.actors) {
-            if (actor instanceof Pipe ||
-                actor instanceof ScoreTrigger
-            ) {
+            if (actor instanceof Pipe || actor instanceof ScoreTrigger) {
                 actor.kill();
             }
         }
@@ -63,9 +61,7 @@ export class PipeFactory {
     stop() {
         this.timer.stop();
         for (const actor of this.level.actors) {
-            if (actor instanceof Pipe ||
-                actor instanceof ScoreTrigger
-            ) {
+            if (actor instanceof Pipe || actor instanceof ScoreTrigger) {
                 actor.vel = vec(0, 0);
             }
         }
