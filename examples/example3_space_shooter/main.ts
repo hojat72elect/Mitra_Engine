@@ -1,22 +1,21 @@
-// Main Game Logic
-import {Engine, Color, DisplayMode, KeyEvent, Keys} from 'excalibur';
-import Config from './config';
-import { Sounds, loader} from './resources';
-import { Game } from './game';
+import {Color, DisplayMode, Engine, KeyEvent, Keys} from 'excalibur';
+import {Config} from './config';
+import {loader, Sounds} from './resources';
+import {Game} from './game';
 
 async function waitForFontLoad(font: string, timeout = 2000, interval = 100) {
     return new Promise((resolve, reject) => {
         // repeatedly poll check
         const poller = setInterval(async () => {
-        try {
-            await document.fonts.load(font);
-        } catch (err) {
-            reject(err);
-        }
-        if (document.fonts.check(font)) {
-            clearInterval(poller);
-            resolve(true);
-        }
+            try {
+                await document.fonts.load(font);
+            } catch (err) {
+                reject(err);
+            }
+            if (document.fonts.check(font)) {
+                clearInterval(poller);
+                resolve(true);
+            }
         }, interval);
         setTimeout(() => clearInterval(poller), timeout);
     });
@@ -49,7 +48,7 @@ engine.on('visible', () => {
 
 engine.input.keyboard.on('press', (evt: KeyEvent) => {
     if (evt.key === Keys.D) {
-      engine.toggleDebug();
+        engine.toggleDebug();
     }
 });
 
@@ -60,7 +59,7 @@ waitForFontLoad("normal 30px Open Sans").then(() => {
         Sounds.enemyFireSound.volume = Config.soundVolume;
         Sounds.powerUp.volume = Config.soundVolume;
         Sounds.rocketSound.volume = Config.soundVolume;
-        
+
         console.log("Game Resources Loaded");
     });
 })

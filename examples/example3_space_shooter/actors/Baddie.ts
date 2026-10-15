@@ -12,7 +12,7 @@ import {
     Vector
 } from "excalibur";
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
-import Config from "../config";
+import {Config} from "../config";
 import {Bullet} from "./bullet";
 import {animManager} from "./AnimationManager";
 import {stats} from "../stats";

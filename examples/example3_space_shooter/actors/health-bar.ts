@@ -1,10 +1,9 @@
 import {Actor, Canvas, CollisionType, Color, CoordPlane, Vector} from "excalibur";
-import Config from "../config";
+import {Config} from "../config";
 import {stats} from "../stats";
 
 export class HealthBar extends Actor {
     healthBarWidth = Config.healthBarWidth;
-    healthBarHeight = Config.healthBarHeight;
 
     constructor() {
         super({

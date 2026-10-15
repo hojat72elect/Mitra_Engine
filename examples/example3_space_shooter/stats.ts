@@ -1,4 +1,4 @@
-import Config from "./config";
+import {Config} from "./config";
 
 class Stats {
     public hp: number = Config.totalHp;

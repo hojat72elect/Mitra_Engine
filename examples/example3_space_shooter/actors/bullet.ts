@@ -9,12 +9,12 @@ import {
     Util,
     Vector
 } from "excalibur";
-import Config from "../config";
+import {Config} from "../config";
 import {gameSheet} from "../resources";
 import {Baddie} from "./Baddie";
 
 export class Bullet extends Actor {
-    constructor(x: number, y: number, dx: number, dy: number, collisiongGroup: CollisionGroup) {
+    constructor(x: number, y: number, dx: number, dy: number, collisionGroup: CollisionGroup) {
         super({
             pos: new Vector(x, y),
             vel: new Vector(dx, dy),
@@ -22,10 +22,10 @@ export class Bullet extends Actor {
             height: Config.bulletSize,
         });
         this.body.collisionType = CollisionType.Passive;
-        this.body.group = collisiongGroup;
+        this.body.group = collisionGroup;
     }
 
-    onInitialize(engine: Engine) {
+    onInitialize(_engine: Engine) {
         this.on('precollision', (evt) => this.onPreCollision(evt));
         // Clean up on exit viewport
         this.on('exitviewport', () => this.killAndRemoveFromBullets());

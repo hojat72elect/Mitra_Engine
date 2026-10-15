@@ -14,20 +14,21 @@ import {
     Vector
 } from "excalibur";
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
-import Config from "../config";
+import {Config} from "../config";
 import {Bullet} from "./bullet";
 import {Baddie} from "./Baddie";
 import {animManager} from "./AnimationManager";
 import {stats} from "../stats";
 
 type FireFunction = (engine: Engine) => void;
-const throttle = function (this: any, func: FireFunction, throttle: number): FireFunction {
-    var lastTime = Date.now();
-    var throttle = throttle;
+
+const throttle = function (this: any, func: FireFunction, _throttle: number): FireFunction {
+    let lastTime = Date.now();
+    let throttle = _throttle;
     return (engine: Engine) => {
-        var currentTime = Date.now();
+        let currentTime = Date.now();
         if (currentTime - lastTime > throttle) {
-            var val = func.apply(this, [engine]);
+            let val = func.apply(this, [engine]);
             lastTime = currentTime;
             return val;
         }
@@ -77,8 +78,8 @@ export class Ship extends Actor {
         this.explode.scale = new Vector(3, 3);
     }
 
-    onPreCollision(evt: PreCollisionEvent) {
-        if (evt.other instanceof Baddie || Util.contains(Baddie.Bullets, evt.other)) {
+    onPreCollision(event: PreCollisionEvent) {
+        if (event.other instanceof Baddie || Util.contains(Baddie.Bullets, event.other)) {
             Sounds.hitSound.play();
             this.actions.blink(300, 300, 3);
             stats.hp -= Config.enemyDamage;
@@ -94,7 +95,7 @@ export class Ship extends Actor {
         this.throttleFire = undefined;
     }
 
-    onPostUpdate(engine: Engine, delta: number) {
+    onPostUpdate(engine: Engine, _delta: number) {
         if (stats.hp <= 0 && this.explode) {
             // update game to display game over
             // gameOver = true;

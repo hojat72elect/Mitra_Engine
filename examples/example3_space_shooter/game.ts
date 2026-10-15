@@ -3,7 +3,7 @@ import {Ship} from './actors/ship';
 import {HealthBar} from './actors/health-bar';
 import {stats} from './stats';
 import {Baddie} from './actors/Baddie';
-import Config from './config';
+import {Config} from './config';
 import {animManager} from './actors/AnimationManager';
 
 export class Game extends Scene {
@@ -32,7 +32,7 @@ export class Game extends Scene {
         scoreLabel.font.family = "Open Sans";
         scoreLabel.transform.coordPlane = CoordPlane.Screen;
         scoreLabel.color = Color.Azure;
-        scoreLabel.on('preupdate', (evt) => {
+        scoreLabel.on('preupdate', (_event) => {
             scoreLabel.text = "Score: " + stats.score;
         });
         engine.add(scoreLabel);
