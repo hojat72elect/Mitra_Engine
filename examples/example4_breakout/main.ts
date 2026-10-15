@@ -1,39 +1,32 @@
 import {Actor, CollisionStartEvent, CollisionType, Color, Engine, vec,} from "excalibur";
-// game.js
 
-// Create an instance of the engine.
-// I'm specifying that the game be 800 pixels wide by 600 pixels tall.
-// If no dimensions are specified the game will fit to the screen.
-const game = new Engine({
+/**
+ * The game window is 800 pixels wide by 600 pixels tall.
+ * If no dimensions are specified the game will fit to the screen.
+ */
+const breakOutGame = new Engine({
     width: 800,
     height: 600,
 });
 
-// start-snippet{create-paddle}
-// Create an actor with x position of 150px,
-// y position of 40px from the bottom of the screen,
-// width of 200px, height and a height of 20px
 const paddle = new Actor({
     x: 150,
-    y: game.drawHeight - 40,
+    y: breakOutGame.drawHeight - 40, // 40 pixels above the bottom of the screen.
     width: 200,
     height: 20,
-    // Let's give it some color with one of the predefined
-    // color constants
-    color: Color.Chartreuse,
+    color: Color.White,
 });
 
-// Make sure the paddle can partipate in collisions, by default excalibur actors do not collide with each other
+// Make sure the paddle can participate in collisions, by default excalibur actors do not collide with each other.
 // CollisionType.Fixed is like an object with infinite mass, and cannot be moved, but does participate in collision.
 paddle.body.collisionType = CollisionType.Fixed;
 
-// `game.add` is the same as calling
-// `game.currentScene.add`
-game.add(paddle);
+// `game.add` is the same as calling `game.currentScene.add`.
+breakOutGame.add(paddle);
 
 // Add a mouse move listener
-game.input.pointers.primary.on("move", (evt) => {
-    paddle.pos.x = evt.worldPos.x;
+breakOutGame.input.pointers.primary.on("move", (event) => {
+    paddle.pos.x = event.worldPos.x;
 });
 
 // Create a ball at pos (100, 300) to start
@@ -53,7 +46,7 @@ setTimeout(() => {
 }, 1000);
 
 // Set the collision Type to passive
-// This means "tell me when I collide with an emitted event, but don't let excalibur do anything automatically"
+// This means "tell me when you collide with an emitted event, but don't let excalibur do anything automatically".
 ball.body.collisionType = CollisionType.Passive;
 // Other possible collision types:
 // "ex.CollisionType.PreventCollision - this means do not participate in any collision notification at all"
@@ -61,7 +54,7 @@ ball.body.collisionType = CollisionType.Passive;
 // "ex.CollisionType.Fixed - this means participate, but this object is unmovable"
 
 // Add the ball to the current scene
-game.add(ball);
+breakOutGame.add(ball);
 
 // Wire up to the postupdate event
 ball.on("postupdate", () => {
@@ -73,7 +66,7 @@ ball.on("postupdate", () => {
 
     // If the ball collides with the right side
     // of the screen reverse the x velocity
-    if (ball.pos.x + ball.width / 2 > game.drawWidth) {
+    if (ball.pos.x + ball.width / 2 > breakOutGame.drawWidth) {
         ball.vel.x = ballSpeed.x * -1;
     }
 
@@ -95,7 +88,7 @@ const rows = 3;
 const brickColor = [Color.Violet, Color.Orange, Color.Yellow];
 
 // Individual brick width with padding factored in
-const brickWidth = game.drawWidth / columns - padding - padding / columns; // px
+const brickWidth = breakOutGame.drawWidth / columns - padding - padding / columns; // px
 const brickHeight = 30; // px
 const bricks: Actor[] = [];
 for (let j = 0; j < rows; j++) {
@@ -117,7 +110,7 @@ bricks.forEach(function (brick) {
     brick.body.collisionType = CollisionType.Active;
 
     // Add the brick to the current scene to be drawn
-    game.add(brick);
+    breakOutGame.add(brick);
 });
 
 // On collision remove the brick, bounce the ball
@@ -159,4 +152,4 @@ ball.on("exitviewport", () => {
 });
 
 // Start the engine to begin the game.
-game.start();
+breakOutGame.start();
