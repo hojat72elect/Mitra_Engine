@@ -1,6 +1,6 @@
 import {Color, CoordPlane, Engine, FontUnit, Label, Random, Scene, Timer, vec, Vector} from 'excalibur';
 import {Ship} from './actors/ship';
-import {HealthBar} from './actors/health-bar';
+import {HealthBar} from './actors/HealthBar';
 import {stats} from './stats';
 import {Baddie} from './actors/Baddie';
 import {Config} from './config';

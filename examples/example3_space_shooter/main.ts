@@ -3,7 +3,7 @@ import {Config} from './config';
 import {loader, Sounds} from './resources';
 import {Game} from './game';
 
-async function waitForFontLoad(font: string, timeout = 2000, interval = 100) {
+async function waitForFontLoad(font: string, timeout = 2_000, interval = 100) {
     return new Promise((resolve, reject) => {
         // repeatedly poll check
         const poller = setInterval(async () => {

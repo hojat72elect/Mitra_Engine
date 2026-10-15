@@ -27,13 +27,13 @@ export class HealthBar extends Actor {
         this.healthBarWidth = Config.healthBarWidth * (stats.hp / Config.totalHp);
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        ctx.strokeStyle = this.color.toString();
-        ctx.fillStyle = this.color.toString();
-        ctx.lineWidth = 3;
-        ctx.font = 'normal 30px Open Sans'
-        ctx.fillText("HP", 0, 30);
-        ctx.strokeRect(0, 35, Config.healthBarWidth + 10, Config.healthBarHeight + 10);
-        ctx.fillRect(5, 40, this.healthBarWidth, Config.healthBarHeight);
+    draw(context: CanvasRenderingContext2D) {
+        context.strokeStyle = this.color.toString();
+        context.fillStyle = this.color.toString();
+        context.lineWidth = 3;
+        context.font = 'normal 30px Open Sans'
+        context.fillText("HP", 0, 30);
+        context.strokeRect(0, 35, Config.healthBarWidth + 10, Config.healthBarHeight + 10);
+        context.fillRect(5, 40, this.healthBarWidth, Config.healthBarHeight);
     }
 }
