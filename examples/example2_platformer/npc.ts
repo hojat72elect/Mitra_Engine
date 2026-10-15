@@ -2,9 +2,6 @@ import {Actor, Animation, CollisionGroupManager, CollisionType, Engine, Shape, v
 import {botRedSpriteSheet, npcSprite} from './resources';
 
 export class NPC extends Actor {
-    public onGround = true;
-    public hurt = false;
-    public hurtTime: number = 0;
 
     constructor(x: number, y: number) {
         super({
@@ -56,7 +53,6 @@ export class NPC extends Actor {
                     .moveBy(100, 0, 20)
                     .moveBy(-100, 0, 20));
         }
-
 
         // Custom draw after local tranform, draws word bubble
         this.graphics.onPostDraw = (ctx) => {

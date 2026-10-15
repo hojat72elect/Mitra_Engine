@@ -7,7 +7,7 @@ const engine = new Engine({
     width: 600,
     height: 400,
     fixedUpdateFps: 60,
-    // Turn off anti-aliasing for pixel art graphics
+    // Turn off antialiasing for pixel art graphics
     antialiasing: false,
     physics: {
         // Set global gravity, 800 pixels/sec^2

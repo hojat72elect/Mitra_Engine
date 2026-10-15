@@ -4,7 +4,6 @@ import {Bot} from './bot';
 import {Floor} from './floor';
 import {NPC} from './npc';
 
-
 export class Level extends Scene {
     constructor() {
         super();
