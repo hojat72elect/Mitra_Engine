@@ -14,9 +14,9 @@ import {
 } from 'excalibur';
 
 export class Baddie extends Actor {
-    dir: number;
+    direction: number;
 
-    constructor(x: number, y: number, dir: number) {
+    constructor(x: number, y: number, direction: number) {
         super({
             name: 'Baddie',
             pos: vec(x, y),
@@ -24,45 +24,45 @@ export class Baddie extends Actor {
             collisionType: CollisionType.Active,
             collider: Shape.Box(32, 50, Vector.Half, vec(0, -1))
         });
-        this.dir = dir;
+        this.direction = direction;
     }
 
-    // OnInitialize is called before the 1st actor update
+    // onInitialize is called before the 1st actor update
     onInitialize(_engine: Engine) {
-        // Initialize actor
+        // Initialize the actor
 
         // Setup visuals
-        const left = Animation.fromSpriteSheet(baddieSpriteSheet, [2, 3, 4, 5], 100);
-        left.scale = vec(2, 2);
-        const right = Animation.fromSpriteSheet(baddieSpriteSheet, [2, 3, 4, 5], 100);
-        right.scale = vec(2, 2);
-        right.flipHorizontal = true;
+        const leftAnimation = Animation.fromSpriteSheet(baddieSpriteSheet, [2, 3, 4, 5], 100);
+        leftAnimation.scale = vec(2, 2);
+        const rightAnimation = Animation.fromSpriteSheet(baddieSpriteSheet, [2, 3, 4, 5], 100);
+        rightAnimation.scale = vec(2, 2);
+        rightAnimation.flipHorizontal = true;
 
         // Register animation
-        this.graphics.add("left", left)
-        this.graphics.add("right", right);
+        this.graphics.add("left", leftAnimation)
+        this.graphics.add("right", rightAnimation);
         this.graphics.use("left");
 
         if ((window as any).__TESTING) {
-            left.pause();
+            leftAnimation.pause();
         }
 
-        // Setup patroling behavior
+        // Setup patrolling behavior
 
-        // For the test harness to be predicable
+        // For the test harness to be predictable
         if (!(window as any).__TESTING) {
-            this.actions.delay(1000)
-                .repeatForever(ctx => ctx
-                    .moveBy(400 * this.dir, 0, 100)
-                    .moveBy(-400 * this.dir, 0, 100));
+            this.actions.delay(1_000)
+                .repeatForever(context => context
+                    .moveBy(400 * this.direction, 0, 100)
+                    .moveBy(-400 * this.direction, 0, 100));
         }
 
         // Handle being stomped by the player
-        this.on('postcollision', (evt) => this.onPostCollision(evt));
+        this.on('postcollision', (event) => this.onPostCollision(event));
     }
 
-    onPostCollision(evt: PostCollisionEvent) {
-        if (evt.other.owner instanceof Bot && evt.side === Side.Top) {
+    onPostCollision(event: PostCollisionEvent) {
+        if (event.other.owner instanceof Bot && event.side === Side.Top) {
             Resources.gotEm.play(.1);
             // Clear patrolling
             this.actions.clearActions();
@@ -79,8 +79,10 @@ export class Baddie extends Actor {
     // Change animation based on velocity 
     onPostUpdate() {
         if (this.vel.x < 0) {
+            // Play left animation
             this.graphics.use("left");
         } else if (this.vel.x > 0) {
+            // Play right animation
             this.graphics.use("right");
         }
     }

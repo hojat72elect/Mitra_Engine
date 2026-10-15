@@ -15,9 +15,8 @@ import {botSpriteSheet, Resources} from './resources';
 import {Baddie} from './baddie';
 
 export class Bot extends Actor {
-    public onGround = true;
-    public jumped = false;
-    public hurt = false;
+    public isOnGround = true;
+    public isHurt = false;
     public hurtTime: number = 0;
 
     constructor(x: number, y: number) {
@@ -35,65 +34,62 @@ export class Bot extends Actor {
         // Initialize actor
 
         // Setup visuals
-        const hurtleft = Animation.fromSpriteSheet(botSpriteSheet, [0, 1, 0, 1, 0, 1], 150);
-        hurtleft.scale = vec(2, 2);
+        const hurtLeft = Animation.fromSpriteSheet(botSpriteSheet, [0, 1, 0, 1, 0, 1], 150);
+        hurtLeft.scale = vec(2, 2);
 
-        const hurtright = Animation.fromSpriteSheet(botSpriteSheet, [0, 1, 0, 1, 0, 1], 150);
-        hurtright.scale = vec(2, 2);
-        hurtright.flipHorizontal = true;
+        const hurtRight = Animation.fromSpriteSheet(botSpriteSheet, [0, 1, 0, 1, 0, 1], 150);
+        hurtRight.scale = vec(2, 2);
+        hurtRight.flipHorizontal = true;
 
         const idle = Animation.fromSpriteSheet(botSpriteSheet, [2, 3], 800);
         idle.scale = vec(2, 2);
 
-        const left = Animation.fromSpriteSheet(botSpriteSheet, [3, 4, 5, 6, 7], 100);
-        left.scale = vec(2, 2);
+        const walkLeft = Animation.fromSpriteSheet(botSpriteSheet, [3, 4, 5, 6, 7], 100);
+        walkLeft.scale = vec(2, 2);
 
-        const right = Animation.fromSpriteSheet(botSpriteSheet, [3, 4, 5, 6, 7], 100);
-        right.scale = vec(2, 2);
-        right.flipHorizontal = true;
-
+        const walkRight = Animation.fromSpriteSheet(botSpriteSheet, [3, 4, 5, 6, 7], 100);
+        walkRight.scale = vec(2, 2);
+        walkRight.flipHorizontal = true;
 
         // Register animations with actor
-        this.graphics.add("hurtleft", hurtleft);
-        this.graphics.add("hurtright", hurtright);
+        this.graphics.add("hurtleft", hurtLeft);
+        this.graphics.add("hurtright", hurtRight);
         this.graphics.add("idle", idle);
-        this.graphics.add("left", left);
-        this.graphics.add("right", right);
+        this.graphics.add("left", walkLeft);
+        this.graphics.add("right", walkRight);
 
         // onPostCollision is an event, not a lifecycle meaning it can be subscribed to by other things
-        this.on('postcollision', (evt) => this.onPostCollision(evt));
+        this.on('postcollision', (event) => this.onPostCollision(event));
     }
 
-    onPostCollision(evt: PostCollisionEvent) {
+    onPostCollision(event: PostCollisionEvent) {
         // Bot has collided with it's Top of another collider
-        console.log(evt.other.owner.name);
-        if (evt.side === Side.Bottom) {
-            this.onGround = true;
+        console.log(event.other.owner.name);
+        if (event.side === Side.Bottom) {
+            this.isOnGround = true;
         }
 
         // Bot has collided on the side, display hurt animation
-        if ((evt.side === Side.Left ||
-                evt.side === Side.Right) &&
-            evt.other.owner instanceof Baddie) {
-            if (this.vel.x < 0 && !this.hurt) {
+        if ((event.side === Side.Left || event.side === Side.Right) && event.other.owner instanceof Baddie) {
+            if (this.vel.x < 0 && !this.isHurt) {
                 this.graphics.use("hurtleft");
             }
-            if (this.vel.x >= 0 && !this.hurt) {
+            if (this.vel.x >= 0 && !this.isHurt) {
                 this.graphics.use("hurtright");
             }
-            this.hurt = true;
-            this.hurtTime = 1000;
-            Resources.hit.play(.1);
+            this.isHurt = true;
+            this.hurtTime = 1_000;
+            Resources.hit.play(0.1);
         }
     }
 
     // After main update, once per frame execute this code
     onPreUpdate(engine: Engine, delta: number) {
         // If hurt, count down
-        if (this.hurtTime >= 0 && this.hurt) {
+        if (this.hurtTime >= 0 && this.isHurt) {
             this.hurtTime -= delta;
             if (this.hurtTime < 0) {
-                this.hurt = false;
+                this.isHurt = false;
             }
         }
 
@@ -109,20 +105,20 @@ export class Bot extends Actor {
             this.vel.x = 150;
         }
 
-        if (engine.input.keyboard.isHeld(Keys.Up) && this.onGround) {
+        if (engine.input.keyboard.isHeld(Keys.Up) && this.isOnGround) {
             this.vel.y = -400;
-            this.onGround = false;
+            this.isOnGround = false;
             Resources.jump.play(.1);
         }
 
         // Change animation based on velocity
-        if (this.vel.x < 0 && !this.hurt) {
+        if (this.vel.x < 0 && !this.isHurt) {
             this.graphics.use("left");
         }
-        if (this.vel.x > 0 && !this.hurt) {
+        if (this.vel.x > 0 && !this.isHurt) {
             this.graphics.use("right");
         }
-        if (this.vel.x === 0 && !this.hurt) {
+        if (this.vel.x === 0 && !this.isHurt) {
             this.graphics.use("idle")
         }
     }
