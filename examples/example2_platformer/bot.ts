@@ -106,7 +106,7 @@ export class Bot extends Actor {
         }
 
         if (engine.input.keyboard.isHeld(Keys.Up) && this.isOnGround) {
-            this.vel.y = -400;
+            this.vel.y = -450;
             this.isOnGround = false;
             Resources.jump.play(.1);
         }
