@@ -2,9 +2,9 @@ import {Color, CoordPlane, Engine, FontUnit, Label, Random, Scene, Timer, vec, V
 import {Ship} from './actors/ship';
 import {HealthBar} from './actors/health-bar';
 import {stats} from './stats';
-import {Baddie} from './actors/baddie';
+import {Baddie} from './actors/Baddie';
 import Config from './config';
-import {animManager} from './actors/animation-manager';
+import {animManager} from './actors/AnimationManager';
 
 export class Game extends Scene {
     random = new Random(1337); // seeded random

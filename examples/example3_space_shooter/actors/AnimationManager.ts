@@ -1,8 +1,8 @@
 import {Actor, Animation, CollisionType, Engine, type ExcaliburGraphicsContext, Vector} from "excalibur";
 
 interface AnimationNode {
-    pos: Vector,
-    anim: Animation
+    position: Vector,
+    animation: Animation
 }
 
 export class AnimationManager extends Actor {
@@ -15,28 +15,27 @@ export class AnimationManager extends Actor {
             height: 0,
             collisionType: CollisionType.PreventCollision,
         });
-        this.graphics.onPostDraw = (ctx) => this.drawAnimations(ctx);
+        this.graphics.onPostDraw = (context) => this.drawAnimations(context);
     }
 
-    play(animation: Animation, pos: Vector) {
+    play(animation: Animation, position: Vector) {
         this.animations.push({
-            anim: animation.clone(),
-            pos: pos.clone()
+            animation: animation.clone(),
+            position: position.clone()
         });
     }
 
     onPostUpdate(engine: Engine, elapsed: number) {
-        this.animations.forEach(a => a.anim.tick(elapsed, engine.stats.currFrame.id));
-        this.animations = this.animations.filter(a => !a.anim.done);
+        this.animations.forEach(a => a.animation.tick(elapsed, engine.stats.currFrame.id));
+        this.animations = this.animations.filter(a => !a.animation.done);
     }
 
     // PostDraw gives the rendering context and the time between frames
-    drawAnimations(ctx: ExcaliburGraphicsContext) {
+    drawAnimations(context: ExcaliburGraphicsContext) {
         for (let node of this.animations) {
-            node.anim.draw(ctx, node.pos.x - node.anim.width / 2, node.pos.y - node.anim.height / 2);
+            node.animation.draw(context, node.position.x - node.animation.width / 2, node.position.y - node.animation.height / 2);
         }
     }
 }
 
-const animManager = new AnimationManager();
-export {animManager};
+export const animManager = new AnimationManager();

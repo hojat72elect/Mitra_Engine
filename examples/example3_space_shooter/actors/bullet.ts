@@ -11,7 +11,7 @@ import {
 } from "excalibur";
 import Config from "../config";
 import {gameSheet} from "../resources";
-import {Baddie} from "./baddie";
+import {Baddie} from "./Baddie";
 
 export class Bullet extends Actor {
     constructor(x: number, y: number, dx: number, dy: number, collisiongGroup: CollisionGroup) {

@@ -16,8 +16,8 @@ import {
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
 import Config from "../config";
 import {Bullet} from "./bullet";
-import {Baddie} from "./baddie";
-import {animManager} from "./animation-manager";
+import {Baddie} from "./Baddie";
+import {animManager} from "./AnimationManager";
 import {stats} from "../stats";
 
 type FireFunction = (engine: Engine) => void;

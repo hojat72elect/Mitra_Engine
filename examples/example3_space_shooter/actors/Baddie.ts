@@ -14,7 +14,7 @@ import {
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
 import Config from "../config";
 import {Bullet} from "./bullet";
-import {animManager} from "./animation-manager";
+import {animManager} from "./AnimationManager";
 import {stats} from "../stats";
 
 export class Baddie extends Actor {
@@ -22,7 +22,7 @@ export class Baddie extends Actor {
     // All bullets belonging to baddies
     public static Bullets: Bullet[] = [];
 
-    private anim?: Animation;
+    private animation?: Animation;
     private explode?: Animation;
     private fireTimer?: Timer;
     private fireAngle: number = Math.random() * Math.PI * 2;
@@ -41,7 +41,6 @@ export class Baddie extends Actor {
 
         // Setup listeners
         this.on('precollision', (evt) => this.onPreCollision(evt));
-
     }
 
     // OnInitialize is called before the 1st actor update
@@ -49,16 +48,16 @@ export class Baddie extends Actor {
         // Initialize actor
 
         // Setup visuals
-        this.anim = Animation.fromSpriteSheet(gameSheet, [10, 11, 12], 100, AnimationStrategy.Loop);
-        this.anim.scale = new Vector(4, 4);
-        this.graphics.use(this.anim);
+        this.animation = Animation.fromSpriteSheet(gameSheet, [10, 11, 12], 100, AnimationStrategy.Loop);
+        this.animation.scale = new Vector(4, 4);
+        this.graphics.use(this.animation);
 
         this.explode = Animation.fromSpriteSheet(explosionSpriteSheet, range(0, explosionSpriteSheet.sprites.length - 1), 40, AnimationStrategy.End);
         this.explode.scale = new Vector(3, 3);
 
         // Setup patrolling behavior
-        this.actions.repeatForever(ctx =>
-            ctx.moveTo(this.pos.x, this.pos.y + 800, Config.enemySpeed)
+        this.actions.repeatForever(context =>
+            context.moveTo(this.pos.x, this.pos.y + 800, Config.enemySpeed)
                 .moveTo(this.pos.x + 800, this.pos.y, Config.enemySpeed)
                 .moveTo(this.pos.x + 800, this.pos.y + 800, Config.enemySpeed)
                 .moveTo(this.pos.x, this.pos.y, Config.enemySpeed));
@@ -74,7 +73,6 @@ export class Baddie extends Actor {
         });
         engine.addTimer(this.fireTimer);
         this.fireTimer.start();
-
     }
 
     // Fires before excalibur collision resolution
