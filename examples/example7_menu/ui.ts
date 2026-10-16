@@ -1,5 +1,5 @@
-import { Actor, Color, Scene, Vector, vec } from "excalibur";
-import { IdleAnimation } from "./resources";
+import {Actor, Color, Scene, vec, Vector} from "excalibur";
+import {IdleAnimation} from "./resources";
 
 export const calculateExPixelConversion = (screen: ex.Screen) => {
     const origin = screen.worldToPageCoordinates(Vector.Zero);
@@ -9,16 +9,19 @@ export const calculateExPixelConversion = (screen: ex.Screen) => {
 }
 
 export class Menu {
+    scene: Scene;
     rootElement: HTMLElement;
     addUnitButton: HTMLElement;
     removeUnitButton: HTMLElement;
     currentWorldPos: Vector = vec(0, 0);
-    constructor(public scene: Scene) {
-        scene.input.pointers.on('down', (evt) => {
+
+    constructor(scene: Scene) {
+        this.scene = scene;
+        scene.input.pointers.on('down', (event) => {
             this.show();
-            this.currentWorldPos = scene.engine.screen.pageToWorldCoordinates(vec(evt.pagePos.x, evt.pagePos.y));
-            document.documentElement.style.setProperty('--pointer-x', evt.pagePos.x.toString() + 'px');
-            document.documentElement.style.setProperty('--pointer-y', evt.pagePos.y.toString() + 'px');
+            this.currentWorldPos = scene.engine.screen.pageToWorldCoordinates(vec(event.pagePos.x, event.pagePos.y));
+            document.documentElement.style.setProperty('--pointer-x', event.pagePos.x.toString() + 'px');
+            document.documentElement.style.setProperty('--pointer-y', event.pagePos.y.toString() + 'px');
         });
 
         const rootElement = document.getElementById('menu');
@@ -30,11 +33,11 @@ export class Menu {
             this.addUnitButton = addUnitButton;
             this.removeUnitButton = removeUnitButton;
 
-            this.addUnitButton.addEventListener('click', evt => {
+            this.addUnitButton.addEventListener('click', _event => {
                 this.addUnit();
             });
 
-            this.removeUnitButton.addEventListener('click', evt => {
+            this.removeUnitButton.addEventListener('click', _event => {
                 this.removeUnit();
             });
         } else {
@@ -52,7 +55,7 @@ export class Menu {
         this.scene.add(actor);
         this.hide();
     }
-    
+
     removeUnit() {
         for (let actor of this.scene.actors) {
             if (actor.graphics.bounds.contains(this.currentWorldPos)) {

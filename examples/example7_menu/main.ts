@@ -14,5 +14,5 @@ game.screen.events.on('resize', () => calculateExPixelConversion(game.screen));
 
 game.start(loader).then(() => {
     calculateExPixelConversion(game.screen);
-    const menu = new Menu(game.currentScene);
+    new Menu(game.currentScene);
 });

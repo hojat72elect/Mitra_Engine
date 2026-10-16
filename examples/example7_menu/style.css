@@ -19,14 +19,12 @@ h3 {
 
 .menu button:focus-visible, .menu button:hover {
     outline: white solid 1px;
-    /* box-shadow: 0 4px black; */
 }
 
 .menu button:active {
     transform: translate(0, 4px);
     box-shadow: 0 0 black;
 }
-
 
 #game {
     position: absolute;
@@ -55,8 +53,6 @@ h3 {
     color: white;
     background-color: #00000077;
     border-radius: 5px;
-    /* top: calc(10px * var(--pixel-conversion));
-    left: calc(10px * var(--pixel-conversion)); */
 }
 
 .menu button {
