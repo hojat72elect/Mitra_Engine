@@ -1,6 +1,6 @@
-import { ImageSource, Loadable } from "excalibur";
+import { ImageSource, type Loadable } from "excalibur";
 import { TiledParser, TiledTemplate } from "../parser/tiled-parser";
-import { FetchLoader, FileLoader } from "./file-loader";
+import { FetchLoader, type FileLoader } from "./file-loader";
 import { LoaderCache } from "./loader-cache";
 import { parseObject } from "./objects";
 import { PathMap, pathRelativeToBase } from "./path-util";

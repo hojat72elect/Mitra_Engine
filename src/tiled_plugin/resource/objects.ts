@@ -1,10 +1,9 @@
 import { BaseAlign, Color, Font, FontUnit, TextAlign, Vector, toRadians, vec } from "excalibur";
 import { Text as ExText } from 'excalibur';
-import { TiledObject, TiledObjectGroup, TiledText } from "../parser/tiled-parser";
-import { Properties, PropertyMapValue, mapProps } from "./properties";
+import {type TiledObject, type TiledObjectGroup, TiledText } from "../parser/tiled-parser";
+import {type Properties, type PropertyMapValue, mapProps } from "./properties";
 import { Template } from "./template";
 import { filenameFromPath } from "./path-util";
-import { Tileset } from "./tileset";
 import { TiledResource } from "./tiled-resource";
 
 export interface PluginObjectProps {
@@ -100,8 +99,14 @@ export class TemplateObject extends PluginObject {
  * Represents an instance of an inserted tile object in a map.
  */
 export class InsertedTile extends PluginObject {
-   constructor(tiledObject: TiledObject, public readonly gid: number, public readonly width: number, public readonly height: number) {
+   gid:number;
+   width:number;
+   height:number;
+   constructor(tiledObject: TiledObject,   gid: number,   width: number,   height: number) {
       super({ tiledObject });
+      this.gid = gid;
+      this.width=width;
+      this.height=height;
    }
 }
 
