@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#2df6f9" nextlayerid="5" nextobjectid="6">
+ <tileset firstgid="1" name="fantasy" tilewidth="16" tileheight="16" tilecount="132" columns="12">
+  <image source="tilemap_packed.png" width="192" height="176"/>
+  <tile id="105" type="Collectable"/>
+  <tile id="119" type="Collectable">
+   <properties>
+    <property name="item" value="arrow"/>
+   </properties>
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="133" source="external-fantasy.tsx"/>
+ <layer id="1" name="Ground" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   <chunk x="-48" y="-32" width="16" height="16">
+   eJxjYBgFAwGYoZhcfeToHQXDB1CSBpD1AQApmAAZ
+  </chunk>
+   <chunk x="-32" y="-32" width="16" height="16">
+   eJxjYBgFlABmIjCx5lDqjqGgH1eYENJPKEyJ1Y9LLTH68aklVT8zGptQuiFkP7kAAKsEAHk=
+  </chunk>
+   <chunk x="-16" y="-32" width="16" height="16">
+   eJxjYBgF1ATMSJgcvejmkKufErupqZ9Ycyl1OzaMTy2x9qOLMxMQJ2QfMx5xYtyAi43PDfjUAACD+ABt
+  </chunk>
+   <chunk x="0" y="-32" width="16" height="16">
+   eJxjYBgF+ADzAOqnp93Y1BIrhs9MbJhUveQAfHqxmU2K/6mhn1i1hNTgA8ToBwCHTABt
+  </chunk>
+   <chunk x="16" y="-32" width="16" height="16">
+   eJxjYBgFo2DoAuaBdsAQBwAHwAAE
+  </chunk>
+   <chunk x="-16" y="-16" width="16" height="16">
+   eJxjYCANMJOofhSMglFAfcBMQV5kRsIAEVwAEw==
+  </chunk>
+   <chunk x="0" y="-16" width="16" height="16">
+   eJxjYCAeMJOgllZmUMsNzFQyaxSMbMBMAqZUPzYzKNUPAGpgAHw=
+  </chunk>
+   <chunk x="16" y="-16" width="16" height="16">
+   eJxjYBjagBkNj4JRMAqIBwAquAAN
+  </chunk>
+   <chunk x="-16" y="0" width="16" height="16">
+   eJxjYCAdMCNhSvSO6h95+tHNGAj9DFTQz0AF/YMBAABHlwCF
+  </chunk>
+   <chunk x="0" y="0" width="16" height="16">
+   eJzNkVEKwDAIQ9N4/zvvx0EI6mQ/myBa6tPUBoADIDLeOTNnntXVtO6IU3zidfY0c8N7H3/TpD+sjhY7DVH0oO3jiXcmTHvVQ/kwxtnpD7r/pt11PJs51S43+jeOj/jK3jB/sgvZtQG6
+  </chunk>
+   <chunk x="-16" y="16" width="16" height="16">
+   eJxjYBgFowA/YMaDSVGDz3xSxElxNyXy9HADrfUTMgMAYjgAQw==
+  </chunk>
+   <chunk x="0" y="16" width="16" height="16">
+   eJxjYBgFIxkwI2FqmDWQ+geDGwa7fnR5ACnUACI=
+  </chunk>
+   <chunk x="16" y="16" width="16" height="16">
+   eJxjYBgFo4B0wEwFveSaQYndA61/oOzGFeYAHwwAHw==
+  </chunk>
+   <chunk x="32" y="16" width="16" height="16">
+   eJxjYBgFo4B8wDzA+tHNwGYeMxLGpx+bGnSzcalBx8S6Dd0MdPfgcgu19AMASDQAXg==
+  </chunk>
+   <chunk x="48" y="16" width="16" height="16">
+   eJxjYBh+gBkJk6ufgQIzmNHYpJqBrn4g9VPqfmqEH7n6qRF/5IChpB8AoYAAUg==
+  </chunk>
+   <chunk x="-16" y="32" width="16" height="16">
+   eJxjYCAMmEkUp7Z+XGop1U8KoFT/KBgFgxEAAFXkABk=
+  </chunk>
+   <chunk x="0" y="32" width="16" height="16">
+   eJxjYMAEzFjEYOLMeOTJ0Y9PLS79xABc+okFlOrHpp4U9+MzkxrmMFDJjFEwtAEA28QARg==
+  </chunk>
+   <chunk x="16" y="32" width="16" height="16">
+   eJxjYCAOMKPRpAJmCvSO6keYQYm5lNo/CoYfAACSOAAx
+  </chunk>
+   <chunk x="32" y="32" width="16" height="16">
+   eJxjYIAAZgYEYMYiBuOji6HrwSXGjMdcXACbm6ihn1gzkN1LyH+49BPrVlroHwWjgBAAAO6QAEk=
+  </chunk>
+   <chunk x="48" y="32" width="16" height="16">
+   eJxjYMAEzFjESAFDST82tcwkmIFL3VAKg1EwcgEAZvQAIg==
+  </chunk>
+  </data>
+ </layer>
+ <layer id="2" name="Solid" width="10" height="10">
+  <properties>
+   <property name="solid" type="bool" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   <chunk x="0" y="0" width="16" height="16">
+   eJzt0bkNgDAQRNEXuACqpxeOlCPlKIGUHsgd2JYliPjZaOdvMkGekLg1BX5JJ6ZDjwFjhT9hxoK1wt+w48CZ6d4V/9+gjfJV4KS2Lem8tf/PNzypIQwG
+  </chunk>
+  </data>
+ </layer>
+ <layer id="4" name="Above" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   <chunk x="0" y="0" width="16" height="16">
+   eJxjYBgFD/HI3aOjO0bBKKA3AAAiBwHA
+  </chunk>
+  </data>
+ </layer>
+ <objectgroup id="3" name="Objects">
+  <object id="1" name="camera" x="79.25" y="77.75">
+   <properties>
+    <property name="camera" type="bool" value="true"/>
+    <property name="zoom" type="float" value="0.5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" template="coin.tx" x="52.25" y="95.5">
+   <properties>
+    <property name="listprop" type="list">
+     <item type="color" value="#ff5644da"/>
+     <item type="color" value="#ffaa0000"/>
+    </property>
+    <property name="listprop2" type="list">
+     <item type="float" value="1.4"/>
+    </property>
+    <property name="listpropempty" type="list"/>
+   </properties>
+  </object>
+  <object id="3" name="Player" type="player-start" x="38.9091" y="40">
+   <properties>
+    <property name="listprop" type="list">
+     <item type="object" value="2"/>
+    </property>
+    <property name="listprop1" type="list">
+     <item type="float" value="0.3"/>
+    </property>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" gid="120" x="128.134" y="111.847" width="16" height="16">
+   <properties>
+    <property name="otherprop" value="something else"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
