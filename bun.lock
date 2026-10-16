@@ -10,6 +10,9 @@
         "@peasy-lib/peasy-ui": "^0.9.58",
         "excalibur": "^0.32.0",
         "matter-js": "^0.20.0",
+        "pako": "^3.0.2",
+        "zod": "^4.6.7",
+        "zstddec": "^0.3.1",
       },
       "devDependencies": {
         "@types/matter-js": "^0.20.2",
@@ -301,7 +304,7 @@
 
     "p-locate": ["p-locate@5.0.0", "", { "dependencies": { "p-limit": "^3.0.2" } }, "sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw=="],
 
-    "pako": ["pako@1.0.11", "", {}, "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw=="],
+    "pako": ["pako@3.0.2", "", {}, "sha512-uBv6IT2aT1A78iU6dpNEbf6+CyhlV/6g9JlJs9kpgjFGFhruIICVRysF/W0SLzXg5+hCl+KroH7e4YUyfEmgLg=="],
 
     "parse5": ["parse5@8.0.1", "", { "dependencies": { "entities": "^8.0.0" } }, "sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw=="],
 
@@ -379,11 +382,17 @@
 
     "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
 
-    "zod": ["zod@4.2.1", "", {}, "sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw=="],
+    "zod": ["zod@4.6.7", "", {}, "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg=="],
 
-    "zstddec": ["zstddec@0.1.0", "", {}, "sha512-w2NTI8+3l3eeltKAdK8QpiLo/flRAr2p8AGeakfMZOXBxOg9HIu4LVDxBi81sYgVhFhdJjv1OrB5ssI8uFPoLg=="],
+    "zstddec": ["zstddec@0.3.1", "", {}, "sha512-BzRlZgv7qSMByKoh8S1ErzU6E5ZNtt2arMPA95+Qib6LBLz4pVJnICPsEd1RgEeRLh1DsXMi26Ry8Yd0YL4EBg=="],
 
     "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
+
+    "@excaliburjs/plugin-tiled/pako": ["pako@1.0.11", "", {}, "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw=="],
+
+    "@excaliburjs/plugin-tiled/zod": ["zod@4.2.1", "", {}, "sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw=="],
+
+    "@excaliburjs/plugin-tiled/zstddec": ["zstddec@0.1.0", "", {}, "sha512-w2NTI8+3l3eeltKAdK8QpiLo/flRAr2p8AGeakfMZOXBxOg9HIu4LVDxBi81sYgVhFhdJjv1OrB5ssI8uFPoLg=="],
 
     "data-urls/whatwg-mimetype": ["whatwg-mimetype@5.0.0", "", {}, "sha512-sXcNcHOC51uPGF0P/D4NVtrkjSU2fNsm9iog4ZvZJsL3rjoDAzXZhkm2MWt1y+PUdggKAYVoMAIYcs78wJ51Cw=="],
 

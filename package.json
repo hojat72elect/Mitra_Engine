@@ -28,6 +28,9 @@
     "@excaliburjs/plugin-tiled": "^0.32.0",
     "@peasy-lib/peasy-ui": "^0.9.58",
     "excalibur": "^0.32.0",
-    "matter-js": "^0.20.0"
+    "matter-js": "^0.20.0",
+    "pako": "^3.0.2",
+    "zod": "^4.6.7",
+    "zstddec": "^0.3.1"
   }
 }
