@@ -1,9 +1,10 @@
-import { Actor, type ActorArgs, CollisionType, Vector } from "excalibur";
-import { MatterJsBodyComponent } from "./matterjs-body.component";
-import { MatterJsConstraintComponent } from "./matterjs-constraint.component";
+import {Actor, type ActorArgs, CollisionType, Vector} from "excalibur";
+import {MatterJsBodyComponent} from "./MatterJsBodyComponent";
+import {MatterJsConstraintComponent} from "./MatterJsConstraintComponent";
 
 export class Block extends Actor {
     matterJs: MatterJsBodyComponent;
+
     constructor(config: ActorArgs) {
         super(config);
 

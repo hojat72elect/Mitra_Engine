@@ -1,9 +1,8 @@
-import { Query, System, SystemType, TransformComponent, World } from "excalibur";
-import { MatterJsBodyComponent } from "./matterjs-body.component";
+import {Query, System, SystemType, TransformComponent, World} from "excalibur";
+import {MatterJsBodyComponent} from "./MatterJsBodyComponent";
 
 import * as Matter from 'matter-js';
-import { MatterJsConstraintComponent } from "./matterjs-constraint.component";
-
+import {MatterJsConstraintComponent} from "./MatterJsConstraintComponent";
 
 export class MatterJsSystem extends System {
     // Excalibur physics system disabled in new Engine({physics: false})
@@ -11,6 +10,7 @@ export class MatterJsSystem extends System {
     matterEngine: Matter.Engine = Matter.Engine.create();
     priority = 99;
     query: Query<typeof MatterJsBodyComponent | typeof TransformComponent>;
+
     constructor(world: World) {
         super();
         this.matterEngine.gravity.y = 1;
@@ -18,7 +18,7 @@ export class MatterJsSystem extends System {
 
         this.query.entityAdded$.subscribe(entity => {
             const matterJsComponent = entity.get(MatterJsBodyComponent);
-            
+
             if (matterJsComponent) {
                 Matter.Composite.add(this.matterEngine.world, matterJsComponent.matterJsBody);
             }
@@ -46,8 +46,8 @@ export class MatterJsSystem extends System {
             const transform = entity.get(TransformComponent);
             const matterJsComponent = entity.get(MatterJsBodyComponent);
             if (matterJsComponent && transform) {
-                transform.pos.x =  matterJsComponent.matterJsBody.position.x;
-                transform.pos.y =  matterJsComponent.matterJsBody.position.y;
+                transform.pos.x = matterJsComponent.matterJsBody.position.x;
+                transform.pos.y = matterJsComponent.matterJsBody.position.y;
                 transform.rotation = matterJsComponent.matterJsBody.angle;
             }
         }

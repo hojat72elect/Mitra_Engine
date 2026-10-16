@@ -1,5 +1,5 @@
 import {CollisionType, Color, DisplayMode, Engine, Keys, Random, vec} from "excalibur";
-import {MatterJsSystem} from "./matterjs.system";
+import {MatterJsSystem} from "./MatterJsSystem";
 import {Block} from "./block";
 
 const game = new Engine({
