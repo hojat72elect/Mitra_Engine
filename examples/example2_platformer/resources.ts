@@ -1,4 +1,4 @@
-import {ImageSource, Loader, Sound, SpriteSheet} from 'excalibur';
+import {ImageSource, Loader, Sound, SpriteSheet} from "../../src/engine";
 
 // Ensure all resource paths are correct relative to the built output (webpack config)
 export const Resources = {

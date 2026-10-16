@@ -1,4 +1,4 @@
-import {Actor, Animation, CollisionGroupManager, CollisionType, Engine, Shape, vec, Vector} from 'excalibur';
+import {Actor, Animation, CollisionGroupManager, CollisionType, Engine, Shape, vec, Vector} from  "../../src/engine";
 import {botRedSpriteSheet, npcSprite} from './resources';
 
 export class NPC extends Actor {

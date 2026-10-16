@@ -11,7 +11,7 @@ import {
     Side,
     vec,
     Vector,
-} from 'excalibur';
+} from  "../../src/engine";
 
 export class Baddie extends Actor {
     direction: number;

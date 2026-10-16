@@ -1,4 +1,4 @@
-import {Color, Engine, vec} from 'excalibur';
+import {Color, Engine, vec} from  "../../src/engine";
 import {loader} from './resources';
 import {Level} from './level';
 

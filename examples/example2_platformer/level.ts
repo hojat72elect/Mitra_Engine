@@ -1,4 +1,4 @@
-import {CollisionGroupManager, Engine, Scene} from 'excalibur';
+import {CollisionGroupManager, Engine, Scene} from  "../../src/engine";
 import {Baddie} from './baddie';
 import {Bot} from './bot';
 import {Floor} from './floor';

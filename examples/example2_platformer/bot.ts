@@ -10,7 +10,7 @@ import {
     Side,
     vec,
     Vector
-} from 'excalibur';
+} from "../../src/engine";
 import {botSpriteSheet, Resources} from './resources';
 import {Baddie} from './baddie';
 
@@ -63,8 +63,8 @@ export class Bot extends Actor {
     }
 
     onPostCollision(event: PostCollisionEvent) {
-        // Bot has collided with it's Top of another collider
-        console.log(event.other.owner.name);
+        // Bot has collided with its Top of another collider
+        console.log(event.other.owner?.name);
         if (event.side === Side.Bottom) {
             this.isOnGround = true;
         }
