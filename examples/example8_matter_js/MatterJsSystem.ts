@@ -1,14 +1,12 @@
 import {Query, System, SystemType, TransformComponent, World} from "excalibur";
 import {MatterJsBodyComponent} from "./MatterJsBodyComponent";
-
-import * as Matter from 'matter-js';
+import Matter from 'matter-js';
 import {MatterJsConstraintComponent} from "./MatterJsConstraintComponent";
 
 export class MatterJsSystem extends System {
     // Excalibur physics system disabled in new Engine({physics: false})
     public systemType = SystemType.Update;
     matterEngine: Matter.Engine = Matter.Engine.create();
-    priority = 99;
     query: Query<typeof MatterJsBodyComponent | typeof TransformComponent>;
 
     constructor(world: World) {
