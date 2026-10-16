@@ -1,40 +1,37 @@
-//// c:/programming/exGraph/src/main.ts
-//// Main entry point for Excalibur
-
 import "./style.css";
-import { UI } from "@peasy-lib/peasy-ui";
-import { Engine, DisplayMode, TileMap, Vector, Loader } from "excalibur";
-import { ExcaliburAStar, ExcaliburGraph, GraphTileMap, aStarNode, GraphNode } from "@excaliburjs/plugin-pathfinding";
-import {Resources, rlSS, TileSheet} from "./resourcses";
-import { Tree, tiles } from "./tiledata";
-import { player } from "./player";
+import {UI} from "@peasy-lib/peasy-ui";
+import {DisplayMode, Engine, Loader, TileMap, Vector} from "excalibur";
+import {aStarNode, ExcaliburAStar, ExcaliburGraph, GraphNode, GraphTileMap} from "@excaliburjs/plugin-pathfinding";
+import {Resources, TileSheet} from "./resourcses";
+import {tiles, Tree} from "./tiledata";
+import {player} from "./player";
 
 // setup Peasy-UI for dom rendering
 // data model
 export const model = {
-  hudWidth: 800,
-  hudHeight: 600,
-  currentTileIndex: 0,
-  targetTileIndex: 0,
-  movesRemaining: 0,
-  showHUD: false,
+    hudWidth: 800,
+    hudHeight: 600,
+    currentTileIndex: 0,
+    targetTileIndex: 0,
+    movesRemaining: 0,
+    showHUD: false,
 
-  showWarning: false,
-  warningColor: "white",
-  warningText: "CLICKING A TREE WILL BE IGNORED",
-  inputDiagonal: undefined as HTMLInputElement | undefined,
-  inputAlgo: undefined as HTMLInputElement | undefined,
-  algoDuration: "0.0",
-  diagClicked: () => {
-    myDijkstraGraph.resetGraph();
-    if (model.inputDiagonal) {
-      if (model.inputDiagonal.checked) {
-        myDijkstraGraph.addTileMap(myGraphTileMap, true);
-      } else {
-        myDijkstraGraph.addTileMap(myGraphTileMap);
-      }
-    }
-  },
+    showWarning: false,
+    warningColor: "white",
+    warningText: "CLICKING A TREE WILL BE IGNORED",
+    inputDiagonal: undefined as HTMLInputElement | undefined,
+    inputAlgo: undefined as HTMLInputElement | undefined,
+    algoDuration: "0.0",
+    diagClicked: () => {
+        myDijkstraGraph.resetGraph();
+        if (model.inputDiagonal) {
+            if (model.inputDiagonal.checked) {
+                myDijkstraGraph.addTileMap(myGraphTileMap, true);
+            } else {
+                myDijkstraGraph.addTileMap(myGraphTileMap);
+            }
+        }
+    },
 };
 
 // dom template with bindings
@@ -142,11 +139,11 @@ await UI.create(document.body, model, template).attached;
 
 //create Excalibur game
 export const game = new Engine({
-  width: 800, // the width of the canvas
-  height: 600, // the height of the canvas
-  canvasElementId: "cnv", // the DOM canvas element ID, if you are providing your own
-  displayMode: DisplayMode.Fixed, // the display mode
-  pixelArt: true,
+    width: 800, // the width of the canvas
+    height: 600, // the height of the canvas
+    canvasElementId: "cnv", // the DOM canvas element ID, if you are providing your own
+    displayMode: DisplayMode.Fixed, // the display mode
+    pixelArt: true,
 });
 
 const loader = new Loader();
@@ -154,35 +151,35 @@ for (const resource of Object.values(Resources)) loader.addResource(resource);
 
 // Create a tilemap
 const tilemap = new TileMap({
-  rows: 10,
-  columns: 10,
-  tileWidth: 16,
-  tileHeight: 16,
+    rows: 10,
+    columns: 10,
+    tileWidth: 16,
+    tileHeight: 16,
 });
 
 // loop through tilemap cells
 let tileIndex = 0;
 for (let tile of tilemap.tiles) {
-  // get sprite
-  const sprite = TileSheet.getSprite(tiles[tileIndex].sprite[0], tiles[tileIndex].sprite[1]);
+    // get sprite
+    const sprite = TileSheet.getSprite(tiles[tileIndex].sprite[0], tiles[tileIndex].sprite[1]);
     // if we're looking at a tree, make sure it also has ground below it
     if (tiles[tileIndex] instanceof Tree) {
-        tile.addGraphic(TileSheet.getSprite(0,0));
+        tile.addGraphic(TileSheet.getSprite(0, 0));
         tile.solid = true;
     }
     // add the preferred tile to the tilemap
     tile.addGraphic(sprite);
-  tileIndex++;
+    tileIndex++;
 }
 
 // create graph for dijkstra
 // configure graph tilemap size and pass in tiles
 let myDijkstraGraph = new ExcaliburGraph();
 let myGraphTileMap: GraphTileMap = {
-  name: "myGraph",
-  tiles: [...tiles],
-  rows: 10,
-  cols: 10,
+    name: "myGraph",
+    tiles: [...tiles],
+    rows: 10,
+    cols: 10,
 };
 myDijkstraGraph.addTileMap(myGraphTileMap);
 
@@ -200,83 +197,83 @@ game.add(player);
 
 // setup click event for each tile
 game.input.pointers.primary.on("down", evt => {
-  // gaurd conditions----------------------------------------
-  // if you click outside of the tilemap, bail
-  // if you click while moving, bail
-  // if you click a tree, warn user and bail
-  if (evt.worldPos == undefined) return;
-  if (player.playerActionStatus == "moving") return;
+    // gaurd conditions----------------------------------------
+    // if you click outside of the tilemap, bail
+    // if you click while moving, bail
+    // if you click a tree, warn user and bail
+    if (evt.worldPos == undefined) return;
+    if (player.playerActionStatus == "moving") return;
 
-  //get tile that was clicked
-  const tile = game.currentScene.tileMaps[0].getTileByPoint(evt.worldPos);
-  if (tile) model.targetTileIndex = tile.x + tile.y * 10;
+    //get tile that was clicked
+    const tile = game.currentScene.tileMaps[0].getTileByPoint(evt.worldPos);
+    if (tile) model.targetTileIndex = tile.x + tile.y * 10;
 
-  // gaurd condition
-  if (tiles[model.targetTileIndex] instanceof Tree) {
-    model.warningText = "CLICKING A TREE WILL BE IGNORED";
-    showWarning();
-    return;
-  }
-
-  //get player tile
-  const playerTile = game.currentScene.tileMaps[0].getTileByPoint(player.pos);
-  if (!playerTile) return;
-  let playerTileIndex = playerTile.x + playerTile.y * 10;
-  let targetTileIndex = 0;
-  if (!tile) return;
-  targetTileIndex = tile.x + tile.y * 10;
-  // const path = myGraph.shortestPath(myGraph.nodes.get(`${playerTileIndex}`)!, myGraph.nodes.get(`${targetTileIndex}`)!);
-  const letDiag = model.inputDiagonal?.checked ? true : false;
-
-  // pick which algorithm
-  let startingIndex = 0;
-  let path: GraphNode[] | aStarNode[] = [];
-
-  if (model.inputAlgo?.value == "dijkstra") {
-    path = myDijkstraGraph.shortestPath(
-      myDijkstraGraph.nodes.get(`${playerTileIndex}`)!,
-      myDijkstraGraph.nodes.get(`${targetTileIndex}`)!
-    );
-
-    model.algoDuration = myDijkstraGraph.duration.toFixed(3);
-    model.movesRemaining = path.length - 1;
-    startingIndex = 1;
-    if (path.length == 1 && startingIndex == 1) {
-      model.warningText = "UNREACHABLE TILE";
-      showWarning();
+    // gaurd condition
+    if (tiles[model.targetTileIndex] instanceof Tree) {
+        model.warningText = "CLICKING A TREE WILL BE IGNORED";
+        showWarning();
+        return;
     }
-  } else if (model.inputAlgo?.value == "astar") {
-    const startNode = myGraph.getNodeByIndex(playerTileIndex);
-    const endNode = myGraph.getNodeByIndex(targetTileIndex);
-    if (!startNode || !endNode) {
-      model.warningText = "UNREACHABLE TILE";
-      showWarning();
-      return;
-    }
-    path = myGraph.astar(startNode, endNode, letDiag);
 
-    model.algoDuration = myGraph.duration.toFixed(3);
-    model.movesRemaining = path.length;
-    if (path.length == 0) {
-      model.warningText = "UNREACHABLE TILE";
-      showWarning();
-    }
-  }
+    //get player tile
+    const playerTile = game.currentScene.tileMaps[0].getTileByPoint(player.pos);
+    if (!playerTile) return;
+    let playerTileIndex = playerTile.x + playerTile.y * 10;
+    let targetTileIndex = 0;
+    if (!tile) return;
+    targetTileIndex = tile.x + tile.y * 10;
+    // const path = myGraph.shortestPath(myGraph.nodes.get(`${playerTileIndex}`)!, myGraph.nodes.get(`${targetTileIndex}`)!);
+    const letDiag = model.inputDiagonal?.checked ? true : false;
 
-  // don't push the player's current tile, so we start at index 1
-  for (let i = startingIndex; i < path.length; i++) {
-    const nxtPath = path[i];
-    player.playerActionBuffer.push(parseInt(nxtPath.id.toString()));
-  }
+    // pick which algorithm
+    let startingIndex = 0;
+    let path: GraphNode[] | aStarNode[] = [];
+
+    if (model.inputAlgo?.value == "dijkstra") {
+        path = myDijkstraGraph.shortestPath(
+            myDijkstraGraph.nodes.get(`${playerTileIndex}`)!,
+            myDijkstraGraph.nodes.get(`${targetTileIndex}`)!
+        );
+
+        model.algoDuration = myDijkstraGraph.duration.toFixed(3);
+        model.movesRemaining = path.length - 1;
+        startingIndex = 1;
+        if (path.length == 1 && startingIndex == 1) {
+            model.warningText = "UNREACHABLE TILE";
+            showWarning();
+        }
+    } else if (model.inputAlgo?.value == "astar") {
+        const startNode = myGraph.getNodeByIndex(playerTileIndex);
+        const endNode = myGraph.getNodeByIndex(targetTileIndex);
+        if (!startNode || !endNode) {
+            model.warningText = "UNREACHABLE TILE";
+            showWarning();
+            return;
+        }
+        path = myGraph.astar(startNode, endNode, letDiag);
+
+        model.algoDuration = myGraph.duration.toFixed(3);
+        model.movesRemaining = path.length;
+        if (path.length == 0) {
+            model.warningText = "UNREACHABLE TILE";
+            showWarning();
+        }
+    }
+
+    // don't push the player's current tile, so we start at index 1
+    for (let i = startingIndex; i < path.length; i++) {
+        const nxtPath = path[i];
+        player.playerActionBuffer.push(parseInt(nxtPath.id.toString()));
+    }
 });
 
 // Utility function that manages the data model
 // for peasy to flash the warning on the HUD
 function showWarning() {
-  model.showWarning = true;
-  model.warningColor = "red";
-  setTimeout(() => {
-    model.showWarning = false;
-    model.warningColor = "white";
-  }, 2000);
+    model.showWarning = true;
+    model.warningColor = "red";
+    setTimeout(() => {
+        model.showWarning = false;
+        model.warningColor = "white";
+    }, 2000);
 }
