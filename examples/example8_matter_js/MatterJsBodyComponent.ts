@@ -1,4 +1,4 @@
-import {Component, Entity, TransformComponent} from "excalibur";
+import {Component, Entity, TransformComponent} from "../../src/engine";
 import {Bodies, Body} from 'matter-js';
 
 export class MatterJsBodyComponent extends Component {

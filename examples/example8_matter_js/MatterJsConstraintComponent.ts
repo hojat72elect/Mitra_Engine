@@ -1,4 +1,4 @@
-import {Component, Entity, Observable} from "excalibur";
+import {Component, Entity, Observable} from "../../src/engine";
 import {Constraint, type IConstraintDefinition} from 'matter-js';
 
 export class MatterJsConstraintComponent extends Component {

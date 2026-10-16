@@ -1,4 +1,4 @@
-import {Actor, type ActorArgs, CollisionType, Vector} from "excalibur";
+import {Actor, type ActorArgs, CollisionType, Vector} from "../../src/engine";
 import {MatterJsBodyComponent} from "./MatterJsBodyComponent";
 import {MatterJsConstraintComponent} from "./MatterJsConstraintComponent";
 

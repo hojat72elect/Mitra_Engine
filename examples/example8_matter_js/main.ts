@@ -1,4 +1,4 @@
-import {CollisionType, Color, DisplayMode, Engine, Keys, Random, vec} from "excalibur";
+import {CollisionType, Color, DisplayMode, Engine, Keys, Random, vec} from "../../src/engine";
 import {MatterJsSystem} from "./MatterJsSystem";
 import {Block} from "./block";
 
