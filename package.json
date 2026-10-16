@@ -11,7 +11,8 @@
     "example5_islander": "vite --open /examples/example5_islander/",
     "example6_pathfinding": "vite --open /examples/example6_pathfinding/",
     "example7_menu": "vite --open /examples/example7_menu/",
-    "example8_matter_js": "vite --open /examples/example8_matter_js/"
+    "example8_matter_js": "vite --open /examples/example8_matter_js/",
+    "lint": "eslint . --ext .ts,.js"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -23,6 +24,9 @@
     "@excaliburjs/plugin-tiled": "^0.32.0",
     "@peasy-lib/peasy-ui": "^0.9.58",
     "@types/matter-js": "^0.20.2",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
+    "eslint": "^10.12.0",
     "excalibur": "^0.32.0",
     "matter-js": "^0.20.0"
   }
