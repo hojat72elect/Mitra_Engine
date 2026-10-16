@@ -1,4 +1,4 @@
-import { ImageSource, SpriteSheet, Animation, Loader, FontSource } from "excalibur";
+import { ImageSource, SpriteSheet, Animation, Loader, FontSource } from "../../src/engine";
 import CalImage from './cal.png'; 
 import SilkscreenFont from './Silkscreen-Regular.ttf';
 
@@ -23,7 +23,7 @@ export const IdleAnimation = Animation.fromSpriteSheetCoordinates({
         { x: 2, y: 0},
         { x: 3, y: 0},
     ],
-    durationPerFrameMs: 300
+    durationPerFrame: 300
 });
 
 export const loader = new Loader();

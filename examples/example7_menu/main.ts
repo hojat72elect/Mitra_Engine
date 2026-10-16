@@ -1,4 +1,4 @@
-import {DisplayMode, Engine} from "excalibur";
+import {DisplayMode, Engine} from "../../src/engine";
 import {calculateExPixelConversion, Menu} from "./ui";
 import {loader} from "./resources";
 

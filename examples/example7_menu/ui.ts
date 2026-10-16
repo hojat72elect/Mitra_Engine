@@ -1,7 +1,7 @@
-import {Actor, Color, Scene, vec, Vector} from "excalibur";
+import {Actor, Color, Scene, vec, Vector, Screen} from "../../src/engine";
 import {IdleAnimation} from "./resources";
 
-export const calculateExPixelConversion = (screen: ex.Screen) => {
+export const calculateExPixelConversion = (screen: Screen) => {
     const origin = screen.worldToPageCoordinates(Vector.Zero);
     const singlePixel = screen.worldToPageCoordinates(vec(1, 0)).sub(origin);
     const pixelConversion = singlePixel.x;
