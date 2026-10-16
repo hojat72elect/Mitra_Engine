@@ -1,4 +1,4 @@
-import {Actor, Collider, vec, Vector} from "excalibur";
+import {Actor, Collider, vec, Vector} from  "../../src/engine";
 import {Level} from "./Level.ts";
 import {GameConfig} from "./GameConfig.ts";
 import {Resources} from "./Resources.ts";

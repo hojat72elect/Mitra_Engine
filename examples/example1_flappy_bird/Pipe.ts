@@ -1,4 +1,4 @@
-import {Actor, Color, vec, Vector} from "excalibur";
+import {Actor, Color, vec, Vector} from  "../../src/engine";
 import {GameConfig} from "./GameConfig.ts";
 import {Resources} from "./Resources.ts";
 

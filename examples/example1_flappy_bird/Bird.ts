@@ -10,7 +10,7 @@ import {
     Sprite,
     SpriteSheet,
     vec
-} from "excalibur";
+} from  "../../src/engine";
 import {Resources} from "./Resources.ts";
 import {GameConfig} from "./GameConfig.ts";
 import {Level} from "./Level.ts";

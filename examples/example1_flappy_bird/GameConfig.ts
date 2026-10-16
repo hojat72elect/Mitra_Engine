@@ -1,4 +1,4 @@
-import {vec} from "excalibur";
+import {vec} from "../../src/engine";
 
 export const GameConfig = {
     BirdStartPos: vec(200, 300),

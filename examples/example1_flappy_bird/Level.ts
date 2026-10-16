@@ -1,4 +1,4 @@
-import {Color, Engine, Font, Label, Random, Scene, TextAlign, vec} from "excalibur";
+import {Color, Engine, Font, Label, Random, Scene, TextAlign, vec} from  "../../src/engine";
 import {Bird} from "./Bird.ts";
 import {PipeFactory} from "./PipeFactory.ts";
 import {GameConfig} from "./GameConfig.ts";

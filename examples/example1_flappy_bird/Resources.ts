@@ -1,4 +1,4 @@
-import {ImageSource, ImageWrapping, Sound} from "excalibur";
+import {ImageSource, ImageWrapping, Sound} from  "../../src/engine";
 
 export const Resources = {
     // Relative to /public in vite

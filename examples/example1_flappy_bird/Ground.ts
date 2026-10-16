@@ -1,4 +1,4 @@
-import {Actor, Engine, ImageWrapping, TiledSprite, vec, Vector} from "excalibur";
+import {Actor, Engine, ImageWrapping, TiledSprite, vec, Vector} from  "../../src/engine";
 import {Resources} from "./Resources.ts";
 import {GameConfig} from "./GameConfig.ts";
 
