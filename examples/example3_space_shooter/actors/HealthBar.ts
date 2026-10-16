@@ -1,4 +1,4 @@
-import {Actor, Canvas, CollisionType, Color, CoordPlane, Vector} from "excalibur";
+import {Actor, Canvas, CollisionType, Color, CoordPlane, Vector} from "../../../src/engine";
 import {Config} from "../config";
 import {stats} from "../stats";
 

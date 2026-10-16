@@ -8,7 +8,7 @@ import {
     PreCollisionEvent,
     Util,
     Vector
-} from "excalibur";
+} from "../../../src/engine";
 import {Config} from "../config";
 import {gameSheet} from "../resources";
 import {Baddie} from "./Baddie";

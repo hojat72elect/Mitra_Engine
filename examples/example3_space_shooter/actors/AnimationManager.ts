@@ -1,4 +1,4 @@
-import {Actor, Animation, CollisionType, Engine, type ExcaliburGraphicsContext, Vector} from "excalibur";
+import {Actor, Animation, CollisionType, Engine, type ExcaliburGraphicsContext, Vector} from  "../../../src/engine";
 
 interface AnimationNode {
     position: Vector,

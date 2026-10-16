@@ -12,7 +12,7 @@ import {
     range,
     Util,
     Vector
-} from "excalibur";
+} from "../../../src/engine";
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
 import {Config} from "../config";
 import {Bullet} from "./bullet";
@@ -120,7 +120,7 @@ export class Ship extends Actor {
 
     handlePointerEvent = (engine: Engine, evt: PointerEvent) => {
         let dir = evt.worldPos.sub(this.pos);
-        let distance = dir.size;
+        let distance = dir.magnitude;
         if (distance > 50) {
             this.vel = dir.scale(Config.playerSpeed / distance);
         } else {

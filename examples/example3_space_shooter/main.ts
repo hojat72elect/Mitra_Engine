@@ -1,4 +1,4 @@
-import {Color, DisplayMode, Engine, KeyEvent, Keys} from 'excalibur';
+import {Color, DisplayMode, Engine, KeyEvent, Keys} from "../../src/engine";
 import {Config} from './config';
 import {loader, Sounds} from './resources';
 import {Game} from './game';

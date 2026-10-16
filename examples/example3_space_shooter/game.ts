@@ -1,4 +1,4 @@
-import {Color, CoordPlane, Engine, FontUnit, Label, Random, Scene, Timer, vec, Vector} from 'excalibur';
+import {Color, CoordPlane, Engine, FontUnit, Label, Random, Scene, Timer, vec, Vector} from "../../src/engine";
 import {Ship} from './actors/ship';
 import {HealthBar} from './actors/HealthBar';
 import {stats} from './stats';
@@ -49,7 +49,7 @@ export class Game extends Scene {
 
 
         let baddieTimer = new Timer({
-            fcn: () => {
+            action: () => {
                 var bad = new Baddie(this.random.floating(this.camera.viewport.left, this.camera.viewport.right), -100, 80, 80);
                 engine.add(bad);
             },

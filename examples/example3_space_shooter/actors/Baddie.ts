@@ -10,7 +10,7 @@ import {
     Timer,
     Util,
     Vector
-} from "excalibur";
+} from "../../../src/engine";
 import {explosionSpriteSheet, gameSheet, Sounds} from "../resources";
 import {Config} from "../config";
 import {Bullet} from "./bullet";
@@ -64,7 +64,7 @@ export class Baddie extends Actor {
 
         // Setup firing timer, repeats forever
         this.fireTimer = new Timer({
-            fcn: () => {
+            action: () => {
                 this.fire(engine)
             },
             interval: Config.enemyFireInterval,
