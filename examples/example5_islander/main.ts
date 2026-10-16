@@ -1,7 +1,7 @@
-import * as ex from 'excalibur';
+import {Engine} from 'excalibur';
 import { Resources, loader } from './resources';
 
-const game = new ex.Engine({
+const game = new Engine({
     width: 800,
     height: 600,
     canvasElementId: 'game',
