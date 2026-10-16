@@ -1,4 +1,4 @@
-import {Actor, CollisionStartEvent, CollisionType, Color, Engine, vec,} from "excalibur";
+import {Actor, CollisionStartEvent, CollisionType, Color, Engine, vec,} from "../../src/engine";
 
 /**
  * The game window is 800 pixels wide by 600 pixels tall.
@@ -119,7 +119,7 @@ ball.on("collisionstart", function (ev: CollisionStartEvent) {
     if (bricks.indexOf(ev.other.owner as Actor) > -1) {
         // kill removes an actor from the current scene
         // therefore it will no longer be drawn or updated
-        ev.other.owner.kill();
+        ev.other.owner?.kill();
     }
 
     // reverse course after any collision

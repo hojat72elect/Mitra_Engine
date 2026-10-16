@@ -2,7 +2,7 @@
  * The current Excalibur version string
  * @description `process.env.__EX_VERSION` gets replaced by Webpack on build
  */
-export const EX_VERSION = process.env.__EX_VERSION;
+export const EX_VERSION = typeof process !== 'undefined' ? process.env.__EX_VERSION : undefined;
 import { polyfill } from './polyfill';
 polyfill();
 
