@@ -1,9 +1,10 @@
-import { BoundingBox, CollisionGroup, Color, Entity, ImageSource, Loadable, Logger, Scene, TransformComponent, Vector, vec } from "../../engine";
+import { BoundingBox, CollisionGroup, Color, Entity, ImageSource,
+  type Loadable, Logger, Scene, TransformComponent, Vector, vec } from "../../engine";
 import { TiledMap, TiledParser, TiledTile, isTiledTilesetCollectionOfImages, isTiledTilesetEmbedded, isTiledTilesetExternal, isTiledTilesetSingleImage } from "../parser/tiled-parser";
 import { Tile, Tileset } from "./tileset";
-import { Layer } from "./layer";
-import { IsometricTileInfo } from "./iso-tile-layer";
-import { TileInfo } from "./tile-layer";
+import type {Layer} from "./layer";
+import type {IsometricTileInfo} from "./iso-tile-layer";
+import type {TileInfo} from "./tile-layer";
 import { IsoTileLayer } from "./iso-tile-layer";
 import { TileLayer } from "./tile-layer";
 import { ObjectLayer } from './object-layer';
@@ -15,9 +16,9 @@ import { PluginObject } from "./objects";
 import { byClassCaseInsensitive, byNameCaseInsensitive, byProperty } from "./filter-util";
 import { ExcaliburTiledProperties } from "./excalibur-properties";
 import { FetchLoader, type FileLoader } from './file-loader';
-import { TilesetResource, TilesetResourceOptions } from "./tileset-resource";
+import { TilesetResource, type TilesetResourceOptions } from "./tileset-resource";
 import { LoaderCache } from "./loader-cache";
-import { TemplateResource, TemplateResourceOptions } from "./template-resource";
+import { TemplateResource, type TemplateResourceOptions } from "./template-resource";
 import { ImageLayer } from "./image-layer";
 
 export interface TiledLayerConfig {

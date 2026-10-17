@@ -1,4 +1,4 @@
-import {Actor, Animation, CollisionType, Color, Debug, Engine, ImageSource, Keys, Ray, Sprite, SpriteSheet, vec, Vector} from 'excalibur';
+import {Actor, Animation, CollisionType, Color, Debug, Engine, ImageSource, Keys, Ray, Sprite, SpriteSheet, vec, Vector} from "../../src/engine";
 import {Resources} from './resources';
 import {Config} from './config';
 

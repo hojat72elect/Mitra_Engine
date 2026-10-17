@@ -1,8 +1,9 @@
-import { AffineMatrix, Collider, Animation, Frame, Graphic, Shape, Sprite, SpriteSheet, Vector, vec, AnimationStrategy, ImageSource, BoundingBox, toRadians } from "../../engine";
+import { AffineMatrix, Collider, Animation,
+   type Frame, Graphic, Shape, Sprite, SpriteSheet, Vector, vec, AnimationStrategy, ImageSource, BoundingBox, toRadians } from "../../engine";
 import { getCanonicalGid, isFlippedDiagonally, isFlippedHorizontally, isFlippedVertically } from "./gid-util";
 import { TiledTile, TiledTileset, isTiledTilesetCollectionOfImages, isTiledTilesetSingleImage } from "../parser/tiled-parser";
 import { Ellipse, Polygon, Rectangle, parseObjects } from "./objects";
-import { Properties, PropertyMapValue, mapProps } from "./properties";
+import {type Properties, type PropertyMapValue, mapProps } from "./properties";
 import { PluginObject } from "./objects";
 import { byClassCaseInsensitive, byProperty, byPropertyValueMatcher } from "./filter-util";
 

@@ -1,5 +1,5 @@
-import { ImageFiltering, ImageSource, Loader, Resource } from "excalibur";
-import { TiledResource } from '@excaliburjs/plugin-tiled';
+import { ImageFiltering, ImageSource, Loader, Resource } from "../../src/engine";
+import { TiledResource } from "../../src/tiled_plugin";
 
 // Import paths to work with Vite
 // Note the ?url suffix

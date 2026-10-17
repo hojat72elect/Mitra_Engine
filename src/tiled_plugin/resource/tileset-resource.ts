@@ -1,8 +1,8 @@
-import { ImageSource, Loadable } from "../../engine";
+import { ImageSource, type Loadable } from "../../engine";
 import { Tileset } from "./tileset";
 import { TiledParser, TiledTile, TiledTilesetFile, isTiledTilesetCollectionOfImages, isTiledTilesetSingleImage } from "../parser/tiled-parser";
-import { FetchLoader, FileLoader } from "./file-loader";
-import { PathMap, pathRelativeToBase } from "./path-util";
+import { FetchLoader, type FileLoader } from "./file-loader";
+import {type PathMap, pathRelativeToBase } from "./path-util";
 import { LoaderCache } from "./loader-cache";
 
 export interface TilesetResourceOptions {
