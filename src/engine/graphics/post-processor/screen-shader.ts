@@ -1,5 +1,5 @@
 import { Logger } from '../../util/log';
-import type { ExcaliburGraphicsContextWebGL } from '../context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
 import { Shader } from '../context/shader';
 import { VertexBuffer } from '../context/vertex-buffer';
 import { VertexLayout } from '../context/vertex-layout';
@@ -14,7 +14,7 @@ export class ScreenShader {
   private _shader: Shader;
   private _buffer: VertexBuffer;
   private _layout: VertexLayout;
-  constructor(context: ExcaliburGraphicsContextWebGL, fragmentSource: string) {
+  constructor(context: MitraGraphicsContextWebgl, fragmentSource: string) {
     if (process.env.NODE_ENV === 'development') {
       if (fragmentSource.includes('v_texcoord')) {
         Logger.getInstance().warn(

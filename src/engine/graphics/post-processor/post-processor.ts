@@ -1,6 +1,6 @@
 import type { VertexLayout } from '../context/vertex-layout';
 import type { Shader } from '../context/shader';
-import type { ExcaliburGraphicsContextWebGL } from '../context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
 import type { Framebuffer } from '../context/framebuffer';
 
 /**
@@ -35,7 +35,7 @@ export interface PostProcessor {
   /**
    * Called once when the post processor is added to the graphics context
    */
-  initialize?(graphicsContext: ExcaliburGraphicsContextWebGL): void;
+  initialize?(graphicsContext: MitraGraphicsContextWebgl): void;
 
   /**
    * `source` is the current (MSAA-resolved) screen framebuffer, render the result into

@@ -4,7 +4,7 @@ import Matter from 'matter-js';
 import {MatterJsConstraintComponent} from "./MatterJsConstraintComponent";
 
 export class MatterJsSystem extends System {
-    // Excalibur physics system disabled in new Engine({physics: false})
+    // Mitra physics system disabled in new Engine({physics: false})
     public systemType = SystemType.Update;
     matterEngine: Matter.Engine = Matter.Engine.create();
     query: Query<typeof MatterJsBodyComponent | typeof TransformComponent>;
@@ -39,7 +39,7 @@ export class MatterJsSystem extends System {
     override update(delta: number) {
         // Update matter js simulation
         Matter.Engine.update(this.matterEngine, delta);
-        // Sync transforms from matter to excalibur
+        // Sync transforms from matter to Mitra
         for (let entity of this.query.entities) {
             const transform = entity.get(TransformComponent);
             const matterJsComponent = entity.get(MatterJsBodyComponent);

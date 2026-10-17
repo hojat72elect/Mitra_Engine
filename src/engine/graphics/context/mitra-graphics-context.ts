@@ -11,7 +11,7 @@ export type HTMLImageSource = HTMLImageElement | HTMLCanvasElement;
 
 export interface AntialiasOptions {
     /**
-     * Turns on the special pixel art sampler in excalibur's image shader for sub pixel
+     * Turns on the special pixel art sampler in Mitra's image shader for sub pixel
      * anti-aliasing
      *
      * Default false
@@ -42,7 +42,7 @@ export interface AntialiasOptions {
         samples: number;
     };
     /**
-     * Sets the default image filtering for excalibur
+     * Sets the default image filtering for Mitra
      *
      * Default {@apilink ImageFiltering.Blended}
      */
@@ -131,7 +131,7 @@ export interface MitraGraphicsContextOptions {
      * Hook called before the graphics context is configured. Use to modify options before
      * the WebGL context is created. Called at the start of the constructor.
      *
-     * Called internally by Excalibur to forward plugin hooks.
+     * Called internally by Mitra to forward plugin hooks.
      * @param context The graphics context being constructed
      * @param options The graphics context options (mutable)
      * @internal
@@ -142,7 +142,7 @@ export interface MitraGraphicsContextOptions {
      * Hook called after the graphics context is configured but before initialization.
      * Called after the WebGL context is created and configuration properties are set.
      *
-     * Called internally by Excalibur to forward plugin hooks.
+     * Called internally by Mitra to forward plugin hooks.
      * @param context The graphics context being constructed
      * @param options The graphics context options
      * @internal
@@ -152,7 +152,7 @@ export interface MitraGraphicsContextOptions {
     /**
      * Hook called before the graphics context's internal initialization (renderers, render targets).
      *
-     * Called internally by Excalibur to forward plugin hooks.
+     * Called internally by Mitra to forward plugin hooks.
      * @param context The graphics context being initialized
      * @internal
      */
@@ -162,14 +162,14 @@ export interface MitraGraphicsContextOptions {
      * Hook called after the graphics context's internal initialization is complete.
      * This is where plugins typically register custom renderers and post-processors.
      *
-     * Called internally by Excalibur to forward plugin hooks.
+     * Called internally by Mitra to forward plugin hooks.
      * @param context The initialized graphics context
      * @internal
      */
     onGraphicsPostInitialize?: (context: MitraGraphicsContext) => void;
 }
 
-export interface ExcaliburGraphicsContextState {
+export interface MitraGraphicsContextState {
     opacity: number;
     z: number;
     tint: Color | null | undefined;
@@ -220,7 +220,7 @@ export interface DebugDraw {
     drawPoint(point: Vector, pointOptions?: PointGraphicsOptions): void;
 
     /**
-     * Draw a circle to the Excalibur Graphics context
+     * Draw a circle to the Mitra Graphics context
      * @param pos
      * @param radius
      * @param color
@@ -263,10 +263,10 @@ export interface MitraGraphicsContext {
     height: number;
 
     /**
-     * Excalibur will automatically sort draw calls by z and priority for maximal draw performance,
+     * Mitra will automatically sort draw calls by z and priority for maximal draw performance,
      * this can disrupt a specific desired painter order.
      *
-     * To force a specific draw call order, use {@apilink ExcaliburGraphicsContext.z}
+     * To force a specific draw call order, use {@apilink MitraGraphicsContext.z}
      *
      * By default `useDrawSorting` is `true`, to opt out set this to `false`
      */
@@ -276,7 +276,7 @@ export interface MitraGraphicsContext {
      * Set the current z context for the graphics context. Draw calls issued to the context will use this z
      * to inform their sort order.
      *
-     * Note it is important to all {@apilink ExcaliburGraphicsContext.save} and {@apilink ExcaliburGraphicsContext.restore} when modifying state.
+     * Note it is important to all {@apilink MitraGraphicsContext.save} and {@apilink MitraGraphicsContext.restore} when modifying state.
      */
     z: number;
 
@@ -291,7 +291,7 @@ export interface MitraGraphicsContext {
     smoothing: boolean;
 
     /**
-     * Set the background color of the graphics context, default is {@apilink Color.ExcaliburBlue}
+     * Set the background color of the graphics context, default is {@apilink Color.MitraBlue}
      */
     backgroundColor: Color;
 
@@ -332,19 +332,19 @@ export interface MitraGraphicsContext {
     debug: DebugDraw;
 
     /**
-     * Draw an image to the Excalibur Graphics context at an x and y coordinate using the images width and height
+     * Draw an image to the Mitra Graphics context at an x and y coordinate using the images width and height
      */
     drawImage(image: HTMLImageSource, x: number, y: number): void;
 
     /**
      *
-     * Draw an image to the Excalibur Graphics context at an x and y coordinate with a specific width and height
+     * Draw an image to the Mitra Graphics context at an x and y coordinate with a specific width and height
      */
     drawImage(image: HTMLImageSource, x: number, y: number, width: number, height: number): void;
 
     /**
      *
-     * Draw an image to the Excalibur Graphics context specifying the source image coordinates (sx, sy, swidth, sheight)
+     * Draw an image to the Mitra Graphics context specifying the source image coordinates (sx, sy, swidth, sheight)
      * and to a specific destination on the context (dx, dy, dwidth, dheight)
      */
     drawImage(
@@ -360,7 +360,7 @@ export interface MitraGraphicsContext {
     ): void;
 
     /**
-     * Draw a solid line to the Excalibur Graphics context
+     * Draw a solid line to the Mitra Graphics context
      * @param start
      * @param end
      * @param color
@@ -369,7 +369,7 @@ export interface MitraGraphicsContext {
     drawLine(start: Vector, end: Vector, color: Color, thickness: number): void;
 
     /**
-     * Draw a solid rectangle to the Excalibur Graphics context
+     * Draw a solid rectangle to the Mitra Graphics context
      * @param pos
      * @param width
      * @param height
@@ -378,7 +378,7 @@ export interface MitraGraphicsContext {
     drawRectangle(pos: Vector, width: number, height: number, color: Color, stroke?: Color, strokeThickness?: number): void;
 
     /**
-     * Draw a circle to the Excalibur Graphics context
+     * Draw a circle to the Mitra Graphics context
      * @param pos
      * @param radius
      * @param color
@@ -438,7 +438,7 @@ export interface MitraGraphicsContext {
     /**
      * Updates all post processors in the graphics context
      *
-     * Called internally by Excalibur
+     * Called internally by Mitra
      * @param elapsed
      * @internal
      */
@@ -459,7 +459,7 @@ export interface MitraGraphicsContext {
      * Lazily register a custom renderer plugin with the graphics context.
      *
      * The renderer factory is stored and only instantiated the first time it is
-     * requested via {@apilink ExcaliburGraphicsContext.get}. Use this for renderers
+     * requested via {@apilink MitraGraphicsContext.get}. Use this for renderers
      * that may not be needed in every game to avoid unnecessary initialization cost.
      *
      * In the Canvas 2D fallback context this is a no-op.

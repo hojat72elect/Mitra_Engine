@@ -2,7 +2,7 @@ import type { MitraGraphicsContext, ImageSource, TextureLoader } from '../..';
 import {
   AffineMatrix,
   Color,
-  ExcaliburGraphicsContextWebGL,
+  MitraGraphicsContextWebgl,
   ImageSourceAttributeConstants,
   Logger,
   parseImageFiltering,
@@ -354,7 +354,7 @@ export class Shader {
     const { name, graphicsContext, vertexSource, fragmentSource, onPreLink, onPostCompile, uniforms, images, startingTextureSlot } =
       options;
     this.name = name ?? this.name;
-    if (!(graphicsContext instanceof ExcaliburGraphicsContextWebGL)) {
+    if (!(graphicsContext instanceof MitraGraphicsContextWebgl)) {
       throw new Error(`ExcaliburGraphicsContext provided to a shader ${this.name} must be WebGL`);
     }
     this._gl = graphicsContext.__gl;

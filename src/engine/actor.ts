@@ -770,9 +770,9 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     }
 
     /**
-     * Initializes this actor and all it's child actors, meant to be called by the Scene before first update not by users of Excalibur.
+     * Initializes this actor and all it's child actors, meant to be called by the Scene before first update not by users of Mitra.
      *
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
      * @internal
      */
     public override _initialize(engine: Engine) {
@@ -817,7 +817,7 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     // #endregion
 
     /**
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
      *
      * Internal _prekill handler for {@apilink onPreKill} lifecycle event
      * @internal
@@ -837,7 +837,7 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     }
 
     /**
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
      *
      * Internal _prekill handler for {@apilink onPostKill} lifecycle event
      * @internal
@@ -1093,7 +1093,7 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     }
 
     /**
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
      *
      * Internal _preupdate handler for {@apilink onPreUpdate} lifecycle event
      * @param engine The reference to the current game engine
@@ -1106,7 +1106,7 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     }
 
     /**
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra functions be overridden, do so at your own risk.
      *
      * Internal _preupdate handler for {@apilink onPostUpdate} lifecycle event
      * @param engine The reference to the current game engine

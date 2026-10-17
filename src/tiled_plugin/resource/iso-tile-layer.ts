@@ -16,7 +16,7 @@ import { TiledTileLayer, isCSV, isInfiniteLayer, needsDecoding } from "../parser
 import { Decoder } from "./decoder";
 import { TiledResource } from "./tiled-resource";
 import { getCanonicalGid } from "./gid-util";
-import { ExcaliburTiledProperties } from "./excalibur-properties";
+import { MitraTiledProperties } from "./mitra-properties.ts";
 import { TiledLayerDataComponent } from "./tiled-layer-component";
 import type {Layer} from "./layer";
 import { Tile } from "./tileset";
@@ -108,7 +108,7 @@ export class IsoTileLayer implements Layer {
    */
   getTilesByProperty(name: string, value?: any, valueMatchInsensitive = true): IsometricTileInfo[] {
     const tiles = this.isometricMap.tiles.filter(t => {
-      const maybeTiled = t.data.get(ExcaliburTiledProperties.TileData.Tiled) as Tile | undefined;
+      const maybeTiled = t.data.get(MitraTiledProperties.TileData.Tiled) as Tile | undefined;
       if (maybeTiled) {
         return byProperty(name, value, valueMatchInsensitive)(maybeTiled);
       }
@@ -117,7 +117,7 @@ export class IsoTileLayer implements Layer {
 
     return tiles.map(t => ({
       exTile: t,
-      tiledTile: t.data.get(ExcaliburTiledProperties.TileData.Tiled)
+      tiledTile: t.data.get(MitraTiledProperties.TileData.Tiled)
     }))
   }
 
@@ -128,7 +128,7 @@ export class IsoTileLayer implements Layer {
    */
   getTilesByPropertyValueMatcher(name: string, valueMatcher: (val: any) => boolean): IsometricTileInfo[] {
     const tiles = this.isometricMap.tiles.filter(t => {
-      const maybeTiled = t.data.get(ExcaliburTiledProperties.TileData.Tiled) as Tile | undefined;
+      const maybeTiled = t.data.get(MitraTiledProperties.TileData.Tiled) as Tile | undefined;
       if (maybeTiled) {
         return byPropertyValueMatcher(name, valueMatcher)(maybeTiled);
       }
@@ -137,7 +137,7 @@ export class IsoTileLayer implements Layer {
 
     return tiles.map(t => ({
       exTile: t,
-      tiledTile: t.data.get(ExcaliburTiledProperties.TileData.Tiled)
+      tiledTile: t.data.get(MitraTiledProperties.TileData.Tiled)
     }))
   }
 
@@ -155,7 +155,7 @@ export class IsoTileLayer implements Layer {
    */
   getTilesByClassName(className: string): IsometricTileInfo[] {
     const tiles = this.isometricMap.tiles.filter(t => {
-      const maybeTiled = t.data.get(ExcaliburTiledProperties.TileData.Tiled) as Tile | undefined;
+      const maybeTiled = t.data.get(MitraTiledProperties.TileData.Tiled) as Tile | undefined;
       if (maybeTiled) {
         return byClassCaseInsensitive(className)(maybeTiled);
       }
@@ -164,7 +164,7 @@ export class IsoTileLayer implements Layer {
 
     return tiles.map(t => ({
       exTile: t,
-      tiledTile: t.data.get(ExcaliburTiledProperties.TileData.Tiled)
+      tiledTile: t.data.get(MitraTiledProperties.TileData.Tiled)
     }))
   }
 
@@ -246,7 +246,7 @@ export class IsoTileLayer implements Layer {
       tiles.push({ exTile: tile, tiledTile: maybeTile });
     }
     this._gidToTileInfo.set(gid, tiles);
-    tile.data.set(ExcaliburTiledProperties.TileData.Tiled, maybeTile);
+    tile.data.set(MitraTiledProperties.TileData.Tiled, maybeTile);
   }
 
   private updateTile(tile: IsometricTile, gid: number, hasTint: boolean, tint: Color, isSolidLayer: boolean) {
@@ -256,7 +256,7 @@ export class IsoTileLayer implements Layer {
     if (maybeLayerConfig?.isSolid !== undefined) {
       isSolidLayer = maybeLayerConfig.isSolid;
     }
-    if (this.resource.useExcaliburWiring && isSolidLayer) {
+    if (this.resource.useMitraWiring && isSolidLayer) {
       tile.solid = true;
     }
 
@@ -306,9 +306,9 @@ export class IsoTileLayer implements Layer {
       }
       tile.clearGraphics();
       tile.addGraphic(animation, { offset: tileset.tileOffset });
-      if (this.resource.useExcaliburWiring) {
+      if (this.resource.useMitraWiring) {
         const tileObj = tileset.getTileByGid(gid);
-        const strategy = tileObj?.properties.get(ExcaliburTiledProperties.Animation.Strategy);
+        const strategy = tileObj?.properties.get(MitraTiledProperties.Animation.Strategy);
         if (strategy && typeof strategy === 'string') {
           switch (strategy.toLowerCase()) {
             case AnimationStrategy.End.toLowerCase(): {
@@ -342,7 +342,7 @@ export class IsoTileLayer implements Layer {
     const maybeLayerConfig = this.resource.getLayerConfig(this.name) ||
       this.resource.getLayerConfig(this.id);
     const layer = this.tiledTileLayer;
-    const isSolidLayer = !!this.properties.get(ExcaliburTiledProperties.Layer.Solid);
+    const isSolidLayer = !!this.properties.get(MitraTiledProperties.Layer.Solid);
     const opacity = this.tiledTileLayer.opacity;
     const hasTint = !!this.tiledTileLayer.tintcolor;
     const tint = this.tiledTileLayer.tintcolor ? Color.fromHex(this.tiledTileLayer.tintcolor) : Color.Transparent;
@@ -354,7 +354,7 @@ export class IsoTileLayer implements Layer {
     }
 
     let order = this.order;
-    let zoverride = this.properties.get(ExcaliburTiledProperties.ZIndex.ZIndex) as number | undefined;
+    let zoverride = this.properties.get(MitraTiledProperties.ZIndex.ZIndex) as number | undefined;
     if (typeof zoverride === 'number') {
       order = zoverride;
     }

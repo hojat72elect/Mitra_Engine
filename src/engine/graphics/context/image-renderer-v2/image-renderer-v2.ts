@@ -6,8 +6,8 @@ import { parseImageWrapping } from '../../wrapping';
 // import { ImageSourceAttributeConstants } from '../../ImageSource';
 // import { parseImageWrapping } from '../../Wrapping';
 import type { HTMLImageSource } from '../mitra-graphics-context';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
-import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
+import { pixelSnapEpsilon } from '../mitra-graphics-context-webgl';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
 import { VertexBuffer } from '../vertex-buffer';
@@ -32,7 +32,7 @@ export class ImageRendererV2 implements RendererPlugin {
   private _maxTextures: number = 0;
   private _components = 2 + 2 + 2 + 2 + 1 + 2 + 2 + 1 + 2 + 2 + 4;
 
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _gl!: WebGL2RenderingContext;
   private _shader!: Shader;
   private _transformData!: VertexBuffer;
@@ -53,7 +53,7 @@ export class ImageRendererV2 implements RendererPlugin {
     this.uvPadding = options.uvPadding;
   }
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     // Transform shader source

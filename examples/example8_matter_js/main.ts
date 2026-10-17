@@ -5,7 +5,7 @@ import {Block} from "./block";
 const game = new Engine({
     width: 600,
     height: 400,
-    physics: false, // Turn off excalibur physics
+    physics: false, // Turn off Mitra physics (we turn off our own physics so we can use matter js instead)
     displayMode: DisplayMode.FitScreenAndFill,
     fixedUpdateFps: 60
 });

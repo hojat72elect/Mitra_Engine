@@ -1,6 +1,6 @@
 import { BoundingBox } from '../collision/bounding-box';
 import type { Color } from '../color';
-import { ExcaliburGraphicsContextWebGL } from './context/excalibur-graphics-context-webgl';
+import { MitraGraphicsContextWebgl } from './context/mitra-graphics-context-webgl';
 import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { Font } from './font';
 import { vec, Vector } from '../math';
@@ -290,7 +290,7 @@ export class FontTextInstance {
       this._drawText(this.ctx, lines, lineHeight);
 
       // clear any out old fragments
-      if (ex instanceof ExcaliburGraphicsContextWebGL) {
+      if (ex instanceof MitraGraphicsContextWebgl) {
         for (const frag of this._textFragments) {
           ex.textureLoader.delete(frag.canvas);
         }
@@ -299,7 +299,7 @@ export class FontTextInstance {
       // splits to < 4k fragments for large text
       this._textFragments = this._splitTextBitmap(this.ctx);
 
-      if (ex instanceof ExcaliburGraphicsContextWebGL) {
+      if (ex instanceof MitraGraphicsContextWebgl) {
         for (const frag of this._textFragments) {
           ex.textureLoader.load(frag.canvas, { filtering: this.font.filtering }, true);
         }
@@ -339,7 +339,7 @@ export class FontTextInstance {
     this.dimensions = undefined as any;
     this.canvas = undefined as any;
     this.ctx = undefined as any;
-    if (this._ex instanceof ExcaliburGraphicsContextWebGL) {
+    if (this._ex instanceof MitraGraphicsContextWebgl) {
       for (const frag of this._textFragments) {
         this._ex.textureLoader.delete(frag.canvas);
       }

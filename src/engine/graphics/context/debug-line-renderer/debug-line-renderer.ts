@@ -3,7 +3,7 @@ import { vec } from '../../../math/vector';
 import type { Color } from '../../../color';
 import lineVertexSource from './debug-line-vertex.glsl?raw';
 import lineFragmentSource from './debug-line-fragment.glsl?raw';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 import type { RendererPlugin } from '../renderer';
 import { Shader, VertexBuffer, VertexLayout } from '../..';
 import { GraphicsDiagnostics } from '../../graphics-diagnostics';
@@ -11,7 +11,7 @@ import { GraphicsDiagnostics } from '../../graphics-diagnostics';
 export class DebugLineRenderer implements RendererPlugin {
   public readonly type = 'ex.debug-line';
   public priority: number = 0;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _gl!: WebGL2RenderingContext;
   private _shader!: Shader;
   private _maxLines: number = 10922;
@@ -19,7 +19,7 @@ export class DebugLineRenderer implements RendererPlugin {
   private _layout!: VertexLayout;
   private _vertexIndex = 0;
   private _lineCount = 0;
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     this._shader = new Shader({

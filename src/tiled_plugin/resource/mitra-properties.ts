@@ -1,7 +1,7 @@
 /**
- * Special excalibur properties
+ * Special Mitra properties
  */
-export const ExcaliburTiledProperties = {
+export const MitraTiledProperties = {
     TileData: {
         Tiled: 'ex-tiled'
     },
@@ -13,7 +13,7 @@ export const ExcaliburTiledProperties = {
     },
     Camera: {
         /**
-         * Boolean property on an object to treat as the excalibur camera if truthy
+         * Boolean property on an object to treat as the Mitra camera if truthy
          *
          * Warning, the plugin will use the first object it finds with this property!
          */

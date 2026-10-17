@@ -4,7 +4,7 @@ import { ImageFiltering, parseImageFiltering } from '../../filtering';
 import { GraphicsDiagnostics } from '../../graphics-diagnostics';
 import { ImageSource, ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 import { Framebuffer } from '../framebuffer';
 import { glsl } from '../glsl';
 import type { Shader, UniformDictionary } from '../shader';
@@ -24,7 +24,7 @@ export type ShaderPassSource = Framebuffer | ImageSource | WebGLTexture;
 export type ShaderPassDestination = Framebuffer | null;
 
 export interface ShaderPassOptions {
-  graphicsContext: ExcaliburGraphicsContextWebGL;
+  graphicsContext: MitraGraphicsContextWebgl;
   /**
    * Name the pass for debugging
    */
@@ -108,7 +108,7 @@ void main() {
  * for raw `WebGLTexture`s which have no queryable dimensions
  */
 export function getSourceDimensions(
-  graphicsContext: ExcaliburGraphicsContextWebGL,
+  graphicsContext: MitraGraphicsContextWebgl,
   source: ShaderPassSource
 ): [width: number, height: number] {
   if (source instanceof Framebuffer) {
@@ -158,7 +158,7 @@ export class ShaderPass {
    */
   public readonly filtering: ImageFiltering;
 
-  private _graphicsContext: ExcaliburGraphicsContextWebGL;
+  private _graphicsContext: MitraGraphicsContextWebgl;
   private _fragmentSource: string;
   private _initialUniforms?: UniformDictionary;
   private _shader?: Shader;

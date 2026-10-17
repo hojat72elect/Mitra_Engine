@@ -5,8 +5,8 @@ import { GraphicsDiagnostics } from '../../graphics-diagnostics';
 import { ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
 import type { HTMLImageSource } from '../mitra-graphics-context';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
-import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
+import { pixelSnapEpsilon } from '../mitra-graphics-context-webgl';
 import { QuadIndexBuffer } from '../quad-index-buffer';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
@@ -31,7 +31,7 @@ export class ImageRenderer implements RendererPlugin {
   private _maxImages: number = 10922; // max(uint16) / 6 verts
   private _maxTextures: number = 0;
 
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _gl!: WebGLRenderingContext;
   private _shader!: Shader;
   private _buffer!: VertexBuffer;
@@ -51,7 +51,7 @@ export class ImageRenderer implements RendererPlugin {
     this.uvPadding = options.uvPadding;
   }
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     const maxTexture = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);

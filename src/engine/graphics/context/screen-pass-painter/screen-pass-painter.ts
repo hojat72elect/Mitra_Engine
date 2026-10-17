@@ -4,7 +4,7 @@ import { Shader } from '../shader';
 import { VertexBuffer } from '../vertex-buffer';
 import { VertexLayout } from '../vertex-layout';
 import type { PostProcessor } from '../../post-processor/post-processor';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 
 /**
  * This is responsible for painting the entire screen during the render passes
@@ -14,7 +14,7 @@ export class ScreenPassPainter {
   private _shader: Shader;
   private _buffer: VertexBuffer;
   private _layout: VertexLayout;
-  constructor(context: ExcaliburGraphicsContextWebGL) {
+  constructor(context: MitraGraphicsContextWebgl) {
     const gl = context.__gl;
     this._gl = gl;
     this._shader = new Shader({

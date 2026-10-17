@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContextWebGL } from './excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from './mitra-graphics-context-webgl';
 
 /**
  * Interface that defines an Excalibur Renderer that can be called with .draw() in the {@apilink ExcaliburGraphicsContext}
@@ -21,7 +21,7 @@ export interface RendererPlugin {
    * @param gl
    * @param context
    */
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void;
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void;
 
   /**
    * Issue a draw command to draw something to the screen

@@ -1,7 +1,7 @@
 ﻿import { ColorBlindnessMode } from '../graphics/post-processor/color-blindness-mode';
 import { ColorBlindnessPostProcessor } from '../graphics/post-processor/color-blindness-post-processor';
 import type { Engine } from '../engine';
-import { ExcaliburGraphicsContextWebGL } from '../graphics/context/excalibur-graphics-context-webgl';
+import { MitraGraphicsContextWebgl } from '../graphics/context/mitra-graphics-context-webgl';
 
 export class ColorBlindFlags {
   private _engine: Engine;
@@ -17,7 +17,7 @@ export class ColorBlindFlags {
    * @param colorBlindness
    */
   public correct(colorBlindness: ColorBlindnessMode) {
-    if (this._engine.graphicsContext instanceof ExcaliburGraphicsContextWebGL) {
+    if (this._engine.graphicsContext instanceof MitraGraphicsContextWebgl) {
       this.clear();
       this._colorBlindPostProcessor.colorBlindnessMode = colorBlindness;
       this._colorBlindPostProcessor.simulate = false;
@@ -30,7 +30,7 @@ export class ColorBlindFlags {
    * @param colorBlindness
    */
   public simulate(colorBlindness: ColorBlindnessMode) {
-    if (this._engine.graphicsContext instanceof ExcaliburGraphicsContextWebGL) {
+    if (this._engine.graphicsContext instanceof MitraGraphicsContextWebgl) {
       this.clear();
       this._colorBlindPostProcessor.colorBlindnessMode = colorBlindness;
       this._colorBlindPostProcessor.simulate = true;

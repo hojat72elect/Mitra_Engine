@@ -1,9 +1,9 @@
 import { Color } from '../../color';
 import { RentalPool } from '../../util/rental-pool';
-import type { ExcaliburGraphicsContextState } from './mitra-graphics-context';
+import type { MitraGraphicsContextState } from './mitra-graphics-context';
 import type { Material } from './material';
 
-export class ContextState implements ExcaliburGraphicsContextState {
+export class ContextState implements MitraGraphicsContextState {
   opacity: number = 1;
   z: number = 0;
   tint: Color | null | undefined = Color.White;
@@ -22,8 +22,8 @@ export class StateStack {
     },
     100
   );
-  public current: ExcaliburGraphicsContextState = this._pool.rent(true);
-  private _states: ExcaliburGraphicsContextState[] = [];
+  public current: MitraGraphicsContextState = this._pool.rent(true);
+  private _states: MitraGraphicsContextState[] = [];
 
   private _cloneState(dest: ContextState) {
     dest.opacity = this.current.opacity;

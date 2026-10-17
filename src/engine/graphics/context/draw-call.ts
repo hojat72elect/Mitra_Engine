@@ -1,13 +1,13 @@
 import { AffineMatrix } from '../../math/affine-matrix';
 import { Color } from '../../color';
-import type { ExcaliburGraphicsContextState } from './mitra-graphics-context';
+import type { MitraGraphicsContextState } from './mitra-graphics-context';
 
 export class DrawCall {
   public z: number = 0;
   public priority: number = 0;
   public renderer: string = '';
   public transform: AffineMatrix = AffineMatrix.identity();
-  public state: ExcaliburGraphicsContextState = {
+  public state: MitraGraphicsContextState = {
     z: 0,
     opacity: 1,
     tint: Color.White,

@@ -2,8 +2,8 @@ import pointVertexSource from './debug-point-vertex.glsl?raw';
 import pointFragmentSource from './debug-point-fragment.glsl?raw';
 import type { Vector } from '../../../math/vector';
 import type { Color } from '../../../color';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
-import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
+import { pixelSnapEpsilon } from '../mitra-graphics-context-webgl';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
 import { VertexBuffer } from '../vertex-buffer';
@@ -18,11 +18,11 @@ export class DebugPointRenderer implements RendererPlugin {
   private _buffer!: VertexBuffer;
   private _layout!: VertexLayout;
   private _gl!: WebGLRenderingContext;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _pointCount: number = 0;
   private _vertexIndex: number = 0;
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     this._shader = new Shader({

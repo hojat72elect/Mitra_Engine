@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContextWebGL } from '../context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
 import type { Framebuffer } from '../context/framebuffer';
 import type { ShaderPassLike, ShaderPipelineLike } from '../context/shader-pipeline/shader-pipeline';
 import { ShaderPipeline } from '../context/shader-pipeline/shader-pipeline';
@@ -58,7 +58,7 @@ export class ShaderPipelinePostProcessor implements PostProcessor {
     return this._pipeline;
   }
 
-  public initialize(graphicsContext: ExcaliburGraphicsContextWebGL): void {
+  public initialize(graphicsContext: MitraGraphicsContextWebgl): void {
     if (this._pipeline) {
       return;
     }

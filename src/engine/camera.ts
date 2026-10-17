@@ -29,7 +29,7 @@ export interface CameraStrategy<T> {
     /**
      * Camera strategies perform an action to calculate a new focus returned out of the strategy
      * @param target The target object to apply this camera strategy (if any)
-     * @param camera The current camera implementation in excalibur running the game
+     * @param camera The current camera implementation in Mitra running the game
      * @param engine The current engine running the game
      * @param elapsed The elapsed time in milliseconds since the last frame
      */
@@ -266,7 +266,7 @@ export const CameraEvents = {
 /**
  * Cameras
  *
- * {@apilink Camera} is the base class for all Excalibur cameras. Cameras are used
+ * {@apilink Camera} is the base class for all Mitra cameras. Cameras are used
  * to move around your game and set focus. They are used to determine
  * what is "off screen" and can be used to scale the game.
  *
@@ -608,7 +608,7 @@ export class Camera implements CanUpdate, CanInitialize {
     }
 
     /**
-     * It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
      *
      * Internal _preupdate handler for {@apilink onPreUpdate} lifecycle event
      * @param engine The reference to the current game engine
@@ -632,7 +632,7 @@ export class Camera implements CanUpdate, CanInitialize {
     }
 
     /**
-     *  It is not recommended that internal excalibur methods be overridden, do so at your own risk.
+     *  It is not recommended that internal Mitra functions be overridden, do so at your own risk.
      *
      * Internal _preupdate handler for {@apilink onPostUpdate} lifecycle event
      * @param engine The reference to the current game engine

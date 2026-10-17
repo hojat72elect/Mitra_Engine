@@ -10,7 +10,7 @@ import { Random } from '../math/random';
 import type { Vector } from '../math/vector';
 import { vec } from '../math/vector';
 import { clamp } from '../math';
-import type { ExcaliburGraphicsContextWebGL } from '../graphics/context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../graphics/context/mitra-graphics-context-webgl';
 import type { ParticleRenderer } from '../graphics/context/particle-renderer/particle-renderer';
 
 export class GpuParticleEmitter extends Actor {
@@ -83,7 +83,7 @@ export class GpuParticleEmitter extends Actor {
 
   public override _initialize(engine: Engine): void {
     super._initialize(engine);
-    const context = engine.graphicsContext as ExcaliburGraphicsContextWebGL;
+    const context = engine.graphicsContext as MitraGraphicsContextWebgl;
     this.renderer.initialize(context.__gl, context);
   }
 
@@ -112,7 +112,7 @@ export class GpuParticleEmitter extends Actor {
     this.renderer.clearParticles();
   }
 
-  draw(ctx: ExcaliburGraphicsContextWebGL, elapsed: number) {
+  draw(ctx: MitraGraphicsContextWebgl, elapsed: number) {
     ctx.draw<ParticleRenderer>('ex.particle', this.renderer, elapsed);
   }
 }

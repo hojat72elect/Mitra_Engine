@@ -17,7 +17,7 @@ const paddle = new Actor({
     color: Color.White,
 });
 
-// Make sure the paddle can participate in collisions, by default excalibur actors do not collide with each other.
+// Make sure the paddle can participate in collisions, by default Mitra actors do not collide with each other.
 // CollisionType.Fixed is like an object with infinite mass, and cannot be moved, but does participate in collision.
 paddle.body.collisionType = CollisionType.Fixed;
 
@@ -46,12 +46,12 @@ setTimeout(() => {
 }, 1000);
 
 // Set the collision Type to passive
-// This means "tell me when you collide with an emitted event, but don't let excalibur do anything automatically".
+// This means "tell me when you collide with an emitted event, but don't let Mitra do anything automatically".
 ball.body.collisionType = CollisionType.Passive;
 // Other possible collision types:
-// "ex.CollisionType.PreventCollision - this means do not participate in any collision notification at all"
-// "ex.CollisionType.Active - this means participate and let excalibur resolve the positions/velocities of actors after collision"
-// "ex.CollisionType.Fixed - this means participate, but this object is unmovable"
+// "CollisionType.PreventCollision - this means do not participate in any collision notification at all"
+// "CollisionType.Active - this means participate and let Mitra resolve the positions/velocities of actors after collision"
+// "CollisionType.Fixed - this means participate, but this object is unmovable"
 
 // Add the ball to the current scene
 breakOutGame.add(ball);

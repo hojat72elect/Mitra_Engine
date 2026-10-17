@@ -1,8 +1,8 @@
 import { Color } from '../../../color';
 import { vec, Vector } from '../../../math/vector';
 import { GraphicsDiagnostics } from '../../graphics-diagnostics';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
-import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
+import { pixelSnapEpsilon } from '../mitra-graphics-context-webgl';
 import { QuadIndexBuffer } from '../quad-index-buffer';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
@@ -20,14 +20,14 @@ export class RectangleRenderer implements RendererPlugin {
 
   private _shader!: Shader;
   private _gl!: WebGLRenderingContext;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _buffer!: VertexBuffer;
   private _layout!: VertexLayout;
   private _quads!: QuadIndexBuffer;
   private _rectangleCount: number = 0;
   private _vertexIndex: number = 0;
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     // https://stackoverflow.com/questions/59197671/glsl-rounded-rectangle-with-variable-border

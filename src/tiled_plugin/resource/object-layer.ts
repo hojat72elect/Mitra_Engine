@@ -18,7 +18,7 @@ import {type FactoryProps, TiledResource} from "./tiled-resource";
 import {mapProps, type PropertyMapValue} from "./properties";
 import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {Tileset} from "./tileset";
-import {ExcaliburTiledProperties} from "./excalibur-properties";
+import {MitraTiledProperties} from "./mitra-properties.ts";
 import {TiledDataComponent} from "./tiled-data-component";
 
 export class ObjectLayer implements Layer {
@@ -327,8 +327,8 @@ export class ObjectLayer implements Layer {
             }
 
             let zindex = undefined;
-            let zLayerOverride = this.properties.get(ExcaliburTiledProperties.ZIndex.ZIndex) as number | undefined;
-            let zObjectOverride = object.properties.get(ExcaliburTiledProperties.ZIndex.ZIndex) as number | undefined;
+            let zLayerOverride = this.properties.get(MitraTiledProperties.ZIndex.ZIndex) as number | undefined;
+            let zObjectOverride = object.properties.get(MitraTiledProperties.ZIndex.ZIndex) as number | undefined;
             if (typeof zLayerOverride === 'number' || typeof zObjectOverride === 'number') {
                 zindex = zObjectOverride ?? zLayerOverride;
             }
@@ -357,8 +357,8 @@ export class ObjectLayer implements Layer {
                 newActor.addComponent(iso);
             }
 
-            if (this.resource.useExcaliburWiring) {
-                const collisionType = object.properties.get(ExcaliburTiledProperties.Collision.Type);
+            if (this.resource.useMitraWiring) {
+                const collisionType = object.properties.get(MitraTiledProperties.Collision.Type);
                 if (collisionType && typeof collisionType === 'string') {
                     switch (collisionType.toLowerCase()) {
                         case CollisionType.Active.toLowerCase(): {

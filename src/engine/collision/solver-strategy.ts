@@ -8,6 +8,6 @@
  * simulated physical interactions.
  */
 export enum SolverStrategy {
-  Arcade = 'arcade',
-  Realistic = 'realistic'
+    Arcade = 'arcade',
+    Realistic = 'realistic'
 }

@@ -2,8 +2,8 @@ import { Color } from '../../../color';
 import type { Vector } from '../../../math/vector';
 import { vec } from '../../../math/vector';
 import { GraphicsDiagnostics } from '../../graphics-diagnostics';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
-import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
+import { pixelSnapEpsilon } from '../mitra-graphics-context-webgl';
 import { QuadIndexBuffer } from '../quad-index-buffer';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
@@ -20,7 +20,7 @@ export class DebugCircleRenderer implements RendererPlugin {
   private _maxCircles: number = 10922; // max(uint16) / 6 verts
 
   private _shader!: Shader;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _gl!: WebGLRenderingContext;
   private _buffer!: VertexBuffer;
   private _layout!: VertexLayout;
@@ -29,7 +29,7 @@ export class DebugCircleRenderer implements RendererPlugin {
   private _circleCount: number = 0;
   private _vertexIndex: number = 0;
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     this._shader = new Shader({

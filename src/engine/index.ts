@@ -1,9 +1,14 @@
 /**
- * The current Excalibur version string
+ * The current Mitra version string
  * @description `process.env.__EX_VERSION` gets replaced by Webpack on build
  */
 export const EX_VERSION = typeof process !== 'undefined' ? process.env.__EX_VERSION : undefined;
-import { polyfill } from './polyfill';
+import {polyfill} from './polyfill';
+// Events namespace
+import * as events from './events';
+// ex.Util namespaces
+import * as util from './util/index';
+
 polyfill();
 
 // This file is used as the bundle entry point and exports everything
@@ -21,7 +26,7 @@ export * from './event-emitter';
 export * from './events/media-events';
 export * from './events';
 export * from './label';
-export { FontStyle, FontUnit, TextAlign, BaseAlign, TextDirection } from './graphics/font-common';
+export {FontStyle, FontUnit, TextAlign, BaseAlign, TextDirection} from './graphics/font-common';
 export * from './particles/index';
 export * from './scene';
 export * from './plugin';
@@ -48,54 +53,50 @@ export * from './color';
 
 export * from './graphics/index';
 
-// ex.Events namespace
-import * as events from './events';
-export { events as Events };
+export {events as Events};
 
-export { WheelEvent } from './input/wheel-event';
+export {WheelEvent} from './input/wheel-event';
 
-export { PointerEvent } from './input/pointer-event';
+export {PointerEvent} from './input/pointer-event';
 
-export { WheelDeltaMode } from './input/wheel-delta-mode';
+export {WheelDeltaMode} from './input/wheel-delta-mode';
 
-export { PointerButton } from './input/pointer-button';
+export {PointerButton} from './input/pointer-button';
 
-export { NativePointerButton } from './input/native-pointer-button';
+export {NativePointerButton} from './input/native-pointer-button';
 
-export type { CapturePointerConfig } from './input/capture-pointer-config';
+export type {CapturePointerConfig} from './input/capture-pointer-config';
 
 export type {
-  NativePointerEvent,
-  NativeMouseEvent,
-  NativeTouchEvent,
-  NativeWheelEvent,
-  PointerInitOptions
+    NativePointerEvent,
+    NativeMouseEvent,
+    NativeTouchEvent,
+    NativeWheelEvent,
+    PointerInitOptions
 } from './input/pointer-event-receiver';
-export { PointerEventReceiver } from './input/pointer-event-receiver';
+export {PointerEventReceiver} from './input/pointer-event-receiver';
 
-export { PointerAbstraction } from './input/pointer-abstraction';
-export { PointerComponent } from './input/pointer-component';
-export { PointerSystem } from './input/pointer-system';
-export { PointerType } from './input/pointer-type';
-export { PointerScope } from './input/pointer-scope';
+export {PointerAbstraction} from './input/pointer-abstraction';
+export {PointerComponent} from './input/pointer-component';
+export {PointerSystem} from './input/pointer-system';
+export {PointerType} from './input/pointer-type';
+export {PointerScope} from './input/pointer-scope';
 
 export type {
-  NavigatorGamepads,
-  NavigatorGamepad,
-  NavigatorGamepadButton,
-  NavigatorGamepadEvent,
-  GamepadConfiguration
+    NavigatorGamepads,
+    NavigatorGamepad,
+    NavigatorGamepadButton,
+    NavigatorGamepadEvent,
+    GamepadConfiguration
 } from './input/gamepad';
-export { Gamepads, Gamepad, Buttons, Axes, GamepadEvents } from './input/gamepad';
+export {Gamepads, Gamepad, Buttons, Axes, GamepadEvents} from './input/gamepad';
 
-export type { KeyboardInitOptions } from './input/keyboard';
-export { Keys, KeyEvent, Keyboard } from './input/keyboard';
+export type {KeyboardInitOptions} from './input/keyboard';
+export {Keys, KeyEvent, Keyboard} from './input/keyboard';
 export * from './input/input-host';
 export * from './input/input-mapper';
 
-// ex.Util namespaces
-import * as util from './util/index';
-export { util as Util };
+export {util as Util};
 
 export * from './util/browser';
 export * from './util/detector';

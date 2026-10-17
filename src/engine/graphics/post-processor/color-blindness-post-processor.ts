@@ -1,7 +1,7 @@
 import colorBlindCorrectSource from './color-blind-fragment.glsl?raw';
 import type { PostProcessor } from './post-processor';
 import { ColorBlindnessMode } from './color-blindness-mode';
-import type { ExcaliburGraphicsContextWebGL } from '../context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
 import type { Framebuffer } from '../context/framebuffer';
 import { ShaderPass } from '../context/shader-pipeline/shader-pass';
 
@@ -15,7 +15,7 @@ export class ColorBlindnessPostProcessor implements PostProcessor {
     this._simulate = simulate;
   }
 
-  initialize(graphicsContext: ExcaliburGraphicsContextWebGL): void {
+  initialize(graphicsContext: MitraGraphicsContextWebgl): void {
     this._pass = new ShaderPass({
       graphicsContext,
       name: 'color blindness',

@@ -1,6 +1,6 @@
 import { vec } from '../../../../math/vector';
 import { ImageFiltering } from '../../../filtering';
-import type { ExcaliburGraphicsContextWebGL } from '../../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../../mitra-graphics-context-webgl';
 import { Framebuffer } from '../../framebuffer';
 import { glsl } from '../../glsl';
 import type { Shader } from '../../shader';
@@ -10,7 +10,7 @@ import type { ShaderPipelineLike, ShaderPipelineProcessOptions } from '../shader
 import { mergePassSources } from '../shader-pipeline';
 
 export interface BloomEffectOptions {
-  graphicsContext: ExcaliburGraphicsContextWebGL;
+  graphicsContext: MitraGraphicsContextWebgl;
   /**
    * Luminance cutoff (0-1) above which pixels contribute to the bloom, default 0.8
    */
@@ -138,7 +138,7 @@ void main() {
  * ```
  */
 export class BloomEffect implements ShaderPipelineLike {
-  private _graphicsContext: ExcaliburGraphicsContextWebGL;
+  private _graphicsContext: MitraGraphicsContextWebgl;
   private _levels: number;
   private _threshold: ShaderPass;
   private _downsample: ShaderPass;

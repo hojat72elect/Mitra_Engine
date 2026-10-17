@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 import type { RendererPlugin } from '../renderer';
 import { Shader } from '../shader';
 import particleVertexSource from './particle-vertex.glsl?raw';
@@ -16,10 +16,10 @@ export class ParticleRenderer implements RendererPlugin {
   public readonly type = 'ex.particle' as const;
   public priority: number = 0;
   private _gl!: WebGL2RenderingContext;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _shader!: Shader;
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     this._shader = new Shader({

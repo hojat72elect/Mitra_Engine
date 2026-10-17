@@ -1,6 +1,6 @@
 export * from './parser/tiled-parser';
 export * from './resource/decoder';
-export * from './resource/excalibur-properties';
+export * from './resource/mitra-properties.ts';
 export * from './resource/file-loader';
 export * from './resource/filter-util';
 export * from './resource/gid-util';

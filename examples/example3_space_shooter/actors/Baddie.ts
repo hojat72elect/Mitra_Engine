@@ -75,7 +75,7 @@ export class Baddie extends Actor {
         this.fireTimer.start();
     }
 
-    // Fires before excalibur collision resolution
+    // Fires before Mitra collision resolution
     private onPreCollision(evt: PreCollisionEvent) {
         // only kill a baddie if it collides with something that isn't a baddie or a baddie bullet
         if (!(evt.other instanceof Baddie) &&

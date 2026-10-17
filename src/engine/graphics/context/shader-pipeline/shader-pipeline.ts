@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 import { Framebuffer } from '../framebuffer';
 import type { Shader, UniformDictionary } from '../shader';
 import type { ShaderPassDestination, ShaderPassSource } from './shader-pass';
@@ -67,7 +67,7 @@ export interface ShaderPipelineLike {
 export type ShaderPassLike = string | ShaderPass;
 
 export interface ShaderPipelineOptions {
-  graphicsContext: ExcaliburGraphicsContextWebGL;
+  graphicsContext: MitraGraphicsContextWebgl;
   /**
    * Name the pipeline for debugging
    */
@@ -91,7 +91,7 @@ export interface ShaderPipelineOptions {
 export class ShaderPipeline implements ShaderPipelineLike {
   public readonly name: string;
   public readonly passes: ShaderPass[];
-  private _graphicsContext: ExcaliburGraphicsContextWebGL;
+  private _graphicsContext: MitraGraphicsContextWebgl;
   private _intermediates: (Framebuffer | undefined)[];
   private _disposed = false;
 

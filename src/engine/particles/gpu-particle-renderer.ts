@@ -1,5 +1,5 @@
 import { randomInRange, TwoPI } from '../math/util';
-import type { ExcaliburGraphicsContextWebGL } from '../graphics/context/excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../graphics/context/mitra-graphics-context-webgl';
 import type { GpuParticleEmitter } from './gpu-particle-emitter';
 import type { ParticleConfig } from './particles';
 import { ParticleTransform } from './particles';
@@ -64,7 +64,7 @@ export class GpuParticleRenderer {
     return this.emitter.maxParticles;
   }
 
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL) {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl) {
     if (this._initialized) {
       return;
     }

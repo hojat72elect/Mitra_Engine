@@ -3,10 +3,10 @@ import type { MitraGraphicsContext, MitraGraphicsContextOptions } from './graphi
 import type { Scene } from './scene';
 
 /**
- * An Excalibur Plugin packages up engine modifications into a convenient bundle.
+ * An Mitra Plugin packages up engine modifications into a convenient bundle.
  *
  * Plugins are inspired by the [Bevy Plugin System](https://bevy.org/learn/quick-start/getting-started/plugins/)
- * and allow third-party libraries to configure multiple aspects of Excalibur through a single install,
+ * and allow third-party libraries to configure multiple aspects of Mitra through a single install,
  * rather than requiring users to manually wire up loaders, renderers, post-processors, systems, etc.
  *
  * Plugins participate in the engine, graphics, and scene lifecycles through a series of optional
@@ -34,7 +34,7 @@ import type { Scene } from './scene';
  *   name = 'ex.sdf-text';
  *   priority = 0;
  *
- *   onGraphicsPostInitialize(context: ExcaliburGraphicsContext) {
+ *   onGraphicsPostInitialize(context: MitraGraphicsContext) {
  *     context.lazyRegister('ex.sdf-text-renderer', () => new SDFTextRenderer());
  *   }
  *
@@ -52,7 +52,7 @@ import type { Scene } from './scene';
  */
 export abstract class Plugin {
   /**
-   * Unique name of the plugin, pick something unique (official excalibur plugins use the reserved prefix "ex.").
+   * Unique name of the plugin, pick something unique (official Mitra plugins use the reserved prefix "ex.").
    * Used for deduplication — attempting to add a plugin
    * with a name that is already installed will produce a warning and be skipped.
    * @param name
@@ -135,7 +135,7 @@ export abstract class Plugin {
    * context or the options.
    *
    * This is the very first graphics hook, called at the start of the
-   * {@apilink ExcaliburGraphicsContextWebGL} constructor before the WebGL context
+   * {@apilink MitraGraphicsContextWebgl} constructor before the WebGL context
    * is created. Use this to modify graphics options before they are applied.
    *
    * @param context The graphics context being constructed
@@ -168,9 +168,9 @@ export abstract class Plugin {
    * Intercept the graphics context and modify it after initialization.
    *
    * This is the recommended hook for registering custom {@apilink RendererPlugin}s via
-   * {@apilink ExcaliburGraphicsContext.register} or
-   * {@apilink ExcaliburGraphicsContext.lazyRegister}, and for adding
-   * {@apilink PostProcessor}s via {@apilink ExcaliburGraphicsContext.addPostProcessor}.
+   * {@apilink MitraGraphicsContext.register} or
+   * {@apilink MitraGraphicsContext.lazyRegister}, and for adding
+   * {@apilink PostProcessor}s via {@apilink MitraGraphicsContext.addPostProcessor}.
    *
    * Called after all built-in renderers and render targets are initialized.
    *

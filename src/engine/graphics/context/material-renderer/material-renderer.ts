@@ -4,7 +4,7 @@ import { GraphicsDiagnostics } from '../../graphics-diagnostics';
 import { ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
 import type { HTMLImageSource } from '../mitra-graphics-context';
-import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
+import type { MitraGraphicsContextWebgl } from '../mitra-graphics-context-webgl';
 import { glsl } from '../glsl';
 import { QuadIndexBuffer } from '../quad-index-buffer';
 import type { RendererPlugin } from '../renderer';
@@ -36,14 +36,14 @@ export class MaterialRenderer implements RendererPlugin {
   public readonly type: string = 'ex.material';
   public priority: number = 0;
   // private _maxTextures = 8;
-  private _context!: ExcaliburGraphicsContextWebGL;
+  private _context!: MitraGraphicsContextWebgl;
   private _gl!: WebGL2RenderingContext;
   private _textures: WebGLTexture[] = [];
   private _quads: any;
   private _buffer!: VertexBuffer;
   private _layout!: VertexLayout;
   private _seedPass!: ShaderPass;
-  initialize(gl: WebGL2RenderingContext, context: ExcaliburGraphicsContextWebGL): void {
+  initialize(gl: WebGL2RenderingContext, context: MitraGraphicsContextWebgl): void {
     this._gl = gl;
     this._context = context;
     this._seedPass = new ShaderPass({
