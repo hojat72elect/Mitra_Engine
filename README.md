@@ -18,4 +18,4 @@ A TypeScript game engine. Mitra provides a powerful entity-component-system arch
 
 ## License
 
-[MIT](./License)
+[MIT](./LICENSE)
