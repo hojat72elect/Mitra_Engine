@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Examples
+examples
+
+# Documentation
+docs
+
+# Development files
+.git
+.gitignore
+.idea
+.vscode
+
+# Config files
+vite.config.ts
+vite-env.d.ts
+eslint.config.mjs
+
+# Lock files
+bun.lock
+package-lock.json
+yarn.lock
+
+# Test files
+**/*.test.ts
+**/*.spec.ts
+**/tests
+**/test
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+*.log
+.env
+.env.*
