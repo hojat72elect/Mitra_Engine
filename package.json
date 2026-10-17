@@ -1,9 +1,22 @@
 {
-  "name": "mitra_examples",
-  "private": true,
-  "version": "0.0.0",
+  "name": "mitra_engine",
+  "version": "0.1.1",
   "type": "module",
+  "description": "A 2D game engine for the web",
+  "main": "./dist/engine/index.js",
+  "types": "./dist/engine/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/engine/index.d.ts",
+      "import": "./dist/engine/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
+    "build": "tsc",
     "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/",
     "example2_platformer": "vite --open /examples/example2_platformer/",
     "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
@@ -11,7 +24,8 @@
     "example5_islander": "vite --open /examples/example5_islander/",
     "example7_menu": "vite --open /examples/example7_menu/",
     "example8_matter_js": "vite --open /examples/example8_matter_js/",
-    "lint": "eslint . --ext .ts,.js"
+    "lint": "eslint . --ext .ts,.js",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
