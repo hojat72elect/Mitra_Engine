@@ -1,18 +1,18 @@
 import type { Vector } from '../math/vector';
 import type {
-  ExcaliburGraphicsContext,
+  MitraGraphicsContext,
   LineGraphicsOptions,
   PointGraphicsOptions,
   RectGraphicsOptions
-} from './context/excalibur-graphics-context';
+} from './context/mitra-graphics-context';
 import { Color } from '../color';
 import type { Ray } from '../math/ray';
 import type { BoundingBox } from '../collision/bounding-box';
 import type { DebugConfig } from '../debug';
 
 export class Debug {
-  static _drawCalls: ((ctx: ExcaliburGraphicsContext) => void)[] = [];
-  static _ctx: ExcaliburGraphicsContext;
+  static _drawCalls: ((ctx: MitraGraphicsContext) => void)[] = [];
+  static _ctx: MitraGraphicsContext;
   static z: number = Infinity;
   static config: DebugConfig = {
     // add some defaults
@@ -36,7 +36,7 @@ export class Debug {
     Debug.config = config;
   }
 
-  static draw(debugDrawCall: (ctx: ExcaliburGraphicsContext) => void) {
+  static draw(debugDrawCall: (ctx: MitraGraphicsContext) => void) {
     this._drawCalls.push(debugDrawCall);
   }
 
@@ -121,7 +121,7 @@ export class Debug {
     });
   }
 
-  static flush(ctx: ExcaliburGraphicsContext) {
+  static flush(ctx: MitraGraphicsContext) {
     ctx.save();
     ctx.z = Debug.z;
     for (const drawCall of Debug._drawCalls) {

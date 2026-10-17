@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContext, ImageSource, TextureLoader } from '../..';
+import type { MitraGraphicsContext, ImageSource, TextureLoader } from '../..';
 import {
   AffineMatrix,
   Color,
@@ -248,7 +248,7 @@ export interface ShaderOptions {
   /**
    * ExcaliburGraphicsContextWebGL this layout will be attached to, these cannot be reused across webgl contexts.
    */
-  graphicsContext: ExcaliburGraphicsContext;
+  graphicsContext: MitraGraphicsContext;
 
   /**
    * Optionally provide a name for the shader (useful for debugging purposes)

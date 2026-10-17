@@ -8,7 +8,7 @@ import { vec, Vector } from '../math/vector';
 import { TransformComponent } from '../entity-component-system/components/transform-component';
 import type { EntityEvents } from '../entity-component-system/entity';
 import { Entity } from '../entity-component-system/entity';
-import type { ExcaliburGraphicsContext, Graphic } from '../graphics';
+import type { MitraGraphicsContext, Graphic } from '../graphics';
 import { DebugGraphicsComponent, GraphicsComponent } from '../graphics';
 import { IsometricEntityComponent } from './isometric-entity-component';
 import type { DebugConfig } from '../debug';
@@ -205,7 +205,7 @@ export class IsometricTile extends Entity {
     }).translate(offset);
   }
 
-  draw(gfx: ExcaliburGraphicsContext, _elapsed: number) {
+  draw(gfx: MitraGraphicsContext, _elapsed: number) {
     const halfTileWidth = this.map.tileWidth / 2;
     gfx.save();
     // shift left origin to corner of map, not the left corner of the first sprite
@@ -518,7 +518,7 @@ export class IsometricMap extends Entity implements HasNestedPointerEvents {
    * Debug draw for IsometricMap, called internally by excalibur when debug mode is toggled on
    * @param gfx
    */
-  public debug(gfx: ExcaliburGraphicsContext, debugFlags: DebugConfig) {
+  public debug(gfx: MitraGraphicsContext, debugFlags: DebugConfig) {
     const { showAll, showPosition, positionColor, positionSize, showGrid, gridColor, gridWidth, showColliderGeometry } =
       debugFlags.isometric;
 

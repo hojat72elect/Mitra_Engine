@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { Scene } from '../scene';
 import { GraphicsComponent } from './graphics-component';
 import { vec, Vector } from '../math/vector';
@@ -24,7 +24,7 @@ export class GraphicsSystem extends System {
   public readonly systemType = SystemType.Draw;
   private _token = 0;
   // Set in the initialize
-  private _graphicsContext!: ExcaliburGraphicsContext;
+  private _graphicsContext!: MitraGraphicsContext;
   private _camera!: Camera;
   private _engine!: Engine;
   private _sortedTransforms: TransformComponent[] = [];

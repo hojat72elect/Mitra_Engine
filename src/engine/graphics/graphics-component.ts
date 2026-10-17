@@ -1,7 +1,7 @@
 import { Vector, vec } from '../math/vector';
 import { Graphic } from './graphic';
 import type { HasTick } from './animation';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { BoundingBox } from '../collision/index';
 import { Component } from '../entity-component-system/component';
 import type { Material } from './context/material';
@@ -54,10 +54,10 @@ export interface GraphicsComponentData {
   tint?: { r: number; g: number; b: number; a: number };
 }
 export interface GraphicsComponentOptions {
-  onPostDraw?: (ex: ExcaliburGraphicsContext, elapsed: number) => void;
-  onPreDraw?: (ex: ExcaliburGraphicsContext, elapsed: number) => void;
-  onPreTransformDraw?: (ex: ExcaliburGraphicsContext, elapsed: number) => void;
-  onPostTransformDraw?: (ex: ExcaliburGraphicsContext, elapsed: number) => void;
+  onPostDraw?: (ex: MitraGraphicsContext, elapsed: number) => void;
+  onPreDraw?: (ex: MitraGraphicsContext, elapsed: number) => void;
+  onPreTransformDraw?: (ex: MitraGraphicsContext, elapsed: number) => void;
+  onPostTransformDraw?: (ex: MitraGraphicsContext, elapsed: number) => void;
 
   /**
    * Name of current graphic to use
@@ -129,22 +129,22 @@ export class GraphicsComponent extends Component {
   /**
    * Draws after the entity transform has been applied, but before graphics component graphics have been drawn
    */
-  public onPreDraw?: (ctx: ExcaliburGraphicsContext, elapsed: number) => void;
+  public onPreDraw?: (ctx: MitraGraphicsContext, elapsed: number) => void;
 
   /**
    * Draws after the entity transform has been applied, and after graphics component graphics has been drawn
    */
-  public onPostDraw?: (ctx: ExcaliburGraphicsContext, elapsed: number) => void;
+  public onPostDraw?: (ctx: MitraGraphicsContext, elapsed: number) => void;
 
   /**
    * Draws before the entity transform has been applied before any any graphics component drawing
    */
-  public onPreTransformDraw?: (ctx: ExcaliburGraphicsContext, elapsed: number) => void;
+  public onPreTransformDraw?: (ctx: MitraGraphicsContext, elapsed: number) => void;
 
   /**
    * Draws after the entity transform has been applied, and after all graphics component drawing
    */
-  public onPostTransformDraw?: (ctx: ExcaliburGraphicsContext, elapsed: number) => void;
+  public onPostTransformDraw?: (ctx: MitraGraphicsContext, elapsed: number) => void;
   private _color?: Color;
 
   /**

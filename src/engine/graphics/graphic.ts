@@ -1,5 +1,5 @@
 import { Vector, vec } from '../math/vector';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { BoundingBox } from '../collision/bounding-box';
 import type { Color } from '../color';
 import { watch } from '../util/watch';
@@ -219,7 +219,7 @@ export abstract class Graphic {
    * @param x
    * @param y
    */
-  public draw(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  public draw(ex: MitraGraphicsContext, x: number, y: number): void {
     this._preDraw(ex, x, y);
     this._drawImage(ex, 0, 0);
     this._postDraw(ex);
@@ -233,7 +233,7 @@ export abstract class Graphic {
    * @param x
    * @param y
    */
-  protected abstract _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number): void;
+  protected abstract _drawImage(ex: MitraGraphicsContext, x: number, y: number): void;
 
   /**
    * Apply affine transformations to the graphics context to manipulate the graphic before {@apilink Graphic._drawImage}
@@ -241,7 +241,7 @@ export abstract class Graphic {
    * @param x
    * @param y
    */
-  protected _preDraw(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  protected _preDraw(ex: MitraGraphicsContext, x: number, y: number): void {
     ex.save();
     ex.translate(x, y);
     if (this._transformStale) {
@@ -259,7 +259,7 @@ export abstract class Graphic {
     }
   }
 
-  protected _rotate(ex: ExcaliburGraphicsContext | AffineMatrix) {
+  protected _rotate(ex: MitraGraphicsContext | AffineMatrix) {
     const scaleDirX = this.scale.x > 0 ? 1 : -1;
     const scaleDirY = this.scale.y > 0 ? 1 : -1;
     const origin = this.origin ?? vec(this.width / 2, this.height / 2);
@@ -270,7 +270,7 @@ export abstract class Graphic {
     ex.translate(-origin.x, -origin.y);
   }
 
-  protected _flip(ex: ExcaliburGraphicsContext | AffineMatrix) {
+  protected _flip(ex: MitraGraphicsContext | AffineMatrix) {
     if (this.flipHorizontal) {
       ex.translate(this.width / this.scale.x, 0);
       ex.scale(-1, 1);
@@ -286,7 +286,7 @@ export abstract class Graphic {
    * Apply any additional work after {@apilink Graphic._drawImage} and restore the context state.
    * @param ex
    */
-  protected _postDraw(ex: ExcaliburGraphicsContext): void {
+  protected _postDraw(ex: MitraGraphicsContext): void {
     if (this.showDebug) {
       ex.debug.drawRect(0, 0, this.width, this.height);
     }

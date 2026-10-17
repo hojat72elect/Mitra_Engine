@@ -3,7 +3,7 @@ import { parseImageFiltering } from '../../filtering';
 import { GraphicsDiagnostics } from '../../graphics-diagnostics';
 import { ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
-import type { HTMLImageSource } from '../excalibur-graphics-context';
+import type { HTMLImageSource } from '../mitra-graphics-context';
 import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
 import { glsl } from '../glsl';
 import { QuadIndexBuffer } from '../quad-index-buffer';

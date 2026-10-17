@@ -1,5 +1,5 @@
 /**
- * Global Type Extensions to lib.d.ts for Excalibur
+ * Global Type Extensions to lib.d.ts for Mitra
  */
 
 interface Document {

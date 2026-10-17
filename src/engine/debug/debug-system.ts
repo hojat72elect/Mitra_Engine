@@ -6,7 +6,7 @@ import { ColliderComponent } from '../collision/collider-component';
 import type { Entity, Query, World } from '../entity-component-system';
 import { SystemPriority, TransformComponent } from '../entity-component-system';
 import { System, SystemType } from '../entity-component-system/system';
-import type { ExcaliburGraphicsContext } from '../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../graphics/context/mitra-graphics-context';
 import { vec, Vector } from '../math/vector';
 import { toDegrees } from '../math/util';
 import { BodyComponent } from '../collision/body-component';
@@ -24,7 +24,7 @@ export class DebugSystem extends System {
   static override priority = SystemPriority.Lowest;
 
   public readonly systemType = SystemType.Draw;
-  private _graphicsContext!: ExcaliburGraphicsContext;
+  private _graphicsContext!: MitraGraphicsContext;
   private _collisionSystem!: CollisionSystem;
   private _camera!: Camera;
   private _engine!: Engine;

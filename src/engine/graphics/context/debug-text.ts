@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContext } from '../context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './mitra-graphics-context';
 import { ImageSource } from '../image-source';
 import { SpriteFont } from '../sprite-font';
 import { SpriteSheet } from '../sprite-sheet';
@@ -88,7 +88,7 @@ export class DebugText {
    * @param background Optional background color override
    * @param scale Optional glyph scale factor, defaults to 1
    */
-  public write(ctx: ExcaliburGraphicsContext, text: string, pos: Vector, foreground?: Color, background?: Color, scale: number = 1) {
+  public write(ctx: MitraGraphicsContext, text: string, pos: Vector, foreground?: Color, background?: Color, scale: number = 1) {
     if (this._imageSource.isLoaded()) {
       const pos1 = ctx.getTransform().getPosition();
       ctx.save();

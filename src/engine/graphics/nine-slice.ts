@@ -1,6 +1,6 @@
 import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { ImageSource } from './image-source';
 import { Logger } from '../util/log';
 import { Vector } from '../math/vector';
@@ -198,7 +198,7 @@ export class NineSlice extends Graphic {
    * @param marginHeight
    */
   protected _drawTile(
-    context: ExcaliburGraphicsContext,
+    context: MitraGraphicsContext,
     targetCanvas: HTMLCanvasElement,
     destinationSize: Vector,
     horizontalStretch: NineSliceStretch,
@@ -235,7 +235,7 @@ export class NineSlice extends Graphic {
   /**
    *  Draws the 9 slices to the canvas
    */
-  protected _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  protected _drawImage(ex: MitraGraphicsContext, x: number, y: number): void {
     if (this._imgSource.isLoaded()) {
       // Top left, no stretching
 

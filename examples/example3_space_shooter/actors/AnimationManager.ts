@@ -1,4 +1,4 @@
-import {Actor, Animation, CollisionType, Engine, type ExcaliburGraphicsContext, Vector} from  "../../../src/engine";
+import {Actor, Animation, CollisionType, Engine, type MitraGraphicsContext, Vector} from  "../../../src/engine";
 
 interface AnimationNode {
     position: Vector,
@@ -31,7 +31,7 @@ export class AnimationManager extends Actor {
     }
 
     // PostDraw gives the rendering context and the time between frames
-    drawAnimations(context: ExcaliburGraphicsContext) {
+    drawAnimations(context: MitraGraphicsContext) {
         for (let node of this.animations) {
             node.animation.draw(context, node.position.x - node.animation.width / 2, node.position.y - node.animation.height / 2);
         }

@@ -1,12 +1,12 @@
 import type {
-  ExcaliburGraphicsContext,
+  MitraGraphicsContext,
   LineGraphicsOptions,
   PointGraphicsOptions,
-  ExcaliburGraphicsContextOptions,
+  MitraGraphicsContextOptions,
   DebugDraw,
   DebugTextOptions,
   HTMLImageSource
-} from './excalibur-graphics-context';
+} from './mitra-graphics-context';
 import type { Vector } from '../../math/vector';
 import { Color } from '../../color';
 import { StateStack } from './state-stack';
@@ -22,7 +22,7 @@ const pixelSnapEpsilon = 0.0001;
 
 class ExcaliburGraphicsContext2DCanvasDebug implements DebugDraw {
   private _debugText = new DebugText();
-  constructor(private _ex: ExcaliburGraphicsContext2DCanvas) {}
+  constructor(private _ex: MitraGraphicsContext2DCanvas) {}
   /**
    * Draw a debug rectangle to the context
    * @param x
@@ -111,11 +111,11 @@ class ExcaliburGraphicsContext2DCanvasDebug implements DebugDraw {
   }
 }
 
-export interface ExcaliburGraphicsContext2DOptions extends ExcaliburGraphicsContextOptions {
+export interface ExcaliburGraphicsContext2DOptions extends MitraGraphicsContextOptions {
   context?: CanvasRenderingContext2D;
 }
 
-export class ExcaliburGraphicsContext2DCanvas implements ExcaliburGraphicsContext {
+export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
   /**
    * Meant for internal use only. Access the internal context at your own risk and no guarantees this will exist in the future.
    * @internal
@@ -139,7 +139,7 @@ export class ExcaliburGraphicsContext2DCanvas implements ExcaliburGraphicsContex
    */
   public z: number = 0;
 
-  public backgroundColor: Color = Color.ExcaliburBlue;
+  public backgroundColor: Color = Color.MitraBlue;
 
   private _state = new StateStack();
 

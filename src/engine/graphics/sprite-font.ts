@@ -1,6 +1,6 @@
 import { Vector } from '../math/vector';
 import { Logger } from '../util/log';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { FontRenderer } from './font-common';
 import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
@@ -102,7 +102,7 @@ export class SpriteFont extends Graphic implements FontRenderer {
     return BoundingBox.fromDimension(width * this.scale.x, height * lines.length * this.scale.y, Vector.Zero);
   }
 
-  protected _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number, maxWidth?: number): void {
+  protected _drawImage(ex: MitraGraphicsContext, x: number, y: number, maxWidth?: number): void {
     let xCursor = 0;
     let yCursor = 0;
     let height = 0;
@@ -119,7 +119,7 @@ export class SpriteFont extends Graphic implements FontRenderer {
     }
   }
 
-  render(ex: ExcaliburGraphicsContext, text: string, _color: any, x: number, y: number, maxWidth?: number) {
+  render(ex: MitraGraphicsContext, text: string, _color: any, x: number, y: number, maxWidth?: number) {
     // SpriteFont doesn't support _color, yet...
     this._text = text;
     const bounds = this.measureText(text, maxWidth);

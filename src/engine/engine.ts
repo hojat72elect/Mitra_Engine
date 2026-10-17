@@ -40,14 +40,14 @@ import { DebugConfig } from './debug/debug-config';
 import { BrowserEvents } from './util/browser';
 import type {
   AntialiasOptions,
-  ExcaliburGraphicsContext,
-  ExcaliburGraphicsContextOptions,
+  MitraGraphicsContext,
+  MitraGraphicsContextOptions,
   ExcaliburGraphicsContextWebGLOptions
 } from './graphics';
 import {
   DefaultAntialiasOptions,
   DefaultPixelArtOptions,
-  ExcaliburGraphicsContext2DCanvas,
+  MitraGraphicsContext2DCanvas,
   ExcaliburGraphicsContextWebGL,
   TextureLoader
 } from './graphics';
@@ -74,7 +74,7 @@ import { getDefaultGlobal } from './util/iframe';
 import type { Plugin } from './plugin';
 
 export interface EngineEvents extends DirectorEvents {
-  fallbackgraphicscontext: ExcaliburGraphicsContext2DCanvas;
+  fallbackgraphicscontext: MitraGraphicsContext2DCanvas;
   initialize: InitializeEvent<Engine>;
   visible: VisibleEvent;
   hidden: HiddenEvent;
@@ -501,7 +501,7 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
 
     // Graphics hooks - if the graphics context already exists
     if (this.graphicsContext) {
-      const graphicsOptions = this._originalOptions as unknown as ExcaliburGraphicsContextOptions;
+      const graphicsOptions = this._originalOptions as unknown as MitraGraphicsContextOptions;
       plugin.onGraphicsPreConfig?.(this.graphicsContext, graphicsOptions);
       plugin.onGraphicsPostConfig?.(this.graphicsContext, graphicsOptions);
       plugin.onGraphicsPreInitialize?.(this.graphicsContext);
@@ -574,7 +574,7 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
   /**
    * Direct access to the ExcaliburGraphicsContext used for drawing things to the screen
    */
-  public graphicsContext!: ExcaliburGraphicsContext;
+  public graphicsContext!: MitraGraphicsContext;
 
   /**
    * Direct access to the canvas element ID, if an ID exists
@@ -1117,25 +1117,25 @@ O|===|* >________________>\n\
     if (!useCanvasGraphicsContext) {
       // Attempt webgl first
       try {
-        const onGraphicsPreConfig = (context: ExcaliburGraphicsContext, options: ExcaliburGraphicsContextWebGLOptions) => {
+        const onGraphicsPreConfig = (context: MitraGraphicsContext, options: ExcaliburGraphicsContextWebGLOptions) => {
           for (const plugin of this._plugins) {
             plugin.onGraphicsPreConfig?.(context, options);
           }
         };
 
-        const onGraphicsPostConfig = (context: ExcaliburGraphicsContext, options: ExcaliburGraphicsContextWebGLOptions) => {
+        const onGraphicsPostConfig = (context: MitraGraphicsContext, options: ExcaliburGraphicsContextWebGLOptions) => {
           for (const plugin of this._plugins) {
             plugin.onGraphicsPostConfig?.(context, options);
           }
         };
 
-        const onGraphicsPreInitialize = (context: ExcaliburGraphicsContext) => {
+        const onGraphicsPreInitialize = (context: MitraGraphicsContext) => {
           for (const plugin of this._plugins) {
             plugin.onGraphicsPreInitialize?.(context);
           }
         };
 
-        const onGraphicsPostInitialize = (context: ExcaliburGraphicsContext) => {
+        const onGraphicsPostInitialize = (context: MitraGraphicsContext) => {
           for (const plugin of this._plugins) {
             plugin.onGraphicsPostInitialize?.(context);
           }
@@ -1177,7 +1177,7 @@ O|===|* >________________>\n\
     }
 
     if (useCanvasGraphicsContext) {
-      this.graphicsContext = new ExcaliburGraphicsContext2DCanvas({
+      this.graphicsContext = new MitraGraphicsContext2DCanvas({
         canvasElement: this.canvas,
         enableTransparency: this.enableCanvasTransparency,
         antialiasing: nativeContextAntialiasing,
@@ -1386,7 +1386,7 @@ O|===|* >________________>\n\
     const displayMode = this._originalDisplayMode;
 
     // New graphics context
-    this.graphicsContext = new ExcaliburGraphicsContext2DCanvas({
+    this.graphicsContext = new MitraGraphicsContext2DCanvas({
       canvasElement: this.canvas,
       enableTransparency: this.enableCanvasTransparency,
       antialiasing: options.antialiasing,
@@ -1852,34 +1852,34 @@ O|===|* >________________>\n\
   /**
    * @internal
    */
-  public _predraw(ctx: ExcaliburGraphicsContext, elapsed: number) {
+  public _predraw(ctx: MitraGraphicsContext, elapsed: number) {
     this.emit('predraw', new PreDrawEvent(ctx, elapsed, this));
     this.onPreDraw(ctx, elapsed);
   }
 
   /**
    * Safe to override method to hook into pre draw
-   * @param ctx {@link ExcaliburGraphicsContext} for drawing
+   * @param ctx {@link MitraGraphicsContext} for drawing
    * @param elapsed  Number of milliseconds elapsed since the last draw.
    */
-  public onPreDraw(ctx: ExcaliburGraphicsContext, elapsed: number) {
+  public onPreDraw(ctx: MitraGraphicsContext, elapsed: number) {
     // Override me
   }
 
   /**
    * @internal
    */
-  public _postdraw(ctx: ExcaliburGraphicsContext, elapsed: number) {
+  public _postdraw(ctx: MitraGraphicsContext, elapsed: number) {
     this.emit('postdraw', new PostDrawEvent(ctx, elapsed, this));
     this.onPostDraw(ctx, elapsed);
   }
 
   /**
    * Safe to override method to hook into pre draw
-   * @param ctx {@link ExcaliburGraphicsContext} for drawing
+   * @param ctx {@link MitraGraphicsContext} for drawing
    * @param elapsed  Number of milliseconds elapsed since the last draw.
    */
-  public onPostDraw(ctx: ExcaliburGraphicsContext, elapsed: number) {
+  public onPostDraw(ctx: MitraGraphicsContext, elapsed: number) {
     // Override me
   }
 

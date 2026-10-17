@@ -3,7 +3,7 @@ import { Logger } from '../../util/log';
 import { ImageFiltering } from '../filtering';
 import type { ImageSourceOptions, ImageWrapConfiguration } from '../image-source';
 import { ImageWrapping } from '../wrapping';
-import type { HTMLImageSource } from './excalibur-graphics-context';
+import type { HTMLImageSource } from './mitra-graphics-context';
 
 /**
  * Manages loading image sources into webgl textures, a unique id is associated with all sources

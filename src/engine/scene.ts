@@ -29,7 +29,7 @@ import { PointerSystem } from './input/pointer-system';
 import { ActionsSystem } from './actions/actions-system';
 import { IsometricEntitySystem } from './tile-map/isometric-entity-system';
 import { OffscreenSystem } from './graphics/offscreen-system';
-import type { ExcaliburGraphicsContext } from './graphics';
+import type { MitraGraphicsContext } from './graphics';
 import { PhysicsWorld } from './collision/physics-world';
 import type { EventKey, Handler, Subscription } from './event-emitter';
 import { EventEmitter } from './event-emitter';
@@ -311,7 +311,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * `onPreDraw` is called directly before a scene is drawn.
    *
    */
-  public onPreDraw(ctx: ExcaliburGraphicsContext, elapsed: number): void {
+  public onPreDraw(ctx: MitraGraphicsContext, elapsed: number): void {
     // will be overridden
   }
 
@@ -321,7 +321,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * `onPostDraw` is called directly after a scene is drawn.
    *
    */
-  public onPostDraw(ctx: ExcaliburGraphicsContext, elapsed: number): void {
+  public onPostDraw(ctx: MitraGraphicsContext, elapsed: number): void {
     // will be overridden
   }
 
@@ -476,7 +476,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * Internal _predraw handler for {@apilink onPreDraw} lifecycle event
    * @internal
    */
-  public _predraw(ctx: ExcaliburGraphicsContext, elapsed: number): void {
+  public _predraw(ctx: MitraGraphicsContext, elapsed: number): void {
     this.emit('predraw', new PreDrawEvent(ctx, elapsed, this));
     this.onPreDraw(ctx, elapsed);
   }
@@ -487,7 +487,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * Internal _postdraw handler for {@apilink onPostDraw} lifecycle event
    * @internal
    */
-  public _postdraw(ctx: ExcaliburGraphicsContext, elapsed: number): void {
+  public _postdraw(ctx: MitraGraphicsContext, elapsed: number): void {
     this.emit('postdraw', new PostDrawEvent(ctx, elapsed, this));
     this.onPostDraw(ctx, elapsed);
   }
@@ -561,7 +561,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * @param ctx    The current rendering context
    * @param elapsed  The number of milliseconds since the last draw
    */
-  public draw(ctx: ExcaliburGraphicsContext, elapsed: number) {
+  public draw(ctx: MitraGraphicsContext, elapsed: number) {
     if (!this.isInitialized) {
       this._logger.warnOnce(`Scene draw called before initialize!`);
       return;
@@ -581,7 +581,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
    * @param ctx  The current rendering context
    */
   /* istanbul ignore next */
-  public debugDraw(ctx: ExcaliburGraphicsContext) {
+  public debugDraw(ctx: MitraGraphicsContext) {
     this.emit('predebugdraw', new PreDebugDrawEvent(ctx, this));
     // pass
     this.emit('postdebugdraw', new PostDebugDrawEvent(ctx, this));

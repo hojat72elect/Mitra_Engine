@@ -5,7 +5,7 @@ import { ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
 // import { ImageSourceAttributeConstants } from '../../ImageSource';
 // import { parseImageWrapping } from '../../Wrapping';
-import type { HTMLImageSource } from '../excalibur-graphics-context';
+import type { HTMLImageSource } from '../mitra-graphics-context';
 import type { ExcaliburGraphicsContextWebGL } from '../excalibur-graphics-context-webgl';
 import { pixelSnapEpsilon } from '../excalibur-graphics-context-webgl';
 import type { RendererPlugin } from '../renderer';

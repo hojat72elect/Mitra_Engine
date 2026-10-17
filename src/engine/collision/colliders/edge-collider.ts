@@ -11,7 +11,7 @@ import type { Ray } from '../../math/ray';
 import type { Color } from '../../color';
 import { Collider } from './collider';
 import { ClosestLineJumpTable } from './closest-line-jump-table';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import { Transform } from '../../math/transform';
 import { AffineMatrix } from '../../math/affine-matrix';
 import { BodyComponent } from '../index';
@@ -350,7 +350,7 @@ export class EdgeCollider extends Collider {
     return new Projection(Math.min.apply(Math, scalars), Math.max.apply(Math, scalars));
   }
 
-  public debug(ex: ExcaliburGraphicsContext, color: Color) {
+  public debug(ex: MitraGraphicsContext, color: Color) {
     const begin = this._getTransformedBegin();
     const end = this._getTransformedEnd();
     ex.debug.drawLine(begin, end, { color, lineWidth: 2 }); // TODO Collider width configuration

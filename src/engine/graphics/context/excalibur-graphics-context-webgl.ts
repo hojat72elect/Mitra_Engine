@@ -1,13 +1,13 @@
 import type {
-  ExcaliburGraphicsContext,
+  MitraGraphicsContext,
   LineGraphicsOptions,
   RectGraphicsOptions,
   PointGraphicsOptions,
-  ExcaliburGraphicsContextOptions,
+  MitraGraphicsContextOptions,
   DebugDraw,
   DebugTextOptions,
   HTMLImageSource
-} from './excalibur-graphics-context';
+} from './mitra-graphics-context';
 
 import { Matrix } from '../../math/matrix';
 import { TransformStack } from './transform-stack';
@@ -142,14 +142,14 @@ export interface WebGLGraphicsContextInfo {
   context: ExcaliburGraphicsContextWebGL;
 }
 
-export interface ExcaliburGraphicsContextWebGLOptions extends ExcaliburGraphicsContextOptions {
+export interface ExcaliburGraphicsContextWebGLOptions extends MitraGraphicsContextOptions {
   context?: WebGL2RenderingContext;
   garbageCollector?: { garbageCollector: GarbageCollector; collectionInterval: number };
   handleContextLost?: (e: Event) => void;
   handleContextRestored?: (e: Event) => void;
 }
 
-export class ExcaliburGraphicsContextWebGL implements ExcaliburGraphicsContext {
+export class ExcaliburGraphicsContextWebGL implements MitraGraphicsContext {
   private _logger = Logger.getInstance();
   private _renderers: Map<string, RendererPlugin> = new Map<string, RendererPlugin>();
   private _lazyRenderersFactory: Map<string, () => RendererPlugin> = new Map<string, () => RendererPlugin>();
@@ -209,7 +209,7 @@ export class ExcaliburGraphicsContextWebGL implements ExcaliburGraphicsContext {
    */
   public uvPadding = 0.01;
 
-  public backgroundColor: Color = Color.ExcaliburBlue;
+  public backgroundColor: Color = Color.MitraBlue;
 
   public textureLoader: TextureLoader;
 
@@ -217,9 +217,9 @@ export class ExcaliburGraphicsContextWebGL implements ExcaliburGraphicsContext {
 
   public materialScreenTexture!: WebGLTexture | null;
 
-  private _onGraphicsPreInitialize?: (context: ExcaliburGraphicsContext) => void;
+  private _onGraphicsPreInitialize?: (context: MitraGraphicsContext) => void;
 
-  private _onGraphicsPostInitialize?: (context: ExcaliburGraphicsContext) => void;
+  private _onGraphicsPostInitialize?: (context: MitraGraphicsContext) => void;
 
   public get z(): number {
     return this._state.current.z;

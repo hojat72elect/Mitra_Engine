@@ -4,7 +4,7 @@ import { Logger } from '../../util/log';
 import type { Id } from '../../id';
 import type { Entity } from '../../entity-component-system/entity';
 import { BodyComponent } from '../body-component';
-import type { ExcaliburGraphicsContext } from '../..';
+import type { MitraGraphicsContext } from '../..';
 import { Color } from '../..';
 import type { DynamicTreeConfig } from '../physics-config';
 
@@ -477,7 +477,7 @@ export class DynamicTree<TProxy extends ColliderProxy<Entity>> {
     return helper(this.root!);
   }
 
-  public debug(ex: ExcaliburGraphicsContext) {
+  public debug(ex: MitraGraphicsContext) {
     // draw all the nodes in the Dynamic Tree
     const helper = (currentNode: TreeNode<TProxy>) => {
       if (currentNode) {

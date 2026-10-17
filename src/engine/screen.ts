@@ -3,10 +3,10 @@ import { Logger } from './util/log';
 import type { Camera } from './camera';
 import type { BrowserEvents } from './util/browser';
 import { BoundingBox } from './collision/index';
-import type { ExcaliburGraphicsContext } from './graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './graphics/context/mitra-graphics-context';
 import { getPosition } from './util/util';
 import { ExcaliburGraphicsContextWebGL } from './graphics/context/excalibur-graphics-context-webgl';
-import { ExcaliburGraphicsContext2DCanvas } from './graphics/context/excalibur-graphics-context-2d-canvas';
+import { MitraGraphicsContext2DCanvas } from './graphics/context/mitra-graphics-context2-d-canvas';
 import { EventEmitter } from './event-emitter';
 
 /**
@@ -211,7 +211,7 @@ export interface ScreenOptions {
   /**
    * Graphics context for the screen
    */
-  context: ExcaliburGraphicsContext;
+  context: MitraGraphicsContext;
 
   /**
    * Browser abstraction
@@ -308,7 +308,7 @@ export const ScreenEvents = {
  * The Screen handles all aspects of interacting with the screen for Excalibur.
  */
 export class Screen {
-  public graphicsContext: ExcaliburGraphicsContext;
+  public graphicsContext: MitraGraphicsContext;
   /**
    * Listen to screen events {@apilink ScreenEvents}
    */
@@ -629,7 +629,7 @@ export class Screen {
     this.graphicsContext.updateViewport(this.resolution);
     this.graphicsContext.resetTransform();
     this.graphicsContext.smoothing = this._antialiasing;
-    if (this.graphicsContext instanceof ExcaliburGraphicsContext2DCanvas) {
+    if (this.graphicsContext instanceof MitraGraphicsContext2DCanvas) {
       this.graphicsContext.scale(this.pixelRatio, this.pixelRatio);
     }
     // Add the excalibur world pixel to page pixel

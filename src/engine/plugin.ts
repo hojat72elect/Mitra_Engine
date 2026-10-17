@@ -1,5 +1,5 @@
 import type { Engine, EngineOptions } from './engine';
-import type { ExcaliburGraphicsContext, ExcaliburGraphicsContextOptions } from './graphics';
+import type { MitraGraphicsContext, MitraGraphicsContextOptions } from './graphics';
 import type { Scene } from './scene';
 
 /**
@@ -141,7 +141,7 @@ export abstract class Plugin {
    * @param context The graphics context being constructed
    * @param options The graphics context options (mutable)
    */
-  onGraphicsPreConfig?(context: ExcaliburGraphicsContext, options: ExcaliburGraphicsContextOptions): void;
+  onGraphicsPreConfig?(context: MitraGraphicsContext, options: MitraGraphicsContextOptions): void;
 
   /**
    * Intercept the graphics context after it is configured but before initialization.
@@ -152,7 +152,7 @@ export abstract class Plugin {
    * @param context The graphics context being constructed
    * @param options The graphics context options
    */
-  onGraphicsPostConfig?(context: ExcaliburGraphicsContext, options: ExcaliburGraphicsContextOptions): void;
+  onGraphicsPostConfig?(context: MitraGraphicsContext, options: MitraGraphicsContextOptions): void;
 
   /**
    * Intercept the graphics context and modify it before initialization.
@@ -162,7 +162,7 @@ export abstract class Plugin {
    *
    * @param context The graphics context being initialized
    */
-  onGraphicsPreInitialize?(context: ExcaliburGraphicsContext): void;
+  onGraphicsPreInitialize?(context: MitraGraphicsContext): void;
 
   /**
    * Intercept the graphics context and modify it after initialization.
@@ -176,7 +176,7 @@ export abstract class Plugin {
    *
    * @param context The initialized graphics context
    */
-  onGraphicsPostInitialize?(context: ExcaliburGraphicsContext): void;
+  onGraphicsPostInitialize?(context: MitraGraphicsContext): void;
 
   /**
    * Intercept a scene and modify it before initialization.
@@ -248,7 +248,7 @@ export abstract class Plugin {
    *
    * @param context The graphics context that was lost
    */
-  onGraphicsContextLost?(context: ExcaliburGraphicsContext): void;
+  onGraphicsContextLost?(context: MitraGraphicsContext): void;
 
   /**
    * Called when the WebGL graphics context is restored after being lost.
@@ -259,7 +259,7 @@ export abstract class Plugin {
    *
    * @param context The graphics context that was restored
    */
-  onGraphicsContextRestored?(context: ExcaliburGraphicsContext): void;
+  onGraphicsContextRestored?(context: MitraGraphicsContext): void;
 
   /**
    * Perform any cleanup necessary when the engine is disposed.

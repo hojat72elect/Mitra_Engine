@@ -1,7 +1,7 @@
 import type { Engine } from '../engine';
 import type * as Events from '../events';
 import type { Scene } from '../scene';
-import type { ExcaliburGraphicsContext } from '../graphics';
+import type { MitraGraphicsContext } from '../graphics';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface _initialize {
@@ -214,7 +214,7 @@ export interface OnPreDraw {
   /**
    * Overridable implementation
    */
-  onPreDraw(ctx: ExcaliburGraphicsContext, elapsed: number): void;
+  onPreDraw(ctx: MitraGraphicsContext, elapsed: number): void;
 
   /**
    * Event signatures
@@ -228,7 +228,7 @@ export interface OnPostDraw {
   /**
    * Overridable implementation
    */
-  onPostDraw(ctx: ExcaliburGraphicsContext, elapsed: number): void;
+  onPostDraw(ctx: MitraGraphicsContext, elapsed: number): void;
 
   /**
    * Event signatures

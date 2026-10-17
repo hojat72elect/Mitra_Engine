@@ -5,7 +5,7 @@ import type { CollisionContact } from './collision-contact';
 import type { RayCastOptions } from './ray-cast-options';
 import type { Ray } from '../../math/ray';
 import type { RayCastHit } from './ray-cast-hit';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { BoundingBox } from '../bounding-box';
 import type { Vector } from '../../math/vector';
 
@@ -65,5 +65,5 @@ export interface CollisionProcessor {
   /**
    * Draw any debug information
    */
-  debug(ex: ExcaliburGraphicsContext, elapsed: number): void;
+  debug(ex: MitraGraphicsContext, elapsed: number): void;
 }

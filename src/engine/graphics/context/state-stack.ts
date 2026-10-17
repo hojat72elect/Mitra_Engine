@@ -1,6 +1,6 @@
 import { Color } from '../../color';
 import { RentalPool } from '../../util/rental-pool';
-import type { ExcaliburGraphicsContextState } from './excalibur-graphics-context';
+import type { ExcaliburGraphicsContextState } from './mitra-graphics-context';
 import type { Material } from './material';
 
 export class ContextState implements ExcaliburGraphicsContextState {

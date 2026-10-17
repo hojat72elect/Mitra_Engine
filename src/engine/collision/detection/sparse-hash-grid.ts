@@ -1,5 +1,5 @@
 import { Color } from '../../color';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { Vector } from '../../math/vector';
 import { RentalPool } from '../../util/rental-pool';
 import { BoundingBox } from '../bounding-box';
@@ -297,7 +297,7 @@ export class SparseHashGrid<TObject extends { bounds: BoundingBox }, TProxy exte
     return updated;
   }
 
-  debug(ex: ExcaliburGraphicsContext, elapsed: number): void {
+  debug(ex: MitraGraphicsContext, elapsed: number): void {
     const color = Color.White;
     for (const cell of this.sparseHashGrid.values()) {
       ex.debug.drawRect(cell.x * this.gridSize, cell.y * this.gridSize, this.gridSize, this.gridSize, { color, lineWidth: 2 });

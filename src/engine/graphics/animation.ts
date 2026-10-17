@@ -1,6 +1,6 @@
 import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { GetSpriteOptions, SpriteSheet } from './sprite-sheet';
 import { Logger } from '../util/log';
 import { clamp } from '../math/util';
@@ -568,7 +568,7 @@ export class Animation extends Graphic implements HasTick {
     }
   }
 
-  protected _drawImage(ctx: ExcaliburGraphicsContext, x: number, y: number) {
+  protected _drawImage(ctx: MitraGraphicsContext, x: number, y: number) {
     if (this.currentFrame && this.currentFrame.graphic) {
       this.currentFrame.graphic.draw(ctx, x, y);
     }

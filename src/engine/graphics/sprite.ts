@@ -1,7 +1,7 @@
 import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
 import type { ImageSource } from './image-source';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { Logger } from '../util/log';
 
 export type SourceView = { x: number; y: number; width: number; height: number };
@@ -85,7 +85,7 @@ export class Sprite extends Graphic {
     this.height = Math.ceil(this.destSize.height) * this.scale.y;
   }
 
-  protected override _preDraw(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  protected override _preDraw(ex: MitraGraphicsContext, x: number, y: number): void {
     if (this.image.isLoaded() && this._dirty) {
       this._dirty = false;
       this._updateSpriteDimensions();
@@ -93,7 +93,7 @@ export class Sprite extends Graphic {
     super._preDraw(ex, x, y);
   }
 
-  public _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  public _drawImage(ex: MitraGraphicsContext, x: number, y: number): void {
     if (this.image.isLoaded()) {
       ex.drawImage(
         this.image.image,

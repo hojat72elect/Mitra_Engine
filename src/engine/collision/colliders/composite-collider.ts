@@ -1,7 +1,7 @@
 import { Util } from '../..';
 import { Pair } from '../detection/pair';
 import type { Color } from '../../color';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { LineSegment } from '../../math/line-segment';
 import { Projection } from '../../math/projection';
 import type { Ray } from '../../math/ray';
@@ -279,7 +279,7 @@ export class CompositeCollider extends Collider {
     }
   }
 
-  public debug(ex: ExcaliburGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }) {
+  public debug(ex: MitraGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }) {
     const colliders = this.getColliders();
     ex.save();
     ex.translate(this.offset.x, this.offset.y);

@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { BoundingBox } from '../collision/bounding-box';
 import type { SpriteFont } from './sprite-font';
 import type { GraphicOptions } from './graphic';
@@ -99,17 +99,17 @@ export class Text extends Graphic {
     return this.font.measureText(this._text, this.maxWidth).scale(this.scale);
   }
 
-  protected override _rotate(_ex: ExcaliburGraphicsContext) {
+  protected override _rotate(_ex: MitraGraphicsContext) {
     // None this is delegated to font
     // This override erases the default behavior
   }
 
-  protected override _flip(_ex: ExcaliburGraphicsContext) {
+  protected override _flip(_ex: MitraGraphicsContext) {
     // None this is delegated to font
     // This override erases the default behavior
   }
 
-  protected override _preDraw(ex: ExcaliburGraphicsContext, x: number, y: number): void {
+  protected override _preDraw(ex: MitraGraphicsContext, x: number, y: number): void {
     if (this.isStale() || this.font.isStale()) {
       this.font.flipHorizontal = this.flipHorizontal;
       this.font.flipVertical = this.flipVertical;
@@ -121,7 +121,7 @@ export class Text extends Graphic {
     super._preDraw(ex, x, y);
   }
 
-  protected override _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number) {
+  protected override _drawImage(ex: MitraGraphicsContext, x: number, y: number) {
     let color = Color.Black;
     if (this.font instanceof Font) {
       color = this.color ?? this.font.color;

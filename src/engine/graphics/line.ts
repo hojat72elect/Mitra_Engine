@@ -1,7 +1,7 @@
 import { BoundingBox } from '../collision/bounding-box';
 import { Color } from '../color';
 import type { Vector } from '../math/vector';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { Graphic } from './graphic';
 
 export interface LineOptions {
@@ -49,7 +49,7 @@ export class Line extends Graphic {
     return BoundingBox.fromPoints(points);
   }
 
-  protected _drawImage(ctx: ExcaliburGraphicsContext, _x: number, _y: number): void {
+  protected _drawImage(ctx: MitraGraphicsContext, _x: number, _y: number): void {
     ctx.drawLine(this.start, this.end, this.color, this.thickness);
   }
 

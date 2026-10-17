@@ -1,7 +1,7 @@
 import type { BoundingBox } from '../collision/bounding-box';
 import type { Color } from '../color';
 import type { Vector } from '../math/vector';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 
 /**
  * Enum representing the different font size units
@@ -171,5 +171,5 @@ export interface FontOptions {
  */
 export interface FontRenderer {
   measureText(text: string): BoundingBox;
-  render(ex: ExcaliburGraphicsContext, text: string, color: Color, x: number, y: number): void;
+  render(ex: MitraGraphicsContext, text: string, color: Color, x: number, y: number): void;
 }

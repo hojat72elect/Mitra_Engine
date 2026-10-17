@@ -3,7 +3,7 @@ import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
 import type { HasTick } from './animation';
 import { Animation } from './animation';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { BoundingBox } from '../collision/index';
 import { Logger } from '../util/log';
 
@@ -119,12 +119,12 @@ export class GraphicsGroup extends Graphic implements HasTick {
     }
   }
 
-  protected override _preDraw(ex: ExcaliburGraphicsContext, x: number, y: number) {
+  protected override _preDraw(ex: MitraGraphicsContext, x: number, y: number) {
     this._updateDimensions();
     super._preDraw(ex, this.useAnchor ? x : 0, this.useAnchor ? y : 0);
   }
 
-  protected _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number) {
+  protected _drawImage(ex: MitraGraphicsContext, x: number, y: number) {
     const pos = Vector.Zero;
     for (const member of this.members) {
       let graphic: Graphic;

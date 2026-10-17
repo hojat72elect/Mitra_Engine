@@ -12,7 +12,7 @@ import type { CollisionContact } from '../detection/collision-contact';
 import { BodyComponent } from '../body-component';
 import { CompositeCollider } from '../colliders/composite-collider';
 import { CollisionGroup } from '../group/collision-group';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { RayCastHit } from './ray-cast-hit';
 import type { DeepRequired } from '../../util/required';
 import type { PhysicsConfig } from '../physics-config';
@@ -316,7 +316,7 @@ export class DynamicTreeCollisionProcessor implements CollisionProcessor {
     return updated;
   }
 
-  public debug(ex: ExcaliburGraphicsContext) {
+  public debug(ex: MitraGraphicsContext) {
     this._dynamicCollisionTree.debug(ex);
   }
 }

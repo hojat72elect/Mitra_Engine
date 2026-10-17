@@ -12,7 +12,7 @@ import { Color } from '../../color';
 import { Collider } from './collider';
 
 import { ClosestLineJumpTable } from './closest-line-jump-table';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { Transform } from '../../math/transform';
 import { AffineMatrix } from '../../math/affine-matrix';
 import { BodyComponent } from '../index';
@@ -311,7 +311,7 @@ export class CircleCollider extends Collider {
     return new Projection(Math.min.apply(Math, scalars), Math.max.apply(Math, scalars));
   }
 
-  public debug(ex: ExcaliburGraphicsContext, color: Color, options?: { lineWidth: number }) {
+  public debug(ex: MitraGraphicsContext, color: Color, options?: { lineWidth: number }) {
     const { lineWidth } = { ...{ lineWidth: 1 }, ...options };
     const tx = this._transform;
     const scale = tx?.globalScale ?? Vector.One;

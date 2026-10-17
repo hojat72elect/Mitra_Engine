@@ -1,7 +1,7 @@
 import { BoundingBox } from '../collision/bounding-box';
 import type { Color } from '../color';
 import { ExcaliburGraphicsContextWebGL } from './context/excalibur-graphics-context-webgl';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { Font } from './font';
 import { vec, Vector } from '../math';
 import { combineHashes, hashString } from '../util/string';
@@ -267,8 +267,8 @@ export class FontTextInstance {
     this._dirty = true;
   }
   private _dirty = true;
-  private _ex?: ExcaliburGraphicsContext;
-  public render(ex: ExcaliburGraphicsContext, x: number, y: number, maxWidth?: number) {
+  private _ex?: MitraGraphicsContext;
+  public render(ex: MitraGraphicsContext, x: number, y: number, maxWidth?: number) {
     if (this.disposed) {
       throw Error('Accessing disposed text instance! ' + this.text);
     }

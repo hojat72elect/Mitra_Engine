@@ -1,6 +1,6 @@
 import type { GraphicOptions } from './graphic';
 import { Graphic } from './graphic';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import { Color } from '../color';
 import { Vector } from '../math/vector';
 import { BoundingBox } from '../collision/bounding-box';
@@ -286,7 +286,7 @@ export abstract class Raster extends Graphic {
     ctx.fillStyle = this.color?.toString();
   }
 
-  protected _drawImage(ex: ExcaliburGraphicsContext, x: number, y: number) {
+  protected _drawImage(ex: MitraGraphicsContext, x: number, y: number) {
     if (this._dirty) {
       this.rasterize();
     }

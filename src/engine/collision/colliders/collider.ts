@@ -9,7 +9,7 @@ import type { Clonable } from '../../interfaces/clonable';
 import type { Entity } from '../../entity-component-system';
 import type { Id } from '../../id';
 import { createId } from '../../id';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import type { Transform } from '../../math/transform';
 import { EventEmitter } from '../../event-emitter';
 import type { RayCastHit } from '../detection/ray-cast-hit';
@@ -125,7 +125,7 @@ export abstract class Collider implements Clonable<Collider> {
    */
   abstract update(transform: Transform): void;
 
-  abstract debug(ex: ExcaliburGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }): void;
+  abstract debug(ex: MitraGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }): void;
 
   abstract clone(): Collider;
 }

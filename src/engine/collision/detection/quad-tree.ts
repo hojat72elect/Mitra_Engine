@@ -1,5 +1,5 @@
 import { Color } from '../../color';
-import type { ExcaliburGraphicsContext } from '../../graphics';
+import type { MitraGraphicsContext } from '../../graphics';
 import { BoundingBox } from '../bounding-box';
 
 export interface QuadTreeItem {
@@ -243,7 +243,7 @@ export class QuadTree<TItem extends QuadTreeItem> {
     );
   }
 
-  debug(ctx: ExcaliburGraphicsContext) {
+  debug(ctx: MitraGraphicsContext) {
     this.bounds.debug(ctx, { color: Color.Yellow });
     if (this._isDivided) {
       this.topLeft!.bounds.debug(ctx, { color: Color.Yellow });

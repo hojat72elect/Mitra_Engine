@@ -29,8 +29,8 @@ export * from './nine-slice';
 export * from './tiled-sprite';
 export * from './tiled-animation';
 
-export * from './context/excalibur-graphics-context';
-export * from './context/excalibur-graphics-context-2d-canvas';
+export * from './context/mitra-graphics-context';
+export * from './context/mitra-graphics-context2-d-canvas';
 export * from './context/excalibur-graphics-context-webgl';
 export * from './context/particle-renderer/particle-renderer';
 export * from './context/debug-text';

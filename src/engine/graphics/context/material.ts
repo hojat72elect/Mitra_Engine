@@ -1,5 +1,5 @@
 import { Color } from '../../color';
-import type { ExcaliburGraphicsContext } from './excalibur-graphics-context';
+import type { MitraGraphicsContext } from './mitra-graphics-context';
 import { ExcaliburGraphicsContextWebGL } from './excalibur-graphics-context-webgl';
 import type { Shader, UniformDictionary } from './shader';
 import { Logger } from '../../util/log';
@@ -19,7 +19,7 @@ type MaterialSharedOptions = {
   /**
    * Excalibur graphics context to create the material (only WebGL is supported at the moment)
    */
-  graphicsContext?: ExcaliburGraphicsContext;
+  graphicsContext?: MitraGraphicsContext;
 
   /**
    * Optionally specify a vertex shader

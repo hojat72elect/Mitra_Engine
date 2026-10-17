@@ -12,7 +12,7 @@ import type { CollisionSolver } from './solver/solver';
 import { ColliderComponent } from './collider-component';
 import { CompositeCollider } from './colliders/composite-collider';
 import type { Engine } from '../engine';
-import type { ExcaliburGraphicsContext } from '../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../graphics/context/mitra-graphics-context';
 import type { Scene } from '../scene';
 import { Side } from '../collision/side';
 import type { PhysicsWorld } from './physics-world';
@@ -261,7 +261,7 @@ export class CollisionSystem extends System {
     return this._physics.config.solver === SolverStrategy.Realistic ? this._realisticSolver : this._arcadeSolver;
   }
 
-  debug(ex: ExcaliburGraphicsContext) {
+  debug(ex: MitraGraphicsContext) {
     this._processor.debug(ex, 0);
   }
 

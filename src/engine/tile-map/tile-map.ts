@@ -8,7 +8,7 @@ import { TransformComponent } from '../entity-component-system/components/transf
 import { BodyComponent } from '../collision/body-component';
 import { CollisionType } from '../collision/collision-type';
 import { Colliders } from '../collision/colliders/colliders';
-import type { ExcaliburGraphicsContext, Graphic } from '../graphics';
+import type { MitraGraphicsContext, Graphic } from '../graphics';
 import { GraphicsComponent, hasGraphicsTick, ParallaxComponent } from '../graphics';
 import { MotionComponent } from '../entity-component-system/components/motion-component';
 import { ColliderComponent } from '../collision/collider-component';
@@ -641,7 +641,7 @@ export class TileMap extends Entity implements HasNestedPointerEvents {
    * @param ctx ExcaliburGraphicsContext
    * @param elapsed  The number of milliseconds since the last draw
    */
-  public draw(ctx: ExcaliburGraphicsContext, elapsed: number): void {
+  public draw(ctx: MitraGraphicsContext, elapsed: number): void {
     if (!this.isInitialized) {
       return;
     }
@@ -672,7 +672,7 @@ export class TileMap extends Entity implements HasNestedPointerEvents {
     this.emit('postdraw', new PostDrawEvent(ctx as any, elapsed, this));
   }
 
-  public debug(gfx: ExcaliburGraphicsContext, debugFlags: DebugConfig) {
+  public debug(gfx: MitraGraphicsContext, debugFlags: DebugConfig) {
     const {
       showAll,
       showGrid,

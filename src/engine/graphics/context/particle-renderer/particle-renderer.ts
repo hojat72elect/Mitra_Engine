@@ -6,7 +6,7 @@ import particleFragmentSource from './particle-fragment.glsl?raw';
 import type { GpuParticleRenderer } from '../../../particles/gpu-particle-renderer';
 import { vec } from '../../../math/vector';
 import { Color } from '../../../color';
-import type { HTMLImageSource } from '../excalibur-graphics-context';
+import type { HTMLImageSource } from '../mitra-graphics-context';
 import { ImageSourceAttributeConstants } from '../../image-source';
 import { parseImageWrapping } from '../../wrapping';
 import { parseImageFiltering } from '../../filtering';

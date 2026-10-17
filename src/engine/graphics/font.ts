@@ -1,7 +1,7 @@
 import type { Vector } from '../math/vector';
 import { BoundingBox } from '../collision/index';
 import { Color } from '../color';
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { FontOptions, FontRenderer } from './font-common';
 import { BaseAlign, TextDirection, FontStyle, FontUnit, TextAlign } from './font-common';
 import type { GraphicOptions } from './graphic';
@@ -144,11 +144,11 @@ export class Font extends Graphic implements FontRenderer {
     return this._textBounds;
   }
 
-  protected _drawImage(_ex: ExcaliburGraphicsContext, _x: number, _y: number) {
+  protected _drawImage(_ex: MitraGraphicsContext, _x: number, _y: number) {
     // TODO weird vestigial drawimage
   }
 
-  protected override _rotate(ex: ExcaliburGraphicsContext) {
+  protected override _rotate(ex: MitraGraphicsContext) {
     // TODO this needs to change depending on the bounding box...
     const origin = this.origin ?? this._textBounds.center;
     ex.translate(origin.x, origin.y);
@@ -156,7 +156,7 @@ export class Font extends Graphic implements FontRenderer {
     ex.translate(-origin.x, -origin.y);
   }
 
-  protected override _flip(ex: ExcaliburGraphicsContext) {
+  protected override _flip(ex: MitraGraphicsContext) {
     if (this.flipHorizontal) {
       ex.translate(this._textBounds.width / this.scale.x, 0);
       ex.scale(-1, 1);
@@ -185,11 +185,11 @@ export class Font extends Graphic implements FontRenderer {
     return FontCache.measureText(text, this, maxWidth);
   }
 
-  protected override _postDraw(ex: ExcaliburGraphicsContext): void {
+  protected override _postDraw(ex: MitraGraphicsContext): void {
     ex.restore();
   }
 
-  public render(ex: ExcaliburGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
+  public render(ex: MitraGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
     const textInstance = FontCache.getTextInstance(text, this, colorOverride);
 
     // Apply affine transformations

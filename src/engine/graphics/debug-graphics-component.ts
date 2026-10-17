@@ -1,4 +1,4 @@
-import type { ExcaliburGraphicsContext } from './context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from './context/mitra-graphics-context';
 import type { DebugConfig } from '../debug';
 import { Component } from '../entity-component-system/component';
 
@@ -12,7 +12,7 @@ export class DebugGraphicsComponent extends Component {
   // @ts-ignore
   private static _NAME = 'DebugGraphicsComponent';
   constructor(
-    public draw: (ctx: ExcaliburGraphicsContext, debugFlags: DebugConfig) => void,
+    public draw: (ctx: MitraGraphicsContext, debugFlags: DebugConfig) => void,
     public useTransform = true
   ) {
     super();

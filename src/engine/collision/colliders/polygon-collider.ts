@@ -10,7 +10,7 @@ import { Vector, vec } from '../../math/vector';
 import { Ray } from '../../math/ray';
 import { ClosestLineJumpTable } from './closest-line-jump-table';
 import { Collider } from './collider';
-import type { ExcaliburGraphicsContext } from '../..';
+import type { MitraGraphicsContext } from '../..';
 import { BodyComponent, Debug, Logger, sign } from '../..';
 import { CompositeCollider } from './composite-collider';
 import { Colliders } from './colliders';
@@ -807,7 +807,7 @@ export class PolygonCollider extends Collider {
     return new Projection(min, max);
   }
 
-  public debug(ex: ExcaliburGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }) {
+  public debug(ex: MitraGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }) {
     const points = this.getTransformedPoints();
     Debug.drawPolygon(points, { color });
   }

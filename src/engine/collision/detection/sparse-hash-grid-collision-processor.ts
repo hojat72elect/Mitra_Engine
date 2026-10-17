@@ -1,6 +1,6 @@
 import type { FrameStats } from '../../debug/debug-config';
 import type { Entity } from '../../entity-component-system';
-import type { ExcaliburGraphicsContext } from '../../graphics/context/excalibur-graphics-context';
+import type { MitraGraphicsContext } from '../../graphics/context/mitra-graphics-context';
 import { createId } from '../../id';
 import type { Ray } from '../../math/ray';
 import type { Vector } from '../../math/vector';
@@ -435,7 +435,7 @@ export class SparseHashGridCollisionProcessor implements CollisionProcessor {
    * @param ex
    * @param elapsed
    */
-  debug(ex: ExcaliburGraphicsContext, elapsed: number): void {
+  debug(ex: MitraGraphicsContext, elapsed: number): void {
     this.hashGrid.debug(ex, elapsed);
   }
 }
