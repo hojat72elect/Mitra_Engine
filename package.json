@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/engine/index.d.ts",
       "import": "./dist/engine/index.js"
+    },
+    "./tiled_plugin": {
+      "types": "./dist/tiled_plugin/index.d.ts",
+      "import": "./dist/tiled_plugin/index.js"
     }
   },
   "files": [
