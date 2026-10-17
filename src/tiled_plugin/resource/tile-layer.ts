@@ -1,12 +1,12 @@
-import { Color, ParallaxComponent, TileMap, Vector, vec, GraphicsComponent, Logger, AnimationStrategy, TransformComponent, Tile as ExTile, BodyComponent } from "excalibur";
-import { mapProps, PropertyMapValue } from "./properties";
+import { Color, ParallaxComponent, TileMap, Vector, vec, GraphicsComponent, Logger, AnimationStrategy, TransformComponent, Tile as ExTile, BodyComponent } from "../../engine";
+import { mapProps, type PropertyMapValue } from "./properties";
 import { TiledTileLayer, isCSV, isInfiniteLayer, needsDecoding } from "../parser/tiled-parser";
 import { Decoder } from "./decoder";
 import { TiledResource } from "./tiled-resource";
 import { getCanonicalGid } from "./gid-util";
 import { ExcaliburTiledProperties } from "./excalibur-properties";
 import { TiledLayerDataComponent } from "./tiled-layer-component";
-import { Layer } from "./layer";
+import type {Layer} from "./layer";
 import { Tile } from "./tileset";
 import { byClassCaseInsensitive, byProperty, byPropertyValueMatcher } from "./filter-util";
 

@@ -1,4 +1,4 @@
-import { Component } from "excalibur";
+import { Component } from "../../engine";
 import { PluginObject } from "./objects";
 
 export interface TiledDataComponentOptions {

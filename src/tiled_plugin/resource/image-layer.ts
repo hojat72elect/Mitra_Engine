@@ -1,4 +1,4 @@
-import { Actor, Color, ImageSource, ParallaxComponent, Vector, vec } from "excalibur";
+import { Actor, Color, ImageSource, ParallaxComponent, Vector, vec } from "../../engine";
 import type {Layer} from "./layer";
 import type {TiledImageLayer} from "../parser/tiled-parser";
 import { TiledResource } from "./tiled-resource";

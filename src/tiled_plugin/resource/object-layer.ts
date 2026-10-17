@@ -10,7 +10,7 @@ import {
     toRadians,
     vec,
     Vector
-} from "excalibur";
+} from "../../engine";
 import type {Layer} from "./layer";
 import {Ellipse, InsertedTile, parseObjects, PluginObject, Polygon, Rectangle, TemplateObject, Text} from "./objects";
 import type {TiledObjectLayer} from "../parser/tiled-parser";

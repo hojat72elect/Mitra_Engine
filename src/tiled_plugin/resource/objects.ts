@@ -1,5 +1,5 @@
-import { BaseAlign, Color, Font, FontUnit, TextAlign, Vector, toRadians, vec } from "excalibur";
-import { Text as ExText } from 'excalibur';
+import { BaseAlign, Color, Font, FontUnit, TextAlign, Vector, toRadians, vec } from "../../engine";
+import { Text as ExText } from "../../engine";
 import {type TiledObject, type TiledObjectGroup, TiledText } from "../parser/tiled-parser";
 import {type Properties, type PropertyMapValue, mapProps } from "./properties";
 import { Template } from "./template";

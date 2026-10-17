@@ -9,7 +9,7 @@ import {
   IsometricTile,
   IsometricEntityComponent,
   BodyComponent
-} from "excalibur";
+} from "../../engine";
 
 import { mapProps, type PropertyMapValue } from "./properties";
 import { TiledTileLayer, isCSV, isInfiniteLayer, needsDecoding } from "../parser/tiled-parser";

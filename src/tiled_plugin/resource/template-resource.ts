@@ -1,12 +1,12 @@
-import { ImageSource, type Loadable } from "excalibur";
+import { ImageSource, type Loadable } from "../../engine";
 import { TiledParser, TiledTemplate } from "../parser/tiled-parser";
 import { FetchLoader, type FileLoader } from "./file-loader";
 import { LoaderCache } from "./loader-cache";
 import { parseObject } from "./objects";
-import { PathMap, pathRelativeToBase } from "./path-util";
+import {type PathMap, pathRelativeToBase } from "./path-util";
 import { Tileset } from "./tileset";
 import { Template } from "./template";
-import { TilesetResource, TilesetResourceOptions } from "./tileset-resource";
+import { TilesetResource, type TilesetResourceOptions } from "./tileset-resource";
 
 export interface TemplateResourceOptions {
    headless?: boolean;

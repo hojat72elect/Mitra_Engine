@@ -1,4 +1,4 @@
-import { Component } from "excalibur";
+import { Component } from "../../engine";
 import { TiledTileLayer } from "../parser/tiled-parser";
 
 export interface TiledLayerDataComponentOptions {

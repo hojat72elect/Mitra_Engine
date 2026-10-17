@@ -1,4 +1,4 @@
-import { ImageSource, Loadable } from "excalibur";
+import { ImageSource, Loadable } from "../../engine";
 import { Tileset } from "./tileset";
 import { TiledParser, TiledTile, TiledTilesetFile, isTiledTilesetCollectionOfImages, isTiledTilesetSingleImage } from "../parser/tiled-parser";
 import { FetchLoader, FileLoader } from "./file-loader";
