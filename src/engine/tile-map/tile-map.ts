@@ -638,7 +638,7 @@ export class TileMap extends Entity implements HasNestedPointerEvents {
 
   /**
    * Draws the tile map to the screen. Called by the {@apilink Scene}.
-   * @param ctx ExcaliburGraphicsContext
+   * @param ctx
    * @param elapsed  The number of milliseconds since the last draw
    */
   public draw(ctx: MitraGraphicsContext, elapsed: number): void {

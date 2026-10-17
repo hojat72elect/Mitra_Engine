@@ -1,5 +1,5 @@
 /**
- * An interface describing loadable resources in Excalibur. Built-in loadable
+ * An interface describing loadable resources in Mitra. Built-in loadable
  * resources include {@apilink Texture}, {@apilink Sound}, and a generic {@apilink Resource}.
  */
 export interface Loadable<T> {

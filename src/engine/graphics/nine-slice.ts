@@ -184,7 +184,7 @@ export class NineSlice extends Graphic {
 
   /**
    * Draws 1 of the 9 tiles based on parameters passed in
-   * context is the ExcaliburGraphicsContext from the _drawImage function
+   * context is the MitraGraphicsContext from the _drawImage function
    * destinationSize is the size of the destination image as a vector (width,height)
    * targetCanvas is the canvas to draw to
    * horizontalStretch and verticalStretch are the horizontal and vertical stretching strategies

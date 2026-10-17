@@ -10,7 +10,7 @@ import type { PhysicsConfig } from '../physics-config';
 import type { DeepRequired } from '../../util/required';
 
 /**
- * ArcadeSolver is the default in Excalibur. It solves collisions so that there is no overlap between contacts,
+ * ArcadeSolver is the default in Mitra. It solves collisions so that there is no overlap between contacts,
  * and negates velocity along the collision normal.
  *
  * This is usually the type of collisions used for 2D games that don't need a more realistic collision simulation.

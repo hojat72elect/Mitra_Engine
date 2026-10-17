@@ -17,7 +17,7 @@ import type { CompositeCollider } from './composite-collider';
 
 /**
  * A collision collider specifies the geometry that can detect when other collision colliders intersect
- * for the purposes of colliding 2 objects in excalibur.
+ * for the purposes of colliding 2 objects in Mitra.
  */
 export abstract class Collider implements Clonable<Collider> {
   private static _ID = 0;

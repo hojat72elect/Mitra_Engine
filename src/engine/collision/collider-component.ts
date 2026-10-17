@@ -338,7 +338,7 @@ export class ColliderComponent extends Component {
   }
 
   /**
-   * Setups up a {@apilink CompositeCollider} which can define any arbitrary set of excalibur colliders
+   * Setups up a {@apilink CompositeCollider} which can define any arbitrary set of Mitra colliders
    * @param colliders
    */
   useCompositeCollider(colliders: Collider[]): CompositeCollider {

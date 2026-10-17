@@ -54,9 +54,8 @@ export class PointerAbstraction {
   }
 
   /**
-   * Called internally by excalibur to keep pointers up to date
+   * Called internally by Mitra to keep pointers up to date
    * @internal
-   * @param engine
    */
   public _updateWorldPosition(engine: Engine) {
     const coord = GlobalCoordinates.fromPagePosition(this.lastPagePos, engine);

@@ -1,7 +1,7 @@
 import type { MitraGraphicsContextWebgl } from './mitra-graphics-context-webgl';
 
 /**
- * Interface that defines an Excalibur Renderer that can be called with .draw() in the {@apilink ExcaliburGraphicsContext}
+ * Interface that defines a Mitra Renderer that can be called with .draw() in the {@apilink MitraGraphicsContext}
  */
 export interface RendererPlugin {
   /**

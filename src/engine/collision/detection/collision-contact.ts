@@ -6,7 +6,7 @@ import { cloneSeparationInfo } from '../colliders/separating-axis';
 import { BodyComponent } from '../body-component';
 
 /**
- * Collision contacts are used internally by Excalibur to resolve collision between colliders. This
+ * Collision contacts are used internally by Mitra to resolve collision between colliders. This
  * Pair prevents collisions from being evaluated more than one time
  */
 export class CollisionContact {

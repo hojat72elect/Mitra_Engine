@@ -10,7 +10,7 @@ export enum MatrixLocations {
 }
 
 /**
- * Excalibur Matrix helper for 4x4 matrices
+ * Mitra Matrix helper for 4x4 matrices
  *
  * Useful for webgl 4x4 matrices
  */

@@ -106,7 +106,7 @@ export class Colliders {
 }
 
 /**
- * Excalibur helper for defining colliders quickly
+ * Mitra helper for defining colliders quickly.
  * @deprecated use Colliders.*
  */
 export class Shape {

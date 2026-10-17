@@ -7,7 +7,7 @@ export interface RectangleOptions {
 }
 
 /**
- * A Rectangle {@apilink Graphic} for drawing rectangles to the {@apilink ExcaliburGraphicsContext}
+ * A Rectangle {@apilink Graphic} for drawing rectangles to the {@apilink MitraGraphicsContext}
  */
 export class Rectangle extends Raster {
   constructor(options: RasterOptions & RectangleOptions) {

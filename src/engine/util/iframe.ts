@@ -1,7 +1,7 @@
 import { Logger } from './log';
 
 /**
- * Checks if excalibur is in a x-origin iframe
+ * Checks if Mitra is in an x-origin iframe.
  */
 export function isCrossOriginIframe() {
   try {
@@ -27,16 +27,16 @@ export function isIframe() {
 }
 
 /**
- * Grabs the default global object for Excalibur
+ * Grabs the default global object for Mitra.
  */
 export function getDefaultGlobal(): GlobalEventHandlers {
   let global: GlobalEventHandlers;
   if (isCrossOriginIframe()) {
     global = window;
-    Logger.getInstance().warnOnce('Excalibur might be in a cross-origin iframe, in order to receive keyboard events it must be in focus');
+    Logger.getInstance().warnOnce('Mitra might be in a cross-origin iframe, in order to receive keyboard events it must be in focus');
   } else if (isIframe()) {
     global = window;
-    Logger.getInstance().warnOnce('Excalibur might be in a iframe, in order to receive keyboard events it must be in focus');
+    Logger.getInstance().warnOnce('Mitra might be in a iframe, in order to receive keyboard events it must be in focus');
   } else {
     global = window.top!;
   }

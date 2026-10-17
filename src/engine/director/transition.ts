@@ -49,7 +49,7 @@ export interface TransitionOptions {
 }
 
 /**
- * Base Transition that can be extended to provide custom scene transitions in Excalibur.
+ * Base Transition that can be extended to provide custom scene transitions in Mitra.
  */
 export class Transition extends Entity {
   private _logger: Logger = Logger.getInstance();
@@ -237,7 +237,7 @@ export class Transition extends Entity {
   }
 
   /**
-   * Called internally by excalibur to swap scenes with transition
+   * Called internally by Mitra to swap scenes with transition
    * @internal
    */
   async _play() {

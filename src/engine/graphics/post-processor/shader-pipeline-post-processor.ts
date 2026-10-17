@@ -52,7 +52,7 @@ export class ShaderPipelinePostProcessor implements PostProcessor {
     if (!this._pipeline) {
       throw new Error(
         `ShaderPipelinePostProcessor "${this.name}" is not initialized yet, ` +
-          `add it with ExcaliburGraphicsContext.addPostProcessor() first`
+          `add it with MitraGraphicsContext.addPostProcessor() first`
       );
     }
     return this._pipeline;

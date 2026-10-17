@@ -543,7 +543,7 @@ export class Animation extends Graphic implements HasTick {
   }
 
   /**
-   * Called internally by Excalibur to update the state of the animation potential update the current frame
+   * Called internally by Mitra to update the state of the animation potential update the current frame
    * @param elapsed Milliseconds elapsed
    * @param idempotencyToken Prevents double ticking in a frame by passing a unique token to the frame
    */

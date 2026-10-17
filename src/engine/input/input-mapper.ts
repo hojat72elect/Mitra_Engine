@@ -17,7 +17,7 @@ export class InputMapper {
   constructor(public inputs: InputsOptions) {}
 
   /**
-   * Executes the input map, called internally by Excalibur
+   * Executes the input map, called internally by Mitra.
    */
   execute() {
     for (const [input, command] of this._handlers.entries()) {

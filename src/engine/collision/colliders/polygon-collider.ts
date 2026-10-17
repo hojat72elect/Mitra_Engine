@@ -62,7 +62,7 @@ export class PolygonCollider extends Collider {
 
   /**
    * Points in the polygon in order around the perimeter in local coordinates. These are relative from the body transform position.
-   * Excalibur stores these in counter-clockwise order
+   * Mitra stores these in counter-clockwise order.
    */
   public set points(points: Vector[]) {
     if (points.length < 3) {
@@ -84,7 +84,7 @@ export class PolygonCollider extends Collider {
 
   /**
    * Points in the polygon in order around the perimeter in local coordinates. These are relative from the body transform position.
-   * Excalibur stores these in counter-clockwise order
+   * Mitra stores these in counter-clockwise order.
    */
   public get points(): Vector[] {
     return this._points;
@@ -113,7 +113,7 @@ export class PolygonCollider extends Collider {
     if (!this.isConvex()) {
       if (!options.suppressConvexWarning) {
         this._logger.warn(
-          'Excalibur only supports convex polygon colliders and will not behave properly.' +
+          'Mitra only supports convex polygon colliders and will not behave properly.' +
             'Call PolygonCollider.triangulate() to build a new collider composed of smaller convex triangles'
         );
       }
@@ -139,7 +139,7 @@ export class PolygonCollider extends Collider {
   }
 
   /**
-   * Returns if the polygon collider is convex, Excalibur does not handle non-convex collision shapes.
+   * Returns if the polygon collider is convex, Mitra does not handle non-convex collision shapes.
    * Call {@apilink Polygon.triangulate} to generate a {@apilink CompositeCollider} from this non-convex shape
    */
   public isConvex(): boolean {

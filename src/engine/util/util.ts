@@ -82,8 +82,8 @@ export function fail(message: never): never {
 /**
  * Create a promise that resolves after a certain number of milliseconds
  *
- * It is strongly recommended you pass the excalibur clock so delays are bound to the
- * excalibur clock which would be unaffected by stop/pause.
+ * It is strongly recommended you pass the Mitra clock so delays are bound to the
+ * Mitra clock which would be unaffected by stop/pause.
  * @param milliseconds
  * @param clock
  */

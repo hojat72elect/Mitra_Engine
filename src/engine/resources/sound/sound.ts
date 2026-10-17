@@ -98,7 +98,7 @@ function isSoundOptions(x: any): x is SoundOptions[] {
 }
 
 /**
- * The {@apilink Sound} object allows games built in Excalibur to load audio
+ * The {@apilink Sound} object allows games built in Mitra to load audio
  * components, from soundtracks to sound effects. {@apilink Sound} is an {@apilink Loadable}
  * which means it can be passed to a {@apilink Loader} to pre-load before a game or level.
  */
@@ -175,7 +175,7 @@ export class Sound implements Audio, Loadable<AudioBuffer> {
   }
 
   /**
-   * Should excalibur add a cache busting querystring? By default false.
+   * Should Mitra add a cache busting querystring? By default, false.
    * Must be set before loading
    */
   public get bustCache() {

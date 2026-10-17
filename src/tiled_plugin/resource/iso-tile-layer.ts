@@ -28,7 +28,7 @@ export interface IsometricTileInfo {
    */
   tiledTile?: Tile;
   /**
-   * Excalibur tile abstraction
+   * Mitra tile abstraction
    */
   exTile: IsometricTile;
 }
@@ -62,7 +62,7 @@ export class IsoTileLayer implements Layer {
   data: number[] = [];
 
   /**
-   * Excalibur IsometricMap structure for drawing in excalibur
+   * Mitra IsometricMap structure for drawing in Mitra.
    */
   isometricMap!: IsometricMap;
 
@@ -101,7 +101,7 @@ export class IsoTileLayer implements Layer {
   }
 
   /**
-   * Returns the excalibur tiles that match a tiled property and optional value
+   * Returns the Mitra tiles that match a tiled property and optional value
    * @param name
    * @param value
    * @param [valueMatchInsensitive=true] 
@@ -143,14 +143,14 @@ export class IsoTileLayer implements Layer {
 
 
   /**
-   * Returns the excalibur tiles that match a tiled gid
+   * Returns the Mitra tiles that match a tiled gid
    */
   getTilesByGid(gid: number): IsometricTileInfo[] {
     return this._gidToTileInfo.get(gid) ?? [];
   }
 
   /**
-   * Returns the excalibur tiles that match a tiled class name
+   * Returns the Mitra tiles that match a tiled class name
    * @param className
    */
   getTilesByClassName(className: string): IsometricTileInfo[] {
@@ -429,7 +429,7 @@ export class IsoTileLayer implements Layer {
         }
       }
     } else {
-      // Read tiled data into Excalibur's tilemap type
+      // Read tiled data into Mitra's tilemap type
       for (let i = 0; i < this.data.length; i++) {
         let gid = this.data[i];
         if (gid !== 0) {

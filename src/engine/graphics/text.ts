@@ -29,7 +29,7 @@ export interface TextOptions {
 }
 
 /**
- * Represent Text graphics in excalibur
+ * Represent Text graphics in Mitra.
  *
  * Useful for in game labels, ui, or overlays
  */

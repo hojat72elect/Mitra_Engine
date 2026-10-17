@@ -246,7 +246,7 @@ export interface VertexAttributeDefinition {
 
 export interface ShaderOptions {
   /**
-   * ExcaliburGraphicsContextWebGL this layout will be attached to, these cannot be reused across webgl contexts.
+   * MitraGraphicsContextWebGL this layout will be attached to, these cannot be reused across webgl contexts.
    */
   graphicsContext: MitraGraphicsContext;
 
@@ -347,7 +347,7 @@ export class Shader {
   }
 
   /**
-   * Create a shader program in excalibur
+   * Create a shader program in Mitra
    * @param options specify shader vertex and fragment source
    */
   constructor(options: ShaderOptions) {
@@ -355,7 +355,7 @@ export class Shader {
       options;
     this.name = name ?? this.name;
     if (!(graphicsContext instanceof MitraGraphicsContextWebgl)) {
-      throw new Error(`ExcaliburGraphicsContext provided to a shader ${this.name} must be WebGL`);
+      throw new Error(`MitraGraphicsContext provided to a shader ${this.name} must be WebGL`);
     }
     this._gl = graphicsContext.__gl;
     this._startingTextureSlot = startingTextureSlot ?? this._startingTextureSlot;

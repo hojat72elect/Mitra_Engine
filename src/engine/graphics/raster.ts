@@ -64,7 +64,7 @@ export interface RasterOptions extends GraphicOptions {
 
 /**
  * A Raster is a Graphic that needs to be first painted to a HTMLCanvasElement before it can be drawn to the
- * {@apilink ExcaliburGraphicsContext}. This is useful for generating custom images using the 2D canvas api.
+ * {@apilink MitraGraphicsContext}. This is useful for generating custom images using the 2D canvas api.
  *
  * Implementors must implement the {@apilink Raster.execute} method to rasterize their drawing.
  */
@@ -258,7 +258,7 @@ export abstract class Raster extends Graphic {
   }
 
   /**
-   * Rasterize the graphic to a bitmap making it usable as in excalibur. Rasterize is called automatically if
+   * Rasterize the graphic to a bitmap making it usable as in Mitra. Rasterize is called automatically if
    * the graphic is {@apilink Raster.dirty} on the next {@apilink Graphic.draw} call
    */
   public rasterize(): void {
@@ -296,7 +296,7 @@ export abstract class Raster extends Graphic {
 
   /**
    * Executes drawing implementation of the graphic, this is where the specific drawing code for the graphic
-   * should be implemented. Once `rasterize()` the graphic can be drawn to the {@apilink ExcaliburGraphicsContext} via `draw(...)`
+   * should be implemented. Once `rasterize()` the graphic can be drawn to the {@apilink MitraGraphicsContext} via `draw(...)`
    * @param ctx Canvas to draw the graphic to
    */
   abstract execute(ctx: CanvasRenderingContext2D): void;

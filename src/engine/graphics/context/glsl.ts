@@ -43,7 +43,7 @@ const NO_PREMULTIPLY_PRAGMA_REGEX = /^[ \t]*#pragma\s+excalibur\s+premultiply\s*
 const CALL_REGEX = /([A-Za-z_][A-Za-z0-9_]*)\s*\(/g;
 
 /**
- * Built in glsl sampling functions that return a premultiplied value in Excalibur, mapped to the
+ * Built in glsl sampling functions that return a premultiplied value in Mitra, mapped to the
  * un-premultiplying wrapper injected in the preamble.
  */
 const SAMPLER_RENAMES: Record<string, string> = {
@@ -91,13 +91,13 @@ function pixelTextureSource(premultiply: boolean): string[] {
 }
 
 /**
- * Tagged template literal for authoring Excalibur {@apilink Material} fragment shaders.
+ * Tagged template literal for authoring Mitra {@apilink Material} fragment shaders.
  *
  * It handles the boilerplate and, most importantly, the alpha space bookkeeping.
  *
  * ## Automatic alpha premultiplication
  *
- * Excalibur's WebGL pipeline is premultiplied end to end. Textures are uploaded with
+ * Mitra's WebGL pipeline is premultiplied end to end. Textures are uploaded with
  * `UNPACK_PREMULTIPLY_ALPHA_WEBGL`, so a raw `texture(u_graphic, uv)` hands back a premultiplied
  * value, and the blend function is `(ONE, ONE_MINUS_SRC_ALPHA)`, so the fragment output must be
  * premultiplied too. Doing your own alpha math in the middle of that is a reliable source of

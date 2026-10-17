@@ -1,7 +1,7 @@
 import { CollisionGroup } from './collision-group';
 
 /**
- * Static class for managing collision groups in excalibur, there is a maximum of 32 collision groups possible in excalibur
+ * Static class for managing collision groups in Mitra, there is a maximum of 32 collision groups possible in Mitra.
  */
 export class CollisionGroupManager {
   // using bitmasking the maximum number of groups is 32, because that is the highest 32bit integer that JS can present.
@@ -35,7 +35,7 @@ export class CollisionGroupManager {
   }
 
   /**
-   * Get all collision groups currently tracked by excalibur
+   * Get all collision groups currently tracked by Mitra.
    */
   public static get groups(): CollisionGroup[] {
     return Array.from(this._GROUPS.values());

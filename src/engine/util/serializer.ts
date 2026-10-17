@@ -1,5 +1,5 @@
 // ============================================================================
-// ExcaliburJS Serialization System - Centralized Architecture
+// Mitra Serialization System - Centralized Architecture
 // ============================================================================
 
 import { Entity } from '../entity-component-system/entity';
@@ -51,7 +51,7 @@ export interface ComponentData extends SerializedData {
 // ============================================================================
 
 /**
- * Central serialization system for ExcaliburJS
+ * Central serialization system for Mitra.
  * Handles all serialization/deserialization with extensible registry
  */
 export class Serializer {

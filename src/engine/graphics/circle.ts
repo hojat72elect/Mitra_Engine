@@ -7,7 +7,7 @@ export interface CircleOptions {
 }
 
 /**
- * A circle {@apilink Graphic} for drawing circles to the {@apilink ExcaliburGraphicsContext}
+ * A circle {@apilink Graphic} for drawing circles to the {@apilink MitraGraphicsContext}
  *
  * Circles default to {@apilink ImageFiltering.Blended}
  */

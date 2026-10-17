@@ -31,7 +31,7 @@ export interface CircleColliderOptions {
 }
 
 /**
- * This is a circle collider for the excalibur rigid body physics simulation
+ * This is a circle collider for the Mitra rigid body physics simulation
  */
 export class CircleCollider extends Collider {
   /**

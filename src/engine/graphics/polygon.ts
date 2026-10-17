@@ -9,7 +9,7 @@ export interface PolygonOptions {
 }
 
 /**
- * A polygon {@apilink Graphic} for drawing arbitrary polygons to the {@apilink ExcaliburGraphicsContext}
+ * A polygon {@apilink Graphic} for drawing arbitrary polygons to the {@apilink MitraGraphicsContext}
  *
  * Polygons default to {@apilink ImageFiltering.Blended}
  */

@@ -285,7 +285,7 @@ export class ObjectLayer implements Layer {
 
         if (object instanceof Ellipse) {
             // FIXME: Circles are positioned differently in isometric as ellipses and currently arent supported
-            // FIXME: Excalibur doesn't support ellipses :( fallback to circle
+            // FIXME: Mitra doesn't support ellipses :( fallback to circle
             // pick the smallest dimension and that's our radius
             newActor.collider.useCircleCollider(Math.min(object.width, object.height) / 2);
         }

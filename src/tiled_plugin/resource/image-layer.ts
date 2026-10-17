@@ -44,7 +44,7 @@ export class ImageLayer implements Layer {
             z: this.order
          });
          this.imageActor.addComponent(new ParallaxComponent(vec(parallaxx, parallaxy)))
-         // FIXME when excalibur supports tiling we should use it here for repeatx/repeaty!
+         // FIXME when Mitra supports tiling we should use it here for repeatx/repeaty!
          const sprite = this.image.toSprite();
          this.imageActor.graphics.use(sprite);
          this.imageActor.graphics.isVisible = this.tiledImageLayer.visible;

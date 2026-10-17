@@ -1,203 +1,205 @@
-import type { Vector } from '../math/vector';
-import { BoundingBox } from '../collision/index';
-import { Color } from '../color';
-import type { MitraGraphicsContext } from './context/mitra-graphics-context';
-import type { FontOptions, FontRenderer } from './font-common';
-import { BaseAlign, TextDirection, FontStyle, FontUnit, TextAlign } from './font-common';
-import type { GraphicOptions } from './graphic';
-import { Graphic } from './graphic';
-import type { RasterOptions } from './raster';
-import { ImageFiltering } from './filtering';
-import { FontTextInstance } from './font-text-instance';
-import { FontCache } from './font-cache';
-import { combineHashes, hashString } from '../util/string';
+import type {Vector} from '../math/vector';
+import {BoundingBox} from '../collision/index';
+import {Color} from '../color';
+import type {MitraGraphicsContext} from './context/mitra-graphics-context';
+import type {FontOptions, FontRenderer} from './font-common';
+import {BaseAlign, FontStyle, FontUnit, TextAlign, TextDirection} from './font-common';
+import type {GraphicOptions} from './graphic';
+import {Graphic} from './graphic';
+import type {RasterOptions} from './raster';
+import {ImageFiltering} from './filtering';
+import {FontTextInstance} from './font-text-instance';
+import {FontCache} from './font-cache';
+import {combineHashes, hashString} from '../util/string';
+
 /**
- * Represents a system or web font in Excalibur
+ * Represents a system or web font in Mitra.
  *
  * If no options specified, the system sans-serif 10 pixel is used
  *
  * If loading a custom web font be sure to have the font loaded before you use it https://erikonarheim.com/posts/dont-test-fonts/
  */
 export class Font extends Graphic implements FontRenderer {
-  /**
-   * Set the font filtering mode, by default set to {@apilink ImageFiltering.Blended} regardless of the engine default smoothing
-   *
-   * If you have a pixel style font that may be a reason to switch this to {@apilink ImageFiltering.Pixel}
-   */
-  public filtering: ImageFiltering = ImageFiltering.Blended;
-  constructor(options: FontOptions & GraphicOptions & RasterOptions = {}) {
-    super(options); // <- Graphics properties
+    /**
+     * Set the font filtering mode, by default set to {@apilink ImageFiltering.Blended} regardless of the engine default smoothing
+     *
+     * If you have a pixel style font that may be a reason to switch this to {@apilink ImageFiltering.Pixel}
+     */
+    public filtering: ImageFiltering = ImageFiltering.Blended;
 
-    // Raster properties
-    this.smoothing = options?.smoothing ?? this.smoothing;
-    this.padding = options?.padding ?? this.padding;
-    this.color = options?.color ?? this.color;
-    this.strokeColor = options?.strokeColor ?? this.strokeColor;
-    this.lineDash = options?.lineDash ?? this.lineDash;
-    this.lineWidth = options?.lineWidth ?? this.lineWidth;
-    this.filtering = options?.filtering ?? this.filtering;
+    constructor(options: FontOptions & GraphicOptions & RasterOptions = {}) {
+        super(options); // <- Graphics properties
 
-    // Font specific properties
-    this.family = options?.family ?? this.family;
-    this.style = options?.style ?? this.style;
-    this.bold = options?.bold ?? this.bold;
-    this.size = options?.size ?? this.size;
-    this.unit = options?.unit ?? this.unit;
-    this.textAlign = options?.textAlign ?? this.textAlign;
-    this.baseAlign = options?.baseAlign ?? this.baseAlign;
-    this.direction = options?.direction ?? this.direction;
-    this.lineHeight = options?.lineHeight ?? this.lineHeight;
-    this.quality = options?.quality ?? this.quality;
-    if (options?.shadow) {
-      this.shadow = {};
-      this.shadow.blur = options.shadow.blur ?? this.shadow.blur;
-      this.shadow.offset = options.shadow.offset ?? this.shadow.offset;
-      this.shadow.color = options.shadow.color ?? this.shadow.color;
+        // Raster properties
+        this.smoothing = options?.smoothing ?? this.smoothing;
+        this.padding = options?.padding ?? this.padding;
+        this.color = options?.color ?? this.color;
+        this.strokeColor = options?.strokeColor ?? this.strokeColor;
+        this.lineDash = options?.lineDash ?? this.lineDash;
+        this.lineWidth = options?.lineWidth ?? this.lineWidth;
+        this.filtering = options?.filtering ?? this.filtering;
+
+        // Font specific properties
+        this.family = options?.family ?? this.family;
+        this.style = options?.style ?? this.style;
+        this.bold = options?.bold ?? this.bold;
+        this.size = options?.size ?? this.size;
+        this.unit = options?.unit ?? this.unit;
+        this.textAlign = options?.textAlign ?? this.textAlign;
+        this.baseAlign = options?.baseAlign ?? this.baseAlign;
+        this.direction = options?.direction ?? this.direction;
+        this.lineHeight = options?.lineHeight ?? this.lineHeight;
+        this.quality = options?.quality ?? this.quality;
+        if (options?.shadow) {
+            this.shadow = {};
+            this.shadow.blur = options.shadow.blur ?? this.shadow.blur;
+            this.shadow.offset = options.shadow.offset ?? this.shadow.offset;
+            this.shadow.color = options.shadow.color ?? this.shadow.color;
+        }
+
+        // FIXME can we change this we only need this for text measurement!?! maybe a cursed static?
+        // must be created after this is finished setting values
+        this._textMeasurement = new FontTextInstance(this, '', Color.Black);
     }
 
-    // FIXME can we change this we only need this for text measurement!?! maybe a cursed static?
-    // must be created after this is finished setting values
-    this._textMeasurement = new FontTextInstance(this, '', Color.Black);
-  }
-
-  public get hashCode(): number {
-    return combineHashes(
-      hashString(this.fontString),
-      +this.showDebug,
-      hashString(this.textAlign),
-      hashString(this.baseAlign),
-      hashString(this.direction),
-      +(this.lineHeight ?? 0),
-      +(this.shadow?.blur ?? 0),
-      +(this.shadow?.color?.hashCode ?? 0),
-      +(this.shadow?.offset?.x ?? 0),
-      +(this.shadow?.offset?.y ?? 0),
-      +this.padding,
-      +this.smoothing,
-      +this.lineWidth,
-      +this.lineDash.reduce((a, b) => a + b, 0),
-      +(this.strokeColor?.hashCode ?? 0),
-      this.color.hashCode
-    );
-  }
-
-  public clone() {
-    return new Font({
-      ...this.cloneGraphicOptions(),
-      size: this.size,
-      unit: this.unit,
-      family: this.family,
-      style: this.style,
-      bold: this.bold,
-      textAlign: this.textAlign,
-      baseAlign: this.baseAlign,
-      direction: this.direction,
-      shadow: this.shadow
-        ? {
-            blur: this.shadow.blur,
-            offset: this.shadow.offset,
-            color: this.shadow.color
-          }
-        : undefined
-    });
-  }
-
-  /**
-   * Font quality determines the size of the underlying raster text, higher quality means less jagged edges.
-   * If quality is set to 1, then just enough raster bitmap is generated to render the text.
-   *
-   * You can think of quality as how zoomed in to the text you can get before seeing jagged edges.
-   *
-   * (Default 2)
-   */
-  public quality = 2;
-
-  // Raster properties for fonts
-  public padding = 2;
-  public smoothing = false;
-  public lineWidth = 1;
-  public lineDash: number[] = [];
-  public color: Color = Color.Black;
-  public strokeColor?: Color;
-
-  public family: string = 'sans-serif';
-  public style: FontStyle = FontStyle.Normal;
-  public bold: boolean = false;
-  public unit: FontUnit = FontUnit.Px;
-  public textAlign: TextAlign = TextAlign.Left;
-  public baseAlign: BaseAlign = BaseAlign.Top;
-  public direction: TextDirection = TextDirection.LeftToRight;
-  /**
-   * Font line height in pixels, default line height if unset
-   */
-  public lineHeight: number | undefined = undefined;
-  public size: number = 10;
-  public shadow?: { blur?: number; offset?: Vector; color?: Color };
-
-  public get fontString() {
-    return `${this.style} ${this.bold ? 'bold' : ''} ${this.size}${this.unit} ${this.family}`;
-  }
-
-  private _textBounds: BoundingBox = new BoundingBox();
-
-  public override get localBounds(): BoundingBox {
-    return this._textBounds;
-  }
-
-  protected _drawImage(_ex: MitraGraphicsContext, _x: number, _y: number) {
-    // TODO weird vestigial drawimage
-  }
-
-  protected override _rotate(ex: MitraGraphicsContext) {
-    // TODO this needs to change depending on the bounding box...
-    const origin = this.origin ?? this._textBounds.center;
-    ex.translate(origin.x, origin.y);
-    ex.rotate(this.rotation);
-    ex.translate(-origin.x, -origin.y);
-  }
-
-  protected override _flip(ex: MitraGraphicsContext) {
-    if (this.flipHorizontal) {
-      ex.translate(this._textBounds.width / this.scale.x, 0);
-      ex.scale(-1, 1);
+    public get hashCode(): number {
+        return combineHashes(
+            hashString(this.fontString),
+            +this.showDebug,
+            hashString(this.textAlign),
+            hashString(this.baseAlign),
+            hashString(this.direction),
+            +(this.lineHeight ?? 0),
+            +(this.shadow?.blur ?? 0),
+            +(this.shadow?.color?.hashCode ?? 0),
+            +(this.shadow?.offset?.x ?? 0),
+            +(this.shadow?.offset?.y ?? 0),
+            +this.padding,
+            +this.smoothing,
+            +this.lineWidth,
+            +this.lineDash.reduce((a, b) => a + b, 0),
+            +(this.strokeColor?.hashCode ?? 0),
+            this.color.hashCode
+        );
     }
 
-    if (this.flipVertical) {
-      ex.translate(0, -this._textBounds.height / 2 / this.scale.y);
-      ex.scale(1, -1);
+    public clone() {
+        return new Font({
+            ...this.cloneGraphicOptions(),
+            size: this.size,
+            unit: this.unit,
+            family: this.family,
+            style: this.style,
+            bold: this.bold,
+            textAlign: this.textAlign,
+            baseAlign: this.baseAlign,
+            direction: this.direction,
+            shadow: this.shadow
+                ? {
+                    blur: this.shadow.blur,
+                    offset: this.shadow.offset,
+                    color: this.shadow.color
+                }
+                : undefined
+        });
     }
-  }
 
-  private _textMeasurement: FontTextInstance;
+    /**
+     * Font quality determines the size of the underlying raster text, higher quality means less jagged edges.
+     * If quality is set to 1, then just enough raster bitmap is generated to render the text.
+     *
+     * You can think of quality as how zoomed in to the text you can get before seeing jagged edges.
+     *
+     * (Default 2)
+     */
+    public quality = 2;
 
-  public measureTextWithoutCache(text: string, maxWidth?: number) {
-    return this._textMeasurement.measureText(text, maxWidth);
-  }
+    // Raster properties for fonts
+    public padding = 2;
+    public smoothing = false;
+    public lineWidth = 1;
+    public lineDash: number[] = [];
+    public color: Color = Color.Black;
+    public strokeColor?: Color;
 
-  /**
-   * Returns a BoundingBox that is the total size of the text including multiple lines
-   *
-   * Does not include any padding or adjustment
-   * @param text
-   * @returns BoundingBox
-   */
-  public measureText(text: string, maxWidth?: number): BoundingBox {
-    return FontCache.measureText(text, this, maxWidth);
-  }
+    public family: string = 'sans-serif';
+    public style: FontStyle = FontStyle.Normal;
+    public bold: boolean = false;
+    public unit: FontUnit = FontUnit.Px;
+    public textAlign: TextAlign = TextAlign.Left;
+    public baseAlign: BaseAlign = BaseAlign.Top;
+    public direction: TextDirection = TextDirection.LeftToRight;
+    /**
+     * Font line height in pixels, default line height if unset
+     */
+    public lineHeight: number | undefined = undefined;
+    public size: number = 10;
+    public shadow?: { blur?: number; offset?: Vector; color?: Color };
 
-  protected override _postDraw(ex: MitraGraphicsContext): void {
-    ex.restore();
-  }
+    public get fontString() {
+        return `${this.style} ${this.bold ? 'bold' : ''} ${this.size}${this.unit} ${this.family}`;
+    }
 
-  public render(ex: MitraGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
-    const textInstance = FontCache.getTextInstance(text, this, colorOverride);
+    private _textBounds: BoundingBox = new BoundingBox();
 
-    // Apply affine transformations
-    this._textBounds = textInstance.dimensions;
-    this._preDraw(ex, x, y);
+    public override get localBounds(): BoundingBox {
+        return this._textBounds;
+    }
 
-    textInstance.render(ex, x, y, maxWidth);
+    protected _drawImage(_ex: MitraGraphicsContext, _x: number, _y: number) {
+        // TODO weird vestigial drawimage
+    }
 
-    this._postDraw(ex);
-  }
+    protected override _rotate(ex: MitraGraphicsContext) {
+        // TODO this needs to change depending on the bounding box...
+        const origin = this.origin ?? this._textBounds.center;
+        ex.translate(origin.x, origin.y);
+        ex.rotate(this.rotation);
+        ex.translate(-origin.x, -origin.y);
+    }
+
+    protected override _flip(ex: MitraGraphicsContext) {
+        if (this.flipHorizontal) {
+            ex.translate(this._textBounds.width / this.scale.x, 0);
+            ex.scale(-1, 1);
+        }
+
+        if (this.flipVertical) {
+            ex.translate(0, -this._textBounds.height / 2 / this.scale.y);
+            ex.scale(1, -1);
+        }
+    }
+
+    private _textMeasurement: FontTextInstance;
+
+    public measureTextWithoutCache(text: string, maxWidth?: number) {
+        return this._textMeasurement.measureText(text, maxWidth);
+    }
+
+    /**
+     * Returns a BoundingBox that is the total size of the text including multiple lines
+     *
+     * Does not include any padding or adjustment
+     * @param text
+     * @returns BoundingBox
+     */
+    public measureText(text: string, maxWidth?: number): BoundingBox {
+        return FontCache.measureText(text, this, maxWidth);
+    }
+
+    protected override _postDraw(ex: MitraGraphicsContext): void {
+        ex.restore();
+    }
+
+    public render(ex: MitraGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
+        const textInstance = FontCache.getTextInstance(text, this, colorOverride);
+
+        // Apply affine transformations
+        this._textBounds = textInstance.dimensions;
+        this._preDraw(ex, x, y);
+
+        textInstance.render(ex, x, y, maxWidth);
+
+        this._postDraw(ex);
+    }
 }

@@ -8,10 +8,10 @@ export interface CanvasOptions {
 }
 
 /**
- * A canvas {@apilink Graphic} to provide an adapter between the 2D Canvas API and the {@apilink ExcaliburGraphicsContext}.
+ * A canvas {@apilink Graphic} to provide an adapter between the 2D Canvas API and the {@apilink MitraGraphicsContext}.
  *
  * The {@apilink Canvas} works by re-rastering a draw handler to a HTMLCanvasElement for every draw which is then passed
- * to the {@apilink ExcaliburGraphicsContext} implementation as a rendered image.
+ * to the {@apilink MitraGraphicsContext} implementation as a rendered image.
  *
  * **Low performance API**
  */

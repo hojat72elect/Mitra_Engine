@@ -30,7 +30,7 @@ export class WebAudio {
         return resolve(true);
       }
       const unlockTimeoutTimer = setTimeout(() => {
-        Logger.getInstance().warn('Excalibur was unable to unlock the audio context, audio probably will not play in this browser.');
+        Logger.getInstance().warn('Mitra was unable to unlock the audio context, audio probably will not play in this browser.');
         resolve(false);
       }, 200);
 

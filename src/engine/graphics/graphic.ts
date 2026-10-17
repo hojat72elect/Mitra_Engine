@@ -45,7 +45,7 @@ export interface GraphicOptions {
 }
 
 /**
- * A Graphic is the base Excalibur primitive for something that can be drawn to the {@apilink ExcaliburGraphicsContext}.
+ * A Graphic is the base Mitra primitive for something that can be drawn to the {@apilink MitraGraphicsContext}.
  * {@apilink Sprite}, {@apilink Animation}, {@apilink GraphicsGroup}, {@apilink Canvas}, {@apilink Rectangle}, {@apilink Circle}, and {@apilink Polygon} all derive from the
  * {@apilink Graphic} abstract class.
  *
@@ -215,7 +215,7 @@ export abstract class Graphic {
 
   /**
    * Draw the whole graphic to the context including transform
-   * @param ex The excalibur graphics context
+   * @param ex The Mitra graphics context
    * @param x
    * @param y
    */
@@ -229,7 +229,7 @@ export abstract class Graphic {
    * Meant to be overridden by the graphic implementation to draw the underlying image (HTMLCanvasElement or HTMLImageElement)
    * to the graphics context without transform. Transformations like position, rotation, and scale are handled by {@apilink Graphic._preDraw}
    * and {@apilink Graphic._postDraw}
-   * @param ex The excalibur graphics context
+   * @param ex The Mitra graphics context
    * @param x
    * @param y
    */
