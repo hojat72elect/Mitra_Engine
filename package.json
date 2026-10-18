@@ -20,13 +20,6 @@
   ],
   "scripts": {
     "build": "tsc && vite build --config vite.lib.config.ts",
-    "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/",
-    "example2_platformer": "vite --open /examples/example2_platformer/",
-    "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
-    "example4_breakout": "vite --open /examples/example4_breakout/",
-    "example5_islander": "vite --open /examples/example5_islander/",
-    "example7_menu": "vite --open /examples/example7_menu/",
-    "example8_matter_js": "vite --open /examples/example8_matter_js/",
     "lint": "eslint . --ext .ts,.js",
     "prepublishOnly": "npm run build"
   },
