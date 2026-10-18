@@ -25,22 +25,19 @@ export const GamepadEvents = {
  * to provide controller support for your games.
  */
 export class Gamepads {
+    /**
+     * The minimum value an axis has to move before considering it a change
+     */
+    public static MinAxisMoveThreshold = 0.05;
     public events = new EventEmitter<GamepadEvents>();
     /**
      * Whether or not to poll for Gamepad input (default: `false`)
      */
     public enabled = false;
-
     /**
      * Whether or not Gamepad API is supported
      */
     public supported = !!(<any>navigator).getGamepads;
-
-    /**
-     * The minimum value an axis has to move before considering it a change
-     */
-    public static MinAxisMoveThreshold = 0.05;
-
     private _gamePadTimeStamps = [0, 0, 0, 0];
     private _oldPads: Gamepad[] = [];
     private _pads: Gamepad[] = [];
@@ -80,59 +77,38 @@ export class Gamepads {
         this._minimumConfiguration = config;
     }
 
-    /**
-     * When implicitly enabled, set the enabled flag and run an update so information is updated
-     */
-    private _enableAndUpdate() {
-        if (!this.enabled) {
-            this.enabled = true;
-            this.update();
-        }
-    }
-
-    /**
-     * Checks a navigator gamepad against the minimum configuration if present.
-     */
-    private _isGamepadValid(pad: NavigatorGamepad): boolean {
-        if (!this._minimumConfiguration) {
-            return true;
-        }
-        if (!pad) {
-            return false;
-        }
-        const axesLength = pad.axes.filter((value) => {
-            return typeof value !== undefined;
-        }).length;
-
-        const buttonLength = pad.buttons.filter((value) => {
-            return typeof value !== undefined;
-        }).length;
-        return axesLength >= this._minimumConfiguration.axis && buttonLength >= this._minimumConfiguration.buttons && pad.connected;
-    }
-
     public emit<TEventName extends EventKey<GamepadEvents>>(eventName: TEventName, event: GamepadEvents[TEventName]): void;
+
     public emit(eventName: string, event?: any): void;
+
     public emit<TEventName extends EventKey<GamepadEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
 
     public on<TEventName extends EventKey<GamepadEvents>>(eventName: TEventName, handler: Handler<GamepadEvents[TEventName]>): Subscription;
+
     public on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public on<TEventName extends EventKey<GamepadEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         this._enableAndUpdate(); // implicitly enable
         return this.events.on(eventName, handler);
     }
 
     public once<TEventName extends EventKey<GamepadEvents>>(eventName: TEventName, handler: Handler<GamepadEvents[TEventName]>): Subscription;
+
     public once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public once<TEventName extends EventKey<GamepadEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         this._enableAndUpdate(); // implicitly enable
         return this.events.once(eventName, handler);
     }
 
     public off<TEventName extends EventKey<GamepadEvents>>(eventName: TEventName, handler: Handler<GamepadEvents[TEventName]>): void;
+
     public off(eventName: string, handler: Handler<unknown>): void;
+
     public off(eventName: string): void;
+
     public off<TEventName extends EventKey<GamepadEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         this._enableAndUpdate(); // implicitly enable
         this.events.off(eventName, handler as any);
@@ -260,6 +236,36 @@ export class Gamepads {
      */
     public count() {
         return this._pads.filter((p) => p.connected).length;
+    }
+
+    /**
+     * When implicitly enabled, set the enabled flag and run an update so information is updated
+     */
+    private _enableAndUpdate() {
+        if (!this.enabled) {
+            this.enabled = true;
+            this.update();
+        }
+    }
+
+    /**
+     * Checks a navigator gamepad against the minimum configuration if present.
+     */
+    private _isGamepadValid(pad: NavigatorGamepad): boolean {
+        if (!this._minimumConfiguration) {
+            return true;
+        }
+        if (!pad) {
+            return false;
+        }
+        const axesLength = pad.axes.filter((value) => {
+            return typeof value !== undefined;
+        }).length;
+
+        const buttonLength = pad.buttons.filter((value) => {
+            return typeof value !== undefined;
+        }).length;
+        return axesLength >= this._minimumConfiguration.axis && buttonLength >= this._minimumConfiguration.buttons && pad.connected;
     }
 
     private _clonePads(pads: NavigatorGamepad[]): Gamepad[] {

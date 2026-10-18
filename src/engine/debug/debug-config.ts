@@ -162,6 +162,198 @@ export interface GraphicsStatistics {
  * updated during a frame.
  */
 export class DebugConfig {
+    /**
+     * Performance statistics
+     */
+    public stats: DebugStats = {
+        /**
+         * Current frame statistics. Engine reuses this instance, use {@apilink FrameStats.clone} to copy frame stats.
+         * Best accessed on {@apilink postframe} event. See {@apilink FrameStats}
+         */
+        currFrame: new FrameStats(),
+
+        /**
+         * Previous frame statistics. Engine reuses this instance, use {@apilink FrameStats.clone} to copy frame stats.
+         * Best accessed on {@apilink preframe} event. Best inspected on engine event `preframe`. See {@apilink FrameStats}
+         */
+        prevFrame: new FrameStats()
+    };
+    public settings = {
+        text: {
+            foreground: Color.Black,
+            background: Color.Transparent,
+            border: Color.Transparent
+        },
+        z: {
+            text: Number.POSITIVE_INFINITY,
+            point: Number.MAX_SAFE_INTEGER - 1,
+            ray: Number.MAX_SAFE_INTEGER - 1,
+            dashed: Number.MAX_SAFE_INTEGER - 2,
+            solid: Number.MAX_SAFE_INTEGER - 3
+        }
+    };
+    /**
+     * Correct or simulate color blindness using {@apilink ColorBlindnessPostProcessor}.
+     * @warning Will reduce FPS.
+     */
+    public colorBlindMode: ColorBlindFlags;
+    /**
+     * Filter debug context to named entities or entity ids
+     */
+    public filter: { useFilter: boolean; nameQuery: string; ids: number[] } = {
+        /**
+         * Toggle filter on or off (default off) must be on for DebugDraw to use filters
+         */
+        useFilter: false,
+        /**
+         * Query for entities by name, if the entity name contains `nameQuery` it will be included
+         */
+        nameQuery: '',
+        /**
+         * Query for Entity ids, if the id matches it will be included
+         */
+        ids: []
+    };
+    /**
+     * Entity debug settings
+     */
+    public entity = {
+        showAll: false,
+        showId: false,
+        showName: false
+    };
+    /**
+     * Transform component debug settings
+     */
+    public transform = {
+        showAll: false,
+
+        showPosition: false,
+        showPositionLabel: false,
+        positionColor: Color.Yellow,
+
+        showZIndex: false,
+
+        showScale: false,
+        scaleColor: Color.Green,
+
+        showRotation: false,
+        rotationColor: Color.Blue
+    };
+    /**
+     * Graphics component debug settings
+     */
+    public graphics = {
+        showAll: false,
+
+        showBounds: false,
+        boundsColor: Color.Yellow
+    };
+    /**
+     * Collider component debug settings
+     */
+    public collider = {
+        showAll: false,
+
+        showBounds: false,
+        boundsColor: Color.Blue,
+
+        showOwner: false,
+
+        showGeometry: true,
+        geometryColor: Color.Green,
+        geometryLineWidth: 2,
+        geometryPointSize: 2
+    };
+    /**
+     * Physics simulation debug settings
+     */
+    public physics = {
+        showAll: false,
+
+        showBroadphaseSpacePartitionDebug: false,
+
+        showCollisionNormals: false,
+        collisionNormalColor: Color.Cyan,
+
+        showCollisionContacts: true,
+        contactSize: 10,
+        collisionContactColor: Color.Red
+    };
+    /**
+     * Motion component debug settings
+     */
+    public motion = {
+        showAll: false,
+
+        showVelocity: false,
+        velocityColor: Color.Yellow,
+
+        showAcceleration: false,
+        accelerationColor: Color.Red
+    };
+    /**
+     * Body component debug settings
+     */
+    public body = {
+        showAll: false,
+
+        showCollisionGroup: false,
+        showCollisionType: false,
+        showSleeping: false,
+        showMotion: false,
+        showMass: false
+    };
+    /**
+     * Camera debug settings
+     */
+    public camera = {
+        showAll: false,
+
+        showFocus: false,
+        focusColor: Color.Red,
+
+        showZoom: false
+    };
+    public tilemap = {
+        showAll: false,
+
+        showGrid: false,
+        gridColor: Color.Red,
+        gridWidth: 0.5,
+        showSolidBounds: false,
+        solidBoundsColor: Color.fromHex('#8080807F'), // grayish
+        showColliderGeometry: true
+    };
+    public isometric = {
+        showAll: false,
+        showPosition: false,
+        positionColor: Color.Yellow,
+        positionSize: 1,
+        showGrid: false,
+        gridColor: Color.Red,
+        gridWidth: 1,
+        showColliderGeometry: true
+    };
+    /**
+     * Screen debug settings
+     *
+     * Visualizes the screen-space coordinate plan, including the safe {@apilink Screen.contentArea}
+     * and the full {@apilink Screen.unsafeArea} (which may be partially offscreen under the
+     * *AndFill display modes).
+     */
+    public screen = {
+        showAll: false,
+
+        showContentArea: true,
+        contentAreaColor: Color.Green,
+
+        showUnsafeArea: true,
+        unsafeAreaColor: Color.Red,
+
+        showLegend: true,
+        legendColor: Color.White
+    };
     private _engine: Engine;
 
     constructor(engine: Engine) {
@@ -210,213 +402,6 @@ export class DebugConfig {
         this._engine.clock = standardClock;
         return standardClock;
     }
-
-    /**
-     * Performance statistics
-     */
-    public stats: DebugStats = {
-        /**
-         * Current frame statistics. Engine reuses this instance, use {@apilink FrameStats.clone} to copy frame stats.
-         * Best accessed on {@apilink postframe} event. See {@apilink FrameStats}
-         */
-        currFrame: new FrameStats(),
-
-        /**
-         * Previous frame statistics. Engine reuses this instance, use {@apilink FrameStats.clone} to copy frame stats.
-         * Best accessed on {@apilink preframe} event. Best inspected on engine event `preframe`. See {@apilink FrameStats}
-         */
-        prevFrame: new FrameStats()
-    };
-
-    public settings = {
-        text: {
-            foreground: Color.Black,
-            background: Color.Transparent,
-            border: Color.Transparent
-        },
-        z: {
-            text: Number.POSITIVE_INFINITY,
-            point: Number.MAX_SAFE_INTEGER - 1,
-            ray: Number.MAX_SAFE_INTEGER - 1,
-            dashed: Number.MAX_SAFE_INTEGER - 2,
-            solid: Number.MAX_SAFE_INTEGER - 3
-        }
-    };
-
-    /**
-     * Correct or simulate color blindness using {@apilink ColorBlindnessPostProcessor}.
-     * @warning Will reduce FPS.
-     */
-    public colorBlindMode: ColorBlindFlags;
-
-    /**
-     * Filter debug context to named entities or entity ids
-     */
-    public filter: { useFilter: boolean; nameQuery: string; ids: number[] } = {
-        /**
-         * Toggle filter on or off (default off) must be on for DebugDraw to use filters
-         */
-        useFilter: false,
-        /**
-         * Query for entities by name, if the entity name contains `nameQuery` it will be included
-         */
-        nameQuery: '',
-        /**
-         * Query for Entity ids, if the id matches it will be included
-         */
-        ids: []
-    };
-
-    /**
-     * Entity debug settings
-     */
-    public entity = {
-        showAll: false,
-        showId: false,
-        showName: false
-    };
-
-    /**
-     * Transform component debug settings
-     */
-    public transform = {
-        showAll: false,
-
-        showPosition: false,
-        showPositionLabel: false,
-        positionColor: Color.Yellow,
-
-        showZIndex: false,
-
-        showScale: false,
-        scaleColor: Color.Green,
-
-        showRotation: false,
-        rotationColor: Color.Blue
-    };
-
-    /**
-     * Graphics component debug settings
-     */
-    public graphics = {
-        showAll: false,
-
-        showBounds: false,
-        boundsColor: Color.Yellow
-    };
-
-    /**
-     * Collider component debug settings
-     */
-    public collider = {
-        showAll: false,
-
-        showBounds: false,
-        boundsColor: Color.Blue,
-
-        showOwner: false,
-
-        showGeometry: true,
-        geometryColor: Color.Green,
-        geometryLineWidth: 2,
-        geometryPointSize: 2
-    };
-
-    /**
-     * Physics simulation debug settings
-     */
-    public physics = {
-        showAll: false,
-
-        showBroadphaseSpacePartitionDebug: false,
-
-        showCollisionNormals: false,
-        collisionNormalColor: Color.Cyan,
-
-        showCollisionContacts: true,
-        contactSize: 10,
-        collisionContactColor: Color.Red
-    };
-
-    /**
-     * Motion component debug settings
-     */
-    public motion = {
-        showAll: false,
-
-        showVelocity: false,
-        velocityColor: Color.Yellow,
-
-        showAcceleration: false,
-        accelerationColor: Color.Red
-    };
-
-    /**
-     * Body component debug settings
-     */
-    public body = {
-        showAll: false,
-
-        showCollisionGroup: false,
-        showCollisionType: false,
-        showSleeping: false,
-        showMotion: false,
-        showMass: false
-    };
-
-    /**
-     * Camera debug settings
-     */
-    public camera = {
-        showAll: false,
-
-        showFocus: false,
-        focusColor: Color.Red,
-
-        showZoom: false
-    };
-
-    public tilemap = {
-        showAll: false,
-
-        showGrid: false,
-        gridColor: Color.Red,
-        gridWidth: 0.5,
-        showSolidBounds: false,
-        solidBoundsColor: Color.fromHex('#8080807F'), // grayish
-        showColliderGeometry: true
-    };
-
-    public isometric = {
-        showAll: false,
-        showPosition: false,
-        positionColor: Color.Yellow,
-        positionSize: 1,
-        showGrid: false,
-        gridColor: Color.Red,
-        gridWidth: 1,
-        showColliderGeometry: true
-    };
-
-    /**
-     * Screen debug settings
-     *
-     * Visualizes the screen-space coordinate plan, including the safe {@apilink Screen.contentArea}
-     * and the full {@apilink Screen.unsafeArea} (which may be partially offscreen under the
-     * *AndFill display modes).
-     */
-    public screen = {
-        showAll: false,
-
-        showContentArea: true,
-        contentAreaColor: Color.Green,
-
-        showUnsafeArea: true,
-        unsafeAreaColor: Color.Red,
-
-        showLegend: true,
-        legendColor: Color.White
-    };
 }
 
 /**
@@ -424,9 +409,7 @@ export class DebugConfig {
  * creating instances of this every frame.
  */
 export class FrameStats implements FrameStatistics {
-    private _id: number = 0;
-    private _elapsedMs: number = 0;
-    private _fps: number = 0;
+    systemDuration: Record<string, number> = {};
     private _actorStats: FrameActorStats = {
         alive: 0,
         killed: 0,
@@ -445,16 +428,90 @@ export class FrameStats implements FrameStatistics {
             return this.update + this.draw;
         }
     };
-
     private _physicsStats: PhysicsStats = new PhysicsStats();
-
     private _graphicsStats: GraphicsStatistics = {
         drawCalls: 0,
         drawnImages: 0,
         rendererSwaps: 0
     };
 
-    systemDuration: Record<string, number> = {};
+    private _id: number = 0;
+
+    /**
+     * Gets the frame's id
+     */
+    public get id() {
+        return this._id;
+    }
+
+    /**
+     * Sets the frame's id
+     */
+    public set id(value: number) {
+        this._id = value;
+    }
+
+    private _elapsedMs: number = 0;
+
+    /**
+     * Gets the frame's delta (time since last frame)
+     */
+    public get elapsedMs() {
+        return this._elapsedMs;
+    }
+
+    /**
+     * Sets the frame's delta (time since last frame). Internal use only.
+     * @internal
+     */
+    public set elapsedMs(value: number) {
+        this._elapsedMs = value;
+    }
+
+    private _fps: number = 0;
+
+    /**
+     * Gets the frame's frames-per-second (FPS)
+     */
+    public get fps() {
+        return this._fps;
+    }
+
+    /**
+     * Sets the frame's frames-per-second (FPS). Internal use only.
+     * @internal
+     */
+    public set fps(value: number) {
+        this._fps = value;
+    }
+
+    /**
+     * Gets the frame's actor statistics
+     */
+    public get actors() {
+        return this._actorStats;
+    }
+
+    /**
+     * Gets the frame's duration statistics
+     */
+    public get duration() {
+        return this._durationStats;
+    }
+
+    /**
+     * Gets the frame's physics statistics
+     */
+    public get physics() {
+        return this._physicsStats;
+    }
+
+    /**
+     * Gets the frame's graphics statistics
+     */
+    public get graphics() {
+        return this._graphicsStats;
+    }
 
     /**
      * Zero out values or clone other IFrameStat stats. Allows instance reuse.
@@ -499,88 +556,78 @@ export class FrameStats implements FrameStatistics {
 
         return fs;
     }
-
-    /**
-     * Gets the frame's id
-     */
-    public get id() {
-        return this._id;
-    }
-
-    /**
-     * Sets the frame's id
-     */
-    public set id(value: number) {
-        this._id = value;
-    }
-
-    /**
-     * Gets the frame's delta (time since last frame)
-     */
-    public get elapsedMs() {
-        return this._elapsedMs;
-    }
-
-    /**
-     * Sets the frame's delta (time since last frame). Internal use only.
-     * @internal
-     */
-    public set elapsedMs(value: number) {
-        this._elapsedMs = value;
-    }
-
-    /**
-     * Gets the frame's frames-per-second (FPS)
-     */
-    public get fps() {
-        return this._fps;
-    }
-
-    /**
-     * Sets the frame's frames-per-second (FPS). Internal use only.
-     * @internal
-     */
-    public set fps(value: number) {
-        this._fps = value;
-    }
-
-    /**
-     * Gets the frame's actor statistics
-     */
-    public get actors() {
-        return this._actorStats;
-    }
-
-    /**
-     * Gets the frame's duration statistics
-     */
-    public get duration() {
-        return this._durationStats;
-    }
-
-    /**
-     * Gets the frame's physics statistics
-     */
-    public get physics() {
-        return this._physicsStats;
-    }
-
-    /**
-     * Gets the frame's graphics statistics
-     */
-    public get graphics() {
-        return this._graphicsStats;
-    }
 }
 
 export class PhysicsStats implements PhysicsStatistics {
     private _pairs: number = 0;
+
+    public get pairs(): number {
+        return this._pairs;
+    }
+
+    public set pairs(value: number) {
+        this._pairs = value;
+    }
+
     private _collisions: number = 0;
+
+    public get collisions(): number {
+        return this._collisions;
+    }
+
+    public set collisions(value: number) {
+        this._collisions = value;
+    }
+
     private _contacts: Map<string, CollisionContact> = new Map();
+
+    public get contacts(): Map<string, CollisionContact> {
+        return this._contacts;
+    }
+
+    public set contacts(contacts: Map<string, CollisionContact>) {
+        this._contacts = contacts;
+    }
+
     private _fastBodies: number = 0;
+
+    public get fastBodies(): number {
+        return this._fastBodies;
+    }
+
+    public set fastBodies(value: number) {
+        this._fastBodies = value;
+    }
+
     private _fastBodyCollisions: number = 0;
+
+    public get fastBodyCollisions(): number {
+        return this._fastBodyCollisions;
+    }
+
+    public set fastBodyCollisions(value: number) {
+        this._fastBodyCollisions = value;
+    }
+
     private _broadphase: number = 0;
+
+    public get broadphase(): number {
+        return this._broadphase;
+    }
+
+    public set broadphase(value: number) {
+        this._broadphase = value;
+    }
+
     private _narrowphase: number = 0;
+
+    public get narrowphase(): number {
+        return this._narrowphase;
+    }
+
+    public set narrowphase(value: number) {
+        this._narrowphase = value;
+    }
 
     /**
      * Zero out values or clone other IPhysicsStats stats. Allows instance reuse.
@@ -611,61 +658,5 @@ export class PhysicsStats implements PhysicsStatistics {
         ps.reset(this);
 
         return ps;
-    }
-
-    public get pairs(): number {
-        return this._pairs;
-    }
-
-    public set pairs(value: number) {
-        this._pairs = value;
-    }
-
-    public get collisions(): number {
-        return this._collisions;
-    }
-
-    public set collisions(value: number) {
-        this._collisions = value;
-    }
-
-    public get contacts(): Map<string, CollisionContact> {
-        return this._contacts;
-    }
-
-    public set contacts(contacts: Map<string, CollisionContact>) {
-        this._contacts = contacts;
-    }
-
-    public get fastBodies(): number {
-        return this._fastBodies;
-    }
-
-    public set fastBodies(value: number) {
-        this._fastBodies = value;
-    }
-
-    public get fastBodyCollisions(): number {
-        return this._fastBodyCollisions;
-    }
-
-    public set fastBodyCollisions(value: number) {
-        this._fastBodyCollisions = value;
-    }
-
-    public get broadphase(): number {
-        return this._broadphase;
-    }
-
-    public set broadphase(value: number) {
-        this._broadphase = value;
-    }
-
-    public get narrowphase(): number {
-        return this._narrowphase;
-    }
-
-    public set narrowphase(value: number) {
-        this._narrowphase = value;
     }
 }

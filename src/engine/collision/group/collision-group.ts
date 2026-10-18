@@ -1,4 +1,4 @@
-import { CollisionGroupManager } from './collision-group-manager';
+import {CollisionGroupManager} from './collision-group-manager';
 
 /**
  * CollisionGroups indicate like members that do not collide with each other. Use {@apilink CollisionGroupManager} to create {@apilink CollisionGroup}s
@@ -44,99 +44,101 @@ import { CollisionGroupManager } from './collision-group-manager';
  * `(0b001 & 0b011) === 1`
  */
 export class CollisionGroup {
-  /**
-   * The `All` {@apilink CollisionGroup} is a special group that collides with all other groups including itself,
-   * it is the default collision group on colliders.
-   */
-  public static All = new CollisionGroup('Collide with all groups', -1, -1);
+    /**
+     * The `All` {@apilink CollisionGroup} is a special group that collides with all other groups including itself,
+     * it is the default collision group on colliders.
+     */
+    public static All = new CollisionGroup('Collide with all groups', -1, -1);
 
-  private _name: string;
-  private _category: number;
-  private _mask: number;
+    /**
+     * STOP!!** It is preferred that {@apilink CollisionGroupManager.create} is used to create collision groups
+     *  unless you know how to construct the proper bitmasks. See https://github.com/excaliburjs/Excalibur/issues/1091 for more info.
+     * @param name Name of the collision group
+     * @param category 32 bit category for the group, should be a unique power of 2. For example `0b001` or `0b010`
+     * @param mask 32 bit mask of category, or `~category` generally. For a category of `0b001`, the mask would be `0b110`
+     */
+    constructor(name: string, category: number, mask: number) {
+        this._name = name;
+        this._category = category;
+        this._mask = mask;
+    }
 
-  /**
-   * STOP!!** It is preferred that {@apilink CollisionGroupManager.create} is used to create collision groups
-   *  unless you know how to construct the proper bitmasks. See https://github.com/excaliburjs/Excalibur/issues/1091 for more info.
-   * @param name Name of the collision group
-   * @param category 32 bit category for the group, should be a unique power of 2. For example `0b001` or `0b010`
-   * @param mask 32 bit mask of category, or `~category` generally. For a category of `0b001`, the mask would be `0b110`
-   */
-  constructor(name: string, category: number, mask: number) {
-    this._name = name;
-    this._category = category;
-    this._mask = mask;
-  }
+    private _name: string;
 
-  /**
-   * Get the name of the collision group
-   */
-  public get name() {
-    return this._name;
-  }
+    /**
+     * Get the name of the collision group
+     */
+    public get name() {
+        return this._name;
+    }
 
-  /**
-   * Get the category of the collision group, a 32 bit number which should be a unique power of 2
-   */
-  public get category() {
-    return this._category;
-  }
+    private _category: number;
 
-  /**
-   * Get the mask for this collision group
-   */
-  public get mask() {
-    return this._mask;
-  }
+    /**
+     * Get the category of the collision group, a 32 bit number which should be a unique power of 2
+     */
+    public get category() {
+        return this._category;
+    }
 
-  /**
-   * Evaluates whether 2 collision groups can collide
-   *
-   * This means the mask has the same bit set the other category and vice versa
-   * @param other  CollisionGroup
-   */
-  public canCollide(other: CollisionGroup): boolean {
-    const overlap1 = this.category & other.mask;
-    const overlap2 = this.mask & other.category;
-    return overlap1 !== 0 && overlap2 !== 0;
-  }
+    private _mask: number;
 
-  /**
-   * Inverts the collision group. For example, if before the group specified "players",
-   * inverting would specify all groups except players
-   * @returns CollisionGroup
-   */
-  public invert(): CollisionGroup {
-    const group = CollisionGroupManager.create('~(' + this.name + ')', ~this.mask | 0);
-    group._category = ~this.category;
-    return group;
-  }
+    /**
+     * Get the mask for this collision group
+     */
+    public get mask() {
+        return this._mask;
+    }
 
-  /**
-   * Combine collision groups with each other. The new group includes all of the previous groups.
-   * @param collisionGroups
-   */
-  public static combine(collisionGroups: CollisionGroup[]) {
-    const combinedName = collisionGroups.map((c) => c.name).join('+');
-    const combinedCategory = collisionGroups.reduce((current, g) => g.category | current, 0b0);
-    const combinedMask = ~combinedCategory;
+    /**
+     * Combine collision groups with each other. The new group includes all of the previous groups.
+     * @param collisionGroups
+     */
+    public static combine(collisionGroups: CollisionGroup[]) {
+        const combinedName = collisionGroups.map((c) => c.name).join('+');
+        const combinedCategory = collisionGroups.reduce((current, g) => g.category | current, 0b0);
+        const combinedMask = ~combinedCategory;
 
-    return CollisionGroupManager.create(combinedName, combinedMask);
-  }
+        return CollisionGroupManager.create(combinedName, combinedMask);
+    }
 
-  /**
-   * Creates a collision group that collides with the listed groups
-   * @param collisionGroups
-   */
-  public static collidesWith(collisionGroups: CollisionGroup[]) {
-    const combinedName = `collidesWith(${collisionGroups.map((c) => c.name).join('+')})`;
-    const combinedMask = collisionGroups.reduce((current, g) => g.category | current, 0b0);
-    return CollisionGroupManager.create(combinedName, combinedMask);
-  }
+    /**
+     * Creates a collision group that collides with the listed groups
+     * @param collisionGroups
+     */
+    public static collidesWith(collisionGroups: CollisionGroup[]) {
+        const combinedName = `collidesWith(${collisionGroups.map((c) => c.name).join('+')})`;
+        const combinedMask = collisionGroups.reduce((current, g) => g.category | current, 0b0);
+        return CollisionGroupManager.create(combinedName, combinedMask);
+    }
 
-  public toString() {
-    return `
+    /**
+     * Evaluates whether 2 collision groups can collide
+     *
+     * This means the mask has the same bit set the other category and vice versa
+     * @param other  CollisionGroup
+     */
+    public canCollide(other: CollisionGroup): boolean {
+        const overlap1 = this.category & other.mask;
+        const overlap2 = this.mask & other.category;
+        return overlap1 !== 0 && overlap2 !== 0;
+    }
+
+    /**
+     * Inverts the collision group. For example, if before the group specified "players",
+     * inverting would specify all groups except players
+     * @returns CollisionGroup
+     */
+    public invert(): CollisionGroup {
+        const group = CollisionGroupManager.create('~(' + this.name + ')', ~this.mask | 0);
+        group._category = ~this.category;
+        return group;
+    }
+
+    public toString() {
+        return `
 category: ${this.category.toString(2).padStart(32, '0')}
 mask:     ${(this.mask >>> 0).toString(2).padStart(32, '0')}
     `;
-  }
+    }
 }

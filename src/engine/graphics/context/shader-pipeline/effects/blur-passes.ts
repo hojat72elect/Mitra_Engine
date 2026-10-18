@@ -1,24 +1,24 @@
-import { vec } from '../../../../math/vector';
-import type { MitraGraphicsContextWebgl } from '../../mitra-graphics-context-webgl';
-import { glsl } from '../../glsl';
-import type { Shader } from '../../shader';
-import type { ShaderPassDestination, ShaderPassSource } from '../shader-pass';
-import { ShaderPass } from '../shader-pass';
-import type { ShaderPipelineLike, ShaderPipelineProcessOptions } from '../shader-pipeline';
-import { ShaderPipeline } from '../shader-pipeline';
+import {vec} from '../../../../math/vector';
+import type {MitraGraphicsContextWebgl} from '../../mitra-graphics-context-webgl';
+import {glsl} from '../../glsl';
+import type {Shader} from '../../shader';
+import type {ShaderPassDestination, ShaderPassSource} from '../shader-pass';
+import {ShaderPass} from '../shader-pass';
+import type {ShaderPipelineLike, ShaderPipelineProcessOptions} from '../shader-pipeline';
+import {ShaderPipeline} from '../shader-pipeline';
 
 export interface BlurPassesOptions {
-  graphicsContext: MitraGraphicsContextWebgl;
-  /**
-   * Resolution the blur runs at relative to the source, default 0.5 (half resolution).
-   *
-   * Lower is cheaper and blurrier, the final pass linearly upsamples back to full resolution.
-   */
-  scale?: number;
-  /**
-   * Blur radius multiplier in texels of the (downsampled) blur resolution, default 1
-   */
-  strength?: number;
+    graphicsContext: MitraGraphicsContextWebgl;
+    /**
+     * Resolution the blur runs at relative to the source, default 0.5 (half resolution).
+     *
+     * Lower is cheaper and blurrier, the final pass linearly upsamples back to full resolution.
+     */
+    scale?: number;
+    /**
+     * Blur radius multiplier in texels of the (downsampled) blur resolution, default 1
+     */
+    strength?: number;
 }
 
 /**
@@ -67,28 +67,28 @@ void main() {
  * ```
  */
 export function createBlurPasses(options: BlurPassesOptions): ShaderPass[] {
-  const { graphicsContext, scale, strength } = options;
-  return [
-    new ShaderPass({
-      graphicsContext,
-      name: 'gaussian blur horizontal',
-      fragmentSource: gaussianBlurFragmentSource,
-      scale: scale ?? 0.5,
-      uniforms: {
-        u_direction: vec(1, 0),
-        u_strength: strength ?? 1
-      }
-    }),
-    new ShaderPass({
-      graphicsContext,
-      name: 'gaussian blur vertical',
-      fragmentSource: gaussianBlurFragmentSource,
-      uniforms: {
-        u_direction: vec(0, 1),
-        u_strength: strength ?? 1
-      }
-    })
-  ];
+    const {graphicsContext, scale, strength} = options;
+    return [
+        new ShaderPass({
+            graphicsContext,
+            name: 'gaussian blur horizontal',
+            fragmentSource: gaussianBlurFragmentSource,
+            scale: scale ?? 0.5,
+            uniforms: {
+                u_direction: vec(1, 0),
+                u_strength: strength ?? 1
+            }
+        }),
+        new ShaderPass({
+            graphicsContext,
+            name: 'gaussian blur vertical',
+            fragmentSource: gaussianBlurFragmentSource,
+            uniforms: {
+                u_direction: vec(0, 1),
+                u_strength: strength ?? 1
+            }
+        })
+    ];
 }
 
 /**
@@ -103,48 +103,48 @@ export function createBlurPasses(options: BlurPassesOptions): ShaderPass[] {
  * ```
  */
 export class BlurEffect implements ShaderPipelineLike {
-  /**
-   * Resolution the blur runs at relative to the source, fixed at construction
-   */
-  public readonly scale: number;
-  private _pipeline: ShaderPipeline;
-  private _horizontal: ShaderPass;
-  private _vertical: ShaderPass;
+    /**
+     * Resolution the blur runs at relative to the source, fixed at construction
+     */
+    public readonly scale: number;
+    private _pipeline: ShaderPipeline;
+    private _horizontal: ShaderPass;
+    private _vertical: ShaderPass;
 
-  constructor(options: BlurPassesOptions) {
-    this.scale = options.scale ?? 0.5;
-    this._pipeline = new ShaderPipeline({
-      graphicsContext: options.graphicsContext,
-      name: 'blur effect',
-      passes: createBlurPasses(options)
-    });
-    [this._horizontal, this._vertical] = this._pipeline.passes;
-  }
+    constructor(options: BlurPassesOptions) {
+        this.scale = options.scale ?? 0.5;
+        this._pipeline = new ShaderPipeline({
+            graphicsContext: options.graphicsContext,
+            name: 'blur effect',
+            passes: createBlurPasses(options)
+        });
+        [this._horizontal, this._vertical] = this._pipeline.passes;
+    }
 
-  /**
-   * Blur radius multiplier in texels of the (downsampled) blur resolution
-   */
-  public get strength(): number {
-    return this._horizontal.uniforms.u_strength as number;
-  }
+    /**
+     * Blur radius multiplier in texels of the (downsampled) blur resolution
+     */
+    public get strength(): number {
+        return this._horizontal.uniforms.u_strength as number;
+    }
 
-  public set strength(value: number) {
-    this._horizontal.uniforms.u_strength = value;
-    this._vertical.uniforms.u_strength = value;
-  }
+    public set strength(value: number) {
+        this._horizontal.uniforms.u_strength = value;
+        this._vertical.uniforms.u_strength = value;
+    }
 
-  public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
-    this._pipeline.process(source, destination, options);
-  }
+    public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
+        this._pipeline.process(source, destination, options);
+    }
 
-  /**
-   * Every internal pass's compiled {@apilink Shader}, in the order they run
-   */
-  public getShaders(): Shader[] {
-    return this._pipeline.getShaders();
-  }
+    /**
+     * Every internal pass's compiled {@apilink Shader}, in the order they run
+     */
+    public getShaders(): Shader[] {
+        return this._pipeline.getShaders();
+    }
 
-  public dispose(): void {
-    this._pipeline.dispose();
-  }
+    public dispose(): void {
+        this._pipeline.dispose();
+    }
 }

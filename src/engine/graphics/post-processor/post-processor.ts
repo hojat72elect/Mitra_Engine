@@ -1,7 +1,7 @@
-import type { VertexLayout } from '../context/vertex-layout';
-import type { Shader } from '../context/shader';
-import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
-import type { Framebuffer } from '../context/framebuffer';
+import type {VertexLayout} from '../context/vertex-layout';
+import type {Shader} from '../context/shader';
+import type {MitraGraphicsContextWebgl} from '../context/mitra-graphics-context-webgl';
+import type {Framebuffer} from '../context/framebuffer';
 
 /**
  * PostProcessors apply a shader effect to the entire screen at the end of the frame.
@@ -32,41 +32,41 @@ import type { Framebuffer } from '../context/framebuffer';
  * {@apilink PostProcessor.onUpdate}.
  */
 export interface PostProcessor {
-  /**
-   * Called once when the post processor is added to the graphics context
-   */
-  initialize?(graphicsContext: MitraGraphicsContextWebgl): void;
+    /**
+     * Called once when the post processor is added to the graphics context
+     */
+    initialize?(graphicsContext: MitraGraphicsContextWebgl): void;
 
-  /**
-   * `source` is the current (MSAA-resolved) screen framebuffer, render the result into
-   * `destination`, for example with a {@apilink ShaderPass} or {@apilink ShaderPipeline}.
-   */
-  process?(source: Framebuffer, destination: Framebuffer): void;
+    /**
+     * `source` is the current (MSAA-resolved) screen framebuffer, render the result into
+     * `destination`, for example with a {@apilink ShaderPass} or {@apilink ShaderPipeline}.
+     */
+    process?(source: Framebuffer, destination: Framebuffer): void;
 
-  /**
-   * @deprecated implement {@apilink PostProcessor.process} instead, the single-pass
-   * shader/layout path will be removed in v1. The screen texture is bound to slot 0 as
-   * `uniform sampler2D u_image` and default uniforms (`u_time_ms`, `u_elapsed_ms`,
-   * `u_resolution`) are set when declared.
-   */
-  getShader?(): Shader;
+    /**
+     * @deprecated implement {@apilink PostProcessor.process} instead, the single-pass
+     * shader/layout path will be removed in v1. The screen texture is bound to slot 0 as
+     * `uniform sampler2D u_image` and default uniforms (`u_time_ms`, `u_elapsed_ms`,
+     * `u_resolution`) are set when declared.
+     */
+    getShader?(): Shader;
 
-  /**
-   * @deprecated implement {@apilink PostProcessor.process} instead, the single-pass
-   * shader/layout path will be removed in v1
-   */
-  getLayout?(): VertexLayout;
+    /**
+     * @deprecated implement {@apilink PostProcessor.process} instead, the single-pass
+     * shader/layout path will be removed in v1
+     */
+    getLayout?(): VertexLayout;
 
-  /**
-   * Use the onUpdate hook to update any uniforms in the postprocessors shader
-   *
-   * The shader has already been bound so there is no need to call shader.use();
-   * @param elapsed
-   */
-  onUpdate?(elapsed: number): void;
+    /**
+     * Use the onUpdate hook to update any uniforms in the postprocessors shader
+     *
+     * The shader has already been bound so there is no need to call shader.use();
+     * @param elapsed
+     */
+    onUpdate?(elapsed: number): void;
 
-  /**
-   * Use the onDraw hook to upload any textures or command that need to run right before draw
-   */
-  onDraw?(): void;
+    /**
+     * Use the onDraw hook to upload any textures or command that need to run right before draw
+     */
+    onDraw?(): void;
 }

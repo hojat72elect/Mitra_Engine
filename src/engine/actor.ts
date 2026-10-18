@@ -278,16 +278,14 @@ export const ActorEvents = {
  * be part of a {@apilink Scene} for it to be drawn to the screen.
  */
 export class Actor extends Entity implements Eventable, PointerEvents, CanInitialize, CanUpdate, CanBeKilled {
-    public override events = new EventEmitter<ActorEvents>();
-    // #region Properties
-
     /**
      * Set defaults for all Actors
      */
     public static defaults = {
         anchor: Vector.Half
     };
-
+    // #region Properties
+    public override events = new EventEmitter<ActorEvents>();
     /**
      * The physics body the is associated with this actor. The body is the container for all physical properties, like position, velocity,
      * acceleration, mass, inertia, etc.
@@ -332,267 +330,11 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
      * {@apilink ActionContext | `Action context`} of the actor.
      */
     public actions: ActionsComponent;
-
-    /**
-     * Gets the position vector of the actor in pixels
-     */
-    public get pos(): Vector {
-        return this.transform.pos;
-    }
-
-    /**
-     * Sets the position vector of the actor in pixels
-     */
-    public set pos(thePos: Vector) {
-        this.transform.pos = thePos.clone();
-    }
-
-    /**
-     * Gets the position vector of the actor from the last frame
-     */
-    public get oldPos(): Vector {
-        return this.body.oldPos;
-    }
-
-    /**
-     * Gets the global position vector of the actor from the last frame
-     */
-    public get oldGlobalPos(): Vector {
-        return this.body.oldGlobalPos;
-    }
-
-    /**
-     * Sets the position vector of the actor in the last frame
-     */
-    public set oldPos(thePos: Vector) {
-        this.body.oldPos.setTo(thePos.x, thePos.y);
-    }
-
-    /**
-     * Gets the velocity vector of the actor in pixels/sec
-     */
-    public get vel(): Vector {
-        return this.motion.vel;
-    }
-
-    /**
-     * Sets the velocity vector of the actor in pixels/sec
-     */
-    public set vel(theVel: Vector) {
-        this.motion.vel = theVel.clone();
-    }
-
-    /**
-     * Gets the velocity vector of the actor from the last frame
-     */
-    public get oldVel(): Vector {
-        return this.body.oldVel;
-    }
-
-    /**
-     * Sets the velocity vector of the actor from the last frame
-     */
-    public set oldVel(theVel: Vector) {
-        this.body.oldVel.setTo(theVel.x, theVel.y);
-    }
-
-    /**
-     * Gets the acceleration vector of the actor in pixels/second/second. An acceleration pointing down such as (0, 100) may be
-     * useful to simulate a gravitational effect.
-     */
-    public get acc(): Vector {
-        return this.motion.acc;
-    }
-
-    /**
-     * Sets the acceleration vector of teh actor in pixels/second/second
-     */
-    public set acc(theAcc: Vector) {
-        this.motion.acc = theAcc.clone();
-    }
-
-    /**
-     * Sets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
-     */
-    public set oldAcc(theAcc: Vector) {
-        this.body.oldAcc.setTo(theAcc.x, theAcc.y);
-    }
-
-    /**
-     * Gets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
-     */
-    public get oldAcc(): Vector {
-        return this.body.oldAcc;
-    }
-
-    /**
-     * Gets the rotation of the actor in radians. 1 radian = 180/PI Degrees.
-     */
-    public get rotation(): number {
-        return this.transform.rotation;
-    }
-
-    /**
-     * Sets the rotation of the actor in radians. 1 radian = 180/PI Degrees.
-     */
-    public set rotation(theAngle: number) {
-        this.transform.rotation = theAngle;
-    }
-
-    /**
-     * Gets the rotational velocity of the actor in radians/second
-     */
-    public get angularVelocity(): number {
-        return this.motion.angularVelocity;
-    }
-
-    /**
-     * Sets the rotational velocity of the actor in radians/sec
-     */
-    public set angularVelocity(angularVelocity: number) {
-        this.motion.angularVelocity = angularVelocity;
-    }
-
-    public get scale(): Vector {
-        return this.get(TransformComponent).scale;
-    }
-
-    public set scale(scale: Vector) {
-        this.get(TransformComponent).scale = scale;
-    }
-
-    public get canPause(): boolean {
-        return this.paused.canPause;
-    }
-
-    public set canPause(canPause: boolean) {
-        this.paused.canPause = canPause;
-    }
-
-    public get isPaused(): boolean {
-        return this.paused.paused;
-    }
-
-    private _anchor: Vector = watch(Vector.Half, (v) => this._handleAnchorChange(v));
-    /**
-     * The anchor to apply all actor related transformations like rotation,
-     * translation, and scaling. By default the anchor is in the center of
-     * the actor. By default it is set to the center of the actor (.5, .5)
-     *
-     * An anchor of (.5, .5) will ensure that drawings are centered.
-     *
-     * Use `anchor.setTo` to set the anchor to a different point using
-     * values between 0 and 1. For example, anchoring to the top-left would be
-     * `Actor.anchor.setTo(0, 0)` and top-right would be `Actor.anchor.setTo(0, 1)`.
-     */
-    public get anchor(): Vector {
-        return this._anchor;
-    }
-
-    public set anchor(vec: Vector) {
-        this._anchor = watch(vec, (v) => this._handleAnchorChange(v));
-        this._handleAnchorChange(vec);
-    }
-
-    private _handleAnchorChange(v: Vector) {
-        if (this.graphics) {
-            this.graphics.anchor = v;
-        }
-    }
-
-    private _offset: Vector = watch(Vector.Zero, (v) => this._handleOffsetChange(v));
-    /**
-     * The offset in pixels to apply to all actor graphics
-     *
-     * Default offset of (0, 0)
-     */
-    public get offset(): Vector {
-        return this._offset;
-    }
-
-    public set offset(vec: Vector) {
-        this._offset = watch(vec, (v) => this._handleOffsetChange(v));
-        this._handleOffsetChange(vec);
-    }
-
-    private _handleOffsetChange(v: Vector) {
-        if (this.graphics) {
-            this.graphics.offset = v;
-        }
-    }
-
-    /**
-     * Indicates whether the actor is physically in the viewport
-     */
-    public get isOffScreen(): boolean {
-        return this.hasTag('ex.offscreen');
-    }
-
     /**
      * Convenience reference to the global logger
      */
     public logger: Logger = Logger.getInstance();
-
-    /**
-     * Draggable helper
-     */
-    private _draggable: boolean = false;
     private _dragging: boolean = false;
-
-    private _pointerDragStartHandler = () => {
-        this._dragging = true;
-    };
-
-    private _pointerDragEndHandler = () => {
-        this._dragging = false;
-    };
-
-    private _pointerDragMoveHandler = (pe: PointerEvent) => {
-        if (this._dragging) {
-            this.pos = pe.worldPos;
-        }
-    };
-
-    private _pointerDragLeaveHandler = (pe: PointerEvent) => {
-        if (this._dragging) {
-            this.pos = pe.worldPos;
-        }
-    };
-
-    public get draggable(): boolean {
-        return this._draggable;
-    }
-
-    public set draggable(isDraggable: boolean) {
-        if (isDraggable) {
-            if (isDraggable && !this._draggable) {
-                this.events.on('pointerdragstart', this._pointerDragStartHandler);
-                this.events.on('pointerdragend', this._pointerDragEndHandler);
-                this.events.on('pointerdragmove', this._pointerDragMoveHandler);
-                this.events.on('pointerdragleave', this._pointerDragLeaveHandler);
-            } else if (!isDraggable && this._draggable) {
-                this.events.off('pointerdragstart', this._pointerDragStartHandler);
-                this.events.off('pointerdragend', this._pointerDragEndHandler);
-                this.events.off('pointerdragmove', this._pointerDragMoveHandler);
-                this.events.off('pointerdragleave', this._pointerDragLeaveHandler);
-            }
-
-            this._draggable = isDraggable;
-        }
-    }
-
-    /**
-     * Sets the color of the actor's current graphic
-     */
-    public get color(): Color {
-        return this.graphics.color!;
-    }
-
-    public set color(v: Color) {
-        this.graphics.color = v;
-    }
-
-    // #endregion
 
     /**
      *
@@ -719,6 +461,303 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         }
     }
 
+    /**
+     * Gets the position vector of the actor in pixels
+     */
+    public get pos(): Vector {
+        return this.transform.pos;
+    }
+
+    /**
+     * Sets the position vector of the actor in pixels
+     */
+    public set pos(thePos: Vector) {
+        this.transform.pos = thePos.clone();
+    }
+
+    /**
+     * Gets the position vector of the actor from the last frame
+     */
+    public get oldPos(): Vector {
+        return this.body.oldPos;
+    }
+
+    /**
+     * Sets the position vector of the actor in the last frame
+     */
+    public set oldPos(thePos: Vector) {
+        this.body.oldPos.setTo(thePos.x, thePos.y);
+    }
+
+    /**
+     * Gets the global position vector of the actor from the last frame
+     */
+    public get oldGlobalPos(): Vector {
+        return this.body.oldGlobalPos;
+    }
+
+    /**
+     * Gets the velocity vector of the actor in pixels/sec
+     */
+    public get vel(): Vector {
+        return this.motion.vel;
+    }
+
+    /**
+     * Sets the velocity vector of the actor in pixels/sec
+     */
+    public set vel(theVel: Vector) {
+        this.motion.vel = theVel.clone();
+    }
+
+    /**
+     * Gets the velocity vector of the actor from the last frame
+     */
+    public get oldVel(): Vector {
+        return this.body.oldVel;
+    }
+
+    /**
+     * Sets the velocity vector of the actor from the last frame
+     */
+    public set oldVel(theVel: Vector) {
+        this.body.oldVel.setTo(theVel.x, theVel.y);
+    }
+
+    /**
+     * Gets the acceleration vector of the actor in pixels/second/second. An acceleration pointing down such as (0, 100) may be
+     * useful to simulate a gravitational effect.
+     */
+    public get acc(): Vector {
+        return this.motion.acc;
+    }
+
+    /**
+     * Sets the acceleration vector of teh actor in pixels/second/second
+     */
+    public set acc(theAcc: Vector) {
+        this.motion.acc = theAcc.clone();
+    }
+
+    /**
+     * Gets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
+     */
+    public get oldAcc(): Vector {
+        return this.body.oldAcc;
+    }
+
+    /**
+     * Sets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
+     */
+    public set oldAcc(theAcc: Vector) {
+        this.body.oldAcc.setTo(theAcc.x, theAcc.y);
+    }
+
+    /**
+     * Gets the rotation of the actor in radians. 1 radian = 180/PI Degrees.
+     */
+    public get rotation(): number {
+        return this.transform.rotation;
+    }
+
+    /**
+     * Sets the rotation of the actor in radians. 1 radian = 180/PI Degrees.
+     */
+    public set rotation(theAngle: number) {
+        this.transform.rotation = theAngle;
+    }
+
+    /**
+     * Gets the rotational velocity of the actor in radians/second
+     */
+    public get angularVelocity(): number {
+        return this.motion.angularVelocity;
+    }
+
+    /**
+     * Sets the rotational velocity of the actor in radians/sec
+     */
+    public set angularVelocity(angularVelocity: number) {
+        this.motion.angularVelocity = angularVelocity;
+    }
+
+    public get scale(): Vector {
+        return this.get(TransformComponent).scale;
+    }
+
+    public set scale(scale: Vector) {
+        this.get(TransformComponent).scale = scale;
+    }
+
+    public get canPause(): boolean {
+        return this.paused.canPause;
+    }
+
+    public set canPause(canPause: boolean) {
+        this.paused.canPause = canPause;
+    }
+
+    public get isPaused(): boolean {
+        return this.paused.paused;
+    }
+
+    private _anchor: Vector = watch(Vector.Half, (v) => this._handleAnchorChange(v));
+
+    /**
+     * The anchor to apply all actor related transformations like rotation,
+     * translation, and scaling. By default the anchor is in the center of
+     * the actor. By default it is set to the center of the actor (.5, .5)
+     *
+     * An anchor of (.5, .5) will ensure that drawings are centered.
+     *
+     * Use `anchor.setTo` to set the anchor to a different point using
+     * values between 0 and 1. For example, anchoring to the top-left would be
+     * `Actor.anchor.setTo(0, 0)` and top-right would be `Actor.anchor.setTo(0, 1)`.
+     */
+    public get anchor(): Vector {
+        return this._anchor;
+    }
+
+    public set anchor(vec: Vector) {
+        this._anchor = watch(vec, (v) => this._handleAnchorChange(v));
+        this._handleAnchorChange(vec);
+    }
+
+    private _offset: Vector = watch(Vector.Zero, (v) => this._handleOffsetChange(v));
+
+    /**
+     * The offset in pixels to apply to all actor graphics
+     *
+     * Default offset of (0, 0)
+     */
+    public get offset(): Vector {
+        return this._offset;
+    }
+
+    public set offset(vec: Vector) {
+        this._offset = watch(vec, (v) => this._handleOffsetChange(v));
+        this._handleOffsetChange(vec);
+    }
+
+    /**
+     * Indicates whether the actor is physically in the viewport
+     */
+    public get isOffScreen(): boolean {
+        return this.hasTag('ex.offscreen');
+    }
+
+    /**
+     * Draggable helper
+     */
+    private _draggable: boolean = false;
+
+    public get draggable(): boolean {
+        return this._draggable;
+    }
+
+    public set draggable(isDraggable: boolean) {
+        if (isDraggable) {
+            if (isDraggable && !this._draggable) {
+                this.events.on('pointerdragstart', this._pointerDragStartHandler);
+                this.events.on('pointerdragend', this._pointerDragEndHandler);
+                this.events.on('pointerdragmove', this._pointerDragMoveHandler);
+                this.events.on('pointerdragleave', this._pointerDragLeaveHandler);
+            } else if (!isDraggable && this._draggable) {
+                this.events.off('pointerdragstart', this._pointerDragStartHandler);
+                this.events.off('pointerdragend', this._pointerDragEndHandler);
+                this.events.off('pointerdragmove', this._pointerDragMoveHandler);
+                this.events.off('pointerdragleave', this._pointerDragLeaveHandler);
+            }
+
+            this._draggable = isDraggable;
+        }
+    }
+
+    /**
+     * Sets the color of the actor's current graphic
+     */
+    public get color(): Color {
+        return this.graphics.color!;
+    }
+
+    public set color(v: Color) {
+        this.graphics.color = v;
+    }
+
+    /**
+     * Gets the z-index of an actor. The z-index determines the relative order an actor is drawn in.
+     * Actors with a higher z-index are drawn on top of actors with a lower z-index
+     */
+    public get z(): number {
+        return this.get(TransformComponent).z;
+    }
+
+    /**
+     * Sets the z-index of an actor and updates it in the drawing list for the scene.
+     * The z-index determines the relative order an actor is drawn in.
+     * Actors with a higher z-index are drawn on top of actors with a lower z-index
+     * @param newZ new z-index to assign
+     */
+    public set z(newZ: number) {
+        this.get(TransformComponent).z = newZ;
+    }
+
+    /**
+     * Get the center point of an actor (global position)
+     */
+    public get center(): Vector {
+        const globalPos = this.globalPos;
+        return new Vector(
+            globalPos.x + this.width / 2 - this.anchor.x * this.width,
+            globalPos.y + this.height / 2 - this.anchor.y * this.height
+        );
+    }
+
+    /**
+     * Get the local center point of an actor
+     */
+    public get localCenter(): Vector {
+        return new Vector(this.pos.x + this.width / 2 - this.anchor.x * this.width, this.pos.y + this.height / 2 - this.anchor.y * this.height);
+    }
+
+    public get width() {
+        return this.collider.localBounds.width * this.globalScale.x;
+    }
+
+    // #endregion
+
+    public get height() {
+        return this.collider.localBounds.height * this.globalScale.y;
+    }
+
+    /**
+     * The actor's rotation (in radians) taking into account any parent relationships
+     */
+    public get globalRotation(): number {
+        return this.get(TransformComponent).globalRotation;
+    }
+
+    /**
+     * The actor's world position taking into account parent relationships, scaling, rotation, and translation
+     */
+    public get globalPos(): Vector {
+        return this.get(TransformComponent).globalPos;
+    }
+
+    /**
+     * The global scale of the Actor
+     */
+    public get globalScale(): Vector {
+        return this.get(TransformComponent).globalScale;
+    }
+
+    /**
+     * The global z-index of the actor
+     */
+    public get globalZ(): number {
+        return this.get(TransformComponent).globalZ;
+    }
+
     public override clone(): Actor {
         const clone = new Actor({
             color: this.color.clone(),
@@ -784,7 +823,9 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
 
     // #region Events
     public override emit<TEventName extends EventKey<ActorEvents>>(eventName: TEventName, event: ActorEvents[TEventName]): void;
+
     public override emit(eventName: string, event?: any): void;
+
     public override emit<TEventName extends EventKey<ActorEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
@@ -793,7 +834,9 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         eventName: TEventName,
         handler: Handler<ActorEvents[TEventName]>
     ): Subscription;
+
     public override on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public override on<TEventName extends EventKey<ActorEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.on(eventName, handler);
     }
@@ -802,19 +845,24 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         eventName: TEventName,
         handler: Handler<ActorEvents[TEventName]>
     ): Subscription;
+
     public override once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public override once<TEventName extends EventKey<ActorEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.once(eventName, handler);
     }
 
+    // #endregion
+
     public override off<TEventName extends EventKey<ActorEvents>>(eventName: TEventName, handler: Handler<ActorEvents[TEventName]>): void;
+
     public override off(eventName: string, handler: Handler<unknown>): void;
+
     public override off(eventName: string): void;
+
     public override off<TEventName extends EventKey<ActorEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         this.events.off(eventName, handler as any);
     }
-
-    // #endregion
 
     /**
      * It is not recommended that internal Mitra methods be overridden, do so at your own risk.
@@ -887,80 +935,6 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     }
 
     /**
-     * Gets the z-index of an actor. The z-index determines the relative order an actor is drawn in.
-     * Actors with a higher z-index are drawn on top of actors with a lower z-index
-     */
-    public get z(): number {
-        return this.get(TransformComponent).z;
-    }
-
-    /**
-     * Sets the z-index of an actor and updates it in the drawing list for the scene.
-     * The z-index determines the relative order an actor is drawn in.
-     * Actors with a higher z-index are drawn on top of actors with a lower z-index
-     * @param newZ new z-index to assign
-     */
-    public set z(newZ: number) {
-        this.get(TransformComponent).z = newZ;
-    }
-
-    /**
-     * Get the center point of an actor (global position)
-     */
-    public get center(): Vector {
-        const globalPos = this.globalPos;
-        return new Vector(
-            globalPos.x + this.width / 2 - this.anchor.x * this.width,
-            globalPos.y + this.height / 2 - this.anchor.y * this.height
-        );
-    }
-
-    /**
-     * Get the local center point of an actor
-     */
-    public get localCenter(): Vector {
-        return new Vector(this.pos.x + this.width / 2 - this.anchor.x * this.width, this.pos.y + this.height / 2 - this.anchor.y * this.height);
-    }
-
-    public get width() {
-        return this.collider.localBounds.width * this.globalScale.x;
-    }
-
-    public get height() {
-        return this.collider.localBounds.height * this.globalScale.y;
-    }
-
-    /**
-     * The actor's rotation (in radians) taking into account any parent relationships
-     */
-    public get globalRotation(): number {
-        return this.get(TransformComponent).globalRotation;
-    }
-
-    /**
-     * The actor's world position taking into account parent relationships, scaling, rotation, and translation
-     */
-    public get globalPos(): Vector {
-        return this.get(TransformComponent).globalPos;
-    }
-
-    /**
-     * The global scale of the Actor
-     */
-    public get globalScale(): Vector {
-        return this.get(TransformComponent).globalScale;
-    }
-
-    /**
-     * The global z-index of the actor
-     */
-    public get globalZ(): number {
-        return this.get(TransformComponent).globalZ;
-    }
-
-    // #region Collision
-
-    /**
      * Tests whether the x/y specified are contained in the actor
      * @param x  X coordinate to test (in world coordinates)
      * @param y  Y coordinate to test (in world coordinates)
@@ -1006,10 +980,6 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         }
         return false;
     }
-
-    // #endregion
-
-    // #region Update
 
     /**
      * Called by the Engine, updates the state of the actor
@@ -1058,6 +1028,8 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         // Override me
     }
 
+    // #region Collision
+
     /**
      * Fires after every resolution for a confirmed contact.
      * @param self
@@ -1080,6 +1052,10 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
     public onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact) {
         // Override me
     }
+
+    // #endregion
+
+    // #region Update
 
     /**
      * Fires once when 2 entities with a ColliderComponent separate after having been in contact.
@@ -1117,6 +1093,38 @@ export class Actor extends Entity implements Eventable, PointerEvents, CanInitia
         this.events.emit('postupdate', new PostUpdateEvent(engine, elapsed, this));
         this.onPostUpdate(engine, elapsed);
     }
+
+    private _handleAnchorChange(v: Vector) {
+        if (this.graphics) {
+            this.graphics.anchor = v;
+        }
+    }
+
+    private _handleOffsetChange(v: Vector) {
+        if (this.graphics) {
+            this.graphics.offset = v;
+        }
+    }
+
+    private _pointerDragStartHandler = () => {
+        this._dragging = true;
+    };
+
+    private _pointerDragEndHandler = () => {
+        this._dragging = false;
+    };
+
+    private _pointerDragMoveHandler = (pe: PointerEvent) => {
+        if (this._dragging) {
+            this.pos = pe.worldPos;
+        }
+    };
+
+    private _pointerDragLeaveHandler = (pe: PointerEvent) => {
+        if (this._dragging) {
+            this.pos = pe.worldPos;
+        }
+    };
 
     // endregion
 }

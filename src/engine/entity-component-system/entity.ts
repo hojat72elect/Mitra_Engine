@@ -106,7 +106,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
      * Listen to or emit events for an entity
      */
     public events = new EventEmitter<EntityEvents>();
-    private _tags = new Set<string>();
     public componentAdded$ = new Observable<Component>();
     public componentRemoved$ = new Observable<Component>();
     public tagAdded$ = new Observable<string>();
@@ -121,9 +120,21 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
     public readonly components = new Map<Function, Component>();
     public componentValues: Component[] = [];
     public _componentsToRemove: ComponentCtor[] = [];
+    /**
+     * The current scene that the entity is in, if any
+     */
+    public scene: Scene | null = null;
+    /**
+     * Whether this entity is active, if set to false it will be reclaimed
+     */
+    public isActive: boolean = true;
+    public childrenAdded$ = new Observable<Entity>();
+    public childrenRemoved$ = new Observable<Entity>();
 
     constructor(options: EntityOptions<TKnownComponents>);
+
     constructor(components?: TKnownComponents[], name?: string);
+
     constructor(componentsOrOptions?: TKnownComponents[] | EntityOptions<TKnownComponents>, name?: string) {
         let componentsToAdd!: TKnownComponents[];
         let nameToAdd: string | undefined;
@@ -146,15 +157,51 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
         }
     }
 
-    /**
-     * The current scene that the entity is in, if any
-     */
-    public scene: Scene | null = null;
+    private _tags = new Set<string>();
 
     /**
-     * Whether this entity is active, if set to false it will be reclaimed
+     * Specifically get the tags on the entity from {@apilink TagsComponent}
      */
-    public isActive: boolean = true;
+    public get tags(): Set<string> {
+        return this._tags;
+    }
+
+    /**
+     * The types of the components on the Entity
+     */
+    public get types(): ComponentCtor[] {
+        return Array.from(this.components.keys()) as ComponentCtor[];
+    }
+
+    private _parent: Entity | null = null;
+
+    public get parent(): Entity | null {
+        return this._parent;
+    }
+
+    private _children: Entity[] = [];
+
+    /**
+     * Get the direct children of this entity
+     */
+    public get children(): readonly Entity[] {
+        return this._children;
+    }
+
+    private _isInitialized = false;
+
+    /**
+     * Gets whether the actor is Initialized
+     */
+    public get isInitialized(): boolean {
+        return this._isInitialized;
+    }
+
+    private _isAdded = false;
+
+    public get isAdded(): boolean {
+        return this._isAdded;
+    }
 
     /**
      * Kill the entity, means it will no longer be updated. Kills are deferred to the end of the update.
@@ -170,13 +217,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
 
     public isKilled() {
         return !this.isActive;
-    }
-
-    /**
-     * Specifically get the tags on the entity from {@apilink TagsComponent}
-     */
-    public get tags(): Set<string> {
-        return this._tags;
     }
 
     /**
@@ -207,13 +247,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
         this._tags.delete(tag);
         this.tagRemoved$.notifyAll(tag);
         return this;
-    }
-
-    /**
-     * The types of the components on the Entity
-     */
-    public get types(): ComponentCtor[] {
-        return Array.from(this.components.keys()) as ComponentCtor[];
     }
 
     /**
@@ -251,22 +284,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
 
     get<TComponent extends Component>(type: ComponentCtor<TComponent>): MaybeKnownComponent<TComponent, TKnownComponents> {
         return this.components.get(type) as MaybeKnownComponent<TComponent, TKnownComponents>;
-    }
-
-    private _parent: Entity | null = null;
-    public get parent(): Entity | null {
-        return this._parent;
-    }
-
-    public childrenAdded$ = new Observable<Entity>();
-    public childrenRemoved$ = new Observable<Entity>();
-
-    private _children: Entity[] = [];
-    /**
-     * Get the direct children of this entity
-     */
-    public get children(): readonly Entity[] {
-        return this._children;
     }
 
     /**
@@ -404,17 +421,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
         return this;
     }
 
-    private _getClassHierarchyRoot(componentType: ComponentCtor): ComponentCtor {
-        let current = componentType;
-        let parent = Object.getPrototypeOf(current.prototype)?.constructor;
-
-        while (parent && parent !== Object && parent !== Component) {
-            current = parent;
-            parent = Object.getPrototypeOf(current.prototype)?.constructor;
-        }
-        return current;
-    }
-
     /**
      * Adds a component to the entity
      * @param component Component or Entity to add copy of components from
@@ -518,20 +524,6 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
      */
     public has<TComponent extends Component>(type: ComponentCtor<TComponent>): boolean {
         return this.components.has(type);
-    }
-
-    private _isInitialized = false;
-    private _isAdded = false;
-
-    /**
-     * Gets whether the actor is Initialized
-     */
-    public get isInitialized(): boolean {
-        return this._isInitialized;
-    }
-
-    public get isAdded(): boolean {
-        return this._isAdded;
     }
 
     /**
@@ -662,31 +654,51 @@ export class Entity<TKnownComponents extends Component = any> implements OnIniti
     }
 
     public emit<TEventName extends EventKey<EntityEvents>>(eventName: TEventName, event: EntityEvents[TEventName]): void;
+
     public emit(eventName: string, event?: any): void;
+
     public emit<TEventName extends EventKey<EntityEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
 
     public on<TEventName extends EventKey<EntityEvents>>(eventName: TEventName, handler: Handler<EntityEvents[TEventName]>): Subscription;
+
     public on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public on<TEventName extends EventKey<EntityEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.on(eventName, handler);
     }
 
     public once<TEventName extends EventKey<EntityEvents>>(eventName: TEventName, handler: Handler<EntityEvents[TEventName]>): Subscription;
+
     public once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public once<TEventName extends EventKey<EntityEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.once(eventName, handler);
     }
 
     public off<TEventName extends EventKey<EntityEvents>>(eventName: TEventName, handler: Handler<EntityEvents[TEventName]>): void;
+
     public off(eventName: string, handler: Handler<unknown>): void;
+
     public off(eventName: string): void;
+
     public off<TEventName extends EventKey<EntityEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         if (handler) {
             this.events.off(eventName, handler);
         } else {
             this.events.off(eventName);
         }
+    }
+
+    private _getClassHierarchyRoot(componentType: ComponentCtor): ComponentCtor {
+        let current = componentType;
+        let parent = Object.getPrototypeOf(current.prototype)?.constructor;
+
+        while (parent && parent !== Object && parent !== Component) {
+            current = parent;
+            parent = Object.getPrototypeOf(current.prototype)?.constructor;
+        }
+        return current;
     }
 }

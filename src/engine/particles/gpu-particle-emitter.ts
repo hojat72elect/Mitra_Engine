@@ -1,118 +1,118 @@
-import type { Engine } from '../engine';
-import { Actor } from '../actor';
-import { EmitterType } from './emitter-type';
-import type { ParticleEmitterOptions } from './particles';
-import { ParticleTransform } from './particles';
-import type { GpuParticleConfig } from './gpu-particle-renderer';
-import { GpuParticleRenderer } from './gpu-particle-renderer';
-import { GraphicsComponent } from '../graphics/graphics-component';
-import { Random } from '../math/random';
-import type { Vector } from '../math/vector';
-import { vec } from '../math/vector';
-import { clamp } from '../math';
-import type { MitraGraphicsContextWebgl } from '../graphics/context/mitra-graphics-context-webgl';
-import type { ParticleRenderer } from '../graphics/context/particle-renderer/particle-renderer';
+import type {Engine} from '../engine';
+import {Actor} from '../actor';
+import {EmitterType} from './emitter-type';
+import type {ParticleEmitterOptions} from './particles';
+import {ParticleTransform} from './particles';
+import type {GpuParticleConfig} from './gpu-particle-renderer';
+import {GpuParticleRenderer} from './gpu-particle-renderer';
+import {GraphicsComponent} from '../graphics/graphics-component';
+import {Random} from '../math/random';
+import type {Vector} from '../math/vector';
+import {vec} from '../math/vector';
+import {clamp} from '../math';
+import type {MitraGraphicsContextWebgl} from '../graphics/context/mitra-graphics-context-webgl';
+import type {ParticleRenderer} from '../graphics/context/particle-renderer/particle-renderer';
 
 export class GpuParticleEmitter extends Actor {
-  public particle: GpuParticleConfig = {
-    /**
-     * Gets or sets the life of each particle in milliseconds
-     */
-    life: 2000,
-    transform: ParticleTransform.Global,
-    graphic: undefined,
-    opacity: 1,
-    angularVelocity: 0,
-    focus: undefined,
-    focusAccel: undefined,
-    randomRotation: false
-  };
+    public particle: GpuParticleConfig = {
+        /**
+         * Gets or sets the life of each particle in milliseconds
+         */
+        life: 2000,
+        transform: ParticleTransform.Global,
+        graphic: undefined,
+        opacity: 1,
+        angularVelocity: 0,
+        focus: undefined,
+        focusAccel: undefined,
+        randomRotation: false
+    };
 
-  public override graphics = new GraphicsComponent();
-  public renderer: GpuParticleRenderer;
-  public isEmitting: boolean = false;
-  public emitRate: number = 1;
-  public emitterType: EmitterType = EmitterType.Rectangle;
-  public radius: number = 0;
-  public readonly maxParticles: number = 2000;
-  random: Random;
+    public override graphics = new GraphicsComponent();
+    public renderer: GpuParticleRenderer;
+    public isEmitting: boolean = false;
+    public emitRate: number = 1;
+    public emitterType: EmitterType = EmitterType.Rectangle;
+    public radius: number = 0;
+    public readonly maxParticles: number = 2000;
+    random: Random;
+    private _particlesToEmit = 0;
 
-  public override get pos() {
-    return this.transform.pos;
-  }
+    constructor(config: ParticleEmitterOptions & { maxParticles?: number; particle?: GpuParticleConfig }) {
+        super({name: `GpuParticleEmitter`, width: config.width, height: config.height}); // somewhat goofy way of doing width/height
+        this.addComponent(this.graphics, true);
+        (this.graphics.onPostDraw as any) = this.draw.bind(this);
 
-  public override set pos(pos: Vector) {
-    this.transform.pos = pos;
-  }
+        const {particle, maxParticles, x, y, z, pos, isEmitting, emitRate, emitterType, radius, random} = {...config};
 
-  public override get z() {
-    return this.transform.z;
-  }
+        this.maxParticles = clamp(maxParticles ?? this.maxParticles, 0, GpuParticleRenderer.GPU_MAX_PARTICLES);
 
-  public override set z(z: number) {
-    this.transform.z = z;
-  }
+        this.pos = pos ?? vec(x ?? 0, y ?? 0);
 
-  constructor(config: ParticleEmitterOptions & { maxParticles?: number; particle?: GpuParticleConfig }) {
-    super({ name: `GpuParticleEmitter`, width: config.width, height: config.height }); // somewhat goofy way of doing width/height
-    this.addComponent(this.graphics, true);
-    (this.graphics.onPostDraw as any) = this.draw.bind(this);
+        this.z = z ?? 0;
 
-    const { particle, maxParticles, x, y, z, pos, isEmitting, emitRate, emitterType, radius, random } = { ...config };
+        this.isEmitting = isEmitting ?? this.isEmitting;
 
-    this.maxParticles = clamp(maxParticles ?? this.maxParticles, 0, GpuParticleRenderer.GPU_MAX_PARTICLES);
+        this.emitRate = emitRate ?? this.emitRate;
 
-    this.pos = pos ?? vec(x ?? 0, y ?? 0);
+        this.emitterType = emitterType ?? this.emitterType;
 
-    this.z = z ?? 0;
+        this.radius = radius ?? this.radius;
 
-    this.isEmitting = isEmitting ?? this.isEmitting;
+        this.particle = {...this.particle, ...particle};
 
-    this.emitRate = emitRate ?? this.emitRate;
+        this.random = random ?? new Random();
 
-    this.emitterType = emitterType ?? this.emitterType;
-
-    this.radius = radius ?? this.radius;
-
-    this.particle = { ...this.particle, ...particle };
-
-    this.random = random ?? new Random();
-
-    this.renderer = new GpuParticleRenderer(this, this.random, this.particle);
-  }
-
-  public override _initialize(engine: Engine): void {
-    super._initialize(engine);
-    const context = engine.graphicsContext as MitraGraphicsContextWebgl;
-    this.renderer.initialize(context.__gl, context);
-  }
-
-  private _particlesToEmit = 0;
-  public override update(engine: Engine, elapsed: number): void {
-    super.update(engine, elapsed);
-
-    if (this.isEmitting) {
-      this._particlesToEmit += this.emitRate * (elapsed / 1000);
-      if (this._particlesToEmit > 1.0) {
-        this.emitParticles(Math.floor(this._particlesToEmit));
-        this._particlesToEmit = this._particlesToEmit - Math.floor(this._particlesToEmit);
-      }
+        this.renderer = new GpuParticleRenderer(this, this.random, this.particle);
     }
-    this.renderer.update(elapsed);
-  }
 
-  public emitParticles(particleCount: number) {
-    if (particleCount <= 0) {
-      return;
+    public override get pos() {
+        return this.transform.pos;
     }
-    this.renderer.emitParticles(particleCount | 0); // coerce to integer
-  }
 
-  public clearParticles() {
-    this.renderer.clearParticles();
-  }
+    public override set pos(pos: Vector) {
+        this.transform.pos = pos;
+    }
 
-  draw(ctx: MitraGraphicsContextWebgl, elapsed: number) {
-    ctx.draw<ParticleRenderer>('ex.particle', this.renderer, elapsed);
-  }
+    public override get z() {
+        return this.transform.z;
+    }
+
+    public override set z(z: number) {
+        this.transform.z = z;
+    }
+
+    public override _initialize(engine: Engine): void {
+        super._initialize(engine);
+        const context = engine.graphicsContext as MitraGraphicsContextWebgl;
+        this.renderer.initialize(context.__gl, context);
+    }
+
+    public override update(engine: Engine, elapsed: number): void {
+        super.update(engine, elapsed);
+
+        if (this.isEmitting) {
+            this._particlesToEmit += this.emitRate * (elapsed / 1000);
+            if (this._particlesToEmit > 1.0) {
+                this.emitParticles(Math.floor(this._particlesToEmit));
+                this._particlesToEmit = this._particlesToEmit - Math.floor(this._particlesToEmit);
+            }
+        }
+        this.renderer.update(elapsed);
+    }
+
+    public emitParticles(particleCount: number) {
+        if (particleCount <= 0) {
+            return;
+        }
+        this.renderer.emitParticles(particleCount | 0); // coerce to integer
+    }
+
+    public clearParticles() {
+        this.renderer.clearParticles();
+    }
+
+    draw(ctx: MitraGraphicsContextWebgl, elapsed: number) {
+        ctx.draw<ParticleRenderer>('ex.particle', this.renderer, elapsed);
+    }
 }

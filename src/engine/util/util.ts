@@ -1,37 +1,37 @@
-import { Vector, vec } from '../math/vector';
-import type { Clock } from './clock';
-import { Future } from './future';
+import {vec, Vector} from '../math/vector';
+import type {Clock} from './clock';
+import {Future} from './future';
 
 /**
  *
  */
 export function getMinIndex(array: number[]): number {
-  if (array.length === 0) {
-    throw new Error('Cannot find minIndex of array.length == 0');
-  }
-
-  let min = array[0];
-  let minIndex = 0;
-
-  for (let i = 1; i < array.length; i++) {
-    if (array[i] < min) {
-      min = array[i];
-      minIndex = i;
+    if (array.length === 0) {
+        throw new Error('Cannot find minIndex of array.length == 0');
     }
-  }
-  return minIndex;
+
+    let min = array[0];
+    let minIndex = 0;
+
+    for (let i = 1; i < array.length; i++) {
+        if (array[i] < min) {
+            min = array[i];
+            minIndex = i;
+        }
+    }
+    return minIndex;
 }
 
 /**
  * Find the screen position of an HTML element
  */
 export function getPosition(el: HTMLElement): Vector {
-  // do we need the scroll too? technically the offset method before did that
-  if (el && el.getBoundingClientRect) {
-    const rect = el.getBoundingClientRect();
-    return vec(rect.x + window.scrollX, rect.y + window.scrollY);
-  }
-  return Vector.Zero;
+    // do we need the scroll too? technically the offset method before did that
+    if (el && el.getBoundingClientRect) {
+        const rect = el.getBoundingClientRect();
+        return vec(rect.x + window.scrollX, rect.y + window.scrollY);
+    }
+    return Vector.Zero;
 }
 
 /**
@@ -39,11 +39,11 @@ export function getPosition(el: HTMLElement): Vector {
  * @deprecated Will be removed in v0.26.0
  */
 export function addItemToArray<T>(item: T, array: T[]): boolean {
-  if (array.indexOf(item) === -1) {
-    array.push(item);
-    return true;
-  }
-  return false;
+    if (array.indexOf(item) === -1) {
+        array.push(item);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -51,32 +51,32 @@ export function addItemToArray<T>(item: T, array: T[]): boolean {
  * @deprecated Will be removed in v0.26.0
  */
 export function removeItemFromArray<T>(item: T, array: T[]): boolean {
-  let index = -1;
-  if ((index = array.indexOf(item)) > -1) {
-    array.splice(index, 1);
-    return true;
-  }
+    let index = -1;
+    if ((index = array.indexOf(item)) > -1) {
+        array.splice(index, 1);
+        return true;
+    }
 
-  return false;
+    return false;
 }
 
 /**
  * See if an array contains something
  */
 export function contains(array: Array<any>, obj: any): boolean {
-  for (let i = 0; i < array.length; i++) {
-    if (array[i] === obj) {
-      return true;
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === obj) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /**
  * Used for exhaustive checks at compile time
  */
 export function fail(message: never): never {
-  throw new Error(message);
+    throw new Error(message);
 }
 
 /**
@@ -88,12 +88,12 @@ export function fail(message: never): never {
  * @param clock
  */
 export function delay(milliseconds: number, clock?: Clock): Promise<void> {
-  const future = new Future<void>();
-  const schedule = clock?.schedule.bind(clock) ?? setTimeout;
-  schedule(() => {
-    future.resolve();
-  }, milliseconds);
-  return future.promise;
+    const future = new Future<void>();
+    const schedule = clock?.schedule.bind(clock) ?? setTimeout;
+    schedule(() => {
+        future.resolve();
+    }, milliseconds);
+    return future.promise;
 }
 
 /**
@@ -102,13 +102,13 @@ export function delay(milliseconds: number, clock?: Clock): Promise<void> {
  * @param keys
  */
 export function omit<TObject extends Object, Keys extends keyof TObject>(object: TObject, keys: Keys[]) {
-  const newObj: Omit<TObject, Keys> = {} as any;
-  for (const key in object) {
-    if (!keys.includes(key as any)) {
-      (newObj as any)[key] = object[key];
+    const newObj: Omit<TObject, Keys> = {} as any;
+    for (const key in object) {
+        if (!keys.includes(key as any)) {
+            (newObj as any)[key] = object[key];
+        }
     }
-  }
-  return newObj;
+    return newObj;
 }
 
 /**
@@ -116,7 +116,7 @@ export function omit<TObject extends Object, Keys extends keyof TObject>(object:
  * @param item
  */
 export function isObject(item: any): item is object {
-  return item && typeof item === 'object' && !Array.isArray(item);
+    return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**
@@ -125,23 +125,23 @@ export function isObject(item: any): item is object {
  * @param sources
  */
 export function mergeDeep<T extends object>(target: T, ...sources: T[]) {
-  if (!sources.length) {
-    return target;
-  }
-  const source = sources.shift();
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) {
-          Object.assign(target, { [key]: {} });
-        }
-        mergeDeep(target[key] as any, source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
+    if (!sources.length) {
+        return target;
     }
-  }
+    const source = sources.shift();
 
-  return mergeDeep(target, ...sources);
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+            if (isObject(source[key])) {
+                if (!target[key]) {
+                    Object.assign(target, {[key]: {}});
+                }
+                mergeDeep(target[key] as any, source[key]);
+            } else {
+                Object.assign(target, {[key]: source[key]});
+            }
+        }
+    }
+
+    return mergeDeep(target, ...sources);
 }

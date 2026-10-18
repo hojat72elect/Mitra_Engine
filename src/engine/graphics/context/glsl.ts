@@ -1,4 +1,4 @@
-import { Logger } from '../../util/log';
+import {Logger} from '../../util/log';
 
 /**
  * Emitted into the preamble so that re-applying the tag to its own output is a no-op.
@@ -47,9 +47,9 @@ const CALL_REGEX = /([A-Za-z_][A-Za-z0-9_]*)\s*\(/g;
  * un-premultiplying wrapper injected in the preamble.
  */
 const SAMPLER_RENAMES: Record<string, string> = {
-  texture: 'ex_texture',
-  textureLod: 'ex_textureLod',
-  texelFetch: 'ex_texelFetch'
+    texture: 'ex_texture',
+    textureLod: 'ex_textureLod',
+    texelFetch: 'ex_texelFetch'
 };
 
 /**
@@ -62,13 +62,13 @@ const MANUAL_PREMULTIPLY_REGEX = /[A-Za-z_][A-Za-z0-9_]*\.rgb\s*(?:\*=|=)[^;]*\.
  * numbering (see `Shader._processSourceForError`) as close to the author's as possible.
  */
 const ALPHA_HELPERS = [
-  'vec4 ex_premultiply(vec4 color) { return vec4(color.rgb * color.a, color.a); }',
-  'vec4 ex_unpremultiply(vec4 color) { return color.a > 0.0 ? vec4(color.rgb / color.a, color.a) : color; }',
-  'vec4 ex_texture_raw(in sampler2D tex, in vec2 uv) { return texture(tex, uv); }',
-  'vec4 ex_texture(in sampler2D tex, in vec2 uv) { return ex_unpremultiply(texture(tex, uv)); }',
-  'vec4 ex_texture(in sampler2D tex, in vec2 uv, in float bias) { return ex_unpremultiply(texture(tex, uv, bias)); }',
-  'vec4 ex_textureLod(in sampler2D tex, in vec2 uv, in float lod) { return ex_unpremultiply(textureLod(tex, uv, lod)); }',
-  'vec4 ex_texelFetch(in sampler2D tex, in ivec2 coord, in int lod) { return ex_unpremultiply(texelFetch(tex, coord, lod)); }'
+    'vec4 ex_premultiply(vec4 color) { return vec4(color.rgb * color.a, color.a); }',
+    'vec4 ex_unpremultiply(vec4 color) { return color.a > 0.0 ? vec4(color.rgb / color.a, color.a) : color; }',
+    'vec4 ex_texture_raw(in sampler2D tex, in vec2 uv) { return texture(tex, uv); }',
+    'vec4 ex_texture(in sampler2D tex, in vec2 uv) { return ex_unpremultiply(texture(tex, uv)); }',
+    'vec4 ex_texture(in sampler2D tex, in vec2 uv, in float bias) { return ex_unpremultiply(texture(tex, uv, bias)); }',
+    'vec4 ex_textureLod(in sampler2D tex, in vec2 uv, in float lod) { return ex_unpremultiply(textureLod(tex, uv, lod)); }',
+    'vec4 ex_texelFetch(in sampler2D tex, in ivec2 coord, in int lod) { return ex_unpremultiply(texelFetch(tex, coord, lod)); }'
 ];
 
 /**
@@ -77,17 +77,17 @@ const ALPHA_HELPERS = [
  * Returned in the same alpha space as everything else the author sees.
  */
 function pixelTextureSource(premultiply: boolean): string[] {
-  const sample = premultiply ? 'ex_unpremultiply(texture(tex, pixel_uv))' : 'texture(tex, pixel_uv)';
-  return [
-    'vec4 pixel_texture(in sampler2D tex, in vec2 uv) {',
-    '  vec2 pixel = uv * vec2(textureSize(tex, 0));',
-    '  vec2 seam = floor(pixel + .5);',
-    '  vec2 dudv = fwidth(pixel);',
-    '  pixel = seam + clamp((pixel - seam) / dudv, -.5, .5);',
-    '  vec2 pixel_uv = pixel / vec2(textureSize(tex, 0));',
-    `  return ${sample};`,
-    '}'
-  ];
+    const sample = premultiply ? 'ex_unpremultiply(texture(tex, pixel_uv))' : 'texture(tex, pixel_uv)';
+    return [
+        'vec4 pixel_texture(in sampler2D tex, in vec2 uv) {',
+        '  vec2 pixel = uv * vec2(textureSize(tex, 0));',
+        '  vec2 seam = floor(pixel + .5);',
+        '  vec2 dudv = fwidth(pixel);',
+        '  pixel = seam + clamp((pixel - seam) / dudv, -.5, .5);',
+        '  vec2 pixel_uv = pixel / vec2(textureSize(tex, 0));',
+        `  return ${sample};`,
+        '}'
+    ];
 }
 
 /**
@@ -137,67 +137,67 @@ function pixelTextureSource(premultiply: boolean): string[] {
  * * Exposes `ex_premultiply(vec4)` / `ex_unpremultiply(vec4)` if you need to convert by hand
  */
 export function glsl(strings: TemplateStringsArray, ...values: any[]): string {
-  // Combine template strings and values
-  let source = strings.reduce((acc, str, i) => {
-    return acc + str + (values[i] !== undefined ? values[i] : '');
-  }, '');
+    // Combine template strings and values
+    let source = strings.reduce((acc, str, i) => {
+        return acc + str + (values[i] !== undefined ? values[i] : '');
+    }, '');
 
-  // Applying the tag to source that already went through it is a no-op
-  if (source.includes(PROCESSED_MARKER)) {
-    return source;
-  }
-
-  // Pull off any author supplied #version, exactly one is emitted at the top of the preamble
-  source = source.replace(VERSION_REGEX, '');
-
-  // Vertex shaders are left alone, they have their own default precision and no color output
-  if (/\bgl_Position\b/.test(source)) {
-    return `#version 300 es\n${PROCESSED_MARKER}\n` + source;
-  }
-
-  const premultiply = !NO_PREMULTIPLY_PRAGMA_REGEX.test(source);
-  source = source.replace(NO_PREMULTIPLY_PRAGMA_REGEX, '');
-
-  const usesPixelTexture = source.includes('pixel_texture(');
-  // Fragment shaders have no default float precision, match the author's if they declared one
-  const floatPrecision = FLOAT_PRECISION_REGEX.exec(source)?.[1] ?? 'mediump';
-
-  if (premultiply) {
-    if (process.env.NODE_ENV === 'development' && MANUAL_PREMULTIPLY_REGEX.test(source)) {
-      Logger.getInstance().warnOnce(
-        `A shader authored with the glsl tagged template literal looks like it premultiplies alpha by hand ` +
-          `(for example "fragColor.rgb *= fragColor.a;").\n` +
-          `The glsl tag already premultiplies your color output for you, so this will premultiply twice and ` +
-          `darken antialiased edges. Remove the manual premultiply, or opt out of the automatic one with ` +
-          `"#pragma excalibur premultiply(off)".`
-      );
+    // Applying the tag to source that already went through it is a no-op
+    if (source.includes(PROCESSED_MARKER)) {
+        return source;
     }
 
-    // Rename sampling calls in the author's source only. The preamble that defines the renamed
-    // functions is prepended afterwards, so its own bodies are never rewritten.
-    source = source.replace(CALL_REGEX, (match, name: string) => {
-      const rename = SAMPLER_RENAMES[name];
-      return rename ? `${rename}(` : match;
-    });
+    // Pull off any author supplied #version, exactly one is emitted at the top of the preamble
+    source = source.replace(VERSION_REGEX, '');
 
-    source = premultiplyOutput(source);
-  }
+    // Vertex shaders are left alone, they have their own default precision and no color output
+    if (/\bgl_Position\b/.test(source)) {
+        return `#version 300 es\n${PROCESSED_MARKER}\n` + source;
+    }
 
-  const preamble: string[] = ['#version 300 es', PROCESSED_MARKER, `precision ${floatPrecision} float;`];
+    const premultiply = !NO_PREMULTIPLY_PRAGMA_REGEX.test(source);
+    source = source.replace(NO_PREMULTIPLY_PRAGMA_REGEX, '');
 
-  if (usesPixelTexture && !/\buniform\s+vec2\s+u_graphic_resolution\s*;/.test(source)) {
-    preamble.push('uniform vec2 u_graphic_resolution;');
-  }
+    const usesPixelTexture = source.includes('pixel_texture(');
+    // Fragment shaders have no default float precision, match the author's if they declared one
+    const floatPrecision = FLOAT_PRECISION_REGEX.exec(source)?.[1] ?? 'mediump';
 
-  if (premultiply) {
-    preamble.push(...ALPHA_HELPERS);
-  }
+    if (premultiply) {
+        if (process.env.NODE_ENV === 'development' && MANUAL_PREMULTIPLY_REGEX.test(source)) {
+            Logger.getInstance().warnOnce(
+                `A shader authored with the glsl tagged template literal looks like it premultiplies alpha by hand ` +
+                `(for example "fragColor.rgb *= fragColor.a;").\n` +
+                `The glsl tag already premultiplies your color output for you, so this will premultiply twice and ` +
+                `darken antialiased edges. Remove the manual premultiply, or opt out of the automatic one with ` +
+                `"#pragma excalibur premultiply(off)".`
+            );
+        }
 
-  if (usesPixelTexture) {
-    preamble.push(...pixelTextureSource(premultiply));
-  }
+        // Rename sampling calls in the author's source only. The preamble that defines the renamed
+        // functions is prepended afterwards, so its own bodies are never rewritten.
+        source = source.replace(CALL_REGEX, (match, name: string) => {
+            const rename = SAMPLER_RENAMES[name];
+            return rename ? `${rename}(` : match;
+        });
 
-  return preamble.join('\n') + '\n' + source;
+        source = premultiplyOutput(source);
+    }
+
+    const preamble: string[] = ['#version 300 es', PROCESSED_MARKER, `precision ${floatPrecision} float;`];
+
+    if (usesPixelTexture && !/\buniform\s+vec2\s+u_graphic_resolution\s*;/.test(source)) {
+        preamble.push('uniform vec2 u_graphic_resolution;');
+    }
+
+    if (premultiply) {
+        preamble.push(...ALPHA_HELPERS);
+    }
+
+    if (usesPixelTexture) {
+        preamble.push(...pixelTextureSource(premultiply));
+    }
+
+    return preamble.join('\n') + '\n' + source;
 }
 
 /**
@@ -206,16 +206,16 @@ export function glsl(strings: TemplateStringsArray, ...values: any[]): string {
  * `discard` still behaves correctly, in GLSL ES 3.0 it terminates the fragment from any call depth.
  */
 function premultiplyOutput(source: string): string {
-  // Already wrapped, applying the tag twice is a no-op
-  if (/\bvoid\s+ex_main\s*\(/.test(source)) {
-    return source;
-  }
+    // Already wrapped, applying the tag twice is a no-op
+    if (/\bvoid\s+ex_main\s*\(/.test(source)) {
+        return source;
+    }
 
-  const outName = FRAGMENT_OUT_REGEX.exec(source)?.[1];
-  if (!outName || !MAIN_REGEX.test(source)) {
-    // Nothing to premultiply, the shader has no vec4 color output or no entry point
-    return source;
-  }
+    const outName = FRAGMENT_OUT_REGEX.exec(source)?.[1];
+    if (!outName || !MAIN_REGEX.test(source)) {
+        // Nothing to premultiply, the shader has no vec4 color output or no entry point
+        return source;
+    }
 
-  return source.replace(MAIN_REGEX, 'void ex_main(') + `\nvoid main() {\n  ex_main();\n  ${outName} = ex_premultiply(${outName});\n}\n`;
+    return source.replace(MAIN_REGEX, 'void ex_main(') + `\nvoid main() {\n  ex_main();\n  ${outName} = ex_premultiply(${outName});\n}\n`;
 }

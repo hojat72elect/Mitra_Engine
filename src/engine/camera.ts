@@ -275,21 +275,74 @@ export class Camera implements CanUpdate, CanInitialize {
     public events = new EventEmitter<CameraEvents>();
     public transform: AffineMatrix = AffineMatrix.identity();
     public inverse: AffineMatrix = AffineMatrix.identity();
-
-    protected _follow!: Actor;
-
-    private _cameraStrategies: CameraStrategy<any>[] = [];
-
-    public get strategies(): CameraStrategy<any>[] {
-        return this._cameraStrategies;
-    }
-
     public strategy: StrategyContainer = new StrategyContainer(this);
-
+    /**
+     * Get or set rate of change in zoom, defaults to 0
+     */
+    public dz: number = 0;
+    /**
+     * Get or set zoom acceleration
+     */
+    public az: number = 0;
+    /**
+     * Current rotation of the camera
+     */
+    public rotation: number = 0;
+    /**
+     * Interpolated camera position if more draws are running than updates
+     *
+     * Enabled when `Engine.fixedUpdateFps` is enabled, in all other cases this will be the same as pos
+     */
+    public drawPos: Vector = this.pos.clone();
+    /**
+     * Get or set the camera's velocity
+     */
+    public vel: Vector = Vector.Zero;
+    /**
+     * Get or set the camera's acceleration
+     */
+    public acc: Vector = Vector.Zero;
+    protected _follow!: Actor;
+    //camera effects
+    protected _isShaking: boolean = false;
+    protected _isZooming: boolean = false;
+    private _cameraStrategies: CameraStrategy<any>[] = [];
     /**
      * Get or set current zoom of the camera, defaults to 1
      */
     private _z = 1;
+    private _posChanged = false;
+    private _oldPos = this.pos.clone();
+    private _cameraMoving: boolean = false;
+    private _currentLerpTime: number = 0;
+    private _lerpDuration: number = 1000; // 1 second
+    private _lerpStart!: Vector;
+    private _lerpEnd!: Vector;
+    private _lerpResolve!: (value: Vector) => void;
+    private _lerpPromise?: Promise<Vector>;
+    private _shakeMagnitudeX: number = 0;
+    private _shakeMagnitudeY: number = 0;
+    private _shakeDuration: number = 0;
+    private _elapsedShakeTime: number = 0;
+    private _xShake: number = 0;
+    private _yShake: number = 0;
+    private _zoomStart: number = 1;
+    private _zoomEnd: number = 1;
+    private _currentZoomTime: number = 0;
+    private _zoomDuration: number = 0;
+    private _zoomResolve!: (val: boolean) => void;
+    private _zoomPromise!: Promise<boolean>;
+    private _zoomEasing: Easing = easeInOutCubic;
+    private _easing: Easing = easeInOutCubic;
+    private _halfWidth: number = 0;
+    private _halfHeight: number = 0;
+    private _engine!: Engine;
+    private _screen!: Screen;
+    private _snapPos = vec(0, 0);
+
+    public get strategies(): CameraStrategy<any>[] {
+        return this._cameraStrategies;
+    }
 
     public get zoom(): number {
         return this._z;
@@ -302,20 +355,6 @@ export class Camera implements CanUpdate, CanInitialize {
             this._halfHeight = this._engine.halfDrawHeight;
         }
     }
-
-    /**
-     * Get or set rate of change in zoom, defaults to 0
-     */
-    public dz: number = 0;
-    /**
-     * Get or set zoom acceleration
-     */
-    public az: number = 0;
-
-    /**
-     * Current rotation of the camera
-     */
-    public rotation: number = 0;
 
     private _angularVelocity: number = 0;
 
@@ -330,10 +369,10 @@ export class Camera implements CanUpdate, CanInitialize {
         this._angularVelocity = value;
     }
 
-    private _posChanged = false;
     private _pos: Vector = new WatchVector(Vector.Zero, () => {
         this._posChanged = true;
     });
+
     /**
      * Get or set the camera's position
      */
@@ -347,63 +386,6 @@ export class Camera implements CanUpdate, CanInitialize {
             this._posChanged = true;
         });
     }
-
-    /**
-     * Has the position changed since the last update
-     */
-    public hasChanged(): boolean {
-        return this._posChanged;
-    }
-
-    /**
-     * Interpolated camera position if more draws are running than updates
-     *
-     * Enabled when `Engine.fixedUpdateFps` is enabled, in all other cases this will be the same as pos
-     */
-    public drawPos: Vector = this.pos.clone();
-
-    private _oldPos = this.pos.clone();
-
-    /**
-     * Get or set the camera's velocity
-     */
-    public vel: Vector = Vector.Zero;
-
-    /**
-     * Get or set the camera's acceleration
-     */
-    public acc: Vector = Vector.Zero;
-
-    private _cameraMoving: boolean = false;
-    private _currentLerpTime: number = 0;
-    private _lerpDuration: number = 1000; // 1 second
-    private _lerpStart!: Vector;
-    private _lerpEnd!: Vector;
-    private _lerpResolve!: (value: Vector) => void;
-    private _lerpPromise?: Promise<Vector>;
-
-    //camera effects
-    protected _isShaking: boolean = false;
-    private _shakeMagnitudeX: number = 0;
-    private _shakeMagnitudeY: number = 0;
-    private _shakeDuration: number = 0;
-    private _elapsedShakeTime: number = 0;
-    private _xShake: number = 0;
-    private _yShake: number = 0;
-
-    protected _isZooming: boolean = false;
-    private _zoomStart: number = 1;
-    private _zoomEnd: number = 1;
-    private _currentZoomTime: number = 0;
-    private _zoomDuration: number = 0;
-
-    private _zoomResolve!: (val: boolean) => void;
-    private _zoomPromise!: Promise<boolean>;
-    private _zoomEasing: Easing = easeInOutCubic;
-    private _easing: Easing = easeInOutCubic;
-
-    private _halfWidth: number = 0;
-    private _halfHeight: number = 0;
 
     /**
      * Get the camera's x position
@@ -479,6 +461,32 @@ export class Camera implements CanUpdate, CanInitialize {
 
     public set ay(value: number) {
         this.acc = vec(this.acc.x, value);
+    }
+
+    private _viewport?: BoundingBox;
+
+    /**
+     * Gets the bounding box of the viewport of this camera in world coordinates
+     */
+    public get viewport(): BoundingBox {
+        if (this._viewport) {
+            return this._viewport;
+        }
+
+        return new BoundingBox(0, 0, 0, 0);
+    }
+
+    private _isInitialized = false;
+
+    public get isInitialized() {
+        return this._isInitialized;
+    }
+
+    /**
+     * Has the position changed since the last update
+     */
+    public hasChanged(): boolean {
+        return this._posChanged;
     }
 
     /**
@@ -564,18 +572,6 @@ export class Camera implements CanUpdate, CanInitialize {
         return this._zoomPromise;
     }
 
-    private _viewport?: BoundingBox;
-    /**
-     * Gets the bounding box of the viewport of this camera in world coordinates
-     */
-    public get viewport(): BoundingBox {
-        if (this._viewport) {
-            return this._viewport;
-        }
-
-        return new BoundingBox(0, 0, 0, 0);
-    }
-
     /**
      * Adds one or more new camera strategies to this camera
      * @param cameraStrategies Instance of an {@apilink CameraStrategy}
@@ -655,13 +651,6 @@ export class Camera implements CanUpdate, CanInitialize {
         // Overridable
     }
 
-    private _engine!: Engine;
-    private _screen!: Screen;
-    private _isInitialized = false;
-    public get isInitialized() {
-        return this._isInitialized;
-    }
-
     public _initialize(engine: Engine) {
         if (!this.isInitialized) {
             this._engine = engine;
@@ -717,26 +706,35 @@ export class Camera implements CanUpdate, CanInitialize {
     }
 
     public emit<TEventName extends EventKey<CameraEvents>>(eventName: TEventName, event: CameraEvents[TEventName]): void;
+
     public emit(eventName: string, event?: any): void;
+
     public emit<TEventName extends EventKey<CameraEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
 
     public on<TEventName extends EventKey<CameraEvents>>(eventName: TEventName, handler: Handler<CameraEvents[TEventName]>): Subscription;
+
     public on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public on<TEventName extends EventKey<CameraEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.on(eventName, handler);
     }
 
     public once<TEventName extends EventKey<CameraEvents>>(eventName: TEventName, handler: Handler<CameraEvents[TEventName]>): Subscription;
+
     public once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public once<TEventName extends EventKey<CameraEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.once(eventName, handler);
     }
 
     public off<TEventName extends EventKey<CameraEvents>>(eventName: TEventName, handler: Handler<CameraEvents[TEventName]>): void;
+
     public off(eventName: string, handler: Handler<unknown>): void;
+
     public off(eventName: string): void;
+
     public off<TEventName extends EventKey<CameraEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         this.events.off(eventName, handler as any);
     }
@@ -829,8 +827,6 @@ export class Camera implements CanUpdate, CanInitialize {
         this._postupdate(engine, elapsed);
         this._posChanged = false;
     }
-
-    private _snapPos = vec(0, 0);
 
     /**
      * Applies the relevant transformations to the game canvas to "move" or apply effects to the Camera

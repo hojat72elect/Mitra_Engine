@@ -17,10 +17,17 @@ export interface BoundingBoxOptions {
  * Axis Aligned collision primitive for Mitra.
  */
 export class BoundingBox {
+    private static _SCRATCH_INTERSECT = [0, 0, 0, 0];
     public top!: number;
     public right!: number;
     public bottom!: number;
     public left!: number;
+    // Cache bounding box point returns
+    private _points: Vector[] = [];
+    private _left?: number;
+    private _right?: number;
+    private _top?: number;
+    private _bottom?: number;
 
     /**
      * Constructor allows passing of either an object with all coordinate components,
@@ -46,25 +53,44 @@ export class BoundingBox {
     }
 
     /**
-     * Returns a new instance of {@apilink BoundingBox} that is a copy of the current instance
+     * Returns the calculated width of the bounding box
      */
-    public clone(dest?: BoundingBox): BoundingBox {
-        const result = dest || new BoundingBox(0, 0, 0, 0);
-        result.left = this.left;
-        result.right = this.right;
-        result.top = this.top;
-        result.bottom = this.bottom;
-        return result;
+    public get width() {
+        return this.right - this.left;
     }
 
     /**
-     * Resets the bounds to a zero width/height box
+     * Returns the calculated height of the bounding box
      */
-    public reset(): void {
-        this.left = 0;
-        this.top = 0;
-        this.bottom = 0;
-        this.right = 0;
+    public get height() {
+        return this.bottom - this.top;
+    }
+
+    /**
+     * Returns the center of the bounding box
+     */
+    public get center(): Vector {
+        return new Vector((this.left + this.right) / 2, (this.top + this.bottom) / 2);
+    }
+
+    public get topLeft(): Vector {
+        return new Vector(this.left, this.top);
+    }
+
+    public get bottomRight(): Vector {
+        return new Vector(this.right, this.bottom);
+    }
+
+    public get topRight(): Vector {
+        return new Vector(this.right, this.top);
+    }
+
+    public get bottomLeft(): Vector {
+        return new Vector(this.left, this.bottom);
+    }
+
+    public get dimensions(): Vector {
+        return new Vector(this.width, this.height);
     }
 
     /**
@@ -130,17 +156,25 @@ export class BoundingBox {
     }
 
     /**
-     * Returns the calculated width of the bounding box
+     * Returns a new instance of {@apilink BoundingBox} that is a copy of the current instance
      */
-    public get width() {
-        return this.right - this.left;
+    public clone(dest?: BoundingBox): BoundingBox {
+        const result = dest || new BoundingBox(0, 0, 0, 0);
+        result.left = this.left;
+        result.right = this.right;
+        result.top = this.top;
+        result.bottom = this.bottom;
+        return result;
     }
 
     /**
-     * Returns the calculated height of the bounding box
+     * Resets the bounds to a zero width/height box
      */
-    public get height() {
-        return this.bottom - this.top;
+    public reset(): void {
+        this.left = 0;
+        this.top = 0;
+        this.bottom = 0;
+        this.right = 0;
     }
 
     /**
@@ -148,29 +182,6 @@ export class BoundingBox {
      */
     public hasZeroDimensions() {
         return this.width === 0 || this.height === 0;
-    }
-
-    /**
-     * Returns the center of the bounding box
-     */
-    public get center(): Vector {
-        return new Vector((this.left + this.right) / 2, (this.top + this.bottom) / 2);
-    }
-
-    public get topLeft(): Vector {
-        return new Vector(this.left, this.top);
-    }
-
-    public get bottomRight(): Vector {
-        return new Vector(this.right, this.bottom);
-    }
-
-    public get topRight(): Vector {
-        return new Vector(this.right, this.top);
-    }
-
-    public get bottomLeft(): Vector {
-        return new Vector(this.left, this.bottom);
     }
 
     public translate(pos: Vector): BoundingBox {
@@ -253,13 +264,6 @@ export class BoundingBox {
         return 2 * (wx + wy);
     }
 
-    // Cache bounding box point returns
-    private _points: Vector[] = [];
-    private _left?: number;
-    private _right?: number;
-    private _top?: number;
-    private _bottom?: number;
-
     /**
      * Returns the world space points that make up the corners of the bounding box as a polygon
      */
@@ -341,6 +345,7 @@ export class BoundingBox {
      * @param bb  The bounding box to test
      */
     public contains(bb: BoundingBox): boolean;
+
     public contains(val: any): boolean {
         if (val instanceof Vector) {
             return this.left <= val.x && this.top <= val.y && val.y <= this.bottom && val.x <= this.right;
@@ -367,10 +372,6 @@ export class BoundingBox {
         return compositeBB;
     }
 
-    public get dimensions(): Vector {
-        return new Vector(this.width, this.height);
-    }
-
     /**
      * Returns true if the bounding boxes overlap.
      * @param other
@@ -388,8 +389,6 @@ export class BoundingBox {
         const totalBoundingBox = this.combine(other);
         return totalBoundingBox.width + e < other.width + this.width && totalBoundingBox.height + e < other.height + this.height;
     }
-
-    private static _SCRATCH_INTERSECT = [0, 0, 0, 0];
 
     /**
      * Test wether this bounding box intersects with another returning

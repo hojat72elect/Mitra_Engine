@@ -54,13 +54,13 @@ export class DefaultLoader implements Loadable<Loadable<any>[]> {
         cache: false,
         draw: this.onDraw.bind(this)
     });
-    private _resources: Loadable<any>[] = [];
-    public get resources(): readonly Loadable<any>[] {
-        return this._resources;
-    }
-
-    private _numLoaded: number = 0;
     public engine!: Engine;
+    private _numLoaded: number = 0;
+    private _loaded = false;
+    private _isLoading = false;
+    private _totalTimeMs = 0;
+    private _resourcesLoadedFuture = new Future<void>();
+    private _loaderCompleteFuture = new Future<Loadable<any>[]>();
 
     /**
      * @param options Optionally provide the list of resources you want to load at constructor time
@@ -69,6 +69,20 @@ export class DefaultLoader implements Loadable<Loadable<any>[]> {
         if (options && options.loadables?.length) {
             this.addResources(options.loadables);
         }
+    }
+
+    private _resources: Loadable<any>[] = [];
+
+    public get resources(): readonly Loadable<any>[] {
+        return this._resources;
+    }
+
+    /**
+     * Returns the progress of the loader as a number between [0, 1] inclusive.
+     */
+    public get progress(): number {
+        const total = this._resources.length;
+        return total > 0 ? clamp(this._numLoaded, 0, total) / total : 1;
     }
 
     /**
@@ -135,24 +149,11 @@ export class DefaultLoader implements Loadable<Loadable<any>[]> {
     }
 
     /**
-     * Returns the progress of the loader as a number between [0, 1] inclusive.
-     */
-    public get progress(): number {
-        const total = this._resources.length;
-        return total > 0 ? clamp(this._numLoaded, 0, total) / total : 1;
-    }
-
-    private _loaded = false;
-    private _isLoading = false;
-
-    /**
      * Returns true if the loader has completely loaded all resources
      */
     public isLoaded() {
         return this._loaded || this._resources.length === 0;
     }
-
-    private _totalTimeMs = 0;
 
     /**
      * Optionally override the onUpdate
@@ -192,8 +193,6 @@ export class DefaultLoader implements Loadable<Loadable<any>[]> {
         ctx.restore();
     }
 
-    private _resourcesLoadedFuture = new Future<void>();
-
     public areResourcesLoaded() {
         if (this._resources.length === 0) {
             // special case no resources mean loaded;
@@ -201,8 +200,6 @@ export class DefaultLoader implements Loadable<Loadable<any>[]> {
         }
         return this._resourcesLoadedFuture.promise;
     }
-
-    private _loaderCompleteFuture = new Future<Loadable<any>[]>();
 
     /**
      * Not meant to be overridden

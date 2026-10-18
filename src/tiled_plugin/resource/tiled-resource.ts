@@ -193,14 +193,12 @@ export interface FactoryProps {
 }
 
 export class TiledResource implements Loadable<any> {
-    private logger = Logger.getInstance();
     /**
      * Currently the latest tested and supported version of Tiled
      * with the Mitra Tiled plugin.
      */
     public static supportedTiledVersion = '1.10.1';
     data: any;
-
     /**
      * The original tiled map representation in Tiled JSON/TMJ format
      *
@@ -223,18 +221,12 @@ export class TiledResource implements Loadable<any> {
      * GroupLayers don't exist in the plugin, they are flattened and the proper order preserved.
      */
     layers: Layer[] = [];
-
     public readonly mapFormat: 'TMX' | 'TMJ' = 'TMX';
     public readonly strict: boolean = true;
-
     public factories = new Map<string, (props: FactoryProps) => Entity | undefined>();
-
     public parser = new TiledParser();
-
     public fileLoader: FileLoader = FetchLoader;
-
     public pathMap: PathMap | undefined;
-
     public readonly startZIndex: number = 0;
     public readonly textQuality: number = 4;
     public readonly useMitraWiring: boolean = true;
@@ -242,7 +234,7 @@ export class TiledResource implements Loadable<any> {
     public readonly useTilemapCameraStrategy: boolean = false;
     public readonly headless: boolean = false;
     public layerConfig: Record<string | number, TiledLayerConfig> = {};
-
+    private logger = Logger.getInstance();
     private _imageLoader = new LoaderCache(ImageSource);
     private _tilesetLoader = new LoaderCache(TilesetResource);
     private _templateLoader = new LoaderCache(TemplateResource);
@@ -679,14 +671,6 @@ export class TiledResource implements Loadable<any> {
         return this.layers.filter(byProperty(propertyName, value));
     }
 
-    private _parseMap(data: any) {
-        if (this.mapFormat === 'TMX') {
-            return this.parser.parse(data, this.strict);
-        } else {
-            return data as TiledMap;
-        }
-    }
-
     async load(): Promise<any> {
         const data = await this.fileLoader(this.path, this.mapFormat === 'TMX' ? 'xml' : 'json');
 
@@ -751,85 +735,6 @@ export class TiledResource implements Loadable<any> {
         // Layer loading depends on data from previous load step
         await Promise.all(friendlyLayers.map(layer => layer.load()));
         this.layers = friendlyLayers;
-    }
-
-    private _collectTilesets() {
-        // Resolve initial tilesets either embedded or external
-        for (const tileset of this.map.tilesets) {
-            // Embedded are technically already loaded
-            if (isTiledTilesetEmbedded(tileset)) {
-                if (isTiledTilesetSingleImage(tileset)) {
-                    const imagePath = pathRelativeToBase(this.path, tileset.image, this.pathMap);
-                    const image = this._imageLoader.getOrAdd(imagePath);
-                    const friendlyTileset = new Tileset({
-                        name: tileset.name,
-                        tiledTileset: tileset,
-                        image,
-                        firstGid: tileset.firstgid!
-                    });
-                    this.tilesets.push(friendlyTileset);
-                }
-                if (isTiledTilesetCollectionOfImages(tileset)) {
-                    const tileToImage = new Map<TiledTile, ImageSource>();
-                    if (tileset.tiles) {
-                        for (let tile of tileset.tiles) {
-                            if (tile.image) {
-                                const imagePath = pathRelativeToBase(this.path, tile.image, this.pathMap);
-                                const image = this._imageLoader.getOrAdd(imagePath);
-                                tileToImage.set(tile, image);
-                            }
-                        }
-                    }
-                    const friendlyTileset = new Tileset({
-                        name: tileset.name,
-                        tiledTileset: tileset,
-                        tileToImage,
-                        firstGid: tileset.firstgid!
-                    });
-                    this.tilesets.push(friendlyTileset);
-                }
-            }
-            if (isTiledTilesetExternal(tileset)) {
-                const sourcePath = pathRelativeToBase(this.path, tileset.source, this.pathMap);
-                this._tilesetLoader.getOrAdd(sourcePath, tileset.firstgid,
-                    {
-                        strict: this.strict,
-                        headless: this.headless,
-                        parser: this.parser,
-                        fileLoader: this.fileLoader,
-                        imageLoader: this._imageLoader,
-                        pathMap: this.pathMap
-                    } satisfies TilesetResourceOptions);
-            }
-        }
-    }
-
-    private _collectTemplates() {
-        // Scan for template references in object files
-        let templates: string[] = [];
-        for (const layer of this.map.layers) {
-            if (layer.type === 'objectgroup') {
-                let templateObjects = layer.objects.filter(o => o.template).map(o => o.template) as string[];
-                templates = templates.concat(templateObjects);
-            }
-        }
-        // unique template paths
-        const uniqueTemplatePaths = templates.filter((value, index, array) => {
-            return array.findIndex(path => path === value) === index;
-        });
-
-        // Load Friendly templates
-        for (const templatePath of uniqueTemplatePaths) {
-            const mappedPath = pathRelativeToBase(this.path, templatePath, this.pathMap);
-            this._templateLoader.getOrAdd(mappedPath, {
-                strict: this.strict,
-                headless: this.headless,
-                parser: this.parser,
-                fileLoader: this.fileLoader,
-                imageLoader: this._imageLoader,
-                pathMap: this.pathMap
-            } satisfies TemplateResourceOptions)
-        }
     }
 
     addToScene(scene: Scene, options?: TiledAddToSceneOptions) {
@@ -918,5 +823,92 @@ export class TiledResource implements Loadable<any> {
 
     isLoaded(): boolean {
         return !!this.map;
+    }
+
+    private _parseMap(data: any) {
+        if (this.mapFormat === 'TMX') {
+            return this.parser.parse(data, this.strict);
+        } else {
+            return data as TiledMap;
+        }
+    }
+
+    private _collectTilesets() {
+        // Resolve initial tilesets either embedded or external
+        for (const tileset of this.map.tilesets) {
+            // Embedded are technically already loaded
+            if (isTiledTilesetEmbedded(tileset)) {
+                if (isTiledTilesetSingleImage(tileset)) {
+                    const imagePath = pathRelativeToBase(this.path, tileset.image, this.pathMap);
+                    const image = this._imageLoader.getOrAdd(imagePath);
+                    const friendlyTileset = new Tileset({
+                        name: tileset.name,
+                        tiledTileset: tileset,
+                        image,
+                        firstGid: tileset.firstgid!
+                    });
+                    this.tilesets.push(friendlyTileset);
+                }
+                if (isTiledTilesetCollectionOfImages(tileset)) {
+                    const tileToImage = new Map<TiledTile, ImageSource>();
+                    if (tileset.tiles) {
+                        for (let tile of tileset.tiles) {
+                            if (tile.image) {
+                                const imagePath = pathRelativeToBase(this.path, tile.image, this.pathMap);
+                                const image = this._imageLoader.getOrAdd(imagePath);
+                                tileToImage.set(tile, image);
+                            }
+                        }
+                    }
+                    const friendlyTileset = new Tileset({
+                        name: tileset.name,
+                        tiledTileset: tileset,
+                        tileToImage,
+                        firstGid: tileset.firstgid!
+                    });
+                    this.tilesets.push(friendlyTileset);
+                }
+            }
+            if (isTiledTilesetExternal(tileset)) {
+                const sourcePath = pathRelativeToBase(this.path, tileset.source, this.pathMap);
+                this._tilesetLoader.getOrAdd(sourcePath, tileset.firstgid,
+                    {
+                        strict: this.strict,
+                        headless: this.headless,
+                        parser: this.parser,
+                        fileLoader: this.fileLoader,
+                        imageLoader: this._imageLoader,
+                        pathMap: this.pathMap
+                    } satisfies TilesetResourceOptions);
+            }
+        }
+    }
+
+    private _collectTemplates() {
+        // Scan for template references in object files
+        let templates: string[] = [];
+        for (const layer of this.map.layers) {
+            if (layer.type === 'objectgroup') {
+                let templateObjects = layer.objects.filter(o => o.template).map(o => o.template) as string[];
+                templates = templates.concat(templateObjects);
+            }
+        }
+        // unique template paths
+        const uniqueTemplatePaths = templates.filter((value, index, array) => {
+            return array.findIndex(path => path === value) === index;
+        });
+
+        // Load Friendly templates
+        for (const templatePath of uniqueTemplatePaths) {
+            const mappedPath = pathRelativeToBase(this.path, templatePath, this.pathMap);
+            this._templateLoader.getOrAdd(mappedPath, {
+                strict: this.strict,
+                headless: this.headless,
+                parser: this.parser,
+                fileLoader: this.fileLoader,
+                imageLoader: this._imageLoader,
+                pathMap: this.pathMap
+            } satisfies TemplateResourceOptions)
+        }
     }
 }

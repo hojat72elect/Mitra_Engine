@@ -313,23 +313,18 @@ export class Screen {
      * Listen to screen events {@apilink ScreenEvents}
      */
     public events = new EventEmitter<ScreenEvents>();
-    private _canvas: HTMLCanvasElement;
-    private _antialiasing: boolean = true;
     private _canvasImageRendering: 'auto' | 'pixelated' = 'auto';
     private _contentResolution: Resolution;
     private _browser: BrowserEvents;
     private _camera!: Camera;
-    private _resolution!: Resolution;
     private _resolutionStack: Resolution[] = [];
-    private _viewport!: ViewportDimension;
     private _viewportStack: ViewportDimension[] = [];
-    private _pixelRatioOverride: number | undefined;
-    private _displayMode: DisplayMode;
-    private _isFullscreen = false;
     private _mediaQueryList!: MediaQueryList;
     private _isDisposed = false;
     private _logger = Logger.getInstance();
     private _resizeObserver!: ResizeObserver;
+    // Asking the window.devicePixelRatio is expensive we do it once
+    private _devicePixelRatio = this._calculateDevicePixelRatio();
 
     constructor(options: ScreenOptions) {
         this.viewport = options.viewport;
@@ -351,98 +346,86 @@ export class Screen {
         this.applyResolutionAndViewport();
     }
 
-    private _listenForPixelRatio() {
-        if (this._mediaQueryList && !this._mediaQueryList.addEventListener) {
-            // Safari <=13.1 workaround, remove any existing handlers
-            this._mediaQueryList.removeListener(this._pixelRatioChangeHandler);
-        }
-        this._mediaQueryList = this._browser.window.nativeComponent.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+    private _canvas: HTMLCanvasElement;
 
-        // Safari <=13.1 workaround
-        if (this._mediaQueryList.addEventListener) {
-            this._mediaQueryList.addEventListener('change', this._pixelRatioChangeHandler, {once: true});
-        } else {
-            this._mediaQueryList.addListener(this._pixelRatioChangeHandler);
-        }
+    public get canvas(): HTMLCanvasElement {
+        return this._canvas;
     }
 
-    public dispose(): void {
-        if (!this._isDisposed) {
-            // Clean up handlers
-            this._isDisposed = true;
-            this.events.clear();
-            this._browser.window.off('resize', this._resizeHandler);
-            this._browser.window.clear();
-            if (this._resizeObserver) {
-                this._resizeObserver.disconnect();
-            }
-            if (!(this.parent instanceof Window)) {
-                this.parent.removeEventListener('resize', this._resizeHandler);
-            }
-            // Safari <=13.1 workaround
-            if (this._mediaQueryList.removeEventListener) {
-                this._mediaQueryList.removeEventListener('change', this._pixelRatioChangeHandler);
-            } else {
-                this._mediaQueryList.removeListener(this._pixelRatioChangeHandler);
-            }
-            this._canvas.removeEventListener('fullscreenchange', this._fullscreenChangeHandler);
-            this._canvas = null as any;
-        }
+    private _antialiasing: boolean = true;
+
+    /**
+     * Get or set screen antialiasing,
+     *
+     * If true smoothing is applied
+     */
+    public get antialiasing() {
+        return this._antialiasing;
     }
 
-    private _fullscreenChangeHandler = () => {
-        if (this._isDisposed) {
-            return;
-        }
-        this._isFullscreen = !this._isFullscreen;
-        this._logger.debug('Fullscreen Change', this._isFullscreen);
-        this.events.emit('fullscreen', {
-            fullscreen: this.isFullscreen
-        } satisfies FullscreenChangeEvent);
-    };
-
-    private _pixelRatioChangeHandler = () => {
-        if (this._isDisposed) {
-            return;
-        }
-        this._logger.debug('Pixel Ratio Change', window.devicePixelRatio);
-        this._listenForPixelRatio();
-        this._devicePixelRatio = this._calculateDevicePixelRatio();
-        this.applyResolutionAndViewport();
-
-        this.events.emit('pixelratio', {
-            pixelRatio: this.pixelRatio
-        } satisfies PixelRatioChangeEvent);
-    };
-
-    private _resizeHandler = () => {
-        if (this._isDisposed) {
-            return;
-        }
-        const parent = this.parent;
-        this._logger.debug('View port resized');
-        this._setResolutionAndViewportByDisplayMode(parent);
-        this.applyResolutionAndViewport();
-
-        // Emit resize event
-        this.events.emit('resize', {
-            resolution: this.resolution,
-            viewport: this.viewport
-        } satisfies ScreenResizeEvent);
-    };
-
-    private _calculateDevicePixelRatio() {
-        if (window.devicePixelRatio < 1) {
-            return 1;
-        }
-
-        const devicePixelRatio = window.devicePixelRatio || 1;
-
-        return devicePixelRatio;
+    /**
+     * Get or set screen antialiasing
+     */
+    public set antialiasing(isSmooth: boolean) {
+        this._antialiasing = isSmooth;
+        this.graphicsContext.smoothing = this._antialiasing;
     }
 
-    // Asking the window.devicePixelRatio is expensive we do it once
-    private _devicePixelRatio = this._calculateDevicePixelRatio();
+    private _resolution!: Resolution;
+
+    public get resolution(): Resolution {
+        return this._resolution;
+    }
+
+    public set resolution(resolution: Resolution) {
+        this._resolution = resolution;
+    }
+
+    private _viewport!: ViewportDimension;
+
+    /**
+     * Returns screen dimensions in pixels or percentage
+     */
+    public get viewport(): ViewportDimension {
+        if (this._viewport) {
+            return this._viewport;
+        }
+        return this._resolution;
+    }
+
+    public set viewport(viewport: ViewportDimension) {
+        this._viewport = viewport;
+    }
+
+    private _pixelRatioOverride: number | undefined;
+
+    /**
+     * Get or set the pixel ratio override
+     *
+     * You will need to call applyResolutionAndViewport() affect change on the screen
+     */
+    public get pixelRatioOverride(): number | undefined {
+        return this._pixelRatioOverride;
+    }
+
+    public set pixelRatioOverride(value: number | undefined) {
+        this._pixelRatioOverride = value;
+    }
+
+    private _displayMode: DisplayMode;
+
+    public get displayMode(): DisplayMode {
+        return this._displayMode;
+    }
+
+    private _isFullscreen = false;
+
+    /**
+     * Returns true if Mitra is fullscreen using the browser fullscreen api
+     */
+    public get isFullscreen() {
+        return this._isFullscreen;
+    }
 
     /**
      * Returns the computed pixel ratio, first using any override, then the device pixel ratio
@@ -471,29 +454,8 @@ export class Screen {
         }
     }
 
-    /**
-     * Get or set the pixel ratio override
-     *
-     * You will need to call applyResolutionAndViewport() affect change on the screen
-     */
-    public get pixelRatioOverride(): number | undefined {
-        return this._pixelRatioOverride;
-    }
-
-    public set pixelRatioOverride(value: number | undefined) {
-        this._pixelRatioOverride = value;
-    }
-
     public get isHiDpi() {
         return this.pixelRatio !== 1;
-    }
-
-    public get displayMode(): DisplayMode {
-        return this._displayMode;
-    }
-
-    public get canvas(): HTMLCanvasElement {
-        return this._canvas;
     }
 
     public get parent(): HTMLElement | Window {
@@ -508,28 +470,6 @@ export class Screen {
         }
     }
 
-    public get resolution(): Resolution {
-        return this._resolution;
-    }
-
-    public set resolution(resolution: Resolution) {
-        this._resolution = resolution;
-    }
-
-    /**
-     * Returns screen dimensions in pixels or percentage
-     */
-    public get viewport(): ViewportDimension {
-        if (this._viewport) {
-            return this._viewport;
-        }
-        return this._resolution;
-    }
-
-    public set viewport(viewport: ViewportDimension) {
-        this._viewport = viewport;
-    }
-
     public get aspectRatio() {
         return this._resolution.width / this._resolution.height;
     }
@@ -540,6 +480,169 @@ export class Screen {
 
     public get scaledHeight() {
         return this._resolution.height * this.pixelRatio;
+    }
+
+    /**
+     * The width of the game canvas in pixels (physical width component of the
+     * resolution of the canvas element)
+     */
+    public get canvasWidth(): number {
+        return this.canvas.width;
+    }
+
+    /**
+     * Returns half width of the game canvas in pixels (half physical width component)
+     */
+    public get halfCanvasWidth(): number {
+        return this.canvas.width / 2;
+    }
+
+    /**
+     * The height of the game canvas in pixels, (physical height component of
+     * the resolution of the canvas element)
+     */
+    public get canvasHeight(): number {
+        return this.canvas.height;
+    }
+
+    /**
+     * Returns half height of the game canvas in pixels (half physical height component)
+     */
+    public get halfCanvasHeight(): number {
+        return this.canvas.height / 2;
+    }
+
+    /**
+     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get drawWidth(): number {
+        if (this._camera) {
+            return this.resolution.width / this._camera.zoom;
+        }
+        return this.resolution.width;
+    }
+
+    /**
+     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get width(): number {
+        if (this._camera) {
+            return this.resolution.width / this._camera.zoom;
+        }
+        return this.resolution.width;
+    }
+
+    /**
+     * Returns half the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get halfDrawWidth(): number {
+        return this.drawWidth / 2;
+    }
+
+    /**
+     * Returns the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get drawHeight(): number {
+        if (this._camera) {
+            return this.resolution.height / this._camera.zoom;
+        }
+        return this.resolution.height;
+    }
+
+    public get height(): number {
+        if (this._camera) {
+            return this.resolution.height / this._camera.zoom;
+        }
+        return this.resolution.height;
+    }
+
+    /**
+     * Returns half the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get halfDrawHeight(): number {
+        return this.drawHeight / 2;
+    }
+
+    /**
+     * Returns screen center coordinates including zoom and device pixel ratio.
+     */
+    public get center(): Vector {
+        return vec(this.halfDrawWidth, this.halfDrawHeight);
+    }
+
+    private _contentArea: BoundingBox = new BoundingBox();
+
+    /**
+     * Returns the content area in screen space where it is safe to place content.
+     *
+     * Screen space is rooted at the top-left of the content area, so
+     * `contentArea.topLeft` is always `(0, 0)` and `contentArea.bottomRight` is
+     * `(contentArea.width, contentArea.height)`. To convert a screen-space point
+     * back to the raw canvas/resolution frame, add
+     * {@apilink Screen.contentAreaOffset}.
+     *
+     * // TODO(phase-3): a `CoordPlane.Canvas` could expose the raw resolution
+     * frame to users that need true canvas-corner coordinates.
+     */
+    public get contentArea(): BoundingBox {
+        return this._contentArea;
+    }
+
+    private _unsafeArea: BoundingBox = new BoundingBox();
+
+    /**
+     * Returns the unsafe area in screen space, this is the full screen and some space may not be onscreen.
+     *
+     * The unsafe area spans the full resolution, expressed in the same
+     * content-area-rooted screen space as {@apilink Screen.contentArea}: when the
+     * content area is inset from the canvas (e.g. {@apilink DisplayMode.FitScreenAndFill}),
+     * `unsafeArea.topLeft` is negative by the clip amount and `unsafeArea.width`
+     * equals {@apilink Screen.resolution}.width.
+     */
+    public get unsafeArea(): BoundingBox {
+        return this._unsafeArea;
+    }
+
+    private _contentAreaOffset: Vector = Vector.Zero;
+
+    /**
+     * Resolution-space offset of the safe content area's top-left corner. `(0, 0)`
+     * when the content area fills the canvas (no clipping); positive when the
+     * safe area is inset (e.g. under {@apilink DisplayMode.FitScreenAndFill}).
+     *
+     * Use this to convert between the {@apilink CoordPlane.Screen} frame (rooted
+     * at {@apilink Screen.contentArea}.topLeft) and the raw canvas/resolution
+     * frame (rooted at the canvas top-left). This is the value the engine
+     * translates by before drawing {@apilink CoordPlane.Screen} entities, and the
+     * inverse offset applied by {@apilink Screen.pageToScreenCoordinates} and
+     * {@apilink Screen.screenToWorldCoordinates}.
+     */
+    public get contentAreaOffset(): Vector {
+        return this._contentAreaOffset;
+    }
+
+    public dispose(): void {
+        if (!this._isDisposed) {
+            // Clean up handlers
+            this._isDisposed = true;
+            this.events.clear();
+            this._browser.window.off('resize', this._resizeHandler);
+            this._browser.window.clear();
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+            }
+            if (!(this.parent instanceof Window)) {
+                this.parent.removeEventListener('resize', this._resizeHandler);
+            }
+            // Safari <=13.1 workaround
+            if (this._mediaQueryList.removeEventListener) {
+                this._mediaQueryList.removeEventListener('change', this._pixelRatioChangeHandler);
+            } else {
+                this._mediaQueryList.removeListener(this._pixelRatioChangeHandler);
+            }
+            this._canvas.removeEventListener('fullscreenchange', this._fullscreenChangeHandler);
+            this._canvas = null as any;
+        }
     }
 
     public setCurrentCamera(camera: Camera) {
@@ -637,30 +740,6 @@ export class Screen {
     }
 
     /**
-     * Get or set screen antialiasing,
-     *
-     * If true smoothing is applied
-     */
-    public get antialiasing() {
-        return this._antialiasing;
-    }
-
-    /**
-     * Get or set screen antialiasing
-     */
-    public set antialiasing(isSmooth: boolean) {
-        this._antialiasing = isSmooth;
-        this.graphicsContext.smoothing = this._antialiasing;
-    }
-
-    /**
-     * Returns true if Mitra is fullscreen using the browser fullscreen api
-     */
-    public get isFullscreen() {
-        return this._isFullscreen;
-    }
-
-    /**
      * Requests to enter fullscreen using the browser fullscreen api, requires user interaction to be successful.
      * For example, wire this to a user click handler.
      *
@@ -694,13 +773,6 @@ export class Screen {
 
     public exitFullscreen(): Promise<void> {
         return document.exitFullscreen();
-    }
-
-    private _viewportToPixels(viewport: ViewportDimension) {
-        return {
-            width: viewport.widthUnit === 'percent' ? this.canvas.offsetWidth : viewport.width,
-            height: viewport.heightUnit === 'percent' ? this.canvas.offsetHeight : viewport.height
-        } satisfies ViewportDimension;
     }
 
     /**
@@ -868,142 +940,78 @@ export class Screen {
         return bounds;
     }
 
-    /**
-     * The width of the game canvas in pixels (physical width component of the
-     * resolution of the canvas element)
-     */
-    public get canvasWidth(): number {
-        return this.canvas.width;
-    }
-
-    /**
-     * Returns half width of the game canvas in pixels (half physical width component)
-     */
-    public get halfCanvasWidth(): number {
-        return this.canvas.width / 2;
-    }
-
-    /**
-     * The height of the game canvas in pixels, (physical height component of
-     * the resolution of the canvas element)
-     */
-    public get canvasHeight(): number {
-        return this.canvas.height;
-    }
-
-    /**
-     * Returns half height of the game canvas in pixels (half physical height component)
-     */
-    public get halfCanvasHeight(): number {
-        return this.canvas.height / 2;
-    }
-
-    /**
-     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get drawWidth(): number {
-        if (this._camera) {
-            return this.resolution.width / this._camera.zoom;
+    private _listenForPixelRatio() {
+        if (this._mediaQueryList && !this._mediaQueryList.addEventListener) {
+            // Safari <=13.1 workaround, remove any existing handlers
+            this._mediaQueryList.removeListener(this._pixelRatioChangeHandler);
         }
-        return this.resolution.width;
-    }
+        this._mediaQueryList = this._browser.window.nativeComponent.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
 
-    /**
-     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get width(): number {
-        if (this._camera) {
-            return this.resolution.width / this._camera.zoom;
+        // Safari <=13.1 workaround
+        if (this._mediaQueryList.addEventListener) {
+            this._mediaQueryList.addEventListener('change', this._pixelRatioChangeHandler, {once: true});
+        } else {
+            this._mediaQueryList.addListener(this._pixelRatioChangeHandler);
         }
-        return this.resolution.width;
     }
 
-    /**
-     * Returns half the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get halfDrawWidth(): number {
-        return this.drawWidth / 2;
-    }
-
-    /**
-     * Returns the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get drawHeight(): number {
-        if (this._camera) {
-            return this.resolution.height / this._camera.zoom;
+    private _fullscreenChangeHandler = () => {
+        if (this._isDisposed) {
+            return;
         }
-        return this.resolution.height;
-    }
+        this._isFullscreen = !this._isFullscreen;
+        this._logger.debug('Fullscreen Change', this._isFullscreen);
+        this.events.emit('fullscreen', {
+            fullscreen: this.isFullscreen
+        } satisfies FullscreenChangeEvent);
+    };
 
-    public get height(): number {
-        if (this._camera) {
-            return this.resolution.height / this._camera.zoom;
+    private _pixelRatioChangeHandler = () => {
+        if (this._isDisposed) {
+            return;
         }
-        return this.resolution.height;
+        this._logger.debug('Pixel Ratio Change', window.devicePixelRatio);
+        this._listenForPixelRatio();
+        this._devicePixelRatio = this._calculateDevicePixelRatio();
+        this.applyResolutionAndViewport();
+
+        this.events.emit('pixelratio', {
+            pixelRatio: this.pixelRatio
+        } satisfies PixelRatioChangeEvent);
+    };
+
+    private _resizeHandler = () => {
+        if (this._isDisposed) {
+            return;
+        }
+        const parent = this.parent;
+        this._logger.debug('View port resized');
+        this._setResolutionAndViewportByDisplayMode(parent);
+        this.applyResolutionAndViewport();
+
+        // Emit resize event
+        this.events.emit('resize', {
+            resolution: this.resolution,
+            viewport: this.viewport
+        } satisfies ScreenResizeEvent);
+    };
+
+    private _calculateDevicePixelRatio() {
+        if (window.devicePixelRatio < 1) {
+            return 1;
+        }
+
+        const devicePixelRatio = window.devicePixelRatio || 1;
+
+        return devicePixelRatio;
     }
 
-    /**
-     * Returns half the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get halfDrawHeight(): number {
-        return this.drawHeight / 2;
+    private _viewportToPixels(viewport: ViewportDimension) {
+        return {
+            width: viewport.widthUnit === 'percent' ? this.canvas.offsetWidth : viewport.width,
+            height: viewport.heightUnit === 'percent' ? this.canvas.offsetHeight : viewport.height
+        } satisfies ViewportDimension;
     }
-
-    /**
-     * Returns screen center coordinates including zoom and device pixel ratio.
-     */
-    public get center(): Vector {
-        return vec(this.halfDrawWidth, this.halfDrawHeight);
-    }
-
-    /**
-     * Returns the content area in screen space where it is safe to place content.
-     *
-     * Screen space is rooted at the top-left of the content area, so
-     * `contentArea.topLeft` is always `(0, 0)` and `contentArea.bottomRight` is
-     * `(contentArea.width, contentArea.height)`. To convert a screen-space point
-     * back to the raw canvas/resolution frame, add
-     * {@apilink Screen.contentAreaOffset}.
-     *
-     * // TODO(phase-3): a `CoordPlane.Canvas` could expose the raw resolution
-     * frame to users that need true canvas-corner coordinates.
-     */
-    public get contentArea(): BoundingBox {
-        return this._contentArea;
-    }
-
-    /**
-     * Returns the unsafe area in screen space, this is the full screen and some space may not be onscreen.
-     *
-     * The unsafe area spans the full resolution, expressed in the same
-     * content-area-rooted screen space as {@apilink Screen.contentArea}: when the
-     * content area is inset from the canvas (e.g. {@apilink DisplayMode.FitScreenAndFill}),
-     * `unsafeArea.topLeft` is negative by the clip amount and `unsafeArea.width`
-     * equals {@apilink Screen.resolution}.width.
-     */
-    public get unsafeArea(): BoundingBox {
-        return this._unsafeArea;
-    }
-
-    /**
-     * Resolution-space offset of the safe content area's top-left corner. `(0, 0)`
-     * when the content area fills the canvas (no clipping); positive when the
-     * safe area is inset (e.g. under {@apilink DisplayMode.FitScreenAndFill}).
-     *
-     * Use this to convert between the {@apilink CoordPlane.Screen} frame (rooted
-     * at {@apilink Screen.contentArea}.topLeft) and the raw canvas/resolution
-     * frame (rooted at the canvas top-left). This is the value the engine
-     * translates by before drawing {@apilink CoordPlane.Screen} entities, and the
-     * inverse offset applied by {@apilink Screen.pageToScreenCoordinates} and
-     * {@apilink Screen.screenToWorldCoordinates}.
-     */
-    public get contentAreaOffset(): Vector {
-        return this._contentAreaOffset;
-    }
-
-    private _contentArea: BoundingBox = new BoundingBox();
-    private _unsafeArea: BoundingBox = new BoundingBox();
-    private _contentAreaOffset: Vector = Vector.Zero;
 
     private _computeFit() {
         document.body.style.margin = '0px';

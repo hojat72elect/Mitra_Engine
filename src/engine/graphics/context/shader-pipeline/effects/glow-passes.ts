@@ -1,35 +1,35 @@
-import { Color } from '../../../../color';
-import { vec } from '../../../../math/vector';
-import type { MitraGraphicsContextWebgl } from '../../mitra-graphics-context-webgl';
-import { glsl } from '../../glsl';
-import type { Shader } from '../../shader';
-import type { ShaderPassDestination, ShaderPassSource } from '../shader-pass';
-import { ShaderPass } from '../shader-pass';
-import type { ShaderPipelineLike, ShaderPipelineProcessOptions } from '../shader-pipeline';
-import { ShaderPipeline } from '../shader-pipeline';
-import { gaussianBlurFragmentSource } from './blur-passes';
+import {Color} from '../../../../color';
+import {vec} from '../../../../math/vector';
+import type {MitraGraphicsContextWebgl} from '../../mitra-graphics-context-webgl';
+import {glsl} from '../../glsl';
+import type {Shader} from '../../shader';
+import type {ShaderPassDestination, ShaderPassSource} from '../shader-pass';
+import {ShaderPass} from '../shader-pass';
+import type {ShaderPipelineLike, ShaderPipelineProcessOptions} from '../shader-pipeline';
+import {ShaderPipeline} from '../shader-pipeline';
+import {gaussianBlurFragmentSource} from './blur-passes';
 
 export interface GlowPassesOptions {
-  graphicsContext: MitraGraphicsContextWebgl;
-  /**
-   * Glow color, default white
-   */
-  color?: Color;
-  /**
-   * Resolution the glow blur runs at relative to the source, default 0.5 (half resolution)
-   */
-  scale?: number;
-  /**
-   * Blur radius multiplier in texels of the (downsampled) glow resolution, default 2
-   */
-  strength?: number;
-  /**
-   * Multiplies the halo's **opacity**, default 1.
-   *
-   * The halo saturates at full opacity, so 0-1 is the useful range for fading a glow in and
-   * out; values above 1 make the core denser and hotter before saturating.
-   */
-  intensity?: number;
+    graphicsContext: MitraGraphicsContextWebgl;
+    /**
+     * Glow color, default white
+     */
+    color?: Color;
+    /**
+     * Resolution the glow blur runs at relative to the source, default 0.5 (half resolution)
+     */
+    scale?: number;
+    /**
+     * Blur radius multiplier in texels of the (downsampled) glow resolution, default 2
+     */
+    strength?: number;
+    /**
+     * Multiplies the halo's **opacity**, default 1.
+     *
+     * The halo saturates at full opacity, so 0-1 is the useful range for fading a glow in and
+     * out; values above 1 make the core denser and hotter before saturating.
+     */
+    intensity?: number;
 }
 
 /**
@@ -78,44 +78,44 @@ void main() {
  * ```
  */
 export function createGlowPasses(options: GlowPassesOptions): ShaderPass[] {
-  const { graphicsContext, color, scale, strength, intensity } = options;
-  return [
-    new ShaderPass({
-      graphicsContext,
-      name: 'glow silhouette',
-      fragmentSource: silhouetteFragmentSource,
-      scale: scale ?? 0.5,
-      uniforms: {
-        u_glow_color: color ?? Color.White,
-        u_glow_intensity: intensity ?? 1
-      }
-    }),
-    new ShaderPass({
-      graphicsContext,
-      name: 'glow blur horizontal',
-      fragmentSource: gaussianBlurFragmentSource,
-      scale: scale ?? 0.5,
-      uniforms: {
-        u_direction: vec(1, 0),
-        u_strength: strength ?? 2
-      }
-    }),
-    new ShaderPass({
-      graphicsContext,
-      name: 'glow blur vertical',
-      fragmentSource: gaussianBlurFragmentSource,
-      scale: scale ?? 0.5,
-      uniforms: {
-        u_direction: vec(0, 1),
-        u_strength: strength ?? 2
-      }
-    }),
-    new ShaderPass({
-      graphicsContext,
-      name: 'glow composite',
-      fragmentSource: compositeFragmentSource
-    })
-  ];
+    const {graphicsContext, color, scale, strength, intensity} = options;
+    return [
+        new ShaderPass({
+            graphicsContext,
+            name: 'glow silhouette',
+            fragmentSource: silhouetteFragmentSource,
+            scale: scale ?? 0.5,
+            uniforms: {
+                u_glow_color: color ?? Color.White,
+                u_glow_intensity: intensity ?? 1
+            }
+        }),
+        new ShaderPass({
+            graphicsContext,
+            name: 'glow blur horizontal',
+            fragmentSource: gaussianBlurFragmentSource,
+            scale: scale ?? 0.5,
+            uniforms: {
+                u_direction: vec(1, 0),
+                u_strength: strength ?? 2
+            }
+        }),
+        new ShaderPass({
+            graphicsContext,
+            name: 'glow blur vertical',
+            fragmentSource: gaussianBlurFragmentSource,
+            scale: scale ?? 0.5,
+            uniforms: {
+                u_direction: vec(0, 1),
+                u_strength: strength ?? 2
+            }
+        }),
+        new ShaderPass({
+            graphicsContext,
+            name: 'glow composite',
+            fragmentSource: compositeFragmentSource
+        })
+    ];
 }
 
 /**
@@ -131,78 +131,79 @@ export function createGlowPasses(options: GlowPassesOptions): ShaderPass[] {
  * ```
  */
 export class GlowEffect implements ShaderPipelineLike {
-  /**
-   * Resolution the glow blur runs at relative to the source, fixed at construction
-   */
-  public readonly scale: number;
-  private _pipeline: ShaderPipeline;
-  private _silhouette: ShaderPass;
-  private _horizontal: ShaderPass;
-  private _vertical: ShaderPass;
-  private _color: Color;
+    /**
+     * Resolution the glow blur runs at relative to the source, fixed at construction
+     */
+    public readonly scale: number;
+    private _pipeline: ShaderPipeline;
+    private _silhouette: ShaderPass;
+    private _horizontal: ShaderPass;
+    private _vertical: ShaderPass;
 
-  constructor(options: GlowPassesOptions) {
-    this.scale = options.scale ?? 0.5;
-    this._color = options.color ?? Color.White;
-    this._pipeline = new ShaderPipeline({
-      graphicsContext: options.graphicsContext,
-      name: 'glow effect',
-      passes: createGlowPasses(options)
-    });
-    [this._silhouette, this._horizontal, this._vertical] = this._pipeline.passes;
-  }
+    constructor(options: GlowPassesOptions) {
+        this.scale = options.scale ?? 0.5;
+        this._color = options.color ?? Color.White;
+        this._pipeline = new ShaderPipeline({
+            graphicsContext: options.graphicsContext,
+            name: 'glow effect',
+            passes: createGlowPasses(options)
+        });
+        [this._silhouette, this._horizontal, this._vertical] = this._pipeline.passes;
+    }
 
-  /**
-   * Glow color. Assign a new color to change it, mutating the color instance in place
-   * will not be picked up.
-   */
-  public get color(): Color {
-    return this._color;
-  }
+    private _color: Color;
 
-  public set color(value: Color) {
-    this._color = value;
-    this._silhouette.uniforms.u_glow_color = value;
-  }
+    /**
+     * Glow color. Assign a new color to change it, mutating the color instance in place
+     * will not be picked up.
+     */
+    public get color(): Color {
+        return this._color;
+    }
 
-  /**
-   * Multiplies the halo's **opacity**.
-   *
-   * The halo saturates at full opacity, so 0-1 is the useful range for fading a glow in and
-   * out; values above 1 make the core denser and hotter before saturating.
-   */
-  public get intensity(): number {
-    return this._silhouette.uniforms.u_glow_intensity as number;
-  }
+    public set color(value: Color) {
+        this._color = value;
+        this._silhouette.uniforms.u_glow_color = value;
+    }
 
-  public set intensity(value: number) {
-    this._silhouette.uniforms.u_glow_intensity = value;
-  }
+    /**
+     * Multiplies the halo's **opacity**.
+     *
+     * The halo saturates at full opacity, so 0-1 is the useful range for fading a glow in and
+     * out; values above 1 make the core denser and hotter before saturating.
+     */
+    public get intensity(): number {
+        return this._silhouette.uniforms.u_glow_intensity as number;
+    }
 
-  /**
-   * Blur radius multiplier in texels of the (downsampled) glow resolution
-   */
-  public get strength(): number {
-    return this._horizontal.uniforms.u_strength as number;
-  }
+    public set intensity(value: number) {
+        this._silhouette.uniforms.u_glow_intensity = value;
+    }
 
-  public set strength(value: number) {
-    this._horizontal.uniforms.u_strength = value;
-    this._vertical.uniforms.u_strength = value;
-  }
+    /**
+     * Blur radius multiplier in texels of the (downsampled) glow resolution
+     */
+    public get strength(): number {
+        return this._horizontal.uniforms.u_strength as number;
+    }
 
-  public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
-    this._pipeline.process(source, destination, options);
-  }
+    public set strength(value: number) {
+        this._horizontal.uniforms.u_strength = value;
+        this._vertical.uniforms.u_strength = value;
+    }
 
-  /**
-   * Every internal pass's compiled {@apilink Shader}, in the order they run
-   */
-  public getShaders(): Shader[] {
-    return this._pipeline.getShaders();
-  }
+    public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
+        this._pipeline.process(source, destination, options);
+    }
 
-  public dispose(): void {
-    this._pipeline.dispose();
-  }
+    /**
+     * Every internal pass's compiled {@apilink Shader}, in the order they run
+     */
+    public getShaders(): Shader[] {
+        return this._pipeline.getShaders();
+    }
+
+    public dispose(): void {
+        this._pipeline.dispose();
+    }
 }

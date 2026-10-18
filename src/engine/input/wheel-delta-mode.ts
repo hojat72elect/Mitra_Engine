@@ -1,5 +1,5 @@
 export enum WheelDeltaMode {
-  Pixel = 'Pixel',
-  Line = 'Line',
-  Page = 'Page'
+    Pixel = 'Pixel',
+    Line = 'Line',
+    Page = 'Page'
 }

@@ -62,23 +62,22 @@ export interface PointerInitOptions {
 export class PointerEventReceiver {
     public events = new EventEmitter<PointerEvents>();
     public primary: PointerAbstraction = new PointerAbstraction();
-
-    private _activeNativePointerIdsToNormalized = new Map<number, number>();
-    private _freedNormalizedIds: number[] = [];
-    private _nextNormalizedId = 0;
     public lastFramePointerCoords = new Map<number, GlobalCoordinates>();
     public currentFramePointerCoords = new Map<number, GlobalCoordinates>();
-
     public currentFramePointerDown = new Map<number, boolean>();
     public lastFramePointerDown = new Map<number, boolean>();
-
     public currentFrameDown: PointerEvent[] = [];
     public currentFrameUp: PointerEvent[] = [];
     public currentFrameMove: PointerEvent[] = [];
     public currentFrameCancel: PointerEvent[] = [];
     public currentFrameWheel: WheelEvent[] = [];
-
+    private _activeNativePointerIdsToNormalized = new Map<number, number>();
+    private _freedNormalizedIds: number[] = [];
+    private _nextNormalizedId = 0;
     private _enabled = true;
+    private _pointers: PointerAbstraction[] = [this.primary];
+    private _boundHandle = this._handle.bind(this);
+    private _boundWheel = this._handleWheel.bind(this);
 
     constructor(
         public readonly target: GlobalEventHandlers & EventTarget,
@@ -102,8 +101,6 @@ export class PointerEventReceiver {
         eventReceiver._pointers = this._pointers;
         return eventReceiver;
     }
-
-    private _pointers: PointerAbstraction[] = [this.primary];
 
     /**
      * Locates a specific pointer by id, creates it if it doesn't exist
@@ -179,26 +176,35 @@ export class PointerEventReceiver {
     }
 
     public emit<TEventName extends EventKey<PointerEvents>>(eventName: TEventName, event: PointerEvents[TEventName]): void;
+
     public emit(eventName: string, event?: any): void;
+
     public emit<TEventName extends EventKey<PointerEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
 
     public on<TEventName extends EventKey<PointerEvents>>(eventName: TEventName, handler: Handler<PointerEvents[TEventName]>): Subscription;
+
     public on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public on<TEventName extends EventKey<PointerEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.on(eventName, handler);
     }
 
     public once<TEventName extends EventKey<PointerEvents>>(eventName: TEventName, handler: Handler<PointerEvents[TEventName]>): Subscription;
+
     public once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public once<TEventName extends EventKey<PointerEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.once(eventName, handler);
     }
 
     public off<TEventName extends EventKey<PointerEvents>>(eventName: TEventName, handler: Handler<PointerEvents[TEventName]>): void;
+
     public off(eventName: string, handler: Handler<unknown>): void;
+
     public off(eventName: string): void;
+
     public off<TEventName extends EventKey<PointerEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         this.events.off(eventName, handler as any);
     }
@@ -269,27 +275,6 @@ export class PointerEventReceiver {
         }
     }
 
-    private _releaseEndedPointer(event: PointerEvent, freedThisFrame: Set<number>): void {
-        this.currentFramePointerCoords.delete(event.pointerId);
-        // A mouse remains in range after 'up' and keeps producing pointermove events under the same
-        // native pointerId: the spec fires pointerout/pointerleave after pointerup only "for input
-        // devices that do not support hover", and permits the UA to "always reuse the same pointerId
-        // for a particular pointing device" (https://www.w3.org/TR/pointerevents3/#the-pointerup-event,
-        // https://www.w3.org/TR/pointerevents3/#pointerid-attribute). Keep its id reserved so a later
-        // touch can't steal it and inherit the mouse's per-id hover state.
-        if (event.pointerType === PointerType.Mouse) {
-            return;
-        }
-        const ids = this._activeNativePointerIdsToNormalized.entries();
-        for (const [native, normalized] of ids) {
-            if (normalized === event.pointerId && !freedThisFrame.has(normalized)) {
-                this._activeNativePointerIdsToNormalized.delete(native);
-                this._freedNormalizedIds.push(normalized);
-                freedThisFrame.add(normalized);
-            }
-        }
-    }
-
     /**
      * Clears the current frame event and pointer data
      */
@@ -307,9 +292,6 @@ export class PointerEventReceiver {
         this.currentFrameCancel.length = 0;
         this.currentFrameWheel.length = 0;
     }
-
-    private _boundHandle = this._handle.bind(this);
-    private _boundWheel = this._handleWheel.bind(this);
 
     /**
      * Initializes the pointer event receiver so that it can start listening to native
@@ -412,6 +394,61 @@ export class PointerEventReceiver {
         } else {
             // Remaining browser and older Firefox
             this.target.removeEventListener('MozMousePixelScroll' as any, this._boundWheel);
+        }
+    }
+
+    /**
+     * Triggers a Mitra pointer event in a world space position.
+     *
+     * Useful for testing pointers in Mitra.
+     */
+    public triggerEvent(type: 'down' | 'up' | 'move' | 'cancel', pos: Vector) {
+        const page = this.engine.screen.worldToPageCoordinates(pos);
+        // Send an event to the event receiver
+        if (window.PointerEvent) {
+            this._handle(
+                new window.PointerEvent('pointer' + type, {
+                    pointerId: 0,
+                    clientX: page.x,
+                    clientY: page.y
+                })
+            );
+        } else {
+            // Safari hack
+            this._handle(
+                new window.MouseEvent('mouse' + type, {
+                    clientX: page.x,
+                    clientY: page.y
+                })
+            );
+        }
+
+        // Force update pointer system
+        const pointerSystem = this.engine.currentScene.world.get(PointerSystem);
+        if (pointerSystem) {
+            pointerSystem!.preupdate!(this.engine.currentScene, 1);
+            pointerSystem!.update(1);
+        }
+    }
+
+    private _releaseEndedPointer(event: PointerEvent, freedThisFrame: Set<number>): void {
+        this.currentFramePointerCoords.delete(event.pointerId);
+        // A mouse remains in range after 'up' and keeps producing pointermove events under the same
+        // native pointerId: the spec fires pointerout/pointerleave after pointerup only "for input
+        // devices that do not support hover", and permits the UA to "always reuse the same pointerId
+        // for a particular pointing device" (https://www.w3.org/TR/pointerevents3/#the-pointerup-event,
+        // https://www.w3.org/TR/pointerevents3/#pointerid-attribute). Keep its id reserved so a later
+        // touch can't steal it and inherit the mouse's per-id hover state.
+        if (event.pointerType === PointerType.Mouse) {
+            return;
+        }
+        const ids = this._activeNativePointerIdsToNormalized.entries();
+        for (const [native, normalized] of ids) {
+            if (normalized === event.pointerId && !freedThisFrame.has(normalized)) {
+                this._activeNativePointerIdsToNormalized.delete(native);
+                this._freedNormalizedIds.push(normalized);
+                freedThisFrame.add(normalized);
+            }
         }
     }
 
@@ -548,40 +585,6 @@ export class PointerEventReceiver {
 
         const we = new WheelEvent(world.x, world.y, ev.pageX, ev.pageY, screen.x, screen.y, 0, deltaX, deltaY, deltaZ, deltaMode, ev);
         this.currentFrameWheel.push(we);
-    }
-
-    /**
-     * Triggers a Mitra pointer event in a world space position.
-     *
-     * Useful for testing pointers in Mitra.
-     */
-    public triggerEvent(type: 'down' | 'up' | 'move' | 'cancel', pos: Vector) {
-        const page = this.engine.screen.worldToPageCoordinates(pos);
-        // Send an event to the event receiver
-        if (window.PointerEvent) {
-            this._handle(
-                new window.PointerEvent('pointer' + type, {
-                    pointerId: 0,
-                    clientX: page.x,
-                    clientY: page.y
-                })
-            );
-        } else {
-            // Safari hack
-            this._handle(
-                new window.MouseEvent('mouse' + type, {
-                    clientX: page.x,
-                    clientY: page.y
-                })
-            );
-        }
-
-        // Force update pointer system
-        const pointerSystem = this.engine.currentScene.world.get(PointerSystem);
-        if (pointerSystem) {
-            pointerSystem!.preupdate!(this.engine.currentScene, 1);
-            pointerSystem!.update(1);
-        }
     }
 
     private _nativeButtonToPointerButton(s: NativePointerButton): PointerButton {

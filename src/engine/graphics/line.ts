@@ -1,64 +1,67 @@
-import { BoundingBox } from '../collision/bounding-box';
-import { Color } from '../color';
-import type { Vector } from '../math/vector';
-import type { MitraGraphicsContext } from './context/mitra-graphics-context';
-import { Graphic } from './graphic';
+import {BoundingBox} from '../collision/bounding-box';
+import {Color} from '../color';
+import type {Vector} from '../math/vector';
+import type {MitraGraphicsContext} from './context/mitra-graphics-context';
+import {Graphic} from './graphic';
 
 export interface LineOptions {
-  start: Vector;
-  end: Vector;
-  color?: Color;
-  thickness?: number;
+    start: Vector;
+    end: Vector;
+    color?: Color;
+    thickness?: number;
 }
+
 export class Line extends Graphic {
-  readonly start: Vector;
-  readonly end: Vector;
-  color: Color = Color.Black;
-  thickness: number = 1;
-  private _localBounds: BoundingBox;
-  constructor(options: LineOptions) {
-    super();
-    const { start, end, color, thickness } = options;
-    this.start = start;
-    this.end = end;
-    this.color = color ?? this.color;
-    this.thickness = thickness ?? this.thickness;
-    this._localBounds = this._calculateBounds();
-    const { width, height } = this._localBounds;
+    readonly start: Vector;
+    readonly end: Vector;
+    color: Color = Color.Black;
+    thickness: number = 1;
 
-    this.width = width;
-    this.height = height;
-  }
+    constructor(options: LineOptions) {
+        super();
+        const {start, end, color, thickness} = options;
+        this.start = start;
+        this.end = end;
+        this.color = color ?? this.color;
+        this.thickness = thickness ?? this.thickness;
+        this._localBounds = this._calculateBounds();
+        const {width, height} = this._localBounds;
 
-  public override get localBounds() {
-    return this._localBounds;
-  }
+        this.width = width;
+        this.height = height;
+    }
 
-  private _calculateBounds(): BoundingBox {
-    const lineNormal = this.end.sub(this.start).normal();
+    private _localBounds: BoundingBox;
 
-    const halfThickness = this.thickness / 2;
+    public override get localBounds() {
+        return this._localBounds;
+    }
 
-    const points = [
-      this.start.add(lineNormal.scale(halfThickness)),
-      this.end.add(lineNormal.scale(halfThickness)),
-      this.end.add(lineNormal.scale(-halfThickness)),
-      this.start.add(lineNormal.scale(-halfThickness))
-    ];
+    clone(): Line {
+        return new Line({
+            start: this.start,
+            end: this.end,
+            color: this.color,
+            thickness: this.thickness
+        });
+    }
 
-    return BoundingBox.fromPoints(points);
-  }
+    protected _drawImage(ctx: MitraGraphicsContext, _x: number, _y: number): void {
+        ctx.drawLine(this.start, this.end, this.color, this.thickness);
+    }
 
-  protected _drawImage(ctx: MitraGraphicsContext, _x: number, _y: number): void {
-    ctx.drawLine(this.start, this.end, this.color, this.thickness);
-  }
+    private _calculateBounds(): BoundingBox {
+        const lineNormal = this.end.sub(this.start).normal();
 
-  clone(): Line {
-    return new Line({
-      start: this.start,
-      end: this.end,
-      color: this.color,
-      thickness: this.thickness
-    });
-  }
+        const halfThickness = this.thickness / 2;
+
+        const points = [
+            this.start.add(lineNormal.scale(halfThickness)),
+            this.end.add(lineNormal.scale(halfThickness)),
+            this.end.add(lineNormal.scale(-halfThickness)),
+            this.start.add(lineNormal.scale(-halfThickness))
+        ];
+
+        return BoundingBox.fromPoints(points);
+    }
 }

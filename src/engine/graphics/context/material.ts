@@ -220,20 +220,10 @@ export class Material {
      */
     public readonly id = Material._ID++;
     private _logger = Logger.getInstance();
-    private _name: string;
     private _shader!: Shader;
-    private _color: Color = Color.Transparent;
     private _initialized = false;
-    private _fragmentSource: string;
-    private _vertexSource: string;
-
-    private _images: Record<string, ImageSource> = {};
-    private _uniforms: UniformDictionary = {};
-
     private _graphicsContext?: MitraGraphicsContextWebgl;
     private _passes?: ShaderPassLike[] | ShaderPipelineLike;
-    private _pipeline?: ShaderPipelineLike;
-    private _padding: number = 0;
     private _seedFramebuffer?: Framebuffer;
     private _outputFramebuffer?: Framebuffer;
 
@@ -293,46 +283,13 @@ export class Material {
         }
     }
 
-    private _initialize(graphicsContextWebGL: MitraGraphicsContextWebgl) {
-        if (this._initialized) {
-            return;
-        }
-        this._graphicsContext = graphicsContextWebGL;
+    private _name: string;
 
-        if (this._passes) {
-            if (Array.isArray(this._passes)) {
-                this._pipeline = new ShaderPipeline({
-                    graphicsContext: graphicsContextWebGL,
-                    name: this._name,
-                    passes: this._passes
-                });
-            } else {
-                this._pipeline = this._passes;
-            }
-        }
-
-        this._shader = graphicsContextWebGL.createShader({
-            name: this._name,
-            vertexSource: this._vertexSource,
-            fragmentSource: this._fragmentSource,
-            uniforms: this._uniforms,
-            images: this._images,
-            // max texture slots
-            // - 1 for the graphic texture (u_graphic/u_image)
-            // - +1 if the screen texture is referenced
-            // - +1 if the composite references u_original and a pipeline is present (needs its own slot)
-            startingTextureSlot: 1 + (this.isUsingScreenTexture ? 1 : 0) + (this.isUsingOriginalTexture ? 1 : 0)
-        });
-        this._initialized = true;
+    get name() {
+        return this._name;
     }
 
-    public get uniforms(): UniformDictionary {
-        return this._shader.uniforms;
-    }
-
-    public get images(): Record<string, ImageSource> {
-        return this._shader.images;
-    }
+    private _color: Color = Color.Transparent;
 
     get color(): Color {
         return this._color;
@@ -342,9 +299,16 @@ export class Material {
         this._color = c;
     }
 
-    get name() {
-        return this._name;
+    private _fragmentSource: string;
+
+    /**
+     * Fragment source this material was created with (before shader compilation)
+     */
+    get fragmentSource() {
+        return this._fragmentSource;
     }
+
+    private _vertexSource: string;
 
     /**
      * Vertex source this material was created with (before shader compilation)
@@ -353,11 +317,34 @@ export class Material {
         return this._vertexSource;
     }
 
+    private _images: Record<string, ImageSource> = {};
+
+    public get images(): Record<string, ImageSource> {
+        return this._shader.images;
+    }
+
+    private _uniforms: UniformDictionary = {};
+
+    public get uniforms(): UniformDictionary {
+        return this._shader.uniforms;
+    }
+
+    private _pipeline?: ShaderPipelineLike;
+
     /**
-     * Fragment source this material was created with (before shader compilation)
+     * The multipass pipeline run on the graphic before the composite fragment, if any
      */
-    get fragmentSource() {
-        return this._fragmentSource;
+    get pipeline(): ShaderPipelineLike | undefined {
+        return this._pipeline;
+    }
+
+    private _padding: number = 0;
+
+    /**
+     * Extra transparent pixels added around the graphic when running the pipeline
+     */
+    get padding(): number {
+        return this._padding;
     }
 
     get isOverridingGraphic() {
@@ -370,20 +357,6 @@ export class Material {
 
     get isUsingOriginalTexture() {
         return !!this.pipeline && !!this._fragmentSource?.includes('u_original');
-    }
-
-    /**
-     * The multipass pipeline run on the graphic before the composite fragment, if any
-     */
-    get pipeline(): ShaderPipelineLike | undefined {
-        return this._pipeline;
-    }
-
-    /**
-     * Extra transparent pixels added around the graphic when running the pipeline
-     */
-    get padding(): number {
-        return this._padding;
     }
 
     /**
@@ -477,5 +450,38 @@ export class Material {
         } else {
             throw Error(`Material ${this.name} not yet initialized, use the MitraGraphicsContext.createMaterial() to work around this.`);
         }
+    }
+
+    private _initialize(graphicsContextWebGL: MitraGraphicsContextWebgl) {
+        if (this._initialized) {
+            return;
+        }
+        this._graphicsContext = graphicsContextWebGL;
+
+        if (this._passes) {
+            if (Array.isArray(this._passes)) {
+                this._pipeline = new ShaderPipeline({
+                    graphicsContext: graphicsContextWebGL,
+                    name: this._name,
+                    passes: this._passes
+                });
+            } else {
+                this._pipeline = this._passes;
+            }
+        }
+
+        this._shader = graphicsContextWebGL.createShader({
+            name: this._name,
+            vertexSource: this._vertexSource,
+            fragmentSource: this._fragmentSource,
+            uniforms: this._uniforms,
+            images: this._images,
+            // max texture slots
+            // - 1 for the graphic texture (u_graphic/u_image)
+            // - +1 if the screen texture is referenced
+            // - +1 if the composite references u_original and a pipeline is present (needs its own slot)
+            startingTextureSlot: 1 + (this.isUsingScreenTexture ? 1 : 0) + (this.isUsingOriginalTexture ? 1 : 0)
+        });
+        this._initialized = true;
     }
 }

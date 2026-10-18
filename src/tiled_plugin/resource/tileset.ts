@@ -96,6 +96,7 @@ export class Tileset implements Properties {
     horizontalFlipTransform!: AffineMatrix;
     verticalFlipTransform!: AffineMatrix;
     diagonalFlipTransform!: AffineMatrix;
+    _cachedAnimations = new Map<number, Animation>();
 
     constructor(options: TilesetOptions) {
         const {name, tiledTileset, image, tileToImage, firstGid} = options;
@@ -221,7 +222,6 @@ export class Tileset implements Properties {
         }
     }
 
-
     /**
      * Returns any specially configured tiles by gid, Tiled assigns a different id to tiles
      * this helps retrieve tiles by a more common id
@@ -282,21 +282,6 @@ export class Tileset implements Properties {
             return sprite;
         }
         throw new Error(`Tileset: [${this.name}] Could not find sprite for gid: [${gid}] normalized gid: [${normalizedGid}]`);
-    }
-
-    private _isometricTiledCoordToWorld(isoCoord: Vector): Vector {
-        // Transformation sourced from:
-        // https://discourse.mapeditor.org/t/how-to-get-cartesian-coords-of-objects-from-tileds-isometric-map/4623/3
-        const originX = 0;
-        const tileWidth = this.tileWidth;
-        // This is slightly different in tilesets because the grid aligns with actual image rectangles
-        // Tiled Resource DOES not, and aligns with the "logical" height
-        const halftileHeight = this.tileHeight / 2;
-        const tileY = isoCoord.y / halftileHeight;
-        const tileX = isoCoord.x / halftileHeight;
-        return vec(
-            (tileX - tileY) * tileWidth / 2 + originX,
-            (tileX + tileY) * halftileHeight / 2);
     }
 
     /**
@@ -374,29 +359,6 @@ export class Tileset implements Properties {
         return result;
     }
 
-    /**
-     * Transforms points based on any gid transformations
-     * @param points
-     * @param gid
-     */
-    private _applyFlipsToPoints(points: Vector[], gid: number): Vector[] {
-        const h = isFlippedHorizontally(gid);
-        const v = isFlippedVertically(gid);
-        const d = isFlippedDiagonally(gid);
-        if (d) {
-            points = points.map(p => this.diagonalFlipTransform.multiply(p));
-        }
-        if (h) {
-            points = points.map(p => this.horizontalFlipTransform.multiply(p));
-        }
-        if (v) {
-            points = points.map(p => this.verticalFlipTransform.multiply(p));
-        }
-        return points;
-    }
-
-    _cachedAnimations = new Map<number, Animation>();
-
     public getAnimationForGid(gid: number): Animation | null {
         if (this._cachedAnimations.has(gid)) {
             return this._cachedAnimations.get(gid)!;
@@ -434,5 +396,41 @@ export class Tileset implements Properties {
             return anim;
         }
         return null;
+    }
+
+    private _isometricTiledCoordToWorld(isoCoord: Vector): Vector {
+        // Transformation sourced from:
+        // https://discourse.mapeditor.org/t/how-to-get-cartesian-coords-of-objects-from-tileds-isometric-map/4623/3
+        const originX = 0;
+        const tileWidth = this.tileWidth;
+        // This is slightly different in tilesets because the grid aligns with actual image rectangles
+        // Tiled Resource DOES not, and aligns with the "logical" height
+        const halftileHeight = this.tileHeight / 2;
+        const tileY = isoCoord.y / halftileHeight;
+        const tileX = isoCoord.x / halftileHeight;
+        return vec(
+            (tileX - tileY) * tileWidth / 2 + originX,
+            (tileX + tileY) * halftileHeight / 2);
+    }
+
+    /**
+     * Transforms points based on any gid transformations
+     * @param points
+     * @param gid
+     */
+    private _applyFlipsToPoints(points: Vector[], gid: number): Vector[] {
+        const h = isFlippedHorizontally(gid);
+        const v = isFlippedVertically(gid);
+        const d = isFlippedDiagonally(gid);
+        if (d) {
+            points = points.map(p => this.diagonalFlipTransform.multiply(p));
+        }
+        if (h) {
+            points = points.map(p => this.horizontalFlipTransform.multiply(p));
+        }
+        if (v) {
+            points = points.map(p => this.verticalFlipTransform.multiply(p));
+        }
+        return points;
     }
 }

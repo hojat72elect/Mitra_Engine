@@ -22,7 +22,13 @@ export enum LogLevel {
  */
 export class Logger {
     private static _INSTANCE?: Logger = undefined;
+    /**
+     * Gets or sets the default logging level. Mitra will only log
+     * messages if equal to or above this level. Default: {@apilink LogLevel.Info}
+     */
+    public defaultLevel: LogLevel = LogLevel.Info;
     private _appenders: Appender[] = [];
+    private _logOnceSet = new Set<any>();
 
     constructor() {
         if (Logger._INSTANCE) {
@@ -33,12 +39,6 @@ export class Logger {
         Logger._INSTANCE.addAppender(new ConsoleAppender());
         return Logger._INSTANCE;
     }
-
-    /**
-     * Gets or sets the default logging level. Mitra will only log
-     * messages if equal to or above this level. Default: {@apilink LogLevel.Info}
-     */
-    public defaultLevel: LogLevel = LogLevel.Info;
 
     /**
      * Gets the current static instance of Logger
@@ -62,37 +62,6 @@ export class Logger {
      */
     public clearAppenders(): void {
         this._appenders.length = 0;
-    }
-
-    /**
-     * Logs a message at a given LogLevel
-     * @param level  The LogLevel`to log the message at
-     * @param args   An array of arguments to write to an appender
-     */
-    private _log(level: LogLevel, args: any[]): void {
-        if (level == null) {
-            level = this.defaultLevel;
-        }
-
-        const len = this._appenders.length;
-
-        for (let i = 0; i < len; i++) {
-            if (level >= this.defaultLevel) {
-                this._appenders[i].log(level, args);
-            }
-        }
-    }
-
-    private _logOnceSet = new Set<any>();
-
-    private _logOnce(level: LogLevel, args: any[]): void {
-        const serialized = level + args.join('+');
-        if (this._logOnceSet.has(serialized)) {
-            return;
-        } else {
-            this._logOnceSet.add(serialized);
-            this._log(level, args);
-        }
     }
 
     /**
@@ -173,6 +142,35 @@ export class Logger {
      */
     public fatalOnce(...args: any[]): void {
         this._logOnce(LogLevel.Fatal, args);
+    }
+
+    /**
+     * Logs a message at a given LogLevel
+     * @param level  The LogLevel`to log the message at
+     * @param args   An array of arguments to write to an appender
+     */
+    private _log(level: LogLevel, args: any[]): void {
+        if (level == null) {
+            level = this.defaultLevel;
+        }
+
+        const len = this._appenders.length;
+
+        for (let i = 0; i < len; i++) {
+            if (level >= this.defaultLevel) {
+                this._appenders[i].log(level, args);
+            }
+        }
+    }
+
+    private _logOnce(level: LogLevel, args: any[]): void {
+        const serialized = level + args.join('+');
+        if (this._logOnceSet.has(serialized)) {
+            return;
+        } else {
+            this._logOnceSet.add(serialized);
+            this._log(level, args);
+        }
     }
 }
 
@@ -263,8 +261,8 @@ export interface ScreenAppenderOptions {
  * On-screen (canvas) appender
  */
 export class ScreenAppender implements Appender {
-    private _messages: string[] = [];
     public canvas: HTMLCanvasElement;
+    private _messages: string[] = [];
     private _ctx: CanvasRenderingContext2D;
     private _pos = 10;
     private _color = Color.Black;
@@ -283,18 +281,6 @@ export class ScreenAppender implements Appender {
         options.engine.screen.events.on('resize', () => {
             this._positionScreenAppenderCanvas();
         });
-    }
-
-    private _positionScreenAppenderCanvas() {
-        const options = this._options;
-        this.canvas.width = options.width ?? options.engine.screen.resolution.width;
-        this.canvas.height = options.height ?? options.engine.screen.resolution.height;
-        this.canvas.style.position = 'absolute';
-        const pagePos = options.engine.screen.screenToPageCoordinates(vec(0, 0));
-        this.canvas.style.left = pagePos.x + 'px';
-        this.canvas.style.top = pagePos.y + 'px';
-        this._pos = options.xPos ?? this._pos;
-        this._color = options.color ?? this._color;
     }
 
     /**
@@ -317,5 +303,17 @@ export class ScreenAppender implements Appender {
             this._ctx.fillText(this._messages[i], this._pos, pos);
             pos += 10;
         }
+    }
+
+    private _positionScreenAppenderCanvas() {
+        const options = this._options;
+        this.canvas.width = options.width ?? options.engine.screen.resolution.width;
+        this.canvas.height = options.height ?? options.engine.screen.resolution.height;
+        this.canvas.style.position = 'absolute';
+        const pagePos = options.engine.screen.screenToPageCoordinates(vec(0, 0));
+        this.canvas.style.left = pagePos.x + 'px';
+        this.canvas.style.top = pagePos.y + 'px';
+        this._pos = options.xPos ?? this._pos;
+        this._color = options.color ?? this._color;
     }
 }

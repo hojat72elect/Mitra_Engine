@@ -62,34 +62,82 @@ export enum DegreeOfFreedom {
  * of physics simulation.
  */
 export class BodyComponent extends Component implements Clonable<BodyComponent> {
+    public static _ID = 0;
     // @ts-ignore
     private static _NAME = 'BodyComponent';
+    private static _DEFAULT_CONFIG: BodyConfig = {
+        ...getDefaultPhysicsConfig().bodies
+    };
     public override dependencies = [TransformComponent, MotionComponent];
-    public static _ID = 0;
     public readonly id: Id<'body'> = createId('body', BodyComponent._ID++);
     public events = new EventEmitter();
-
     public island: Island | null = null;
-
     public oldTransform = new Transform();
-
     /**
      * Indicates whether the old transform has been captured at least once for interpolation
      * @internal
      */
     public __oldTransformCaptured: boolean = false;
-
     /**
      * Enable or disabled the fixed update interpolation, by default interpolation is on.
      */
     public enableFixedUpdateInterpolate = true;
-
-    private _bodyConfig: BodyConfig;
-    private static _DEFAULT_CONFIG: BodyConfig = {
-        ...getDefaultPhysicsConfig().bodies
-    };
     public wakeThreshold!: number;
     public sleepTime: number = 0;
+    /**
+     * Collision type for the rigidbody physics simulation, by default {@apilink CollisionType.PreventCollision}
+     */
+    public collisionType: CollisionType = CollisionType.PreventCollision;
+    /**
+     * The collision group for the body's colliders, by default body colliders collide with everything
+     */
+    public group: CollisionGroup = CollisionGroup.All;
+    /**
+     * Amount of "motion" the body has before sleeping. If below {@apilink Physics.sleepEpsilon} it goes to "sleep"
+     */
+    public sleepMotion!: number;
+    /**
+     * Can this body sleep, by default bodies do not sleep
+     */
+    public canSleep: boolean = this.collisionType === CollisionType.Active;
+    /**
+     * The also known as coefficient of restitution of this actor, represents the amount of energy preserved after collision or the
+     * bounciness. If 1, it is 100% bouncy, 0 it completely absorbs.
+     */
+    public bounciness: number = 0.2;
+    /**
+     * The coefficient of friction on this actor.
+     *
+     * The {@apilink SolverStrategy.Arcade} does not support this property.
+     *
+     */
+    public friction: number = 0.99;
+    /**
+     * Should use global gravity {@apilink Physics.gravity} in it's physics simulation, default is true
+     */
+    public useGravity: boolean = true;
+    /**
+     * Degrees of freedom to limit
+     *
+     * Note: this only limits responses in the realistic solver, if velocity/angularVelocity is set the actor will still respond
+     */
+    public limitDegreeOfFreedom: DegreeOfFreedom[] = [];
+    public transform!: TransformComponent;
+    public motion!: MotionComponent;
+    /**
+     * The velocity of the actor last frame (vx, vy) in pixels/second
+     */
+    public oldVel: Vector = new Vector(0, 0);
+    /**
+     * Gets/sets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
+     */
+    public oldAcc: Vector = Vector.Zero;
+    private _bodyConfig: BodyConfig;
+    private _sleeping = false;
+    private _cachedInertia!: number;
+    private _cachedInverseInertia!: number;
+    private _impulseScratch = vec(0, 0);
+    private _distanceFromCenterScratch = vec(0, 0);
 
     constructor(options?: BodyComponentOptions) {
         super();
@@ -114,21 +162,6 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
         return this.transform.get().matrix;
     }
 
-    /**
-     * Called by Mitra to update physics config defaults if they change
-     * @param config
-     */
-    public updatePhysicsConfig(config: BodyConfig) {
-        this._bodyConfig = {
-            ...getDefaultPhysicsConfig().bodies,
-            ...config
-        };
-        // FIXME this doesnt' seem to work when config updated
-        this.canSleep = this._bodyConfig.canSleepByDefault;
-        this.sleepMotion = this._bodyConfig.sleepEpsilon * 5;
-        this.wakeThreshold = this._bodyConfig.wakeThreshold;
-    }
-
     public get canFallAsleep() {
         return this.canSleep && this.collisionType === CollisionType.Active && this.sleepMotion < this._bodyConfig!.sleepEpsilon;
     }
@@ -138,27 +171,10 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     }
 
     /**
-     * Called by Mitra to update defaults
-     * @param config
-     */
-    public static updateDefaultPhysicsConfig(config: BodyConfig) {
-        BodyComponent._DEFAULT_CONFIG = config;
-    }
-
-    /**
-     * Collision type for the rigidbody physics simulation, by default {@apilink CollisionType.PreventCollision}
-     */
-    public collisionType: CollisionType = CollisionType.PreventCollision;
-
-    /**
-     * The collision group for the body's colliders, by default body colliders collide with everything
-     */
-    public group: CollisionGroup = CollisionGroup.All;
-
-    /**
      * The amount of mass the body has
      */
     private _mass: number;
+
     public get mass(): number {
         return this._mass;
     }
@@ -177,43 +193,10 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     }
 
     /**
-     * Amount of "motion" the body has before sleeping. If below {@apilink Physics.sleepEpsilon} it goes to "sleep"
-     */
-    public sleepMotion!: number;
-
-    /**
-     * Can this body sleep, by default bodies do not sleep
-     */
-    public canSleep: boolean = this.collisionType === CollisionType.Active;
-
-    private _sleeping = false;
-
-    /**
      * Whether this body is sleeping or not
      */
     public get isSleeping(): boolean {
         return this.canSleep && this._sleeping;
-    }
-
-    public wake() {
-        if (this._sleeping && this.collisionType === CollisionType.Active) {
-            this._sleeping = false;
-            this.owner?.removeTag('ex.is_sleeping');
-            // Give it a kick to keep it from falling asleep immediately
-            this.sleepMotion = this._bodyConfig!.sleepEpsilon * 2;
-            this.sleepTime = 0;
-        }
-    }
-
-    public sleep() {
-        if (!this._sleeping && this.canSleep) {
-            this._sleeping = true;
-            this.owner?.addTag('ex.is_sleeping');
-            this.vel = Vector.Zero;
-            this.acc = Vector.Zero;
-            this.angularVelocity = 0;
-            this.sleepMotion = 0;
-        }
     }
 
     public set isSleeping(sleeping: boolean) {
@@ -223,45 +206,6 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
             this.wake();
         }
     }
-
-    /**
-     * Update body's {@apilink BodyComponent.sleepMotion} for the purpose of sleeping
-     */
-    public updateMotion(duration: number) {
-        if (this.collisionType !== CollisionType.Active) {
-            return;
-        }
-
-        // Implementation inspired from Game Physics Engine Development by Ian Millington
-        // Tweaked slightly for Mitra.
-
-        // What is their effective perceptive velocity, instead of instantaneous .vel/.angularVelocity
-        const effectiveVel = this.pos.sub(this.oldPos);
-        const effectiveAngularVel = angleDifference(canonicalizeAngle(this.rotation), canonicalizeAngle(this.oldRotation));
-
-        // This is effectively a massless kinetic energy term
-        // We remove the mass terms from 1/2 mv^2 to keep objects of different masses from sleeping at different times
-        const vel = effectiveVel.magnitude;
-        const omega = effectiveAngularVel;
-        const currentMotion = vel * vel + omega * omega;
-
-        // Bias is frame duration dependent (sleepBias is smeared over 1-s frames
-        const bias = Math.pow(this._bodyConfig!.sleepBias, duration / 1000);
-
-        // Rolling average of previous motion to keep things from sleeping if they stop abruptly but were just moving fast
-        const previousMotion = this.sleepMotion;
-        this.sleepMotion = bias * previousMotion + (1.0 - bias) * currentMotion;
-
-        // Clamp motion to a maximum
-        this.sleepMotion = clamp(this.sleepMotion, 0, 10 * this._bodyConfig!.sleepEpsilon);
-
-        // Low energy bodies go to sleep, just like real life ;)
-        if (this.canFallAsleep) {
-            this.sleepTime += duration;
-        }
-    }
-
-    private _cachedInertia!: number;
 
     /**
      * Get the moment of inertia from the {@apilink ColliderComponent}
@@ -288,8 +232,6 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
         return 0;
     }
 
-    private _cachedInverseInertia!: number;
-
     /**
      * Get the inverse moment of inertial from the {@apilink ColliderComponent}. If {@apilink CollisionType.Fixed} this is 0, meaning "infinite" mass
      */
@@ -301,44 +243,10 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     }
 
     /**
-     * The also known as coefficient of restitution of this actor, represents the amount of energy preserved after collision or the
-     * bounciness. If 1, it is 100% bouncy, 0 it completely absorbs.
-     */
-    public bounciness: number = 0.2;
-
-    /**
-     * The coefficient of friction on this actor.
-     *
-     * The {@apilink SolverStrategy.Arcade} does not support this property.
-     *
-     */
-    public friction: number = 0.99;
-
-    /**
-     * Should use global gravity {@apilink Physics.gravity} in it's physics simulation, default is true
-     */
-    public useGravity: boolean = true;
-
-    /**
-     * Degrees of freedom to limit
-     *
-     * Note: this only limits responses in the realistic solver, if velocity/angularVelocity is set the actor will still respond
-     */
-    public limitDegreeOfFreedom: DegreeOfFreedom[] = [];
-
-    /**
      * Returns if the owner is active
      */
     public get isActive() {
         return !!this.owner?.isActive;
-    }
-
-    public transform!: TransformComponent;
-    public motion!: MotionComponent;
-
-    override onAdd(owner: Entity<any>): void {
-        this.transform = this.owner?.get(TransformComponent)!;
-        this.motion = this.owner?.get(MotionComponent)!;
     }
 
     public get pos(): Vector {
@@ -365,17 +273,17 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     private _oldGlobalPos: Vector = Vector.Zero;
 
     /**
-     * The position of the actor last frame (x, y) in pixels
-     */
-    public get oldPos(): Vector {
-        return this.oldTransform.pos;
-    }
-
-    /**
      * The global position of the actor last frame (x, y) in pixels
      */
     public get oldGlobalPos(): Vector {
         return this._oldGlobalPos;
+    }
+
+    /**
+     * The position of the actor last frame (x, y) in pixels
+     */
+    public get oldPos(): Vector {
+        return this.oldTransform.pos;
     }
 
     /**
@@ -390,11 +298,6 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     }
 
     /**
-     * The velocity of the actor last frame (vx, vy) in pixels/second
-     */
-    public oldVel: Vector = new Vector(0, 0);
-
-    /**
      * The current acceleration vector (ax, ay) of the actor in pixels/second/second. An acceleration pointing down such as (0, 100) may
      * be useful to simulate a gravitational effect.
      */
@@ -405,11 +308,6 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
     public set acc(val: Vector) {
         this.motion.acc = val;
     }
-
-    /**
-     * Gets/sets the acceleration of the actor from the last frame. This does not include the global acc {@apilink Physics.acc}.
-     */
-    public oldAcc: Vector = Vector.Zero;
 
     /**
      * The current torque applied to the actor
@@ -483,8 +381,91 @@ export class BodyComponent extends Component implements Clonable<BodyComponent> 
         this.motion.angularVelocity = value;
     }
 
-    private _impulseScratch = vec(0, 0);
-    private _distanceFromCenterScratch = vec(0, 0);
+    /**
+     * Called by Mitra to update defaults
+     * @param config
+     */
+    public static updateDefaultPhysicsConfig(config: BodyConfig) {
+        BodyComponent._DEFAULT_CONFIG = config;
+    }
+
+    /**
+     * Called by Mitra to update physics config defaults if they change
+     * @param config
+     */
+    public updatePhysicsConfig(config: BodyConfig) {
+        this._bodyConfig = {
+            ...getDefaultPhysicsConfig().bodies,
+            ...config
+        };
+        // FIXME this doesnt' seem to work when config updated
+        this.canSleep = this._bodyConfig.canSleepByDefault;
+        this.sleepMotion = this._bodyConfig.sleepEpsilon * 5;
+        this.wakeThreshold = this._bodyConfig.wakeThreshold;
+    }
+
+    public wake() {
+        if (this._sleeping && this.collisionType === CollisionType.Active) {
+            this._sleeping = false;
+            this.owner?.removeTag('ex.is_sleeping');
+            // Give it a kick to keep it from falling asleep immediately
+            this.sleepMotion = this._bodyConfig!.sleepEpsilon * 2;
+            this.sleepTime = 0;
+        }
+    }
+
+    public sleep() {
+        if (!this._sleeping && this.canSleep) {
+            this._sleeping = true;
+            this.owner?.addTag('ex.is_sleeping');
+            this.vel = Vector.Zero;
+            this.acc = Vector.Zero;
+            this.angularVelocity = 0;
+            this.sleepMotion = 0;
+        }
+    }
+
+    /**
+     * Update body's {@apilink BodyComponent.sleepMotion} for the purpose of sleeping
+     */
+    public updateMotion(duration: number) {
+        if (this.collisionType !== CollisionType.Active) {
+            return;
+        }
+
+        // Implementation inspired from Game Physics Engine Development by Ian Millington
+        // Tweaked slightly for Mitra.
+
+        // What is their effective perceptive velocity, instead of instantaneous .vel/.angularVelocity
+        const effectiveVel = this.pos.sub(this.oldPos);
+        const effectiveAngularVel = angleDifference(canonicalizeAngle(this.rotation), canonicalizeAngle(this.oldRotation));
+
+        // This is effectively a massless kinetic energy term
+        // We remove the mass terms from 1/2 mv^2 to keep objects of different masses from sleeping at different times
+        const vel = effectiveVel.magnitude;
+        const omega = effectiveAngularVel;
+        const currentMotion = vel * vel + omega * omega;
+
+        // Bias is frame duration dependent (sleepBias is smeared over 1-s frames
+        const bias = Math.pow(this._bodyConfig!.sleepBias, duration / 1000);
+
+        // Rolling average of previous motion to keep things from sleeping if they stop abruptly but were just moving fast
+        const previousMotion = this.sleepMotion;
+        this.sleepMotion = bias * previousMotion + (1.0 - bias) * currentMotion;
+
+        // Clamp motion to a maximum
+        this.sleepMotion = clamp(this.sleepMotion, 0, 10 * this._bodyConfig!.sleepEpsilon);
+
+        // Low energy bodies go to sleep, just like real life ;)
+        if (this.canFallAsleep) {
+            this.sleepTime += duration;
+        }
+    }
+
+    override onAdd(owner: Entity<any>): void {
+        this.transform = this.owner?.get(TransformComponent)!;
+        this.motion = this.owner?.get(MotionComponent)!;
+    }
 
     /**
      * Apply a specific impulse to the body

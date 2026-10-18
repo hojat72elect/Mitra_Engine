@@ -124,54 +124,18 @@ export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
      * @internal
      */
     public __ctx!: CanvasRenderingContext2D;
-
-    public get width() {
-        return this.__ctx.canvas.width;
-    }
-
-    public get height() {
-        return this.__ctx.canvas.height;
-    }
-
     /**
      * Unused in Canvas implementation
      */
     public readonly useDrawSorting: boolean = false;
-
     /**
      * Unused in Canvas implementation
      */
     public z: number = 0;
-
     public backgroundColor: Color = Color.MitraBlue;
-
-    private _state = new StateStack();
-
-    public get opacity(): number {
-        return this._state.current.opacity;
-    }
-
-    public set opacity(value: number) {
-        this._state.current.opacity = value;
-    }
-
-    public get tint(): Color | null | undefined {
-        return this._state.current.tint;
-    }
-
-    public set tint(color: Color | null | undefined) {
-        this._state.current.tint = color;
-    }
-
     public snapToPixel: boolean = false;
-
-    public get smoothing(): boolean {
-        return this.__ctx.imageSmoothingEnabled;
-    }
-
-    public set smoothing(value: boolean) {
-        this.__ctx.imageSmoothingEnabled = value;
-    }
+    debug = new MitraGraphicsContext2DCanvasDebug(this);
+    private _state = new StateStack();
 
     constructor(options: MitraGraphicsContext2DOptions) {
         const {
@@ -195,6 +159,46 @@ export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
         this.smoothing = smoothing ?? this.smoothing;
     }
 
+    public get width() {
+        return this.__ctx.canvas.width;
+    }
+
+    public get height() {
+        return this.__ctx.canvas.height;
+    }
+
+    public get opacity(): number {
+        return this._state.current.opacity;
+    }
+
+    public set opacity(value: number) {
+        this._state.current.opacity = value;
+    }
+
+    public get tint(): Color | null | undefined {
+        return this._state.current.tint;
+    }
+
+    public set tint(color: Color | null | undefined) {
+        this._state.current.tint = color;
+    }
+
+    public get smoothing(): boolean {
+        return this.__ctx.imageSmoothingEnabled;
+    }
+
+    public set smoothing(value: boolean) {
+        this.__ctx.imageSmoothingEnabled = value;
+    }
+
+    public get material(): Material | undefined | null {
+        return this._state.current.material;
+    }
+
+    public set material(material: Material | undefined | null) {
+        this._state.current.material = material;
+    }
+
     public resetTransform(): void {
         this.__ctx.resetTransform();
     }
@@ -207,11 +211,13 @@ export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
      * Draw an image to the Mitra Graphics context at an x and y coordinate using the images width and height
      */
     drawImage(image: HTMLImageSource, x: number, y: number): void;
+
     /**
      *
      * Draw an image to the Mitra Graphics context at an x and y coordinate with a specific width and height
      */
     drawImage(image: HTMLImageSource, x: number, y: number, width: number, height: number): void;
+
     /**
      *
      * Draw an image to the Mitra Graphics context specifying the source image coordinates (sx, sy, swidth, sheight)
@@ -309,8 +315,6 @@ export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
         this.__ctx.restore();
     }
 
-    debug = new MitraGraphicsContext2DCanvasDebug(this);
-
     /**
      * Save the current state of the canvas to the stack (transforms and opacity)
      */
@@ -407,14 +411,6 @@ export class MitraGraphicsContext2DCanvas implements MitraGraphicsContext {
 
     public endDrawLifecycle() {
         // pass
-    }
-
-    public set material(material: Material | undefined | null) {
-        this._state.current.material = material;
-    }
-
-    public get material(): Material | undefined | null {
-        return this._state.current.material;
     }
 
     public createMaterial(options: Omit<MaterialOptions, 'graphicsContext'>): Material {

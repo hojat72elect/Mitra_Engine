@@ -26,6 +26,37 @@ export class Font extends Graphic implements FontRenderer {
      * If you have a pixel style font that may be a reason to switch this to {@apilink ImageFiltering.Pixel}
      */
     public filtering: ImageFiltering = ImageFiltering.Blended;
+    /**
+     * Font quality determines the size of the underlying raster text, higher quality means less jagged edges.
+     * If quality is set to 1, then just enough raster bitmap is generated to render the text.
+     *
+     * You can think of quality as how zoomed in to the text you can get before seeing jagged edges.
+     *
+     * (Default 2)
+     */
+    public quality = 2;
+    // Raster properties for fonts
+    public padding = 2;
+    public smoothing = false;
+    public lineWidth = 1;
+    public lineDash: number[] = [];
+    public color: Color = Color.Black;
+    public strokeColor?: Color;
+    public family: string = 'sans-serif';
+    public style: FontStyle = FontStyle.Normal;
+    public bold: boolean = false;
+    public unit: FontUnit = FontUnit.Px;
+    public textAlign: TextAlign = TextAlign.Left;
+    public baseAlign: BaseAlign = BaseAlign.Top;
+    public direction: TextDirection = TextDirection.LeftToRight;
+    /**
+     * Font line height in pixels, default line height if unset
+     */
+    public lineHeight: number | undefined = undefined;
+    public size: number = 10;
+    public shadow?: { blur?: number; offset?: Vector; color?: Color };
+    private _textBounds: BoundingBox = new BoundingBox();
+    private _textMeasurement: FontTextInstance;
 
     constructor(options: FontOptions & GraphicOptions & RasterOptions = {}) {
         super(options); // <- Graphics properties
@@ -83,6 +114,14 @@ export class Font extends Graphic implements FontRenderer {
         );
     }
 
+    public get fontString() {
+        return `${this.style} ${this.bold ? 'bold' : ''} ${this.size}${this.unit} ${this.family}`;
+    }
+
+    public override get localBounds(): BoundingBox {
+        return this._textBounds;
+    }
+
     public clone() {
         return new Font({
             ...this.cloneGraphicOptions(),
@@ -104,46 +143,31 @@ export class Font extends Graphic implements FontRenderer {
         });
     }
 
-    /**
-     * Font quality determines the size of the underlying raster text, higher quality means less jagged edges.
-     * If quality is set to 1, then just enough raster bitmap is generated to render the text.
-     *
-     * You can think of quality as how zoomed in to the text you can get before seeing jagged edges.
-     *
-     * (Default 2)
-     */
-    public quality = 2;
-
-    // Raster properties for fonts
-    public padding = 2;
-    public smoothing = false;
-    public lineWidth = 1;
-    public lineDash: number[] = [];
-    public color: Color = Color.Black;
-    public strokeColor?: Color;
-
-    public family: string = 'sans-serif';
-    public style: FontStyle = FontStyle.Normal;
-    public bold: boolean = false;
-    public unit: FontUnit = FontUnit.Px;
-    public textAlign: TextAlign = TextAlign.Left;
-    public baseAlign: BaseAlign = BaseAlign.Top;
-    public direction: TextDirection = TextDirection.LeftToRight;
-    /**
-     * Font line height in pixels, default line height if unset
-     */
-    public lineHeight: number | undefined = undefined;
-    public size: number = 10;
-    public shadow?: { blur?: number; offset?: Vector; color?: Color };
-
-    public get fontString() {
-        return `${this.style} ${this.bold ? 'bold' : ''} ${this.size}${this.unit} ${this.family}`;
+    public measureTextWithoutCache(text: string, maxWidth?: number) {
+        return this._textMeasurement.measureText(text, maxWidth);
     }
 
-    private _textBounds: BoundingBox = new BoundingBox();
+    /**
+     * Returns a BoundingBox that is the total size of the text including multiple lines
+     *
+     * Does not include any padding or adjustment
+     * @param text
+     * @returns BoundingBox
+     */
+    public measureText(text: string, maxWidth?: number): BoundingBox {
+        return FontCache.measureText(text, this, maxWidth);
+    }
 
-    public override get localBounds(): BoundingBox {
-        return this._textBounds;
+    public render(ex: MitraGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
+        const textInstance = FontCache.getTextInstance(text, this, colorOverride);
+
+        // Apply affine transformations
+        this._textBounds = textInstance.dimensions;
+        this._preDraw(ex, x, y);
+
+        textInstance.render(ex, x, y, maxWidth);
+
+        this._postDraw(ex);
     }
 
     protected _drawImage(_ex: MitraGraphicsContext, _x: number, _y: number) {
@@ -170,36 +194,7 @@ export class Font extends Graphic implements FontRenderer {
         }
     }
 
-    private _textMeasurement: FontTextInstance;
-
-    public measureTextWithoutCache(text: string, maxWidth?: number) {
-        return this._textMeasurement.measureText(text, maxWidth);
-    }
-
-    /**
-     * Returns a BoundingBox that is the total size of the text including multiple lines
-     *
-     * Does not include any padding or adjustment
-     * @param text
-     * @returns BoundingBox
-     */
-    public measureText(text: string, maxWidth?: number): BoundingBox {
-        return FontCache.measureText(text, this, maxWidth);
-    }
-
     protected override _postDraw(ex: MitraGraphicsContext): void {
         ex.restore();
-    }
-
-    public render(ex: MitraGraphicsContext, text: string, colorOverride: Color, x: number, y: number, maxWidth?: number) {
-        const textInstance = FontCache.getTextInstance(text, this, colorOverride);
-
-        // Apply affine transformations
-        this._textBounds = textInstance.dimensions;
-        this._preDraw(ex, x, y);
-
-        textInstance.render(ex, x, y, maxWidth);
-
-        this._postDraw(ex);
     }
 }

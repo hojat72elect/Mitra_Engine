@@ -1,33 +1,33 @@
-import { vec } from '../../../../math/vector';
-import { ImageFiltering } from '../../../filtering';
-import type { MitraGraphicsContextWebgl } from '../../mitra-graphics-context-webgl';
-import { Framebuffer } from '../../framebuffer';
-import { glsl } from '../../glsl';
-import type { Shader } from '../../shader';
-import type { ShaderPassDestination, ShaderPassSource } from '../shader-pass';
-import { getSourceDimensions, ShaderPass } from '../shader-pass';
-import type { ShaderPipelineLike, ShaderPipelineProcessOptions } from '../shader-pipeline';
-import { mergePassSources } from '../shader-pipeline';
+import {vec} from '../../../../math/vector';
+import {ImageFiltering} from '../../../filtering';
+import type {MitraGraphicsContextWebgl} from '../../mitra-graphics-context-webgl';
+import {Framebuffer} from '../../framebuffer';
+import {glsl} from '../../glsl';
+import type {Shader} from '../../shader';
+import type {ShaderPassDestination, ShaderPassSource} from '../shader-pass';
+import {getSourceDimensions, ShaderPass} from '../shader-pass';
+import type {ShaderPipelineLike, ShaderPipelineProcessOptions} from '../shader-pipeline';
+import {mergePassSources} from '../shader-pipeline';
 
 export interface BloomEffectOptions {
-  graphicsContext: MitraGraphicsContextWebgl;
-  /**
-   * Luminance cutoff (0-1) above which pixels contribute to the bloom, default 0.8
-   */
-  threshold?: number;
-  /**
-   * Multiplies the bloom light **added on top of** the original image, default 1.
-   *
-   * 1 is the neutral amount, values above 1 read as hotter, values below 1 are subtle.
-   */
-  intensity?: number;
-  /**
-   * Depth of the downsample/upsample ladder, default 4.
-   *
-   * Each level halves the resolution, more levels produce a wider, softer bloom for the same cost
-   * profile. Clamped to at least 1.
-   */
-  levels?: number;
+    graphicsContext: MitraGraphicsContextWebgl;
+    /**
+     * Luminance cutoff (0-1) above which pixels contribute to the bloom, default 0.8
+     */
+    threshold?: number;
+    /**
+     * Multiplies the bloom light **added on top of** the original image, default 1.
+     *
+     * 1 is the neutral amount, values above 1 read as hotter, values below 1 are subtle.
+     */
+    intensity?: number;
+    /**
+     * Depth of the downsample/upsample ladder, default 4.
+     *
+     * Each level halves the resolution, more levels produce a wider, softer bloom for the same cost
+     * profile. Clamped to at least 1.
+     */
+    levels?: number;
 }
 
 /**
@@ -138,179 +138,180 @@ void main() {
  * ```
  */
 export class BloomEffect implements ShaderPipelineLike {
-  private _graphicsContext: MitraGraphicsContextWebgl;
-  private _levels: number;
-  private _threshold: ShaderPass;
-  private _downsample: ShaderPass;
-  private _upsampleMerge: ShaderPass;
-  private _combine: ShaderPass;
-  private _downFramebuffers: Framebuffer[] = [];
-  private _upFramebuffers: Framebuffer[] = [];
-  private _disposed = false;
+    private _graphicsContext: MitraGraphicsContextWebgl;
+    private _levels: number;
+    private _downsample: ShaderPass;
+    private _upsampleMerge: ShaderPass;
+    private _combine: ShaderPass;
+    private _downFramebuffers: Framebuffer[] = [];
+    private _upFramebuffers: Framebuffer[] = [];
+    private _disposed = false;
 
-  constructor(options: BloomEffectOptions) {
-    const { graphicsContext, threshold, intensity, levels } = options;
-    this._graphicsContext = graphicsContext;
-    this._levels = Math.max(1, levels ?? 4);
-    this._threshold = new ShaderPass({
-      graphicsContext,
-      name: 'bloom threshold',
-      fragmentSource: thresholdFragmentSource,
-      uniforms: {
-        u_threshold: threshold ?? 0.8
-      }
-    });
-    this._downsample = new ShaderPass({
-      graphicsContext,
-      name: 'bloom downsample',
-      fragmentSource: downsampleFragmentSource
-    });
-    this._upsampleMerge = new ShaderPass({
-      graphicsContext,
-      name: 'bloom upsample merge',
-      fragmentSource: upsampleMergeFragmentSource
-    });
-    this._combine = new ShaderPass({
-      graphicsContext,
-      name: 'bloom combine',
-      fragmentSource: combineFragmentSource,
-      uniforms: {
-        u_intensity: intensity ?? 1
-      }
-    });
-  }
-
-  /**
-   * Luminance cutoff (0-1) above which pixels contribute to the bloom
-   */
-  public get threshold(): number {
-    return this._threshold.uniforms.u_threshold as number;
-  }
-
-  public set threshold(value: number) {
-    this._threshold.uniforms.u_threshold = value;
-  }
-
-  /**
-   * Multiplies the bloom light **added on top of** the original image.
-   *
-   * 1 is the neutral amount, values above 1 read as hotter, values below 1 are subtle.
-   */
-  public get intensity(): number {
-    return this._combine.uniforms.u_intensity as number;
-  }
-
-  public set intensity(value: number) {
-    this._combine.uniforms.u_intensity = value;
-  }
-
-  private _ensureFramebuffers(sourceWidth: number, sourceHeight: number): void {
-    let width = sourceWidth;
-    let height = sourceHeight;
-    for (let level = 0; level < this._levels; level++) {
-      width = Math.max(1, Math.floor(width / 2));
-      height = Math.max(1, Math.floor(height / 2));
-      if (!this._downFramebuffers[level]) {
-        // linear filtering is what makes the bilinear tap patterns work
-        this._downFramebuffers[level] = new Framebuffer({
-          graphicsContext: this._graphicsContext,
-          width,
-          height,
-          filtering: ImageFiltering.Blended
+    constructor(options: BloomEffectOptions) {
+        const {graphicsContext, threshold, intensity, levels} = options;
+        this._graphicsContext = graphicsContext;
+        this._levels = Math.max(1, levels ?? 4);
+        this._threshold = new ShaderPass({
+            graphicsContext,
+            name: 'bloom threshold',
+            fragmentSource: thresholdFragmentSource,
+            uniforms: {
+                u_threshold: threshold ?? 0.8
+            }
         });
-      } else {
-        this._downFramebuffers[level].resize(width, height);
-      }
-      // up framebuffers mirror every level but the smallest
-      if (level < this._levels - 1) {
-        if (!this._upFramebuffers[level]) {
-          this._upFramebuffers[level] = new Framebuffer({
-            graphicsContext: this._graphicsContext,
-            width,
-            height,
-            filtering: ImageFiltering.Blended
-          });
-        } else {
-          this._upFramebuffers[level].resize(width, height);
+        this._downsample = new ShaderPass({
+            graphicsContext,
+            name: 'bloom downsample',
+            fragmentSource: downsampleFragmentSource
+        });
+        this._upsampleMerge = new ShaderPass({
+            graphicsContext,
+            name: 'bloom upsample merge',
+            fragmentSource: upsampleMergeFragmentSource
+        });
+        this._combine = new ShaderPass({
+            graphicsContext,
+            name: 'bloom combine',
+            fragmentSource: combineFragmentSource,
+            uniforms: {
+                u_intensity: intensity ?? 1
+            }
+        });
+    }
+
+    private _threshold: ShaderPass;
+
+    /**
+     * Luminance cutoff (0-1) above which pixels contribute to the bloom
+     */
+    public get threshold(): number {
+        return this._threshold.uniforms.u_threshold as number;
+    }
+
+    public set threshold(value: number) {
+        this._threshold.uniforms.u_threshold = value;
+    }
+
+    /**
+     * Multiplies the bloom light **added on top of** the original image.
+     *
+     * 1 is the neutral amount, values above 1 read as hotter, values below 1 are subtle.
+     */
+    public get intensity(): number {
+        return this._combine.uniforms.u_intensity as number;
+    }
+
+    public set intensity(value: number) {
+        this._combine.uniforms.u_intensity = value;
+    }
+
+    public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
+        if (this._disposed) {
+            throw new Error('BloomEffect has been disposed and cannot be used. Create a new effect instance.');
         }
-      }
-    }
-  }
+        const elapsed = options?.elapsed;
+        const uniforms = options?.uniforms;
+        const extraSources = options?.sources;
+        const [sourceWidth, sourceHeight] = getSourceDimensions(this._graphicsContext, source);
+        this._ensureFramebuffers(sourceWidth, sourceHeight);
 
-  public process(source: ShaderPassSource, destination: ShaderPassDestination, options?: ShaderPipelineProcessOptions): void {
-    if (this._disposed) {
-      throw new Error('BloomEffect has been disposed and cannot be used. Create a new effect instance.');
-    }
-    const elapsed = options?.elapsed;
-    const uniforms = options?.uniforms;
-    const extraSources = options?.sources;
-    const [sourceWidth, sourceHeight] = getSourceDimensions(this._graphicsContext, source);
-    this._ensureFramebuffers(sourceWidth, sourceHeight);
+        // extract bright areas into the first half-resolution level
+        this._threshold.draw({
+            sources: mergePassSources({u_image: source}, extraSources),
+            destination: this._downFramebuffers[0],
+            uniforms,
+            elapsed
+        });
 
-    // extract bright areas into the first half-resolution level
-    this._threshold.draw({
-      sources: mergePassSources({ u_image: source }, extraSources),
-      destination: this._downFramebuffers[0],
-      uniforms,
-      elapsed
-    });
-
-    // blur down the ladder, the tap footprint is in destination texels for a wider blur
-    for (let level = 1; level < this._levels; level++) {
-      const target = this._downFramebuffers[level];
-      this._downsample.draw({
-        sources: mergePassSources({ u_image: this._downFramebuffers[level - 1] }, extraSources),
-        destination: target,
-        uniforms: {
-          ...uniforms,
-          u_texelSize: vec(target.texelSize[0], target.texelSize[1])
+        // blur down the ladder, the tap footprint is in destination texels for a wider blur
+        for (let level = 1; level < this._levels; level++) {
+            const target = this._downFramebuffers[level];
+            this._downsample.draw({
+                sources: mergePassSources({u_image: this._downFramebuffers[level - 1]}, extraSources),
+                destination: target,
+                uniforms: {
+                    ...uniforms,
+                    u_texelSize: vec(target.texelSize[0], target.texelSize[1])
+                }
+            });
         }
-      });
+
+        // tent-upsample back up, accumulating each level
+        let smaller: Framebuffer = this._downFramebuffers[this._levels - 1];
+        for (let level = this._levels - 2; level >= 0; level--) {
+            this._upsampleMerge.draw({
+                sources: mergePassSources({u_larger: this._downFramebuffers[level], u_smaller: smaller}, extraSources),
+                destination: this._upFramebuffers[level],
+                uniforms
+            });
+            smaller = this._upFramebuffers[level];
+        }
+
+        // add the accumulated bloom onto the original
+        this._combine.draw({
+            sources: mergePassSources({u_image: smaller, u_original: source}, extraSources),
+            destination,
+            uniforms,
+            elapsed
+        });
     }
 
-    // tent-upsample back up, accumulating each level
-    let smaller: Framebuffer = this._downFramebuffers[this._levels - 1];
-    for (let level = this._levels - 2; level >= 0; level--) {
-      this._upsampleMerge.draw({
-        sources: mergePassSources({ u_larger: this._downFramebuffers[level], u_smaller: smaller }, extraSources),
-        destination: this._upFramebuffers[level],
-        uniforms
-      });
-      smaller = this._upFramebuffers[level];
+    /**
+     * Every internal pass's compiled {@apilink Shader}, in the order they run: threshold,
+     * downsample, upsample-merge, combine
+     */
+    public getShaders(): Shader[] {
+        return [this._threshold, this._downsample, this._upsampleMerge, this._combine].map((pass) => pass.getShader());
     }
 
-    // add the accumulated bloom onto the original
-    this._combine.draw({
-      sources: mergePassSources({ u_image: smaller, u_original: source }, extraSources),
-      destination,
-      uniforms,
-      elapsed
-    });
-  }
-
-  /**
-   * Every internal pass's compiled {@apilink Shader}, in the order they run: threshold,
-   * downsample, upsample-merge, combine
-   */
-  public getShaders(): Shader[] {
-    return [this._threshold, this._downsample, this._upsampleMerge, this._combine].map((pass) => pass.getShader());
-  }
-
-  public dispose(): void {
-    if (!this._disposed) {
-      this._disposed = true;
-      this._threshold.dispose();
-      this._downsample.dispose();
-      this._upsampleMerge.dispose();
-      this._combine.dispose();
-      for (const framebuffer of this._downFramebuffers) {
-        framebuffer.dispose();
-      }
-      for (const framebuffer of this._upFramebuffers) {
-        framebuffer.dispose();
-      }
-      this._downFramebuffers.length = 0;
-      this._upFramebuffers.length = 0;
+    public dispose(): void {
+        if (!this._disposed) {
+            this._disposed = true;
+            this._threshold.dispose();
+            this._downsample.dispose();
+            this._upsampleMerge.dispose();
+            this._combine.dispose();
+            for (const framebuffer of this._downFramebuffers) {
+                framebuffer.dispose();
+            }
+            for (const framebuffer of this._upFramebuffers) {
+                framebuffer.dispose();
+            }
+            this._downFramebuffers.length = 0;
+            this._upFramebuffers.length = 0;
+        }
     }
-  }
+
+    private _ensureFramebuffers(sourceWidth: number, sourceHeight: number): void {
+        let width = sourceWidth;
+        let height = sourceHeight;
+        for (let level = 0; level < this._levels; level++) {
+            width = Math.max(1, Math.floor(width / 2));
+            height = Math.max(1, Math.floor(height / 2));
+            if (!this._downFramebuffers[level]) {
+                // linear filtering is what makes the bilinear tap patterns work
+                this._downFramebuffers[level] = new Framebuffer({
+                    graphicsContext: this._graphicsContext,
+                    width,
+                    height,
+                    filtering: ImageFiltering.Blended
+                });
+            } else {
+                this._downFramebuffers[level].resize(width, height);
+            }
+            // up framebuffers mirror every level but the smallest
+            if (level < this._levels - 1) {
+                if (!this._upFramebuffers[level]) {
+                    this._upFramebuffers[level] = new Framebuffer({
+                        graphicsContext: this._graphicsContext,
+                        width,
+                        height,
+                        filtering: ImageFiltering.Blended
+                    });
+                } else {
+                    this._upFramebuffers[level].resize(width, height);
+                }
+            }
+        }
+    }
 }

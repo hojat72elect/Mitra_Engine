@@ -47,9 +47,62 @@ interface WarningTests {
  * Mitra internal feature detection helper class
  */
 export class Detector {
-    private _features?: DetectedFeatures;
-
     public failedTests: string[] = [];
+    private _features?: DetectedFeatures;
+    // critical browser features required for ex to run
+    private _criticalTests: CriticalTests = {
+        // Test canvas/2d context support
+        canvasSupport: function () {
+            const elem = document.createElement('canvas');
+            return !!(elem.getContext && elem.getContext('2d'));
+        },
+
+        // Test array buffer support ex uses for downloading binary data
+        arrayBufferSupport: function () {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/');
+            try {
+                xhr.responseType = 'arraybuffer';
+            } catch (e) {
+                return false;
+            }
+            return xhr.responseType === 'arraybuffer';
+        },
+
+        // Test data urls ex uses for sprites
+        dataUrlSupport: function () {
+            const canvas = document.createElement('canvas');
+            return canvas.toDataURL('image/png').indexOf('data:image/png') === 0;
+        },
+
+        // Test object url support for loading
+        objectUrlSupport: function () {
+            return 'URL' in window && 'revokeObjectURL' in URL && 'createObjectURL' in URL;
+        },
+
+        // RGBA support for colors
+        rgbaSupport: function () {
+            const style = document.createElement('a').style;
+            style.cssText = 'background-color:rgba(150,255,150,.5)';
+            return ('' + style.backgroundColor).indexOf('rgba') > -1;
+        }
+    };
+    // warnings Mitra performance will be degraded
+    private _warningTest: WarningTests = {
+        webAudioSupport: function () {
+            return !!(
+                (<any>window).AudioContext ||
+                (<any>window).webkitAudioContext ||
+                (<any>window).mozAudioContext ||
+                (<any>window).msAudioContext ||
+                (<any>window).oAudioContext
+            );
+        },
+        webglSupport: function () {
+            const elem = document.createElement('canvas');
+            return !!(elem.getContext && elem.getContext('webgl'));
+        }
+    };
 
     public constructor() {
         this._features = this._loadBrowserFeatures();
@@ -93,6 +146,30 @@ export class Detector {
         args.unshift(msg);
         // eslint-disable-next-line no-console
         console.log.apply(console, args);
+    }
+
+    public test(): boolean {
+        // Critical test will for ex not to run
+        let failedCritical = false;
+        for (const test in this._criticalTests) {
+            if (!this._criticalTests[<keyof CriticalTests>test].call(this)) {
+                this.failedTests.push(test);
+                Logger.getInstance().error('Critical browser feature missing, Mitra requires:', test);
+                failedCritical = true;
+            }
+        }
+        if (failedCritical) {
+            return false;
+        }
+
+        // Warning tests do not for ex to return false to compatibility
+        for (const warning in this._warningTest) {
+            if (!this._warningTest[<keyof WarningTests>warning]()) {
+                Logger.getInstance().warn('Warning browser feature missing, Mitra will have reduced performance:', warning);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -141,85 +218,5 @@ export class Detector {
                 return !!(<any>navigator).getGamepads;
             })()
         };
-    }
-
-    // critical browser features required for ex to run
-    private _criticalTests: CriticalTests = {
-        // Test canvas/2d context support
-        canvasSupport: function () {
-            const elem = document.createElement('canvas');
-            return !!(elem.getContext && elem.getContext('2d'));
-        },
-
-        // Test array buffer support ex uses for downloading binary data
-        arrayBufferSupport: function () {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', '/');
-            try {
-                xhr.responseType = 'arraybuffer';
-            } catch (e) {
-                return false;
-            }
-            return xhr.responseType === 'arraybuffer';
-        },
-
-        // Test data urls ex uses for sprites
-        dataUrlSupport: function () {
-            const canvas = document.createElement('canvas');
-            return canvas.toDataURL('image/png').indexOf('data:image/png') === 0;
-        },
-
-        // Test object url support for loading
-        objectUrlSupport: function () {
-            return 'URL' in window && 'revokeObjectURL' in URL && 'createObjectURL' in URL;
-        },
-
-        // RGBA support for colors
-        rgbaSupport: function () {
-            const style = document.createElement('a').style;
-            style.cssText = 'background-color:rgba(150,255,150,.5)';
-            return ('' + style.backgroundColor).indexOf('rgba') > -1;
-        }
-    };
-
-    // warnings Mitra performance will be degraded
-    private _warningTest: WarningTests = {
-        webAudioSupport: function () {
-            return !!(
-                (<any>window).AudioContext ||
-                (<any>window).webkitAudioContext ||
-                (<any>window).mozAudioContext ||
-                (<any>window).msAudioContext ||
-                (<any>window).oAudioContext
-            );
-        },
-        webglSupport: function () {
-            const elem = document.createElement('canvas');
-            return !!(elem.getContext && elem.getContext('webgl'));
-        }
-    };
-
-    public test(): boolean {
-        // Critical test will for ex not to run
-        let failedCritical = false;
-        for (const test in this._criticalTests) {
-            if (!this._criticalTests[<keyof CriticalTests>test].call(this)) {
-                this.failedTests.push(test);
-                Logger.getInstance().error('Critical browser feature missing, Mitra requires:', test);
-                failedCritical = true;
-            }
-        }
-        if (failedCritical) {
-            return false;
-        }
-
-        // Warning tests do not for ex to return false to compatibility
-        for (const warning in this._warningTest) {
-            if (!this._warningTest[<keyof WarningTests>warning]()) {
-                Logger.getInstance().warn('Warning browser feature missing, Mitra will have reduced performance:', warning);
-            }
-        }
-
-        return true;
     }
 }

@@ -101,11 +101,6 @@ export interface GoToOptions<TActivationData = any> {
  */
 export class Director<TKnownScenes extends string = any> {
     public events = new EventEmitter<DirectorEvents>();
-    private _logger = Logger.getInstance();
-    private _deferredGoto?: string;
-    private _deferredTransition?: Transition;
-    private _initialized = false;
-
     /**
      * Current scene's name
      */
@@ -118,42 +113,30 @@ export class Director<TKnownScenes extends string = any> {
      * Current transition if any
      */
     currentTransition?: Transition;
-
     /**
      * All registered scenes in Mitra.
      */
     public readonly scenes: SceneMap<WithRoot<TKnownScenes>> = {} as SceneMap<WithRoot<TKnownScenes>>;
-
-    /**
-     * Holds all instantiated scenes
-     */
-    private _sceneToInstance = new Map<string, Scene>();
-
     startScene?: string;
     mainLoader?: DefaultLoader;
-
     /**
      * The default {@apilink Scene} of the game, use {@apilink Engine.goToScene} to transition to different scenes.
      */
     public readonly rootScene: Scene;
-
+    private _logger = Logger.getInstance();
+    private _deferredGoto?: string;
+    private _deferredTransition?: Transition;
+    private _initialized = false;
+    /**
+     * Holds all instantiated scenes
+     */
+    private _sceneToInstance = new Map<string, Scene>();
     private _sceneToLoader = new Map<string, DefaultLoader>();
     private _sceneToTransition = new Map<string, { in?: Transition; out?: Transition }>();
     /**
      * Used to keep track of scenes that have already been loaded so we don't load multiple times
      */
     private _loadedScenes = new Set<Scene>();
-
-    private _isTransitioning = false;
-
-    /**
-     * Gets whether the director currently transitioning between scenes
-     *
-     * Useful if you need to block behavior during transition
-     */
-    public get isTransitioning() {
-        return this._isTransitioning;
-    }
 
     constructor(
         private _engine: Engine,
@@ -171,6 +154,21 @@ export class Director<TKnownScenes extends string = any> {
                 this.currentScene = this.rootScene;
             }
         }
+    }
+
+    private _isTransitioning = false;
+
+    /**
+     * Gets whether the director currently transitioning between scenes
+     *
+     * Useful if you need to block behavior during transition
+     */
+    public get isTransitioning() {
+        return this._isTransitioning;
+    }
+
+    get isInitialized() {
+        return this._initialized;
     }
 
     /**
@@ -201,10 +199,6 @@ export class Director<TKnownScenes extends string = any> {
                 await this.swapScene('root');
             }
         }
-    }
-
-    get isInitialized() {
-        return this._initialized;
     }
 
     /**
@@ -255,26 +249,6 @@ export class Director<TKnownScenes extends string = any> {
         }
 
         this.currentSceneName = this.startScene;
-    }
-
-    private _getLoader(sceneName: string) {
-        return this._sceneToLoader.get(sceneName);
-    }
-
-    private _getInTransition(sceneName: string): Transition | undefined {
-        const sceneOrRoute = this.scenes[sceneName as TKnownScenes];
-        if (sceneOrRoute instanceof Scene || isSceneConstructor(sceneOrRoute)) {
-            return undefined;
-        }
-        return sceneOrRoute?.transitions?.in;
-    }
-
-    private _getOutTransition(sceneName: string): Transition | undefined {
-        const sceneOrRoute = this.scenes[sceneName as TKnownScenes];
-        if (sceneOrRoute instanceof Scene || isSceneConstructor(sceneOrRoute)) {
-            return undefined;
-        }
-        return sceneOrRoute?.transitions?.out;
     }
 
     getDeferredScene() {
@@ -372,8 +346,11 @@ export class Director<TKnownScenes extends string = any> {
     }
 
     remove(scene: Scene): void;
+
     remove(sceneCtor: SceneConstructor): void;
+
     remove(name: WithRoot<TKnownScenes>): void;
+
     remove(nameOrScene: TKnownScenes | Scene | SceneConstructor | string) {
         if (nameOrScene instanceof Scene || isSceneConstructor(nameOrScene)) {
             const sceneOrCtor = nameOrScene;
@@ -618,17 +595,6 @@ export class Director<TKnownScenes extends string = any> {
         }
     }
 
-    private _emitEvent(eventName: keyof DirectorEvents, sourceScene: string, destinationScene: string) {
-        const source = this.getSceneDefinition(sourceScene)!;
-        const dest = this.getSceneDefinition(destinationScene)!;
-        this.events.emit(eventName, {
-            sourceScene: source,
-            sourceName: sourceScene,
-            destinationScene: dest,
-            destinationName: destinationScene
-        } as DirectorNavigationEvent);
-    }
-
     /**
      * Tears down any initialized scene's {@apilink InputHost}, removing native pointer listeners
      * the scene attached to the canvas/window and disabling input. Called by {@apilink Engine.dispose}.
@@ -638,5 +604,36 @@ export class Director<TKnownScenes extends string = any> {
             scene.input?.pointers.detach();
             scene.input?.toggleEnabled(false);
         }
+    }
+
+    private _getLoader(sceneName: string) {
+        return this._sceneToLoader.get(sceneName);
+    }
+
+    private _getInTransition(sceneName: string): Transition | undefined {
+        const sceneOrRoute = this.scenes[sceneName as TKnownScenes];
+        if (sceneOrRoute instanceof Scene || isSceneConstructor(sceneOrRoute)) {
+            return undefined;
+        }
+        return sceneOrRoute?.transitions?.in;
+    }
+
+    private _getOutTransition(sceneName: string): Transition | undefined {
+        const sceneOrRoute = this.scenes[sceneName as TKnownScenes];
+        if (sceneOrRoute instanceof Scene || isSceneConstructor(sceneOrRoute)) {
+            return undefined;
+        }
+        return sceneOrRoute?.transitions?.out;
+    }
+
+    private _emitEvent(eventName: keyof DirectorEvents, sourceScene: string, destinationScene: string) {
+        const source = this.getSceneDefinition(sourceScene)!;
+        const dest = this.getSceneDefinition(destinationScene)!;
+        this.events.emit(eventName, {
+            sourceScene: source,
+            sourceName: sourceScene,
+            destinationScene: dest,
+            destinationName: destinationScene
+        } as DirectorNavigationEvent);
     }
 }

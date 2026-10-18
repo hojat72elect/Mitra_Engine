@@ -1,25 +1,25 @@
-import { Future } from './future';
+import {Future} from './future';
 
 class AsyncWaitQueue<T> {
-  // Code from StephenCleary https://gist.github.com/StephenCleary/ba50b2da419c03b9cba1d20cb4654d5e
-  private _queue: Future<T>[] = [];
+    // Code from StephenCleary https://gist.github.com/StephenCleary/ba50b2da419c03b9cba1d20cb4654d5e
+    private _queue: Future<T>[] = [];
 
-  public get length(): number {
-    return this._queue.length;
-  }
-
-  public enqueue(): Promise<T> {
-    const future = new Future<T>();
-    this._queue.push(future);
-    return future.promise;
-  }
-
-  public dequeue(value: T): void {
-    const future = this._queue.shift();
-    if (future) {
-      future.resolve(value);
+    public get length(): number {
+        return this._queue.length;
     }
-  }
+
+    public enqueue(): Promise<T> {
+        const future = new Future<T>();
+        this._queue.push(future);
+        return future.promise;
+    }
+
+    public dequeue(value: T): void {
+        const future = this._queue.shift();
+        if (future) {
+            future.resolve(value);
+        }
+    }
 }
 
 /**
@@ -29,34 +29,36 @@ class AsyncWaitQueue<T> {
  * around browser limitations like max Image.decode() calls in chromium being 256.
  */
 export class Semaphore {
-  private _waitQueue = new AsyncWaitQueue();
-  constructor(private _count: number) {}
+    private _waitQueue = new AsyncWaitQueue();
 
-  public get count() {
-    return this._count;
-  }
-
-  public get waiting() {
-    return this._waitQueue.length;
-  }
-
-  // eslint-disable-next-line require-await
-  public async enter() {
-    if (this._count !== 0) {
-      this._count--;
-      return Promise.resolve();
+    constructor(private _count: number) {
     }
-    return this._waitQueue.enqueue();
-  }
 
-  public exit(count: number = 1) {
-    if (count === 0) {
-      return;
+    public get count() {
+        return this._count;
     }
-    while (count !== 0 && this._waitQueue.length !== 0) {
-      this._waitQueue.dequeue(null);
-      count--;
+
+    public get waiting() {
+        return this._waitQueue.length;
     }
-    this._count += count;
-  }
+
+    // eslint-disable-next-line require-await
+    public async enter() {
+        if (this._count !== 0) {
+            this._count--;
+            return Promise.resolve();
+        }
+        return this._waitQueue.enqueue();
+    }
+
+    public exit(count: number = 1) {
+        if (count === 0) {
+            return;
+        }
+        while (count !== 0 && this._waitQueue.length !== 0) {
+            this._waitQueue.dequeue(null);
+            count--;
+        }
+        this._count += count;
+    }
 }

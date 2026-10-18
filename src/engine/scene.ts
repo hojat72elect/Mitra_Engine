@@ -120,24 +120,19 @@ export function isSceneConstructor(x: any): x is SceneConstructor {
  * `onScenePreDeactivate`/`onScenePostDeactivate`.
  */
 export class Scene<TActivationData = unknown> implements CanInitialize, CanActivate<TActivationData>, CanDeactivate, CanUpdate, CanDraw {
-    private _logger: Logger = Logger.getInstance();
     public events = new EventEmitter<SceneEvents>();
-
     /**
      * Gets or sets the current camera for the scene
      */
     public camera: Camera = new Camera();
-
     /**
      * Scene specific background color
      */
     public backgroundColor?: Color;
-
     /**
      * The ECS world for the scene
      */
     public world: World = new World(this);
-
     /**
      * The Mitra physics world for the scene. Used to interact
      * with colliders included in the scene.
@@ -145,6 +140,33 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
      * Can be used to perform scene ray casts, track colliders, broadphase, and narrowphase.
      */
     public physics = new PhysicsWorld(getDefaultPhysicsConfig());
+    /**
+     * Access to the Mitra engine
+     */
+    public engine!: Engine;
+    /**
+     * Access scene specific input, handlers on this only fire when this scene is active.
+     */
+    public input!: InputHost;
+    private _logger: Logger = Logger.getInstance();
+    private _lastLightingEnabled: boolean = false;
+    private _cancelQueue: Timer[] = [];
+
+    constructor() {
+        // Initialize systems
+
+        // Update
+        this.world.add(ActionsSystem);
+        this.world.add(new MotionSystem(this.world, this.physics));
+        this.world.add(new CollisionSystem(this.world, this.physics));
+        this.world.add(PointerSystem);
+        this.world.add(IsometricEntitySystem);
+        // Draw
+        this.world.add(OffscreenSystem);
+        this.world.add(GraphicsSystem);
+        this.world.add(DebugSystem);
+        this.world.add(new PauseSystem(this));
+    }
 
     /**
      * The actors in the current scene
@@ -180,62 +202,51 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
         }) as TileMap[];
     }
 
-    /**
-     * Access to the Mitra engine
-     */
-    public engine!: Engine;
-
-    /**
-     * Access scene specific input, handlers on this only fire when this scene is active.
-     */
-    public input!: InputHost;
-
     private _isInitialized: boolean = false;
-    private _lastLightingEnabled: boolean = false;
+
+    /**
+     * Gets whether or not the {@apilink Scene} has been initialized
+     */
+    public get isInitialized(): boolean {
+        return this._isInitialized;
+    }
+
     private _timers: Timer[] = [];
+
     public get timers(): readonly Timer[] {
         return this._timers;
     }
 
-    private _cancelQueue: Timer[] = [];
-
-    constructor() {
-        // Initialize systems
-
-        // Update
-        this.world.add(ActionsSystem);
-        this.world.add(new MotionSystem(this.world, this.physics));
-        this.world.add(new CollisionSystem(this.world, this.physics));
-        this.world.add(PointerSystem);
-        this.world.add(IsometricEntitySystem);
-        // Draw
-        this.world.add(OffscreenSystem);
-        this.world.add(GraphicsSystem);
-        this.world.add(DebugSystem);
-        this.world.add(new PauseSystem(this));
-    }
-
     public emit<TEventName extends EventKey<SceneEvents>>(eventName: TEventName, event: SceneEvents[TEventName]): void;
+
     public emit(eventName: string, event?: any): void;
+
     public emit<TEventName extends EventKey<SceneEvents> | string>(eventName: TEventName, event?: any): void {
         this.events.emit(eventName, event);
     }
 
     public on<TEventName extends EventKey<SceneEvents>>(eventName: TEventName, handler: Handler<SceneEvents[TEventName]>): Subscription;
+
     public on(eventName: string, handler: Handler<unknown>): Subscription;
+
     public on<TEventName extends EventKey<SceneEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.on(eventName, handler);
     }
 
     public once<TEventName extends EventKey<SceneEvents>>(eventName: TEventName, handler: Handler<SceneEvents[TEventName]>): Subscription;
+
     public once(eventName: string, handler: Handler<unknown>): Subscription;
+
     public once<TEventName extends EventKey<SceneEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
         return this.events.once(eventName, handler);
     }
 
     public off<TEventName extends EventKey<SceneEvents>>(eventName: TEventName, handler: Handler<SceneEvents[TEventName]>): void;
+
     public off(eventName: string, handler: Handler<unknown>): void;
+
     public off(eventName: string): void;
+
     public off<TEventName extends EventKey<SceneEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
         this.events.off(eventName, handler as any);
     }
@@ -332,22 +343,6 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
      */
     public onPostDraw(ctx: MitraGraphicsContext, elapsed: number): void {
         // will be overridden
-    }
-
-    /**
-     * Initializes actors in the scene
-     */
-    private _initializeChildren() {
-        for (const child of this.entities) {
-            child._initialize(this.engine);
-        }
-    }
-
-    /**
-     * Gets whether or not the {@apilink Scene} has been initialized
-     */
-    public get isInitialized(): boolean {
-        return this._isInitialized;
     }
 
     /**
@@ -501,29 +496,6 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
         this.onPostDraw(ctx, elapsed);
     }
 
-    private _checkEnableDisableSystems(): void {
-        if (this.engine.lighting.enabled !== this._lastLightingEnabled) {
-            this._lastLightingEnabled = this.engine.lighting.enabled;
-            if (this._lastLightingEnabled) {
-                if (!this.world.systemManager.get(FlickerSystem)) {
-                    this.world.add(new FlickerSystem());
-                }
-                if (!this.world.systemManager.get(LightingSystem)) {
-                    this.world.add(new LightingSystem());
-                }
-            } else {
-                const flicker = this.world.systemManager.get(FlickerSystem);
-                if (flicker) {
-                    this.world.remove(flicker);
-                }
-                const lighting = this.world.systemManager.get(LightingSystem);
-                if (lighting) {
-                    this.world.remove(lighting);
-                }
-            }
-        }
-    }
-
     /**
      * Updates all the actors and timers in the scene. Called by the {@apilink Engine}.
      * @param engine  Reference to the current Engine
@@ -585,11 +557,6 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
         this._postdraw(ctx, elapsed);
     }
 
-    /**
-     * Draws all the actors' debug information in the Scene. Called by the {@apilink Engine}.
-     * @param ctx  The current rendering context
-     */
-
     /* istanbul ignore next */
     public debugDraw(ctx: MitraGraphicsContext) {
         this.emit('predebugdraw', new PreDebugDrawEvent(ctx, this));
@@ -603,6 +570,11 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
     public contains(actor: Actor): boolean {
         return this.actors.indexOf(actor) > -1;
     }
+
+    /**
+     * Draws all the actors' debug information in the Scene. Called by the {@apilink Engine}.
+     * @param ctx  The current rendering context
+     */
 
     /**
      * Adds a {@apilink Timer} to the current {@apilink Scene}.
@@ -638,6 +610,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
      * @param screenElement  The ScreenElement to add to the current scene
      */
     public add(screenElement: ScreenElement): void;
+
     public add(entity: any): void {
         this.emit('entityadded', {target: entity} as any);
         if (entity instanceof Timer) {
@@ -753,6 +726,7 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
      * @param screenElement  The ScreenElement to remove from the current scene
      */
     public remove(screenElement: ScreenElement): void;
+
     public remove(entity: any): void {
         this.emit('entityremoved', {target: entity} as any);
         if (entity instanceof Entity) {
@@ -827,6 +801,46 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
         return false;
     }
 
+    public pause() {
+        this.events.emit('pause');
+    }
+
+    public resume() {
+        this.events.emit('resume');
+    }
+
+    /**
+     * Initializes actors in the scene
+     */
+    private _initializeChildren() {
+        for (const child of this.entities) {
+            child._initialize(this.engine);
+        }
+    }
+
+    private _checkEnableDisableSystems(): void {
+        if (this.engine.lighting.enabled !== this._lastLightingEnabled) {
+            this._lastLightingEnabled = this.engine.lighting.enabled;
+            if (this._lastLightingEnabled) {
+                if (!this.world.systemManager.get(FlickerSystem)) {
+                    this.world.add(new FlickerSystem());
+                }
+                if (!this.world.systemManager.get(LightingSystem)) {
+                    this.world.add(new LightingSystem());
+                }
+            } else {
+                const flicker = this.world.systemManager.get(FlickerSystem);
+                if (flicker) {
+                    this.world.remove(flicker);
+                }
+                const lighting = this.world.systemManager.get(LightingSystem);
+                if (lighting) {
+                    this.world.remove(lighting);
+                }
+            }
+        }
+    }
+
     private _collectActorStats(engine: Engine) {
         const actors = this.actors;
         for (let i = 0; i < actors.length; i++) {
@@ -845,13 +859,5 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
                 }
             }
         }
-    }
-
-    public pause() {
-        this.events.emit('pause');
-    }
-
-    public resume() {
-        this.events.emit('resume');
     }
 }

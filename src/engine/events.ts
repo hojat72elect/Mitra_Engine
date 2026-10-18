@@ -187,6 +187,8 @@ export class GameEvent<T, U = T> {
      */
     public other: U | null = null;
 
+    private _bubbles: boolean = true;
+
     /**
      * If set to false, prevents event from propagating to other actors. If true it will be propagated
      * to all actors that apply.
@@ -198,8 +200,6 @@ export class GameEvent<T, U = T> {
     public set bubbles(value: boolean) {
         this._bubbles = value;
     }
-
-    private _bubbles: boolean = true;
 
     /**
      * Prevents event from bubbling

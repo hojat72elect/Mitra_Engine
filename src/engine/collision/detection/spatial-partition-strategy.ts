@@ -8,6 +8,6 @@
  * simulated physical interactions.
  */
 export enum SpatialPartitionStrategy {
-  DynamicTree = 'dynamic-tree',
-  SparseHashGrid = 'sparse-hash-grid'
+    DynamicTree = 'dynamic-tree',
+    SparseHashGrid = 'sparse-hash-grid'
 }

@@ -36,16 +36,15 @@ export enum SystemType {
  */
 export abstract class System {
     /**
-     * Determine whether the system is called in the {@apilink SystemType.Update} or the {@apilink SystemType.Draw} phase. Update is first, then Draw.
-     */
-    abstract readonly systemType: SystemType;
-
-    /**
      * System can execute in priority order, by default all systems are priority 0. Lower values indicated higher priority.
      * For a system to execute before all other a lower priority value (-1 for example) must be set.
      * For a system to execute after all other a higher priority value (10 for example) must be set.
      */
     public static priority: number = SystemPriority.Average;
+    /**
+     * Determine whether the system is called in the {@apilink SystemType.Update} or the {@apilink SystemType.Draw} phase. Update is first, then Draw.
+     */
+    abstract readonly systemType: SystemType;
 
     /**
      * Optionally specify an initialize handler

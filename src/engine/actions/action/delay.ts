@@ -1,36 +1,37 @@
-import type { Action } from '../action';
-import { nextActionId } from '../action';
+import type {Action} from '../action';
+import {nextActionId} from '../action';
 
 export class Delay implements Action {
-  id = nextActionId();
-  private _elapsedTime: number = 0;
-  private _delay: number;
-  private _started: boolean = false;
-  private _stopped = false;
-  constructor(duration: number) {
-    this._delay = duration;
-  }
+    id = nextActionId();
+    private _elapsedTime: number = 0;
+    private _delay: number;
+    private _started: boolean = false;
+    private _stopped = false;
 
-  public update(elapsed: number): void {
-    if (!this._started) {
-      this._started = true;
+    constructor(duration: number) {
+        this._delay = duration;
     }
 
-    this._elapsedTime += elapsed;
-  }
+    public update(elapsed: number): void {
+        if (!this._started) {
+            this._started = true;
+        }
 
-  isComplete(): boolean {
-    return this._stopped || this._elapsedTime >= this._delay;
-  }
+        this._elapsedTime += elapsed;
+    }
 
-  public stop(): void {
-    this._stopped = true;
-    this._started = false;
-  }
+    isComplete(): boolean {
+        return this._stopped || this._elapsedTime >= this._delay;
+    }
 
-  reset(): void {
-    this._elapsedTime = 0;
-    this._started = false;
-    this._stopped = false;
-  }
+    public stop(): void {
+        this._stopped = true;
+        this._started = false;
+    }
+
+    reset(): void {
+        this._elapsedTime = 0;
+        this._started = false;
+        this._stopped = false;
+    }
 }

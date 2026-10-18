@@ -435,443 +435,7 @@ export interface EngineOptions<TKnownScenes extends string = any> {
  */
 export class Engine<TKnownScenes extends string = any> implements CanInitialize, CanUpdate, CanDraw {
     static Context: Context<Engine | null> = createContext<Engine | null>();
-
-    static useEngine(): Engine {
-        const value = useContext(Engine.Context);
-
-        if (!value) {
-            throw new Error('Cannot inject engine with `useEngine()`, `useEngine()` was called outside of Engine lifecycle scope.');
-        }
-
-        return value;
-    }
-
     static InstanceCount = 0;
-
-    /**
-     * Anything run under scope can use `useEngine()` to inject the current engine
-     * @param cb
-     */
-    scope = <TReturn>(cb: () => TReturn) => Engine.Context.scope(this, cb);
-
-    public global!: GlobalEventHandlers;
-
-    private _plugins: Plugin[] = [];
-    public get plugins(): readonly Plugin[] {
-        return this._plugins;
-    }
-
-    /**
-     * Check whether a plugin with the given name is currently installed.
-     *
-     * @param name The unique plugin name to check
-     * @returns `true` if a plugin with that name is installed
-     */
-    public hasPlugin(name: string): boolean {
-        return this._plugins.some((p) => p.name === name);
-    }
-
-    /**
-     * Add a plugin to the engine after construction.
-     *
-     * If the engine has already passed certain lifecycle stages, the plugin's hooks
-     * for those stages will be called immediately so the plugin can "catch up".
-     *
-     * If a plugin with the same {@apilink Plugin.name} is already installed, a warning
-     * is logged and the plugin is not added.
-     *
-     * @param plugin The plugin to add
-     * @returns `true` if the plugin was added, `false` if it was skipped (duplicate name)
-     */
-    public addPlugin(plugin: Plugin): boolean {
-        if (this._plugins.some((p) => p.name === plugin.name)) {
-            this._logger.warn(`Plugin with name "${plugin.name}" is already installed, skipping duplicate.`);
-            return false;
-        }
-
-        // Insert maintaining priority sort order
-        const insertIndex = this._plugins.findIndex((p) => p.priority > plugin.priority);
-        if (insertIndex === -1) {
-            this._plugins.push(plugin);
-        } else {
-            this._plugins.splice(insertIndex, 0, plugin);
-        }
-
-        // Catch up on lifecycle stages the engine has already passed
-        // Engine config hooks
-        plugin.onEnginePreConfig?.(this, this._originalOptions);
-        plugin.onEnginePostConfig?.(this, this._originalOptions);
-
-        // Graphics hooks - if the graphics context already exists
-        if (this.graphicsContext) {
-            const graphicsOptions = this._originalOptions as unknown as MitraGraphicsContextOptions;
-            plugin.onGraphicsPreConfig?.(this.graphicsContext, graphicsOptions);
-            plugin.onGraphicsPostConfig?.(this.graphicsContext, graphicsOptions);
-            plugin.onGraphicsPreInitialize?.(this.graphicsContext);
-            plugin.onGraphicsPostInitialize?.(this.graphicsContext);
-        }
-
-        // Engine initialization hooks - if the engine is already initialized
-        if (this.isInitialized) {
-            plugin.onEnginePreInitialize?.(this);
-            plugin.onEnginePostInitialize?.(this);
-        }
-
-        return true;
-    }
-
-    /**
-     * Remove a plugin from the engine by name.
-     *
-     * The plugin's {@apilink Plugin.dispose} method will be called if present.
-     *
-     * @param name The unique plugin name to remove
-     * @returns `true` if the plugin was found and removed
-     */
-    public removePlugin(name: string): boolean {
-        const index = this._plugins.findIndex((p) => p.name === name);
-        if (index === -1) {
-            return false;
-        }
-        const [removed] = this._plugins.splice(index, 1);
-        removed?.dispose?.();
-        return true;
-    }
-
-    private _garbageCollector!: GarbageCollector;
-
-    public readonly garbageCollectorConfig!: GarbageCollectionOptions | null;
-
-    /**
-     * Current Mitra version string
-     *
-     * Useful for plugins or other tools that need to know what features are available
-     */
-    public readonly version = EX_VERSION;
-
-    /**
-     * Listen to and emit events on the Engine
-     */
-    public events = new EventEmitter<EngineEvents>();
-
-    /**
-     * Mitra browser events abstraction used for wiring to native browser events safely
-     */
-    public browser: BrowserEvents;
-
-    /**
-     * Screen abstraction
-     */
-    public screen!: Screen;
-
-    /**
-     * Scene director, manages all scenes, scene transitions, and loaders in Mitra
-     */
-    public director!: Director<TKnownScenes>;
-
-    /**
-     * Direct access to the engine's canvas element
-     */
-    public canvas!: HTMLCanvasElement;
-
-    /**
-     * Direct access to the MitraGraphicsContext used for drawing things to the screen
-     */
-    public graphicsContext!: MitraGraphicsContext;
-
-    /**
-     * Direct access to the canvas element ID, if an ID exists
-     */
-    public canvasElementId?: string;
-
-    /**
-     * Direct access to the physics configuration for Mitra
-     */
-    public physics!: DeepRequired<PhysicsConfig>;
-
-    /**
-     * Direct access to the lighting configuration for Mitra
-     */
-    public lighting!: DeepRequired<LightingConfig>;
-
-    /**
-     * Optionally set the maximum fps. If not set, Mitra will go as fast as the device allows.
-     *
-     * You may want to constrain max fps if your game cannot maintain fps consistently, it can look and feel better to have a 30fps game than
-     * one that bounces between 30fps and 60fps
-     */
-    public maxFps: number = Number.POSITIVE_INFINITY;
-
-    /**
-     * Optionally configure a fixed update fps, this can be desirable if you need the physics simulation to be very stable. When set
-     * the update step and physics will use the same elapsed time for each tick even if the graphical framerate drops. In order for the
-     * simulation to be correct, Mitra will run multiple updates in a row (at the configured update elapsed) to catch up, for example
-     * there could be X updates and 1 draw each clock step.
-     *
-     * **NOTE:** This does come at a potential perf cost because each catch-up update will need to be run if the fixed rate is greater than
-     * the current instantaneous framerate, or perf gain if the fixed rate is less than the current framerate.
-     *
-     * By default is unset and updates will use the current instantaneous framerate with 1 update and 1 draw each clock step.
-     *
-     * **WARN:** `fixedUpdateTimestep` takes precedence over `fixedUpdateFps` use whichever is most convenient.
-     */
-    public readonly fixedUpdateFps?: number;
-
-    /**
-     * Optionally configure a fixed update timestep in milliseconds, this can be desirable if you need the physics simulation to be very stable. When
-     * set the update step and physics will use the same elapsed time for each tick even if the graphical framerate drops. In order for the
-     * simulation to be correct, Mitra will run multiple updates in a row (at the configured update elapsed) to catch up, for example
-     * there could be X updates and 1 draw each clock step.
-     *
-     * **NOTE:** This does come at a potential perf cost because each catch-up update will need to be run if the fixed rate is greater than
-     * the current instantaneous framerate, or perf gain if the fixed rate is less than the current framerate.
-     *
-     * By default is unset and updates will use the current instantaneous framerate with 1 update and 1 draw each clock step.
-     *
-     * **WARN:** `fixedUpdateTimestep` takes precedence over `fixedUpdateFps` use whichever is most convenient.
-     */
-    public readonly fixedUpdateTimestep?: number;
-
-    /**
-     * Direct access to the Mitra clock.
-     */
-    public clock!: Clock;
-
-    public readonly pointerScope!: PointerScope;
-    public readonly grabWindowFocus!: boolean;
-
-    /**
-     * The width of the game canvas in pixels (physical width component of the
-     * resolution of the canvas element)
-     */
-    public get canvasWidth(): number {
-        return this.screen.canvasWidth;
-    }
-
-    /**
-     * Returns half width of the game canvas in pixels (half physical width component)
-     */
-    public get halfCanvasWidth(): number {
-        return this.screen.halfCanvasWidth;
-    }
-
-    /**
-     * The height of the game canvas in pixels, (physical height component of
-     * the resolution of the canvas element)
-     */
-    public get canvasHeight(): number {
-        return this.screen.canvasHeight;
-    }
-
-    /**
-     * Returns half height of the game canvas in pixels (half physical height component)
-     */
-    public get halfCanvasHeight(): number {
-        return this.screen.halfCanvasHeight;
-    }
-
-    /**
-     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get drawWidth(): number {
-        return this.screen.drawWidth;
-    }
-
-    /**
-     * Returns half the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get halfDrawWidth(): number {
-        return this.screen.halfDrawWidth;
-    }
-
-    /**
-     * Returns the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get drawHeight(): number {
-        return this.screen.drawHeight;
-    }
-
-    /**
-     * Returns half the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
-     */
-    public get halfDrawHeight(): number {
-        return this.screen.halfDrawHeight;
-    }
-
-    /**
-     * Returns whether Mitra detects the current screen to be HiDPI
-     */
-    public get isHiDpi(): boolean {
-        return this.screen.isHiDpi;
-    }
-
-    /**
-     * Access engine input like pointer, keyboard, or gamepad
-     */
-    public input!: InputHost;
-
-    /**
-     * Map multiple input sources to specific game actions actions
-     */
-    public inputMapper!: InputMapper;
-
-    private _inputEnabled: boolean = true;
-
-    /**
-     * Access Mitra debugging functionality.
-     *
-     * Useful when you want to debug different aspects of built in engine features like
-     *   * Transform
-     *   * Graphics
-     *   * Colliders
-     */
-    public debug!: DebugConfig;
-
-    /**
-     * Access {@apilink stats} that holds frame statistics.
-     */
-    public get stats(): DebugStats {
-        return this.debug.stats;
-    }
-
-    /**
-     * The current {@apilink Scene} being drawn and updated on screen
-     */
-    public get currentScene(): Scene {
-        return this.director.currentScene;
-    }
-
-    /**
-     * The current {@apilink Scene} being drawn and updated on screen
-     */
-    public get currentSceneName(): string {
-        return this.director.currentSceneName;
-    }
-
-    /**
-     * The default {@apilink Scene} of the game, use {@apilink Engine.goToScene} to transition to different scenes.
-     */
-    public get rootScene(): Scene {
-        return this.director.rootScene;
-    }
-
-    /**
-     * Contains all the scenes currently registered with Mitra
-     */
-    public get scenes(): { [key: string]: Scene | SceneConstructor | SceneWithOptions } {
-        return this.director.scenes;
-    }
-
-    /**
-     * Indicates whether the engine is set to fullscreen or not
-     */
-    public get isFullscreen(): boolean {
-        return this.screen.isFullscreen;
-    }
-
-    /**
-     * Indicates the current {@apilink DisplayMode} of the engine.
-     */
-    public get displayMode(): DisplayMode {
-        return this.screen.displayMode;
-    }
-
-    private _suppressPlayButton: boolean = false;
-
-    /**
-     * Returns the calculated pixel ration for use in rendering
-     */
-    public get pixelRatio(): number {
-        return this.screen.pixelRatio;
-    }
-
-    /**
-     * Indicates whether audio should be paused when the game is no longer visible.
-     */
-    public pauseAudioWhenHidden: boolean = true;
-
-    /**
-     * Indicates whether the engine should draw with debug information
-     */
-    private _isDebug: boolean = false;
-    public get isDebug(): boolean {
-        return this._isDebug;
-    }
-
-    /**
-     * Sets the background color for the engine.
-     */
-    public backgroundColor!: Color;
-
-    /**
-     * Sets the Transparency for the engine.
-     */
-    public enableCanvasTransparency: boolean = true;
-
-    /**
-     * Hints the graphics context to truncate fractional world space coordinates
-     */
-    public get snapToPixel(): boolean {
-        return this.graphicsContext.snapToPixel;
-    }
-
-    public set snapToPixel(shouldSnapToPixel: boolean) {
-        this.graphicsContext.snapToPixel = shouldSnapToPixel;
-    }
-
-    /**
-     * The action to take when a fatal exception is thrown
-     */
-    public onFatalException = (e: any) => {
-        Logger.getInstance().fatal(e, e.stack);
-    };
-
-    /**
-     * The mouse wheel scroll prevention mode
-     */
-    public pageScrollPreventionMode!: ScrollPreventionMode;
-
-    private _logger!: Logger;
-
-    private _toaster: Toaster = new Toaster();
-
-    // this determines whether Mitra is compatible with your browser
-    private _compatible: boolean;
-
-    private _timescale: number = 1.0;
-
-    // loading
-    private _loader!: DefaultLoader;
-
-    private _isInitialized: boolean = false;
-
-    private _hasCreatedCanvas: boolean = false;
-
-    public emit<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, event: EngineEvents[TEventName]): void;
-    public emit(eventName: string, event?: any): void;
-    public emit<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, event?: any): void {
-        this.events.emit(eventName, event);
-    }
-
-    public on<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): Subscription;
-    public on(eventName: string, handler: Handler<unknown>): Subscription;
-    public on<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
-        return this.events.on(eventName, handler);
-    }
-
-    public once<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): Subscription;
-    public once(eventName: string, handler: Handler<unknown>): Subscription;
-    public once<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
-        return this.events.once(eventName, handler);
-    }
-
-    public off<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): void;
-    public off(eventName: string, handler: Handler<unknown>): void;
-    public off(eventName: string): void;
-    public off<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
-        this.events.off(eventName, handler as any);
-    }
-
     /**
      * Default {@apilink EngineOptions}
      */
@@ -903,9 +467,155 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         scrollPreventionMode: ScrollPreventionMode.Canvas,
         backgroundColor: Color.fromHex('#2185d0') // Mitra blue
     };
-
-    private _originalOptions: EngineOptions = {};
+    public global!: GlobalEventHandlers;
+    public readonly garbageCollectorConfig!: GarbageCollectionOptions | null;
+    /**
+     * Current Mitra version string
+     *
+     * Useful for plugins or other tools that need to know what features are available
+     */
+    public readonly version = EX_VERSION;
+    /**
+     * Listen to and emit events on the Engine
+     */
+    public events = new EventEmitter<EngineEvents>();
+    /**
+     * Mitra browser events abstraction used for wiring to native browser events safely
+     */
+    public browser: BrowserEvents;
+    /**
+     * Screen abstraction
+     */
+    public screen!: Screen;
+    /**
+     * Scene director, manages all scenes, scene transitions, and loaders in Mitra
+     */
+    public director!: Director<TKnownScenes>;
+    /**
+     * Direct access to the engine's canvas element
+     */
+    public canvas!: HTMLCanvasElement;
+    /**
+     * Direct access to the MitraGraphicsContext used for drawing things to the screen
+     */
+    public graphicsContext!: MitraGraphicsContext;
+    /**
+     * Direct access to the canvas element ID, if an ID exists
+     */
+    public canvasElementId?: string;
+    /**
+     * Direct access to the physics configuration for Mitra
+     */
+    public physics!: DeepRequired<PhysicsConfig>;
+    /**
+     * Direct access to the lighting configuration for Mitra
+     */
+    public lighting!: DeepRequired<LightingConfig>;
+    /**
+     * Optionally set the maximum fps. If not set, Mitra will go as fast as the device allows.
+     *
+     * You may want to constrain max fps if your game cannot maintain fps consistently, it can look and feel better to have a 30fps game than
+     * one that bounces between 30fps and 60fps
+     */
+    public maxFps: number = Number.POSITIVE_INFINITY;
+    /**
+     * Optionally configure a fixed update fps, this can be desirable if you need the physics simulation to be very stable. When set
+     * the update step and physics will use the same elapsed time for each tick even if the graphical framerate drops. In order for the
+     * simulation to be correct, Mitra will run multiple updates in a row (at the configured update elapsed) to catch up, for example
+     * there could be X updates and 1 draw each clock step.
+     *
+     * **NOTE:** This does come at a potential perf cost because each catch-up update will need to be run if the fixed rate is greater than
+     * the current instantaneous framerate, or perf gain if the fixed rate is less than the current framerate.
+     *
+     * By default is unset and updates will use the current instantaneous framerate with 1 update and 1 draw each clock step.
+     *
+     * **WARN:** `fixedUpdateTimestep` takes precedence over `fixedUpdateFps` use whichever is most convenient.
+     */
+    public readonly fixedUpdateFps?: number;
+    /**
+     * Optionally configure a fixed update timestep in milliseconds, this can be desirable if you need the physics simulation to be very stable. When
+     * set the update step and physics will use the same elapsed time for each tick even if the graphical framerate drops. In order for the
+     * simulation to be correct, Mitra will run multiple updates in a row (at the configured update elapsed) to catch up, for example
+     * there could be X updates and 1 draw each clock step.
+     *
+     * **NOTE:** This does come at a potential perf cost because each catch-up update will need to be run if the fixed rate is greater than
+     * the current instantaneous framerate, or perf gain if the fixed rate is less than the current framerate.
+     *
+     * By default is unset and updates will use the current instantaneous framerate with 1 update and 1 draw each clock step.
+     *
+     * **WARN:** `fixedUpdateTimestep` takes precedence over `fixedUpdateFps` use whichever is most convenient.
+     */
+    public readonly fixedUpdateTimestep?: number;
+    /**
+     * Direct access to the Mitra clock.
+     */
+    public clock!: Clock;
+    public readonly pointerScope!: PointerScope;
+    public readonly grabWindowFocus!: boolean;
+    /**
+     * Access engine input like pointer, keyboard, or gamepad
+     */
+    public input!: InputHost;
+    /**
+     * Map multiple input sources to specific game actions actions
+     */
+    public inputMapper!: InputMapper;
+    /**
+     * Access Mitra debugging functionality.
+     *
+     * Useful when you want to debug different aspects of built in engine features like
+     *   * Transform
+     *   * Graphics
+     *   * Colliders
+     */
+    public debug!: DebugConfig;
+    /**
+     * Indicates whether audio should be paused when the game is no longer visible.
+     */
+    public pauseAudioWhenHidden: boolean = true;
+    /**
+     * Sets the background color for the engine.
+     */
+    public backgroundColor!: Color;
+    /**
+     * Sets the Transparency for the engine.
+     */
+    public enableCanvasTransparency: boolean = true;
+    /**
+     * The mouse wheel scroll prevention mode
+     */
+    public pageScrollPreventionMode!: ScrollPreventionMode;
     public readonly _originalDisplayMode!: DisplayMode;
+    /**
+     * Returns the current frames elapsed milliseconds
+     */
+    public currentFrameElapsedMs = 0;
+    /**
+     * Returns the current frame lag when in fixed update mode
+     */
+    public currentFrameLagMs = 0;
+    private _garbageCollector!: GarbageCollector;
+    private _inputEnabled: boolean = true;
+    private _suppressPlayButton: boolean = false;
+    private _logger!: Logger;
+    private _toaster: Toaster = new Toaster();
+    // this determines whether Mitra is compatible with your browser
+    private _compatible: boolean;
+    // loading
+    private _loader!: DefaultLoader;
+    private _hasCreatedCanvas: boolean = false;
+    private _originalOptions: EngineOptions = {};
+    private _performanceThresholdTriggered = false;
+    private _fpsSamples: number[] = [];
+    private _disposed = false;
+    private _isLoading = false;
+    private _hideLoader = false;
+    private _isReadyFuture = new Future<void>();
+    private _lagMs = 0;
+    private _screenShotRequests: {
+        preserveHiDPIResolution: boolean;
+        resolve: (image: HTMLImageElement) => void
+    }[] = [];
 
     /**
      * Creates a new game using the given {@apilink EngineOptions}. By default, if no options are provided,
@@ -1261,123 +971,327 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         Engine.InstanceCount++;
     }
 
-    private _handleWebGLContextLost = (e: Event) => {
-        e.preventDefault();
-        this.clock.stop();
-        this._logger.fatalOnce('WebGL Graphics Lost', e);
+    private _plugins: Plugin[] = [];
 
-        // Notify plugins that the graphics context was lost
-        for (const plugin of this._plugins) {
-            plugin.onGraphicsContextLost?.(this.graphicsContext);
+    public get plugins(): readonly Plugin[] {
+        return this._plugins;
+    }
+
+    /**
+     * The width of the game canvas in pixels (physical width component of the
+     * resolution of the canvas element)
+     */
+    public get canvasWidth(): number {
+        return this.screen.canvasWidth;
+    }
+
+    /**
+     * Returns half width of the game canvas in pixels (half physical width component)
+     */
+    public get halfCanvasWidth(): number {
+        return this.screen.halfCanvasWidth;
+    }
+
+    /**
+     * The height of the game canvas in pixels, (physical height component of
+     * the resolution of the canvas element)
+     */
+    public get canvasHeight(): number {
+        return this.screen.canvasHeight;
+    }
+
+    /**
+     * Returns half height of the game canvas in pixels (half physical height component)
+     */
+    public get halfCanvasHeight(): number {
+        return this.screen.halfCanvasHeight;
+    }
+
+    /**
+     * Returns the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get drawWidth(): number {
+        return this.screen.drawWidth;
+    }
+
+    /**
+     * Returns half the width of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get halfDrawWidth(): number {
+        return this.screen.halfDrawWidth;
+    }
+
+    /**
+     * Returns the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get drawHeight(): number {
+        return this.screen.drawHeight;
+    }
+
+    /**
+     * Returns half the height of the engine's visible drawing surface in pixels including zoom and device pixel ratio.
+     */
+    public get halfDrawHeight(): number {
+        return this.screen.halfDrawHeight;
+    }
+
+    /**
+     * Returns whether Mitra detects the current screen to be HiDPI
+     */
+    public get isHiDpi(): boolean {
+        return this.screen.isHiDpi;
+    }
+
+    /**
+     * Access {@apilink stats} that holds frame statistics.
+     */
+    public get stats(): DebugStats {
+        return this.debug.stats;
+    }
+
+    /**
+     * The current {@apilink Scene} being drawn and updated on screen
+     */
+    public get currentScene(): Scene {
+        return this.director.currentScene;
+    }
+
+    /**
+     * The current {@apilink Scene} being drawn and updated on screen
+     */
+    public get currentSceneName(): string {
+        return this.director.currentSceneName;
+    }
+
+    /**
+     * The default {@apilink Scene} of the game, use {@apilink Engine.goToScene} to transition to different scenes.
+     */
+    public get rootScene(): Scene {
+        return this.director.rootScene;
+    }
+
+    /**
+     * Contains all the scenes currently registered with Mitra
+     */
+    public get scenes(): { [key: string]: Scene | SceneConstructor | SceneWithOptions } {
+        return this.director.scenes;
+    }
+
+    /**
+     * Indicates whether the engine is set to fullscreen or not
+     */
+    public get isFullscreen(): boolean {
+        return this.screen.isFullscreen;
+    }
+
+    /**
+     * Indicates the current {@apilink DisplayMode} of the engine.
+     */
+    public get displayMode(): DisplayMode {
+        return this.screen.displayMode;
+    }
+
+    /**
+     * Returns the calculated pixel ration for use in rendering
+     */
+    public get pixelRatio(): number {
+        return this.screen.pixelRatio;
+    }
+
+    /**
+     * Indicates whether the engine should draw with debug information
+     */
+    private _isDebug: boolean = false;
+
+    public get isDebug(): boolean {
+        return this._isDebug;
+    }
+
+    /**
+     * Hints the graphics context to truncate fractional world space coordinates
+     */
+    public get snapToPixel(): boolean {
+        return this.graphicsContext.snapToPixel;
+    }
+
+    public set snapToPixel(shouldSnapToPixel: boolean) {
+        this.graphicsContext.snapToPixel = shouldSnapToPixel;
+    }
+
+    private _timescale: number = 1.0;
+
+    /**
+     * Gets the current engine timescale factor (default is 1.0 which is 1:1 time)
+     */
+    public get timescale() {
+        return this._timescale;
+    }
+
+    /**
+     * Sets the current engine timescale factor. Useful for creating slow-motion effects or fast-forward effects
+     * when using time-based movement.
+     */
+    public set timescale(value: number) {
+        if (value < 0) {
+            Logger.getInstance().warnOnce('engine.timescale to a value less than 0 are ignored');
+            return;
         }
 
-        const container = document.createElement('div');
-        container.id = 'ex-webgl-graphics-context-lost';
-        container.style.position = 'absolute';
-        container.style.zIndex = '99';
-        container.style.left = '50%';
-        container.style.top = '50%';
-        container.style.display = 'flex';
-        container.style.flexDirection = 'column';
-        container.style.transform = 'translate(-50%, -50%)';
-        container.style.backgroundColor = 'white';
-        container.style.padding = '10px';
-        container.style.borderStyle = 'solid 1px';
+        this._timescale = value;
+    }
 
-        const div = document.createElement('div');
-        div.innerHTML = `
-      <h1>There was an issue rendering, please refresh the page.</h1>
-      <div>
-        <p>WebGL Graphics Context Lost</p>
+    private _isInitialized: boolean = false;
 
-        <button id="ex-webgl-graphics-reload">Refresh Page</button>
+    /**
+     * Gets whether the actor is Initialized
+     */
+    public get isInitialized(): boolean {
+        return this._isInitialized;
+    }
 
-        <p>There are a few reasons this might happen:</p>
-        <ul>
-          <li>Two or more pages are placing a high demand on the GPU</li>
-          <li>Another page or operation has stalled the GPU and the browser has decided to reset the GPU</li>
-          <li>The computer has multiple GPUs and the user has switched between them</li>
-          <li>Graphics driver has crashed or restarted</li>
-          <li>Graphics driver was updated</li>
-        </ul>
-      </div>
-    `;
-        container.appendChild(div);
-        if (this.canvas?.parentElement) {
-            this.canvas.parentElement.appendChild(container);
-            const button = div.querySelector('#ex-webgl-graphics-reload');
-            button?.addEventListener('click', () => location.reload());
+    /**
+     * Returns true when loading is totally complete and the player has clicked start
+     */
+    public get loadingComplete() {
+        return !this._isLoading;
+    }
+
+    public get ready() {
+        return this._isReadyFuture.isCompleted;
+    }
+
+    static useEngine(): Engine {
+        const value = useContext(Engine.Context);
+
+        if (!value) {
+            throw new Error('Cannot inject engine with `useEngine()`, `useEngine()` was called outside of Engine lifecycle scope.');
         }
+
+        return value;
+    }
+
+    /**
+     * Anything run under scope can use `useEngine()` to inject the current engine
+     * @param cb
+     */
+    scope = <TReturn>(cb: () => TReturn) => Engine.Context.scope(this, cb);
+
+    /**
+     * Check whether a plugin with the given name is currently installed.
+     *
+     * @param name The unique plugin name to check
+     * @returns `true` if a plugin with that name is installed
+     */
+    public hasPlugin(name: string): boolean {
+        return this._plugins.some((p) => p.name === name);
+    }
+
+    /**
+     * Add a plugin to the engine after construction.
+     *
+     * If the engine has already passed certain lifecycle stages, the plugin's hooks
+     * for those stages will be called immediately so the plugin can "catch up".
+     *
+     * If a plugin with the same {@apilink Plugin.name} is already installed, a warning
+     * is logged and the plugin is not added.
+     *
+     * @param plugin The plugin to add
+     * @returns `true` if the plugin was added, `false` if it was skipped (duplicate name)
+     */
+    public addPlugin(plugin: Plugin): boolean {
+        if (this._plugins.some((p) => p.name === plugin.name)) {
+            this._logger.warn(`Plugin with name "${plugin.name}" is already installed, skipping duplicate.`);
+            return false;
+        }
+
+        // Insert maintaining priority sort order
+        const insertIndex = this._plugins.findIndex((p) => p.priority > plugin.priority);
+        if (insertIndex === -1) {
+            this._plugins.push(plugin);
+        } else {
+            this._plugins.splice(insertIndex, 0, plugin);
+        }
+
+        // Catch up on lifecycle stages the engine has already passed
+        // Engine config hooks
+        plugin.onEnginePreConfig?.(this, this._originalOptions);
+        plugin.onEnginePostConfig?.(this, this._originalOptions);
+
+        // Graphics hooks - if the graphics context already exists
+        if (this.graphicsContext) {
+            const graphicsOptions = this._originalOptions as unknown as MitraGraphicsContextOptions;
+            plugin.onGraphicsPreConfig?.(this.graphicsContext, graphicsOptions);
+            plugin.onGraphicsPostConfig?.(this.graphicsContext, graphicsOptions);
+            plugin.onGraphicsPreInitialize?.(this.graphicsContext);
+            plugin.onGraphicsPostInitialize?.(this.graphicsContext);
+        }
+
+        // Engine initialization hooks - if the engine is already initialized
+        if (this.isInitialized) {
+            plugin.onEnginePreInitialize?.(this);
+            plugin.onEnginePostInitialize?.(this);
+        }
+
+        return true;
+    }
+
+    /**
+     * Remove a plugin from the engine by name.
+     *
+     * The plugin's {@apilink Plugin.dispose} method will be called if present.
+     *
+     * @param name The unique plugin name to remove
+     * @returns `true` if the plugin was found and removed
+     */
+    public removePlugin(name: string): boolean {
+        const index = this._plugins.findIndex((p) => p.name === name);
+        if (index === -1) {
+            return false;
+        }
+        const [removed] = this._plugins.splice(index, 1);
+        removed?.dispose?.();
+        return true;
+    }
+
+    /**
+     * The action to take when a fatal exception is thrown
+     */
+    public onFatalException = (e: any) => {
+        Logger.getInstance().fatal(e, e.stack);
     };
 
-    private _handleWebGLContextRestored = () => {
-        this._logger.debug('WebGL Graphics Context Restored');
+    public emit<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, event: EngineEvents[TEventName]): void;
 
-        // Notify plugins that the graphics context was restored.
-        // The graphics context's _init() will re-run and call onGraphicsPreInitialize/onGraphicsPostInitialize
-        // so plugins can rebuild their WebGL resources.
-        for (const plugin of this._plugins) {
-            plugin.onGraphicsContextRestored?.(this.graphicsContext);
-        }
+    public emit(eventName: string, event?: any): void;
 
-        // Restart the clock
-        this.browser.resume();
-        this.clock.start();
-    };
+    public emit<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, event?: any): void {
+        this.events.emit(eventName, event);
+    }
 
-    private _performanceThresholdTriggered = false;
-    private _fpsSamples: number[] = [];
+    public on<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): Subscription;
 
-    private _monitorPerformanceThresholdAndTriggerFallback() {
-        const {allow} = this._originalOptions.configurePerformanceCanvas2DFallback!;
-        let {threshold, showPlayerMessage} = this._originalOptions.configurePerformanceCanvas2DFallback!;
-        if (threshold === undefined) {
-            threshold = Engine._DEFAULT_ENGINE_OPTIONS.configurePerformanceCanvas2DFallback!.threshold;
-        }
-        if (showPlayerMessage === undefined) {
-            showPlayerMessage = Engine._DEFAULT_ENGINE_OPTIONS.configurePerformanceCanvas2DFallback!.showPlayerMessage;
-        }
-        if (!Flags.isEnabled('use-canvas-context') && allow && this.ready && !this._performanceThresholdTriggered) {
-            // Calculate Average fps for last X number of frames after start
-            if (this._fpsSamples.length === threshold!.numberOfFrames) {
-                this._fpsSamples.splice(0, 1);
-            }
-            this._fpsSamples.push(this.clock.fpsSampler.fps);
-            let total = 0;
-            for (let i = 0; i < this._fpsSamples.length; i++) {
-                total += this._fpsSamples[i];
-            }
-            const average = total / this._fpsSamples.length;
+    public on(eventName: string, handler: Handler<unknown>): Subscription;
 
-            if (this._fpsSamples.length === threshold!.numberOfFrames) {
-                if (average <= threshold!.fps) {
-                    this._performanceThresholdTriggered = true;
-                    this._logger.warn(
-                        `Switching to browser 2D Canvas fallback due to performance. Some features of Mitra will not work in this mode.\n` +
-                        "this might mean your browser doesn't have webgl enabled or hardware acceleration is unavailable.\n\n" +
-                        'If in Chrome:\n' +
-                        '  * Visit Settings > Advanced > System, and ensure "Use Hardware Acceleration" is checked.\n' +
-                        '  * Visit chrome://flags/#ignore-gpu-blocklist and ensure "Override software rendering list" is "enabled"\n' +
-                        'If in Firefox, visit about:config\n' +
-                        '  * Ensure webgl.disabled = false\n' +
-                        '  * Ensure webgl.force-enabled = true\n' +
-                        '  * Ensure layers.acceleration.force-enabled = true\n\n' +
-                        'Read more about this issue at https://excaliburjs.com/docs/performance'
-                    );
+    public on<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
+        return this.events.on(eventName, handler);
+    }
 
-                    if (showPlayerMessage) {
-                        this._toaster.toast(
-                            'Mitra is encountering performance issues. ' +
-                            "It's possible that your browser doesn't have hardware acceleration enabled. " +
-                            'Visit [LINK] for more information and potential solutions.',
-                            'https://excaliburjs.com/docs/performance'
-                        );
-                    }
-                    this.useCanvas2DFallback();
-                    this.emit('fallbackgraphicscontext', this.graphicsContext);
-                }
-            }
-        }
+    public once<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): Subscription;
+
+    public once(eventName: string, handler: Handler<unknown>): Subscription;
+
+    public once<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler: Handler<any>): Subscription {
+        return this.events.once(eventName, handler);
+    }
+
+    public off<TEventName extends EventKey<EngineEvents>>(eventName: TEventName, handler: Handler<EngineEvents[TEventName]>): void;
+
+    public off(eventName: string, handler: Handler<unknown>): void;
+
+    public off(eventName: string): void;
+
+    public off<TEventName extends EventKey<EngineEvents> | string>(eventName: TEventName, handler?: Handler<any>): void {
+        this.events.off(eventName, handler as any);
     }
 
     /**
@@ -1430,8 +1344,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         this.input.pointers.init();
     }
 
-    private _disposed = false;
-
     /**
      * Attempts to completely clean up Mitra resources, including removing the canvas from the dom.
      *
@@ -1474,26 +1386,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
     }
 
     /**
-     * Gets the current engine timescale factor (default is 1.0 which is 1:1 time)
-     */
-    public get timescale() {
-        return this._timescale;
-    }
-
-    /**
-     * Sets the current engine timescale factor. Useful for creating slow-motion effects or fast-forward effects
-     * when using time-based movement.
-     */
-    public set timescale(value: number) {
-        if (value < 0) {
-            Logger.getInstance().warnOnce('engine.timescale to a value less than 0 are ignored');
-            return;
-        }
-
-        this._timescale = value;
-    }
-
-    /**
      * Adds a {@apilink Timer} to the {@apilink currentScene}.
      * @param timer  The timer to add to the {@apilink currentScene}.
      */
@@ -1525,11 +1417,13 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
      * @param scene  The scene to remove
      */
     public removeScene(scene: Scene | SceneConstructor): void;
+
     /**
      * Removes a scene from the engine by key
      * @param key  The scene key to remove
      */
     public removeScene(key: string): void;
+
     /**
      * @internal
      */
@@ -1544,16 +1438,19 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
      * @param scene     The scene to add to the engine
      */
     public add(sceneKey: string, scene: Scene | SceneConstructor | SceneWithOptions): void;
+
     /**
      * Adds a {@apilink Timer} to the {@apilink currentScene}.
      * @param timer  The timer to add to the {@apilink currentScene}.
      */
     public add(timer: Timer): void;
+
     /**
      * Adds a {@apilink TileMap} to the {@apilink currentScene}, once this is done the TileMap
      * will be drawn and updated.
      */
     public add(tileMap: TileMap): void;
+
     /**
      * Adds an actor to the {@apilink currentScene} of the game. This is synonymous
      * to calling `engine.currentScene.add(actor)`.
@@ -1573,6 +1470,7 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
      * @param screenElement  The ScreenElement to add to the {@apilink currentScene}
      */
     public add(screenElement: ScreenElement): void;
+
     public add(entity: any): void {
         if (arguments.length === 2) {
             this.director.add(<string>arguments[0], <Scene | SceneConstructor | SceneWithOptions>arguments[1]);
@@ -1591,20 +1489,24 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
      * @param scene  The scene to remove
      */
     public remove(scene: Scene | SceneConstructor): void;
+
     /**
      * Removes a scene from the engine by key
      * @param sceneKey  The scene to remove
      */
     public remove(sceneKey: string): void;
+
     /**
      * Removes a {@apilink Timer} from the {@apilink currentScene}.
      * @param timer  The timer to remove to the {@apilink currentScene}.
      */
     public remove(timer: Timer): void;
+
     /**
      * Removes a {@apilink TileMap} from the {@apilink currentScene}, it will no longer be drawn or updated.
      */
     public remove(tileMap: TileMap): void;
+
     /**
      * Removes an actor from the {@apilink currentScene} of the game. This is synonymous
      * to calling `engine.currentScene.removeChild(actor)`.
@@ -1612,11 +1514,13 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
      * @param actor  The actor to remove from the {@apilink currentScene}.
      */
     public remove(actor: Actor): void;
+
     /**
      * Removes a {@apilink ScreenElement} to the scene, it will no longer be drawn or updated
      * @param screenElement  The ScreenElement to remove from the {@apilink currentScene}
      */
     public remove(screenElement: ScreenElement): void;
+
     public remove(entity: any): void {
         if (entity instanceof Entity) {
             this.currentScene.remove(entity);
@@ -1683,6 +1587,348 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         return this.screen.worldToScreenCoordinates(point);
     }
 
+    public toggleInputEnabled(enabled: boolean) {
+        this._inputEnabled = enabled;
+        this.input.toggleEnabled(this._inputEnabled);
+    }
+
+    public onInitialize(engine: Engine) {
+        // Override me
+    }
+
+    /**
+     * @internal
+     */
+    public _preupdate(elapsed: number) {
+        this.emit('preupdate', new PreUpdateEvent(this, elapsed, this));
+        this.onPreUpdate(this, elapsed);
+    }
+
+    /**
+     * Safe to override method
+     * @param engine The reference to the current game engine
+     * @param elapsed  The time elapsed since the last update in milliseconds
+     */
+    public onPreUpdate(engine: Engine, elapsed: number) {
+        // Override me
+    }
+
+    /**
+     * @internal
+     */
+    public _postupdate(elapsed: number) {
+        this.emit('postupdate', new PostUpdateEvent(this, elapsed, this));
+        this.onPostUpdate(this, elapsed);
+    }
+
+    /**
+     * Safe to override method
+     * @param engine The reference to the current game engine
+     * @param elapsed  The time elapsed since the last update in milliseconds
+     */
+    public onPostUpdate(engine: Engine, elapsed: number) {
+        // Override me
+    }
+
+    /**
+     * @internal
+     */
+    public _predraw(ctx: MitraGraphicsContext, elapsed: number) {
+        this.emit('predraw', new PreDrawEvent(ctx, elapsed, this));
+        this.onPreDraw(ctx, elapsed);
+    }
+
+    /**
+     * Safe to override method to hook into pre draw
+     * @param ctx {@link MitraGraphicsContext} for drawing
+     * @param elapsed  Number of milliseconds elapsed since the last draw.
+     */
+    public onPreDraw(ctx: MitraGraphicsContext, elapsed: number) {
+        // Override me
+    }
+
+    /**
+     * @internal
+     */
+    public _postdraw(ctx: MitraGraphicsContext, elapsed: number) {
+        this.emit('postdraw', new PostDrawEvent(ctx, elapsed, this));
+        this.onPostDraw(ctx, elapsed);
+    }
+
+    /**
+     * Safe to override method to hook into pre draw
+     * @param ctx {@link MitraGraphicsContext} for drawing
+     * @param elapsed  Number of milliseconds elapsed since the last draw.
+     */
+    public onPostDraw(ctx: MitraGraphicsContext, elapsed: number) {
+        // Override me
+    }
+
+    /**
+     * Enable or disable Mitra debugging functionality.
+     * @param toggle a value that debug drawing will be changed to
+     */
+    public showDebug(toggle: boolean): void {
+        this._isDebug = toggle;
+    }
+
+    /**
+     * Toggle Mitra debugging functionality.
+     */
+    public toggleDebug(): boolean {
+        this._isDebug = !this._isDebug;
+        return this._isDebug;
+    }
+
+    public isReady(): Promise<void> {
+        return this._isReadyFuture.promise;
+    }
+
+    /**
+     * Starts the internal game loop for Mitra after loading
+     * any provided assets.
+     * @param loader  Optional {@apilink Loader} to use to load resources. The default loader is {@apilink Loader},
+     * override to provide your own custom loader.
+     *
+     * Note: start() only resolves AFTER the user has clicked the play button
+     */
+    public async start(loader?: DefaultLoader): Promise<void>;
+
+    /**
+     * Starts the internal game loop for Mitra after configuring any routes, loaders, or transitions
+     * @param sceneName
+     * @param options {Optional} {@apilink StartOptions} to configure the routes for scenes in Mitra
+     *
+     * Note: start() only resolves AFTER the user has clicked the play button
+     */
+    public async start(sceneName: WithRoot<TKnownScenes>, options?: StartOptions): Promise<void>;
+
+    public async start(sceneNameOrLoader?: WithRoot<TKnownScenes> | DefaultLoader, options?: StartOptions): Promise<void> {
+        await this.scope(async () => {
+            if (!this._compatible) {
+                throw new Error('Mitra is incompatible with your browser');
+            }
+            this._isLoading = true;
+            let loader: DefaultLoader;
+            if (sceneNameOrLoader instanceof DefaultLoader) {
+                loader = sceneNameOrLoader;
+            } else if (typeof sceneNameOrLoader === 'string') {
+                this.director.configureStart(sceneNameOrLoader, options);
+                loader = this.director.mainLoader!;
+            }
+
+            // Start the Mitra clock which drives the mainloop
+            this._logger.debug('Starting game clock...');
+            this.browser.resume();
+            this.clock.start();
+            if (this.garbageCollectorConfig) {
+                this._garbageCollector.start();
+            }
+            this._logger.debug('Game clock started');
+
+            // Run plugin onLoad hooks before loading resources
+            for (const plugin of this._plugins) {
+                await plugin.onLoad?.();
+            }
+
+            await this.load(loader! ?? new Loader());
+
+            // Run plugin onLoadComplete hooks after resources are loaded
+            for (const plugin of this._plugins) {
+                await plugin.onLoadComplete?.();
+            }
+
+            // Initialize before ready
+            await this._overrideInitialize(this);
+
+            this._isReadyFuture.resolve();
+            this.emit('start', new GameStartEvent(this));
+            return this._isReadyFuture.promise;
+        });
+    }
+
+    /**
+     * Stops Mitra's main loop, useful for pausing the game.
+     */
+    public stop() {
+        if (this.clock.isRunning()) {
+            this.emit('stop', new GameStopEvent(this));
+            this.browser.pause();
+            this.clock.stop();
+            this._garbageCollector.stop();
+            this._logger.debug('Game stopped');
+        }
+    }
+
+    /**
+     * Returns the Engine's running status, Useful for checking whether engine is running or paused.
+     */
+    public isRunning() {
+        return this.clock.isRunning();
+    }
+
+    /**
+     * Takes a screen shot of the current viewport and returns it as an
+     * HTML Image Element.
+     * @param preserveHiDPIResolution in the case of HiDPI return the full scaled backing image, by default false
+     */
+    public screenshot(preserveHiDPIResolution = false): Promise<HTMLImageElement> {
+        const screenShotPromise = new Promise<HTMLImageElement>((resolve) => {
+            this._screenShotRequests.push({preserveHiDPIResolution, resolve});
+        });
+        return screenShotPromise;
+    }
+
+    /**
+     * Another option available to you to load resources into the game.
+     * Immediately after calling this the game will pause and the loading screen
+     * will appear.
+     * @param loader  Some {@apilink Loadable} such as a {@apilink Loader} collection, {@apilink Sound}, or {@apilink Texture}.
+     */
+    public async load(loader: DefaultLoader, hideLoader = false): Promise<void> {
+        await this.scope(async () => {
+            try {
+                // early exit if loaded
+                if (loader.isLoaded()) {
+                    return;
+                }
+                this._loader = loader;
+                this._isLoading = true;
+                this._hideLoader = hideLoader;
+
+                if (loader instanceof Loader) {
+                    loader.suppressPlayButton = loader.suppressPlayButton || this._suppressPlayButton;
+                }
+                this._loader.onInitialize(this);
+
+                await loader.load();
+            } catch (e) {
+                this._logger.error('Error loading resources, things may not behave properly', e);
+                await Promise.resolve();
+            } finally {
+                this._isLoading = false;
+                this._hideLoader = false;
+                this._loader = null as any;
+            }
+        });
+    }
+
+    private _handleWebGLContextLost = (e: Event) => {
+        e.preventDefault();
+        this.clock.stop();
+        this._logger.fatalOnce('WebGL Graphics Lost', e);
+
+        // Notify plugins that the graphics context was lost
+        for (const plugin of this._plugins) {
+            plugin.onGraphicsContextLost?.(this.graphicsContext);
+        }
+
+        const container = document.createElement('div');
+        container.id = 'ex-webgl-graphics-context-lost';
+        container.style.position = 'absolute';
+        container.style.zIndex = '99';
+        container.style.left = '50%';
+        container.style.top = '50%';
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.transform = 'translate(-50%, -50%)';
+        container.style.backgroundColor = 'white';
+        container.style.padding = '10px';
+        container.style.borderStyle = 'solid 1px';
+
+        const div = document.createElement('div');
+        div.innerHTML = `
+      <h1>There was an issue rendering, please refresh the page.</h1>
+      <div>
+        <p>WebGL Graphics Context Lost</p>
+
+        <button id="ex-webgl-graphics-reload">Refresh Page</button>
+
+        <p>There are a few reasons this might happen:</p>
+        <ul>
+          <li>Two or more pages are placing a high demand on the GPU</li>
+          <li>Another page or operation has stalled the GPU and the browser has decided to reset the GPU</li>
+          <li>The computer has multiple GPUs and the user has switched between them</li>
+          <li>Graphics driver has crashed or restarted</li>
+          <li>Graphics driver was updated</li>
+        </ul>
+      </div>
+    `;
+        container.appendChild(div);
+        if (this.canvas?.parentElement) {
+            this.canvas.parentElement.appendChild(container);
+            const button = div.querySelector('#ex-webgl-graphics-reload');
+            button?.addEventListener('click', () => location.reload());
+        }
+    };
+
+    private _handleWebGLContextRestored = () => {
+        this._logger.debug('WebGL Graphics Context Restored');
+
+        // Notify plugins that the graphics context was restored.
+        // The graphics context's _init() will re-run and call onGraphicsPreInitialize/onGraphicsPostInitialize
+        // so plugins can rebuild their WebGL resources.
+        for (const plugin of this._plugins) {
+            plugin.onGraphicsContextRestored?.(this.graphicsContext);
+        }
+
+        // Restart the clock
+        this.browser.resume();
+        this.clock.start();
+    };
+
+    private _monitorPerformanceThresholdAndTriggerFallback() {
+        const {allow} = this._originalOptions.configurePerformanceCanvas2DFallback!;
+        let {threshold, showPlayerMessage} = this._originalOptions.configurePerformanceCanvas2DFallback!;
+        if (threshold === undefined) {
+            threshold = Engine._DEFAULT_ENGINE_OPTIONS.configurePerformanceCanvas2DFallback!.threshold;
+        }
+        if (showPlayerMessage === undefined) {
+            showPlayerMessage = Engine._DEFAULT_ENGINE_OPTIONS.configurePerformanceCanvas2DFallback!.showPlayerMessage;
+        }
+        if (!Flags.isEnabled('use-canvas-context') && allow && this.ready && !this._performanceThresholdTriggered) {
+            // Calculate Average fps for last X number of frames after start
+            if (this._fpsSamples.length === threshold!.numberOfFrames) {
+                this._fpsSamples.splice(0, 1);
+            }
+            this._fpsSamples.push(this.clock.fpsSampler.fps);
+            let total = 0;
+            for (let i = 0; i < this._fpsSamples.length; i++) {
+                total += this._fpsSamples[i];
+            }
+            const average = total / this._fpsSamples.length;
+
+            if (this._fpsSamples.length === threshold!.numberOfFrames) {
+                if (average <= threshold!.fps) {
+                    this._performanceThresholdTriggered = true;
+                    this._logger.warn(
+                        `Switching to browser 2D Canvas fallback due to performance. Some features of Mitra will not work in this mode.\n` +
+                        "this might mean your browser doesn't have webgl enabled or hardware acceleration is unavailable.\n\n" +
+                        'If in Chrome:\n' +
+                        '  * Visit Settings > Advanced > System, and ensure "Use Hardware Acceleration" is checked.\n' +
+                        '  * Visit chrome://flags/#ignore-gpu-blocklist and ensure "Override software rendering list" is "enabled"\n' +
+                        'If in Firefox, visit about:config\n' +
+                        '  * Ensure webgl.disabled = false\n' +
+                        '  * Ensure webgl.force-enabled = true\n' +
+                        '  * Ensure layers.acceleration.force-enabled = true\n\n' +
+                        'Read more about this issue at https://excaliburjs.com/docs/performance'
+                    );
+
+                    if (showPlayerMessage) {
+                        this._toaster.toast(
+                            'Mitra is encountering performance issues. ' +
+                            "It's possible that your browser doesn't have hardware acceleration enabled. " +
+                            'Visit [LINK] for more information and potential solutions.',
+                            'https://excaliburjs.com/docs/performance'
+                        );
+                    }
+                    this.useCanvas2DFallback();
+                    this.emit('fallbackgraphicscontext', this.graphicsContext);
+                }
+            }
+        }
+    }
+
     /**
      * Initializes the internal canvas, rendering context, display mode, and native event listeners
      */
@@ -1722,22 +1968,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
                 plugin.onEnginePostConfig?.(this, options ?? {});
             }
         }
-    }
-
-    public toggleInputEnabled(enabled: boolean) {
-        this._inputEnabled = enabled;
-        this.input.toggleEnabled(this._inputEnabled);
-    }
-
-    public onInitialize(engine: Engine) {
-        // Override me
-    }
-
-    /**
-     * Gets whether the actor is Initialized
-     */
-    public get isInitialized(): boolean {
-        return this._isInitialized;
     }
 
     private async _overrideInitialize(engine: Engine) {
@@ -1793,40 +2023,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
     }
 
     /**
-     * @internal
-     */
-    public _preupdate(elapsed: number) {
-        this.emit('preupdate', new PreUpdateEvent(this, elapsed, this));
-        this.onPreUpdate(this, elapsed);
-    }
-
-    /**
-     * Safe to override method
-     * @param engine The reference to the current game engine
-     * @param elapsed  The time elapsed since the last update in milliseconds
-     */
-    public onPreUpdate(engine: Engine, elapsed: number) {
-        // Override me
-    }
-
-    /**
-     * @internal
-     */
-    public _postupdate(elapsed: number) {
-        this.emit('postupdate', new PostUpdateEvent(this, elapsed, this));
-        this.onPostUpdate(this, elapsed);
-    }
-
-    /**
-     * Safe to override method
-     * @param engine The reference to the current game engine
-     * @param elapsed  The time elapsed since the last update in milliseconds
-     */
-    public onPostUpdate(engine: Engine, elapsed: number) {
-        // Override me
-    }
-
-    /**
      * Draws the entire game
      * @param elapsed  Number of milliseconds elapsed since the last draw.
      */
@@ -1860,148 +2056,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
 
         this._checkForScreenShots();
     }
-
-    /**
-     * @internal
-     */
-    public _predraw(ctx: MitraGraphicsContext, elapsed: number) {
-        this.emit('predraw', new PreDrawEvent(ctx, elapsed, this));
-        this.onPreDraw(ctx, elapsed);
-    }
-
-    /**
-     * Safe to override method to hook into pre draw
-     * @param ctx {@link MitraGraphicsContext} for drawing
-     * @param elapsed  Number of milliseconds elapsed since the last draw.
-     */
-    public onPreDraw(ctx: MitraGraphicsContext, elapsed: number) {
-        // Override me
-    }
-
-    /**
-     * @internal
-     */
-    public _postdraw(ctx: MitraGraphicsContext, elapsed: number) {
-        this.emit('postdraw', new PostDrawEvent(ctx, elapsed, this));
-        this.onPostDraw(ctx, elapsed);
-    }
-
-    /**
-     * Safe to override method to hook into pre draw
-     * @param ctx {@link MitraGraphicsContext} for drawing
-     * @param elapsed  Number of milliseconds elapsed since the last draw.
-     */
-    public onPostDraw(ctx: MitraGraphicsContext, elapsed: number) {
-        // Override me
-    }
-
-    /**
-     * Enable or disable Mitra debugging functionality.
-     * @param toggle a value that debug drawing will be changed to
-     */
-    public showDebug(toggle: boolean): void {
-        this._isDebug = toggle;
-    }
-
-    /**
-     * Toggle Mitra debugging functionality.
-     */
-    public toggleDebug(): boolean {
-        this._isDebug = !this._isDebug;
-        return this._isDebug;
-    }
-
-    /**
-     * Returns true when loading is totally complete and the player has clicked start
-     */
-    public get loadingComplete() {
-        return !this._isLoading;
-    }
-
-    private _isLoading = false;
-    private _hideLoader = false;
-    private _isReadyFuture = new Future<void>();
-
-    public get ready() {
-        return this._isReadyFuture.isCompleted;
-    }
-
-    public isReady(): Promise<void> {
-        return this._isReadyFuture.promise;
-    }
-
-    /**
-     * Starts the internal game loop for Mitra after loading
-     * any provided assets.
-     * @param loader  Optional {@apilink Loader} to use to load resources. The default loader is {@apilink Loader},
-     * override to provide your own custom loader.
-     *
-     * Note: start() only resolves AFTER the user has clicked the play button
-     */
-    public async start(loader?: DefaultLoader): Promise<void>;
-    /**
-     * Starts the internal game loop for Mitra after configuring any routes, loaders, or transitions
-     * @param sceneName
-     * @param options {Optional} {@apilink StartOptions} to configure the routes for scenes in Mitra
-     *
-     * Note: start() only resolves AFTER the user has clicked the play button
-     */
-    public async start(sceneName: WithRoot<TKnownScenes>, options?: StartOptions): Promise<void>;
-    public async start(sceneNameOrLoader?: WithRoot<TKnownScenes> | DefaultLoader, options?: StartOptions): Promise<void> {
-        await this.scope(async () => {
-            if (!this._compatible) {
-                throw new Error('Mitra is incompatible with your browser');
-            }
-            this._isLoading = true;
-            let loader: DefaultLoader;
-            if (sceneNameOrLoader instanceof DefaultLoader) {
-                loader = sceneNameOrLoader;
-            } else if (typeof sceneNameOrLoader === 'string') {
-                this.director.configureStart(sceneNameOrLoader, options);
-                loader = this.director.mainLoader!;
-            }
-
-            // Start the Mitra clock which drives the mainloop
-            this._logger.debug('Starting game clock...');
-            this.browser.resume();
-            this.clock.start();
-            if (this.garbageCollectorConfig) {
-                this._garbageCollector.start();
-            }
-            this._logger.debug('Game clock started');
-
-            // Run plugin onLoad hooks before loading resources
-            for (const plugin of this._plugins) {
-                await plugin.onLoad?.();
-            }
-
-            await this.load(loader! ?? new Loader());
-
-            // Run plugin onLoadComplete hooks after resources are loaded
-            for (const plugin of this._plugins) {
-                await plugin.onLoadComplete?.();
-            }
-
-            // Initialize before ready
-            await this._overrideInitialize(this);
-
-            this._isReadyFuture.resolve();
-            this.emit('start', new GameStartEvent(this));
-            return this._isReadyFuture.promise;
-        });
-    }
-
-    /**
-     * Returns the current frames elapsed milliseconds
-     */
-    public currentFrameElapsedMs = 0;
-
-    /**
-     * Returns the current frame lag when in fixed update mode
-     */
-    public currentFrameLagMs = 0;
-
-    private _lagMs = 0;
 
     private _mainloop(elapsed: number) {
         this.scope(() => {
@@ -2046,43 +2100,6 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         });
     }
 
-    /**
-     * Stops Mitra's main loop, useful for pausing the game.
-     */
-    public stop() {
-        if (this.clock.isRunning()) {
-            this.emit('stop', new GameStopEvent(this));
-            this.browser.pause();
-            this.clock.stop();
-            this._garbageCollector.stop();
-            this._logger.debug('Game stopped');
-        }
-    }
-
-    /**
-     * Returns the Engine's running status, Useful for checking whether engine is running or paused.
-     */
-    public isRunning() {
-        return this.clock.isRunning();
-    }
-
-    private _screenShotRequests: {
-        preserveHiDPIResolution: boolean;
-        resolve: (image: HTMLImageElement) => void
-    }[] = [];
-
-    /**
-     * Takes a screen shot of the current viewport and returns it as an
-     * HTML Image Element.
-     * @param preserveHiDPIResolution in the case of HiDPI return the full scaled backing image, by default false
-     */
-    public screenshot(preserveHiDPIResolution = false): Promise<HTMLImageElement> {
-        const screenShotPromise = new Promise<HTMLImageElement>((resolve) => {
-            this._screenShotRequests.push({preserveHiDPIResolution, resolve});
-        });
-        return screenShotPromise;
-    }
-
     private _checkForScreenShots() {
         // We must grab the draw buffer before we yield to the browser
         // the draw buffer is cleared after compositing
@@ -2107,39 +2124,5 @@ export class Engine<TKnownScenes extends string = any> implements CanInitialize,
         }
         // Reset state
         this._screenShotRequests.length = 0;
-    }
-
-    /**
-     * Another option available to you to load resources into the game.
-     * Immediately after calling this the game will pause and the loading screen
-     * will appear.
-     * @param loader  Some {@apilink Loadable} such as a {@apilink Loader} collection, {@apilink Sound}, or {@apilink Texture}.
-     */
-    public async load(loader: DefaultLoader, hideLoader = false): Promise<void> {
-        await this.scope(async () => {
-            try {
-                // early exit if loaded
-                if (loader.isLoaded()) {
-                    return;
-                }
-                this._loader = loader;
-                this._isLoading = true;
-                this._hideLoader = hideLoader;
-
-                if (loader instanceof Loader) {
-                    loader.suppressPlayButton = loader.suppressPlayButton || this._suppressPlayButton;
-                }
-                this._loader.onInitialize(this);
-
-                await loader.load();
-            } catch (e) {
-                this._logger.error('Error loading resources, things may not behave properly', e);
-                await Promise.resolve();
-            } finally {
-                this._isLoading = false;
-                this._hideLoader = false;
-                this._loader = null as any;
-            }
-        });
     }
 }

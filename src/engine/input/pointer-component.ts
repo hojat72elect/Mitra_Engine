@@ -1,10 +1,10 @@
-import { Component } from '../entity-component-system/component';
-import type { BoundingBox } from '../collision/bounding-box';
+import {Component} from '../entity-component-system/component';
+import type {BoundingBox} from '../collision/bounding-box';
 
 export interface PointerComponentOptions {
-  useColliderShape?: boolean;
-  useGraphicsBounds?: boolean;
-  localBounds?: BoundingBox;
+    useColliderShape?: boolean;
+    useGraphicsBounds?: boolean;
+    localBounds?: BoundingBox;
 }
 
 /**
@@ -17,29 +17,29 @@ export interface PointerComponentOptions {
  * are intersecting the pointer.
  */
 export class PointerComponent extends Component {
-  // @ts-ignore
-  private static _NAME = 'PointerComponent';
-  /**
-   * Use any existing Collider component geometry for pointer events. This is useful if you want
-   * user pointer events only to trigger on the same collision geometry used in the collider component
-   * for collision resolution. Default is `true`.
-   */
-  public useColliderShape = true;
-  /**
-   * Use any existing Graphics component bounds for pointers. This is useful if you want the axis aligned
-   * bounds around the graphic to trigger pointer events. Default is `true`.
-   */
-  public useGraphicsBounds = true;
+    // @ts-ignore
+    private static _NAME = 'PointerComponent';
+    /**
+     * Use any existing Collider component geometry for pointer events. This is useful if you want
+     * user pointer events only to trigger on the same collision geometry used in the collider component
+     * for collision resolution. Default is `true`.
+     */
+    public useColliderShape = true;
+    /**
+     * Use any existing Graphics component bounds for pointers. This is useful if you want the axis aligned
+     * bounds around the graphic to trigger pointer events. Default is `true`.
+     */
+    public useGraphicsBounds = true;
 
-  /**
-   * Optionally use other bounds for pointer testing
-   */
-  public localBounds?: BoundingBox;
+    /**
+     * Optionally use other bounds for pointer testing
+     */
+    public localBounds?: BoundingBox;
 
-  constructor(options?: PointerComponentOptions) {
-    super();
-    this.useColliderShape = options?.useColliderShape ?? this.useColliderShape;
-    this.useGraphicsBounds = options?.useGraphicsBounds ?? this.useGraphicsBounds;
-    this.localBounds = options?.localBounds;
-  }
+    constructor(options?: PointerComponentOptions) {
+        super();
+        this.useColliderShape = options?.useColliderShape ?? this.useColliderShape;
+        this.useGraphicsBounds = options?.useGraphicsBounds ?? this.useGraphicsBounds;
+        this.localBounds = options?.localBounds;
+    }
 }

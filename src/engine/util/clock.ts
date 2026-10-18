@@ -34,18 +34,16 @@ export interface ClockOptions {
  * method is unique to your clock implementation.
  */
 export abstract class Clock {
+    public fpsSampler: FpsSampler;
     protected tick: (elapsed: number) => any;
-    private _onFatalException: (e: unknown) => any = () => {
-        /* default nothing */
-    };
     private _maxFps: number = Infinity;
     private _lastTime: number = 0;
-    public fpsSampler: FpsSampler;
     private _options: ClockOptions;
     private _elapsed: number = 1;
     private _scheduledCbs: [id: ScheduleId, cb: (elapsed: number) => any, scheduledTime: number, timing: ScheduledCallbackTiming][] = [];
     private _totalElapsed: number = 0;
     private _nextScheduleId: ScheduleId = 0;
+    private _idsToRemove: ScheduleId[] = [];
 
     constructor(options: ClockOptions) {
         this._options = options;
@@ -111,8 +109,6 @@ export abstract class Clock {
         return id;
     }
 
-    private _idsToRemove: ScheduleId[] = [];
-
     /**
      * Clears a scheduled callback using the ID returned from {@apilink schedule}
      * @param id The ID of the scheduled callback to clear
@@ -149,6 +145,21 @@ export abstract class Clock {
             }
         }
     }
+
+    /**
+     * Returns if the clock is currently running
+     */
+    public abstract isRunning(): boolean;
+
+    /**
+     * Start the clock, it will then periodically call the tick(elapsedMilliseconds) since the last tick
+     */
+    public abstract start(): void;
+
+    /**
+     * Stop the clock, tick() is no longer called
+     */
+    public abstract stop(): void;
 
     protected update(overrideUpdateMs?: number): void {
         try {
@@ -196,20 +207,9 @@ export abstract class Clock {
         }
     }
 
-    /**
-     * Returns if the clock is currently running
-     */
-    public abstract isRunning(): boolean;
-
-    /**
-     * Start the clock, it will then periodically call the tick(elapsedMilliseconds) since the last tick
-     */
-    public abstract start(): void;
-
-    /**
-     * Stop the clock, tick() is no longer called
-     */
-    public abstract stop(): void;
+    private _onFatalException: (e: unknown) => any = () => {
+        /* default nothing */
+    };
 }
 
 /**

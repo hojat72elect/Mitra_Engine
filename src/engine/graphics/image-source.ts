@@ -28,55 +28,21 @@ export const ImageSourceAttributeConstants = {
 } as const;
 
 export class ImageSource implements Loadable<HTMLImageElement> {
-    private _logger = Logger.getInstance();
-    private _resource: Resource<Blob>;
     public filtering?: ImageFiltering;
     public wrapping?: ImageWrapConfiguration;
-
-    /**
-     * The original size of the source image in pixels
-     */
-    public get width() {
-        return this.image.naturalWidth;
-    }
-
-    /**
-     * The original height of the source image in pixels
-     */
-    public get height() {
-        return this.image.naturalHeight;
-    }
-
-    private _src?: string;
-
-    /**
-     * Returns true if the Texture is completely loaded and is ready
-     * to be drawn.
-     */
-    public isLoaded(): boolean {
-        if (!this._src) {
-            // this boosts speed of access
-            this._src = this.data.src;
-        }
-        return !!this._src;
-    }
-
     /**
      * Access to the underlying html image element
      */
     public data: HTMLImageElement = new Image();
-
-    public get image(): HTMLImageElement {
-        return this.data;
-    }
-
+    public readonly path: string;
+    private _logger = Logger.getInstance();
+    private _resource: Resource<Blob>;
+    private _src?: string;
     private _readyFuture = new Future<HTMLImageElement>();
     /**
      * Promise the resolves when the image is loaded and ready for use, does not initiate loading
      */
     public ready: Promise<HTMLImageElement> = this._readyFuture.promise;
-
-    public readonly path: string;
 
     /**
      * The path to the image, can also be a data url like 'data:image/'
@@ -84,6 +50,7 @@ export class ImageSource implements Loadable<HTMLImageElement> {
      * @param options
      */
     constructor(pathOrBase64: string, options?: ImageSourceOptions);
+
     /**
      * The path to the image, can also be a data url like 'data:image/'
      * @param pathOrBase64 {string} Path to the image resource relative from the HTML document hosting the game, or absolute
@@ -91,6 +58,7 @@ export class ImageSource implements Loadable<HTMLImageElement> {
      * @param filtering {ImageFiltering} Optionally override the image filtering set by {@apilink EngineOptions.antialiasing}
      */
     constructor(pathOrBase64: string, bustCache: boolean, filtering?: ImageFiltering);
+
     constructor(pathOrBase64: string, bustCacheOrOptions: boolean | ImageSourceOptions | undefined, filtering?: ImageFiltering) {
         this.path = pathOrBase64;
         let bustCache: boolean | undefined = false;
@@ -116,6 +84,36 @@ export class ImageSource implements Loadable<HTMLImageElement> {
             );
         }
         this.ready.catch(() => undefined);
+    }
+
+    /**
+     * The original size of the source image in pixels
+     */
+    public get width() {
+        return this.image.naturalWidth;
+    }
+
+    /**
+     * The original height of the source image in pixels
+     */
+    public get height() {
+        return this.image.naturalHeight;
+    }
+
+    public get image(): HTMLImageElement {
+        return this.data;
+    }
+
+    /**
+     * Should Mitra add a cache busting querystring? By default, false.
+     * Must be set before loading.
+     */
+    public get bustCache() {
+        return this._resource.bustCache;
+    }
+
+    public set bustCache(val: boolean) {
+        this._resource.bustCache = val;
     }
 
     /**
@@ -225,15 +223,15 @@ export class ImageSource implements Loadable<HTMLImageElement> {
     }
 
     /**
-     * Should Mitra add a cache busting querystring? By default, false.
-     * Must be set before loading.
+     * Returns true if the Texture is completely loaded and is ready
+     * to be drawn.
      */
-    public get bustCache() {
-        return this._resource.bustCache;
-    }
-
-    public set bustCache(val: boolean) {
-        this._resource.bustCache = val;
+    public isLoaded(): boolean {
+        if (!this._src) {
+            // this boosts speed of access
+            this._src = this.data.src;
+        }
+        return !!this._src;
     }
 
     /**

@@ -45,8 +45,6 @@ export interface FramebufferOptions {
  * Contents are premultiplied alpha, matching the rest of the Mitra WebGL pipeline.
  */
 export class Framebuffer {
-    protected _gl: WebGL2RenderingContext;
-    protected _graphicsContext: MitraGraphicsContextWebgl;
     public readonly transparency: boolean;
     public readonly filtering: ImageFiltering;
     public readonly wrapping: ImageWrapConfiguration;
@@ -54,10 +52,8 @@ export class Framebuffer {
      * Format compatible with the canvas drawing buffer, needed for {@apilink Framebuffer.blitToScreen}
      */
     public readonly bufferFormat: number;
-
-    private _width: number;
-    private _height: number;
-    private _texelSize: [texelWidth: number, texelHeight: number];
+    protected _gl: WebGL2RenderingContext;
+    protected _graphicsContext: MitraGraphicsContextWebgl;
     private _frameBuffer!: WebGLFramebuffer;
     private _frameTexture!: WebGLTexture;
     private _disposed = false;
@@ -94,13 +90,19 @@ export class Framebuffer {
         this._setupFramebuffer();
     }
 
+    private _width: number;
+
     public get width(): number {
         return this._width;
     }
 
+    private _height: number;
+
     public get height(): number {
         return this._height;
     }
+
+    private _texelSize: [texelWidth: number, texelHeight: number];
 
     /**
      * `[1 / width, 1 / height]`, useful for passing to shaders that sample neighboring texels (blurs etc.)
@@ -133,44 +135,6 @@ export class Framebuffer {
      */
     protected get _textureFramebuffer(): WebGLFramebuffer {
         return this._frameBuffer;
-    }
-
-    private _toGlFiltering(filtering: ImageFiltering): number {
-        const gl = this._gl;
-        return filtering === ImageFiltering.Pixel ? gl.NEAREST : gl.LINEAR;
-    }
-
-    private _toGlWrapping(wrapping: ImageWrapping): number {
-        const gl = this._gl;
-        switch (wrapping) {
-            case ImageWrapping.Repeat:
-                return gl.REPEAT;
-            case ImageWrapping.Mirror:
-                return gl.MIRRORED_REPEAT;
-            default:
-                return gl.CLAMP_TO_EDGE;
-        }
-    }
-
-    private _setupFramebuffer() {
-        const gl = this._gl;
-        this._frameTexture = gl.createTexture()!;
-        gl.bindTexture(gl.TEXTURE_2D, this._frameTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._width, this._height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-
-        const filtering = this._toGlFiltering(this.filtering);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filtering);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this._toGlWrapping(this.wrapping.x));
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this._toGlWrapping(this.wrapping.y));
-
-        this._frameBuffer = gl.createFramebuffer()!;
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this._frameBuffer);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._frameTexture, 0);
-
-        // Reset after initialized
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
     /**
@@ -232,14 +196,6 @@ export class Framebuffer {
     }
 
     /**
-     * Performs any resolve necessary to make {@apilink Framebuffer._textureFramebuffer} current, returns it
-     * @internal
-     */
-    protected _resolve(): WebGLFramebuffer {
-        return this._frameBuffer;
-    }
-
-    /**
      * Binds this framebuffer for drawing and sets the viewport to its dimensions.
      *
      * Meant for internal use by the context's batched flush, pipeline code passes framebuffers
@@ -273,6 +229,52 @@ export class Framebuffer {
             gl.deleteFramebuffer(this._frameBuffer);
             gl.deleteTexture(this._frameTexture);
         }
+    }
+
+    /**
+     * Performs any resolve necessary to make {@apilink Framebuffer._textureFramebuffer} current, returns it
+     * @internal
+     */
+    protected _resolve(): WebGLFramebuffer {
+        return this._frameBuffer;
+    }
+
+    private _toGlFiltering(filtering: ImageFiltering): number {
+        const gl = this._gl;
+        return filtering === ImageFiltering.Pixel ? gl.NEAREST : gl.LINEAR;
+    }
+
+    private _toGlWrapping(wrapping: ImageWrapping): number {
+        const gl = this._gl;
+        switch (wrapping) {
+            case ImageWrapping.Repeat:
+                return gl.REPEAT;
+            case ImageWrapping.Mirror:
+                return gl.MIRRORED_REPEAT;
+            default:
+                return gl.CLAMP_TO_EDGE;
+        }
+    }
+
+    private _setupFramebuffer() {
+        const gl = this._gl;
+        this._frameTexture = gl.createTexture()!;
+        gl.bindTexture(gl.TEXTURE_2D, this._frameTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._width, this._height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+        const filtering = this._toGlFiltering(this.filtering);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filtering);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this._toGlWrapping(this.wrapping.x));
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this._toGlWrapping(this.wrapping.y));
+
+        this._frameBuffer = gl.createFramebuffer()!;
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this._frameBuffer);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._frameTexture, 0);
+
+        // Reset after initialized
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.bindTexture(gl.TEXTURE_2D, null);
     }
 }
 
@@ -340,6 +342,16 @@ export class MultisampleFramebuffer extends Framebuffer {
         gl.blitFramebuffer(0, 0, this.width, this.height, 0, 0, this.width, this.height, gl.COLOR_BUFFER_BIT, gl.LINEAR);
     }
 
+    public override dispose(): void {
+        if (!this._msaaDisposed) {
+            this._msaaDisposed = true;
+            const gl = this._gl;
+            gl.deleteFramebuffer(this._renderFrameBuffer);
+            gl.deleteRenderbuffer(this._renderBuffer);
+            super.dispose();
+        }
+    }
+
     protected override _resolve(): WebGLFramebuffer {
         const gl = this._gl;
         gl.bindFramebuffer(gl.READ_FRAMEBUFFER, this._renderFrameBuffer);
@@ -349,15 +361,5 @@ export class MultisampleFramebuffer extends Framebuffer {
         gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
         gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
         return this._textureFramebuffer;
-    }
-
-    public override dispose(): void {
-        if (!this._msaaDisposed) {
-            this._msaaDisposed = true;
-            const gl = this._gl;
-            gl.deleteFramebuffer(this._renderFrameBuffer);
-            gl.deleteRenderbuffer(this._renderBuffer);
-            super.dispose();
-        }
     }
 }

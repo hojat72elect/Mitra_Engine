@@ -10,31 +10,12 @@ export class Toaster {
 
     private _isInitialized = false;
 
-    private _initialize() {
-        if (!this._isInitialized) {
-            this._container = document.createElement('div');
-            this._container.id = 'ex-toast-container';
-            document.body.appendChild(this._container);
-            this._isInitialized = true;
-
-            this._styleBlock = document.createElement('style');
-            this._styleBlock.textContent = this._toasterCss;
-            document.head.appendChild(this._styleBlock);
-        }
-    }
-
     public dispose() {
         this._container?.parentElement?.removeChild(this._container);
 
         this._styleBlock?.parentElement?.removeChild(this._styleBlock);
 
         this._isInitialized = false;
-    }
-
-    private _createFragment(message: string) {
-        const toastMessage = document.createElement('span');
-        toastMessage.innerText = message;
-        return toastMessage;
     }
 
     /**
@@ -92,5 +73,24 @@ export class Toaster {
         // Insert into container
         const first = this._container.firstChild;
         this._container.insertBefore(toast, first);
+    }
+
+    private _initialize() {
+        if (!this._isInitialized) {
+            this._container = document.createElement('div');
+            this._container.id = 'ex-toast-container';
+            document.body.appendChild(this._container);
+            this._isInitialized = true;
+
+            this._styleBlock = document.createElement('style');
+            this._styleBlock.textContent = this._toasterCss;
+            document.head.appendChild(this._styleBlock);
+        }
+    }
+
+    private _createFragment(message: string) {
+        const toastMessage = document.createElement('span');
+        toastMessage.innerText = message;
+        return toastMessage;
     }
 }

@@ -13,16 +13,20 @@ import {isSystemConstructor, SystemManager} from './system-manager';
  * The World is a self-contained entity component system for a particular context.
  */
 export class World {
-    private _logger = Logger.getInstance();
     public queryManager: QueryManager = new QueryManager(this);
     public entityManager: EntityManager = new EntityManager(this);
     public systemManager: SystemManager = new SystemManager(this);
+    private _logger = Logger.getInstance();
 
     /**
      * The context type is passed to the system updates
      * @param scene
      */
     constructor(public scene: Scene) {
+    }
+
+    get entities() {
+        return this.entityManager.entities;
     }
 
     /**
@@ -52,12 +56,15 @@ export class World {
      * @param entity
      */
     add(entity: Entity): void;
+
     /**
      * Add a system to the ECS world
      * @param system
      */
     add(system: System): void;
+
     add(system: SystemCtor<System>): void;
+
     add(entityOrSystem: Entity | System | SystemCtor<System>): void {
         if (entityOrSystem instanceof Entity) {
             this.entityManager.addEntity(entityOrSystem);
@@ -88,11 +95,13 @@ export class World {
      * @param entity
      */
     remove(entity: Entity, deferred?: boolean): void;
+
     /**
      * Remove a system from the ECS world
      * @param system
      */
     remove(system: System): void;
+
     remove(entityOrSystem: Entity | System, deferred = true): void {
         if (entityOrSystem instanceof Entity) {
             this.entityManager.removeEntity(entityOrSystem, deferred);
@@ -109,10 +118,6 @@ export class World {
             `If this looks like an Mitra type, this can be caused by 2 versions of Mitra being included on the page.\n\n` +
             `Check your bundler settings to make sure this is not the case! Mitra has ESM & UMD bundles be sure one 1 is loaded.`
         );
-    }
-
-    get entities() {
-        return this.entityManager.entities;
     }
 
     clearEntities(): void {

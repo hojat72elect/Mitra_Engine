@@ -37,95 +37,6 @@ export class IsometricTile extends Entity {
     public solid: boolean = false;
 
     public override events = new EventEmitter<EntityEvents & IsometricTilePointerEvents>();
-
-    private _gfx: GraphicsComponent;
-    private _tileBounds = new BoundingBox();
-    private _graphics: Graphic[] = [];
-
-    public getGraphics(): readonly Graphic[] {
-        return this._graphics;
-    }
-
-    /**
-     * Tile graphics
-     */
-    public addGraphic(graphic: Graphic, options?: { offset?: Vector }) {
-        this._graphics.push(graphic);
-        this._gfx.isVisible = this.map.isVisible;
-        this._gfx.opacity = this.map.opacity;
-        if (options?.offset) {
-            this._gfx.offset = options.offset;
-        }
-        // TODO detect when this changes on the map and apply to all tiles
-        this._gfx.localBounds = this._recalculateBounds();
-    }
-
-    private _recalculateBounds(): BoundingBox {
-        let bounds = this._tileBounds.clone();
-        for (const graphic of this._graphics) {
-            const offset = vec(
-                this.map.graphicsOffset.x - this.map.tileWidth / 2,
-                this.map.graphicsOffset.y - (this.map.renderFromTopOfGraphic ? 0 : graphic.height - this.map.tileHeight)
-            );
-            bounds = bounds.combine(graphic.localBounds.translate(offset));
-        }
-        return bounds;
-    }
-
-    public removeGraphic(graphic: Graphic) {
-        const index = this._graphics.indexOf(graphic);
-        if (index > -1) {
-            this._graphics.splice(index, 1);
-        }
-        this._gfx.localBounds = this._recalculateBounds();
-    }
-
-    public clearGraphics() {
-        this._graphics.length = 0;
-        this._gfx.isVisible = false;
-        this._gfx.localBounds = this._recalculateBounds();
-    }
-
-    /**
-     * Tile colliders
-     */
-    private _colliders: Collider[] = [];
-
-    public getColliders(): readonly Collider[] {
-        return this._colliders;
-    }
-
-    /**
-     * Adds a collider to the IsometricTile
-     *
-     * **Note!** the {@apilink Tile.solid} must be set to true for it to act as a "fixed" collider
-     * @param collider
-     */
-    public addCollider(collider: Collider) {
-        this._colliders.push(collider);
-        this.map.flagCollidersDirty();
-    }
-
-    /**
-     * Removes a collider from the IsometricTile
-     * @param collider
-     */
-    public removeCollider(collider: Collider) {
-        const index = this._colliders.indexOf(collider);
-        if (index > -1) {
-            this._colliders.splice(index, 1);
-        }
-        this.map.flagCollidersDirty();
-    }
-
-    /**
-     * Clears all colliders from the IsometricTile
-     */
-    public clearColliders(): void {
-        this._colliders.length = 0;
-        this.map.flagCollidersDirty();
-    }
-
     /**
      * Integer tile x coordinate
      */
@@ -138,28 +49,19 @@ export class IsometricTile extends Entity {
      * Reference to the {@apilink IsometricMap} this tile is part of
      */
     public readonly map: IsometricMap;
-
-    private _transform: TransformComponent;
-    private _isometricEntityComponent: IsometricEntityComponent;
-
-    /**
-     * Returns the top left corner of the {@apilink IsometricTile} in world space
-     */
-    public get pos(): Vector {
-        return this.map.tileToWorld(vec(this.x, this.y));
-    }
-
-    /**
-     * Returns the center of the {@apilink IsometricTile}
-     */
-    public get center(): Vector {
-        return this.pos.add(vec(0, this.map.tileHeight / 2));
-    }
-
     /**
      * Arbitrary data storage per tile, useful for any game specific data
      */
     public data = new Map<string, any>();
+    private _gfx: GraphicsComponent;
+    private _tileBounds = new BoundingBox();
+    private _graphics: Graphic[] = [];
+    /**
+     * Tile colliders
+     */
+    private _colliders: Collider[] = [];
+    private _transform: TransformComponent;
+    private _isometricEntityComponent: IsometricEntityComponent;
 
     /**
      * Construct a new IsometricTile
@@ -208,6 +110,87 @@ export class IsometricTile extends Entity {
         }).translate(offset);
     }
 
+    /**
+     * Returns the top left corner of the {@apilink IsometricTile} in world space
+     */
+    public get pos(): Vector {
+        return this.map.tileToWorld(vec(this.x, this.y));
+    }
+
+    /**
+     * Returns the center of the {@apilink IsometricTile}
+     */
+    public get center(): Vector {
+        return this.pos.add(vec(0, this.map.tileHeight / 2));
+    }
+
+    public getGraphics(): readonly Graphic[] {
+        return this._graphics;
+    }
+
+    /**
+     * Tile graphics
+     */
+    public addGraphic(graphic: Graphic, options?: { offset?: Vector }) {
+        this._graphics.push(graphic);
+        this._gfx.isVisible = this.map.isVisible;
+        this._gfx.opacity = this.map.opacity;
+        if (options?.offset) {
+            this._gfx.offset = options.offset;
+        }
+        // TODO detect when this changes on the map and apply to all tiles
+        this._gfx.localBounds = this._recalculateBounds();
+    }
+
+    public removeGraphic(graphic: Graphic) {
+        const index = this._graphics.indexOf(graphic);
+        if (index > -1) {
+            this._graphics.splice(index, 1);
+        }
+        this._gfx.localBounds = this._recalculateBounds();
+    }
+
+    public clearGraphics() {
+        this._graphics.length = 0;
+        this._gfx.isVisible = false;
+        this._gfx.localBounds = this._recalculateBounds();
+    }
+
+    public getColliders(): readonly Collider[] {
+        return this._colliders;
+    }
+
+    /**
+     * Adds a collider to the IsometricTile
+     *
+     * **Note!** the {@apilink Tile.solid} must be set to true for it to act as a "fixed" collider
+     * @param collider
+     */
+    public addCollider(collider: Collider) {
+        this._colliders.push(collider);
+        this.map.flagCollidersDirty();
+    }
+
+    /**
+     * Removes a collider from the IsometricTile
+     * @param collider
+     */
+    public removeCollider(collider: Collider) {
+        const index = this._colliders.indexOf(collider);
+        if (index > -1) {
+            this._colliders.splice(index, 1);
+        }
+        this.map.flagCollidersDirty();
+    }
+
+    /**
+     * Clears all colliders from the IsometricTile
+     */
+    public clearColliders(): void {
+        this._colliders.length = 0;
+        this.map.flagCollidersDirty();
+    }
+
     draw(gfx: MitraGraphicsContext, _elapsed: number) {
         const halfTileWidth = this.map.tileWidth / 2;
         gfx.save();
@@ -221,6 +204,18 @@ export class IsometricTile extends Entity {
             );
         }
         gfx.restore();
+    }
+
+    private _recalculateBounds(): BoundingBox {
+        let bounds = this._tileBounds.clone();
+        for (const graphic of this._graphics) {
+            const offset = vec(
+                this.map.graphicsOffset.x - this.map.tileWidth / 2,
+                this.map.graphicsOffset.y - (this.map.renderFromTopOfGraphic ? 0 : graphic.height - this.map.tileHeight)
+            );
+            bounds = bounds.combine(graphic.localBounds.translate(offset));
+        }
+        return bounds;
     }
 }
 
@@ -326,6 +321,8 @@ export class IsometricMap extends Entity implements HasNestedPointerEvents {
 
     private _composite!: CompositeCollider;
     private _pointerEventDispatcher: PointerEventsToObjectDispatcher<IsometricTile>;
+    private _collidersDirty = false;
+    private _originalOffsets = new WeakMap<Collider, Vector>();
 
     constructor(options: IsometricMapOptions) {
         super(
@@ -430,22 +427,8 @@ export class IsometricMap extends Entity implements HasNestedPointerEvents {
         this._pointerEventDispatcher.clear();
     }
 
-    private _collidersDirty = false;
-
     public flagCollidersDirty() {
         this._collidersDirty = true;
-    }
-
-    private _originalOffsets = new WeakMap<Collider, Vector>();
-
-    private _getOrSetColliderOriginalOffset(collider: Collider): Vector {
-        if (!this._originalOffsets.has(collider)) {
-            const originalOffset = collider.offset;
-            this._originalOffsets.set(collider, originalOffset);
-            return originalOffset;
-        } else {
-            return this._originalOffsets.get(collider) ?? Vector.Zero;
-        }
     }
 
     public updateColliders() {
@@ -518,17 +501,6 @@ export class IsometricMap extends Entity implements HasNestedPointerEvents {
         return tile;
     }
 
-    private _getMaxZIndex(): number {
-        let maxZ = Number.NEGATIVE_INFINITY;
-        for (const tile of this.tiles) {
-            const currentZ = tile.get(TransformComponent).z;
-            if (currentZ > maxZ) {
-                maxZ = currentZ;
-            }
-        }
-        return maxZ;
-    }
-
     /**
      * Debug draw for IsometricMap, called internally by Mitra when debug mode is toggled on
      * @param gfx
@@ -582,5 +554,26 @@ export class IsometricMap extends Entity implements HasNestedPointerEvents {
             }
         }
         gfx.restore();
+    }
+
+    private _getOrSetColliderOriginalOffset(collider: Collider): Vector {
+        if (!this._originalOffsets.has(collider)) {
+            const originalOffset = collider.offset;
+            this._originalOffsets.set(collider, originalOffset);
+            return originalOffset;
+        } else {
+            return this._originalOffsets.get(collider) ?? Vector.Zero;
+        }
+    }
+
+    private _getMaxZIndex(): number {
+        let maxZ = Number.NEGATIVE_INFINITY;
+        for (const tile of this.tiles) {
+            const currentZ = tile.get(TransformComponent).z;
+            if (currentZ > maxZ) {
+                maxZ = currentZ;
+            }
+        }
+        return maxZ;
     }
 }

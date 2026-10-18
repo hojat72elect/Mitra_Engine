@@ -68,4 +68,5 @@ export * from './debug';
 // util
 
 import * as webgl from './context/webgl-util';
-export { webgl };
+
+export {webgl};

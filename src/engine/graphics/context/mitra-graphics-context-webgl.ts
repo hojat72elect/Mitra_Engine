@@ -152,168 +152,63 @@ export interface MitraGraphicsContextWebGLOptions extends MitraGraphicsContextOp
 }
 
 export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
-    private _logger = Logger.getInstance();
-    private _renderers: Map<string, RendererPlugin> = new Map<string, RendererPlugin>();
-    private _lazyRenderersFactory: Map<string, () => RendererPlugin> = new Map<string, () => RendererPlugin>();
     public imageRenderer: 'ex.image' | 'ex.image-v2' = Flags.isEnabled('use-legacy-image-renderer') ? 'ex.image' : 'ex.image-v2';
-    private _isDrawLifecycle = false;
     public useDrawSorting = true;
-
-    private _drawCallPool = new ArenaPool<DrawCall>(() => new DrawCall(), undefined, 4000);
-
-    private _drawCallIndex = 0;
-    private _drawCalls: DrawCall[] = new Array(4000).fill(null);
-
-    // Main render target
-    private _renderTarget!: Framebuffer;
-
-    // Quad boundary MSAA, only allocated when multiSampleAntialiasing is on
-    private _msaaTarget?: MultisampleFramebuffer;
-
-    // Postprocessing is a tuple with 2 framebuffers, these are flip-flopped during the postprocessing process
-    private _postProcessTargets: Framebuffer[] = [];
-
-    // The framebuffer the frame is currently being drawn into, tracked so pipeline code can restore it
-    private _drawTarget!: Framebuffer;
-
-    private _screenRenderer!: ScreenPassPainter;
-
-    private _postprocessors: PostProcessor[] = [];
-
     /**
      * Meant for internal use only. Access the internal context at your own risk and no guarantees this will exist in the future.
      * @internal
      */
     public __gl: WebGL2RenderingContext;
-
-    private _transform = new TransformStack();
-    private _state = new StateStack();
-    private _ortho!: Matrix;
-
     /**
      * Snaps the drawing x/y coordinate to the nearest whole pixel
      */
     public snapToPixel: boolean = false;
-
     /**
      * Native context smoothing
      */
     public readonly smoothing: boolean = false;
-
     /**
      * Whether the pixel art sampler is enabled for smooth sub pixel anti-aliasing
      */
     public readonly pixelArtSampler: boolean = false;
-
     /**
      * UV padding in pixels to use in internal image rendering to prevent texture bleed
      *
      */
     public uvPadding = 0.01;
-
     public backgroundColor: Color = Color.MitraBlue;
-
     public textureLoader: TextureLoader;
-
-    private _materials: WeakRef<Material>[] = [];
-
     public materialScreenTexture!: WebGLTexture | null;
-
-    private _onGraphicsPreInitialize?: (context: MitraGraphicsContext) => void;
-
-    private _onGraphicsPostInitialize?: (context: MitraGraphicsContext) => void;
-
-    public get z(): number {
-        return this._state.current.z;
-    }
-
-    public set z(value: number) {
-        this._state.current.z = value;
-    }
-
-    public get opacity(): number {
-        return this._state.current.opacity;
-    }
-
-    public set opacity(value: number) {
-        this._state.current.opacity = value;
-    }
-
-    public get tint(): Color | undefined | null {
-        return this._state.current.tint;
-    }
-
-    public set tint(color: Color | undefined | null) {
-        this._state.current.tint = color;
-    }
-
-    public get width() {
-        return this.__gl.canvas.width;
-    }
-
-    public get height() {
-        return this.__gl.canvas.height;
-    }
-
-    public get ortho(): Matrix {
-        return this._ortho;
-    }
-
-    /**
-     * The {@apilink Framebuffer} the current frame is being drawn into.
-     *
-     * Useful as an explicit destination when compositing custom shader passes into the frame,
-     * for example `pass.draw(myFramebuffer, ctx.drawTarget)`.
-     */
-    public get drawTarget(): Framebuffer {
-        return this._drawTarget;
-    }
-
-    private _screenQuadBuffer?: VertexBuffer;
-
-    /**
-     * Shared static clip-space quad (interleaved [x, y, u, v] * 6 vertices) used by every
-     * {@apilink ShaderPass} on this context, meant for internal use only.
-     * @internal
-     */
-    public get __screenQuadBuffer(): VertexBuffer {
-        if (!this._screenQuadBuffer) {
-            this._screenQuadBuffer = new VertexBuffer({
-                gl: this.__gl,
-                type: 'static',
-                // prettier-ignore
-                data: new Float32Array([
-                    -1, -1, 0, 0,
-                    -1, 1, 0, 1,
-                    1, -1, 1, 0,
-
-                    1, -1, 1, 0,
-                    -1, 1, 0, 1,
-                    1, 1, 1, 1
-                ])
-            });
-            this._screenQuadBuffer.upload();
-        }
-        return this._screenQuadBuffer;
-    }
-
-    /**
-     * Checks the underlying webgl implementation if the requested internal resolution is supported
-     * @param dim
-     */
-    public checkIfResolutionSupported(dim: Resolution): boolean {
-        // Slight hack based on this thread https://groups.google.com/g/webgl-dev-list/c/AHONvz3oQTo
-        let supported = true;
-        if (dim.width > 4096 || dim.height > 4096) {
-            supported = false;
-        }
-        return supported;
-    }
-
     public readonly multiSampleAntialiasing: boolean = true;
     public readonly samples?: number;
     public readonly transparency: boolean = true;
+    debug!: MitraGraphicsContextWebGLDebug;
+    private _logger = Logger.getInstance();
+    private _renderers: Map<string, RendererPlugin> = new Map<string, RendererPlugin>();
+    private _lazyRenderersFactory: Map<string, () => RendererPlugin> = new Map<string, () => RendererPlugin>();
+    private _isDrawLifecycle = false;
+    private _drawCallPool = new ArenaPool<DrawCall>(() => new DrawCall(), undefined, 4000);
+    private _drawCallIndex = 0;
+    private _drawCalls: DrawCall[] = new Array(4000).fill(null);
+    // Main render target
+    private _renderTarget!: Framebuffer;
+    // Quad boundary MSAA, only allocated when multiSampleAntialiasing is on
+    private _msaaTarget?: MultisampleFramebuffer;
+    // Postprocessing is a tuple with 2 framebuffers, these are flip-flopped during the postprocessing process
+    private _postProcessTargets: Framebuffer[] = [];
+    private _screenRenderer!: ScreenPassPainter;
+    private _postprocessors: PostProcessor[] = [];
+    private _transform = new TransformStack();
+    private _state = new StateStack();
+    private _onGraphicsPreInitialize?: (context: MitraGraphicsContext) => void;
+    private _onGraphicsPostInitialize?: (context: MitraGraphicsContext) => void;
+    private _screenQuadBuffer?: VertexBuffer;
     private _isContextLost = false;
+    private _disposed = false;
+    private _currentRenderer: RendererPlugin | undefined;
+    private _imageToWidth = new Map<HTMLImageSource, number>();
+    private _imageToHeight = new Map<HTMLImageSource, number>();
+    private _totalPostProcessorTime = 0;
 
     constructor(options: MitraGraphicsContextWebGLOptions) {
         if (options.onGraphicsPreConfig) {
@@ -397,7 +292,124 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
         }
     }
 
-    private _disposed = false;
+    // The framebuffer the frame is currently being drawn into, tracked so pipeline code can restore it
+    private _drawTarget!: Framebuffer;
+
+    /**
+     * The {@apilink Framebuffer} the current frame is being drawn into.
+     *
+     * Useful as an explicit destination when compositing custom shader passes into the frame,
+     * for example `pass.draw(myFramebuffer, ctx.drawTarget)`.
+     */
+    public get drawTarget(): Framebuffer {
+        return this._drawTarget;
+    }
+
+    private _ortho!: Matrix;
+
+    public get ortho(): Matrix {
+        return this._ortho;
+    }
+
+    private _materials: WeakRef<Material>[] = [];
+
+    /**
+     * Returns all live materials created against this context, useful for debugging and tooling.
+     *
+     * Materials are held weakly; materials that have been garbage collected are pruned on access.
+     */
+    public get materials(): Material[] {
+        const live: Material[] = [];
+        const liveRefs: WeakRef<Material>[] = [];
+        for (const ref of this._materials) {
+            const material = ref.deref();
+            if (material) {
+                live.push(material);
+                liveRefs.push(ref);
+            }
+        }
+        this._materials = liveRefs;
+        return live;
+    }
+
+    public get z(): number {
+        return this._state.current.z;
+    }
+
+    public set z(value: number) {
+        this._state.current.z = value;
+    }
+
+    public get opacity(): number {
+        return this._state.current.opacity;
+    }
+
+    public set opacity(value: number) {
+        this._state.current.opacity = value;
+    }
+
+    public get tint(): Color | undefined | null {
+        return this._state.current.tint;
+    }
+
+    public set tint(color: Color | undefined | null) {
+        this._state.current.tint = color;
+    }
+
+    public get width() {
+        return this.__gl.canvas.width;
+    }
+
+    public get height() {
+        return this.__gl.canvas.height;
+    }
+
+    /**
+     * Shared static clip-space quad (interleaved [x, y, u, v] * 6 vertices) used by every
+     * {@apilink ShaderPass} on this context, meant for internal use only.
+     * @internal
+     */
+    public get __screenQuadBuffer(): VertexBuffer {
+        if (!this._screenQuadBuffer) {
+            this._screenQuadBuffer = new VertexBuffer({
+                gl: this.__gl,
+                type: 'static',
+                // prettier-ignore
+                data: new Float32Array([
+                    -1, -1, 0, 0,
+                    -1, 1, 0, 1,
+                    1, -1, 1, 0,
+
+                    1, -1, 1, 0,
+                    -1, 1, 0, 1,
+                    1, 1, 1, 1
+                ])
+            });
+            this._screenQuadBuffer.upload();
+        }
+        return this._screenQuadBuffer;
+    }
+
+    public get material(): Material | null | undefined {
+        return this._state.current.material;
+    }
+
+    public set material(material: Material | null | undefined) {
+        this._state.current.material = material;
+    }
+
+    /**
+     * Checks the underlying webgl implementation if the requested internal resolution is supported
+     * @param dim
+     */
+    public checkIfResolutionSupported(dim: Resolution): boolean {
+        // Slight hack based on this thread https://groups.google.com/g/webgl-dev-list/c/AHONvz3oQTo
+        let supported = true;
+        if (dim.width > 4096 || dim.height > 4096) {
+            supported = false;
+        }
+        return supported;
+    }
 
     public dispose() {
         if (!this._disposed) {
@@ -411,109 +423,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
             this._drawCalls.length = 0;
             this._materials.length = 0;
             this.__gl = null as any;
-        }
-    }
-
-    private _init() {
-        // add pre/post init here
-        const gl = this.__gl;
-        if (this._onGraphicsPreInitialize) {
-            this._onGraphicsPreInitialize(this);
-        }
-
-        // Setup viewport and view matrix
-        this._ortho = Matrix.ortho(0, gl.canvas.width, gl.canvas.height, 0, 400, -400);
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-        // Clear background
-        gl.clearColor(...this.backgroundColor.toFloatArray());
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        // Enable alpha blending
-        // https://www.realtimerendering.com/blog/gpus-prefer-premultiplication/
-        gl.enable(gl.BLEND);
-        gl.blendEquation(gl.FUNC_ADD);
-        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-        gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        gl.depthMask(false);
-        // Setup builtin renderers
-        this.register(
-            new ImageRenderer({
-                uvPadding: this.uvPadding,
-                pixelArtSampler: this.pixelArtSampler
-            })
-        );
-        this.register(new MaterialRenderer());
-        this.register(new RectangleRenderer());
-        this.register(new CircleRenderer());
-        this.lazyRegister('ex.debug-circle', () => new DebugCircleRenderer());
-        this.lazyRegister('ex.debug-point', () => new DebugPointRenderer());
-        this.lazyRegister('ex.debug-line', () => new DebugLineRenderer());
-        this.lazyRegister('ex.particle', () => new ParticleRenderer());
-        this.register(
-            new ImageRendererV2({
-                uvPadding: this.uvPadding,
-                pixelArtSampler: this.pixelArtSampler
-            })
-        );
-
-        this.materialScreenTexture = gl.createTexture();
-        if (!this.materialScreenTexture) {
-            throw new Error('Could not create screen texture!');
-        }
-        gl.bindTexture(gl.TEXTURE_2D, this.materialScreenTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-
-        this._screenRenderer = new ScreenPassPainter(this);
-
-        // the frame targets keep the default ImageFiltering.Pixel, they are only ever sampled 1:1
-        this._renderTarget = new Framebuffer({
-            graphicsContext: this,
-            transparency: this.transparency,
-            width: gl.canvas.width,
-            height: gl.canvas.height
-        });
-
-        this._postProcessTargets = [
-            new Framebuffer({
-                graphicsContext: this,
-                transparency: this.transparency,
-                width: gl.canvas.width,
-                height: gl.canvas.height
-            }),
-            new Framebuffer({
-                graphicsContext: this,
-                transparency: this.transparency,
-                width: gl.canvas.width,
-                height: gl.canvas.height
-            })
-        ];
-
-        if (this.multiSampleAntialiasing) {
-            this._msaaTarget = new MultisampleFramebuffer({
-                graphicsContext: this,
-                transparency: this.transparency,
-                width: gl.canvas.width,
-                height: gl.canvas.height,
-                samples: this.samples
-            });
-        }
-
-        this._drawTarget = this._msaaTarget ?? this._renderTarget;
-
-        // drop the shared screen quad so it is rebuilt against a restored context
-        this._screenQuadBuffer = undefined;
-
-        this.debug = new MitraGraphicsContextWebGLDebug(this);
-
-        if (this._onGraphicsPostInitialize) {
-            this._onGraphicsPostInitialize(this);
         }
     }
 
@@ -537,15 +446,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
             }
         }
         return maybeRenderer;
-    }
-
-    private _currentRenderer: RendererPlugin | undefined;
-
-    private _isCurrentRenderer(renderer: RendererPlugin): boolean {
-        if (!this._currentRenderer || this._currentRenderer === renderer) {
-            return true;
-        }
-        return false;
     }
 
     public beginDrawLifecycle() {
@@ -631,30 +531,10 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
         this._postProcessTargets[1].resize(gl.canvas.width, gl.canvas.height);
     }
 
-    private _imageToWidth = new Map<HTMLImageSource, number>();
-
-    private _getImageWidth(image: HTMLImageSource) {
-        let maybeWidth = this._imageToWidth.get(image);
-        if (maybeWidth === undefined) {
-            maybeWidth = image.width;
-            this._imageToWidth.set(image, maybeWidth);
-        }
-        return maybeWidth;
-    }
-
-    private _imageToHeight = new Map<HTMLImageSource, number>();
-
-    private _getImageHeight(image: HTMLImageSource) {
-        let maybeHeight = this._imageToHeight.get(image);
-        if (maybeHeight === undefined) {
-            maybeHeight = image.height;
-            this._imageToHeight.set(image, maybeHeight);
-        }
-        return maybeHeight;
-    }
-
     drawImage(image: HTMLImageSource, x: number, y: number): void;
+
     drawImage(image: HTMLImageSource, x: number, y: number, width: number, height: number): void;
+
     drawImage(
         image: HTMLImageSource,
         sx: number,
@@ -666,6 +546,7 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
         dwidth?: number,
         dheight?: number
     ): void;
+
     drawImage(
         image: HTMLImageSource,
         sx: number,
@@ -717,8 +598,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
     public drawCircle(pos: Vector, radius: number, color: Color, stroke?: Color, thickness?: number) {
         this.draw<CircleRenderer>('ex.circle', pos, radius, color, stroke, thickness);
     }
-
-    debug!: MitraGraphicsContextWebGLDebug;
 
     public save(): void {
         this._transform.save();
@@ -777,8 +656,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
         this._postprocessors.length = 0;
     }
 
-    private _totalPostProcessorTime = 0;
-
     public updatePostProcessors(elapsed: number) {
         this._totalPostProcessorTime += elapsed;
         for (const postprocessor of this._postprocessors) {
@@ -804,14 +681,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
         }
     }
 
-    public set material(material: Material | null | undefined) {
-        this._state.current.material = material;
-    }
-
-    public get material(): Material | null | undefined {
-        return this._state.current.material;
-    }
-
     /**
      * Registers a material with this context so it can be enumerated with {@apilink MitraGraphicsContextWebgl.materials},
      * called automatically by the {@apilink Material} constructor.
@@ -820,25 +689,6 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
      */
     public registerMaterial(material: Material): void {
         this._materials.push(new WeakRef(material));
-    }
-
-    /**
-     * Returns all live materials created against this context, useful for debugging and tooling.
-     *
-     * Materials are held weakly; materials that have been garbage collected are pruned on access.
-     */
-    public get materials(): Material[] {
-        const live: Material[] = [];
-        const liveRefs: WeakRef<Material>[] = [];
-        for (const ref of this._materials) {
-            const material = ref.deref();
-            if (material) {
-                live.push(material);
-                liveRefs.push(ref);
-            }
-        }
-        this._materials = liveRefs;
-        return live;
     }
 
     /**
@@ -1001,5 +851,133 @@ export class MitraGraphicsContextWebgl implements MitraGraphicsContext {
 
         // Final blit to the screen
         currentTarget.blitToScreen();
+    }
+
+    private _init() {
+        // add pre/post init here
+        const gl = this.__gl;
+        if (this._onGraphicsPreInitialize) {
+            this._onGraphicsPreInitialize(this);
+        }
+
+        // Setup viewport and view matrix
+        this._ortho = Matrix.ortho(0, gl.canvas.width, gl.canvas.height, 0, 400, -400);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+        // Clear background
+        gl.clearColor(...this.backgroundColor.toFloatArray());
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        // Enable alpha blending
+        // https://www.realtimerendering.com/blog/gpus-prefer-premultiplication/
+        gl.enable(gl.BLEND);
+        gl.blendEquation(gl.FUNC_ADD);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
+        gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.depthMask(false);
+        // Setup builtin renderers
+        this.register(
+            new ImageRenderer({
+                uvPadding: this.uvPadding,
+                pixelArtSampler: this.pixelArtSampler
+            })
+        );
+        this.register(new MaterialRenderer());
+        this.register(new RectangleRenderer());
+        this.register(new CircleRenderer());
+        this.lazyRegister('ex.debug-circle', () => new DebugCircleRenderer());
+        this.lazyRegister('ex.debug-point', () => new DebugPointRenderer());
+        this.lazyRegister('ex.debug-line', () => new DebugLineRenderer());
+        this.lazyRegister('ex.particle', () => new ParticleRenderer());
+        this.register(
+            new ImageRendererV2({
+                uvPadding: this.uvPadding,
+                pixelArtSampler: this.pixelArtSampler
+            })
+        );
+
+        this.materialScreenTexture = gl.createTexture();
+        if (!this.materialScreenTexture) {
+            throw new Error('Could not create screen texture!');
+        }
+        gl.bindTexture(gl.TEXTURE_2D, this.materialScreenTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+
+        this._screenRenderer = new ScreenPassPainter(this);
+
+        // the frame targets keep the default ImageFiltering.Pixel, they are only ever sampled 1:1
+        this._renderTarget = new Framebuffer({
+            graphicsContext: this,
+            transparency: this.transparency,
+            width: gl.canvas.width,
+            height: gl.canvas.height
+        });
+
+        this._postProcessTargets = [
+            new Framebuffer({
+                graphicsContext: this,
+                transparency: this.transparency,
+                width: gl.canvas.width,
+                height: gl.canvas.height
+            }),
+            new Framebuffer({
+                graphicsContext: this,
+                transparency: this.transparency,
+                width: gl.canvas.width,
+                height: gl.canvas.height
+            })
+        ];
+
+        if (this.multiSampleAntialiasing) {
+            this._msaaTarget = new MultisampleFramebuffer({
+                graphicsContext: this,
+                transparency: this.transparency,
+                width: gl.canvas.width,
+                height: gl.canvas.height,
+                samples: this.samples
+            });
+        }
+
+        this._drawTarget = this._msaaTarget ?? this._renderTarget;
+
+        // drop the shared screen quad so it is rebuilt against a restored context
+        this._screenQuadBuffer = undefined;
+
+        this.debug = new MitraGraphicsContextWebGLDebug(this);
+
+        if (this._onGraphicsPostInitialize) {
+            this._onGraphicsPostInitialize(this);
+        }
+    }
+
+    private _isCurrentRenderer(renderer: RendererPlugin): boolean {
+        if (!this._currentRenderer || this._currentRenderer === renderer) {
+            return true;
+        }
+        return false;
+    }
+
+    private _getImageWidth(image: HTMLImageSource) {
+        let maybeWidth = this._imageToWidth.get(image);
+        if (maybeWidth === undefined) {
+            maybeWidth = image.width;
+            this._imageToWidth.set(image, maybeWidth);
+        }
+        return maybeWidth;
+    }
+
+    private _getImageHeight(image: HTMLImageSource) {
+        let maybeHeight = this._imageToHeight.get(image);
+        if (maybeHeight === undefined) {
+            maybeHeight = image.height;
+            this._imageToHeight.set(image, maybeHeight);
+        }
+        return maybeHeight;
     }
 }

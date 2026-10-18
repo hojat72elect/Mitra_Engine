@@ -1,303 +1,304 @@
-import type { ComponentCtor, Query, World } from '../entity-component-system';
-import { SystemPriority } from '../entity-component-system';
-import { TransformComponent } from '../entity-component-system/components/transform-component';
-import { System, SystemType } from '../entity-component-system/system';
-import { CollisionEndEvent, CollisionStartEvent, ContactEndEvent, ContactStartEvent } from '../events';
-import { SolverStrategy } from './solver-strategy';
-import { ArcadeSolver } from './solver/arcade-solver';
-import type { Collider } from './colliders/collider';
-import type { CollisionContact } from './detection/collision-contact';
-import { RealisticSolver } from './solver/realistic-solver';
-import type { CollisionSolver } from './solver/solver';
-import { ColliderComponent } from './collider-component';
-import { CompositeCollider } from './colliders/composite-collider';
-import type { Engine } from '../engine';
-import type { MitraGraphicsContext } from '../graphics/context/mitra-graphics-context';
-import type { Scene } from '../scene';
-import { Side } from '../collision/side';
-import type { PhysicsWorld } from './physics-world';
-import type { CollisionProcessor } from './detection/collision-processor';
-import { SeparatingAxis } from './colliders/separating-axis';
-import { MotionSystem } from './motion-system';
-import { Pair } from './detection/pair';
-import { BodyComponent } from './index';
-import { buildContactIslands } from './island';
-import { PauseComponentTag } from '../entity-component-system/components/pause-component';
+import type {ComponentCtor, Query, World} from '../entity-component-system';
+import {SystemPriority} from '../entity-component-system';
+import {TransformComponent} from '../entity-component-system/components/transform-component';
+import {System, SystemType} from '../entity-component-system/system';
+import {CollisionEndEvent, CollisionStartEvent, ContactEndEvent, ContactStartEvent} from '../events';
+import {SolverStrategy} from './solver-strategy';
+import {ArcadeSolver} from './solver/arcade-solver';
+import type {Collider} from './colliders/collider';
+import type {CollisionContact} from './detection/collision-contact';
+import {RealisticSolver} from './solver/realistic-solver';
+import type {CollisionSolver} from './solver/solver';
+import {ColliderComponent} from './collider-component';
+import {CompositeCollider} from './colliders/composite-collider';
+import type {Engine} from '../engine';
+import type {MitraGraphicsContext} from '../graphics/context/mitra-graphics-context';
+import type {Scene} from '../scene';
+import {Side} from '../collision/side';
+import type {PhysicsWorld} from './physics-world';
+import type {CollisionProcessor} from './detection/collision-processor';
+import {SeparatingAxis} from './colliders/separating-axis';
+import {MotionSystem} from './motion-system';
+import {Pair} from './detection/pair';
+import {BodyComponent} from './index';
+import {buildContactIslands} from './island';
+import {PauseComponentTag} from '../entity-component-system/components/pause-component';
+
 export class CollisionSystem extends System {
-  static override priority = SystemPriority.Higher;
+    static override priority = SystemPriority.Higher;
 
-  public systemType = SystemType.Update;
-  public query: Query<ComponentCtor<TransformComponent> | ComponentCtor<ColliderComponent>>;
-  public bodyQuery: Query<ComponentCtor<BodyComponent>>;
+    public systemType = SystemType.Update;
+    public query: Query<ComponentCtor<TransformComponent> | ComponentCtor<ColliderComponent>>;
+    public bodyQuery: Query<ComponentCtor<BodyComponent>>;
 
-  private _engine!: Engine;
-  private _configDirty = false;
-  private _realisticSolver: RealisticSolver;
-  private _arcadeSolver: ArcadeSolver;
-  private _lastFrameContacts = new Map<string, CollisionContact>();
-  private _currentFrameContacts = new Map<string, CollisionContact>();
-  private _motionSystem: MotionSystem;
-  private _bodies: BodyComponent[] = [];
-  private get _processor(): CollisionProcessor {
-    return this._physics.collisionProcessor;
-  }
+    private _engine!: Engine;
+    private _configDirty = false;
+    private _realisticSolver: RealisticSolver;
+    private _arcadeSolver: ArcadeSolver;
+    private _lastFrameContacts = new Map<string, CollisionContact>();
+    private _currentFrameContacts = new Map<string, CollisionContact>();
+    private _motionSystem: MotionSystem;
+    private _bodies: BodyComponent[] = [];
+    private _trackCollider: (c: Collider) => void;
+    private _untrackCollider: (c: Collider) => void;
 
-  private _trackCollider: (c: Collider) => void;
-  private _untrackCollider: (c: Collider) => void;
-
-  constructor(
-    world: World,
-    private _physics: PhysicsWorld
-  ) {
-    super();
-    this._arcadeSolver = new ArcadeSolver(_physics.config.arcade);
-    this._realisticSolver = new RealisticSolver(_physics.config.realistic);
-    this._physics.$configUpdate.subscribe(() => (this._configDirty = true));
-    this._trackCollider = (c: Collider) => this._processor.track(c);
-    this._untrackCollider = (c: Collider) => this._processor.untrack(c);
-    this.query = world.query({
-      components: { all: [TransformComponent, ColliderComponent] },
-      tags: { not: [PauseComponentTag] }
-    });
-    this.query.entityAdded$.subscribe((e) => {
-      const colliderComponent = e.get(ColliderComponent);
-      colliderComponent.$colliderAdded.subscribe(this._trackCollider);
-      colliderComponent.$colliderRemoved.subscribe(this._untrackCollider);
-      const collider = colliderComponent.get();
-      if (collider) {
-        this._processor.track(collider);
-      }
-    });
-    this.query.entityRemoved$.subscribe((e) => {
-      const colliderComponent = e.get(ColliderComponent);
-      const collider = colliderComponent.get();
-      if (colliderComponent && collider) {
-        this._processor.untrack(collider);
-      }
-    });
-    this._motionSystem = world.get(MotionSystem) as MotionSystem;
-    this.bodyQuery = world.query([BodyComponent]);
-
-    this.bodyQuery.entityAdded$.subscribe((e) => {
-      this._bodies.push(e.get(BodyComponent));
-    });
-
-    this.bodyQuery.entityRemoved$.subscribe((e) => {
-      const body = e.get(BodyComponent);
-
-      const indexOf = this._bodies.indexOf(body);
-      if (indexOf > -1) {
-        this._bodies.splice(indexOf, 1);
-      }
-    });
-  }
-
-  override initialize(world: World, scene: Scene) {
-    this._engine = scene.engine;
-  }
-
-  update(elapsed: number): void {
-    if (!this._physics.config.enabled) {
-      return;
-    }
-
-    // Collect up all the colliders and update them
-    const colliders = this._updateColliders();
-
-    // Update the spatial partitioning data structures
-    // TODO if collider invalid it will break the processor
-    // TODO rename "update" to something more specific
-    this._processor.update(colliders, elapsed);
-
-    // Run broadphase on all colliders and locates potential collisions
-    let pairs = this._processor.broadphase(colliders, elapsed);
-
-    this._currentFrameContacts.clear();
-
-    // Given possible pairs find actual contacts
-    let contacts: CollisionContact[] = [];
-
-    // Contacts between bodies that can't move (both asleep, or asleep against fixed geometry) are excluded from the
-    // broadphase and carried over from the previous frame unchanged instead of being detected and solved again.
-    // They still take part in islands (so an awake body touching a sleeping pile wakes it) and in start/end tracking.
-    let dormantContacts: CollisionContact[] = [];
-    const stats = this._engine?.debug?.stats?.currFrame;
-    for (const contact of this._lastFrameContacts.values()) {
-      if (Pair.isDormant(contact.bodyA, contact.bodyB) && contact.colliderA.owner?.isActive && contact.colliderB.owner?.isActive) {
-        contact.persist();
-        dormantContacts.push(contact);
-        if (stats) {
-          stats.physics.contacts.set(contact.id, contact);
-        }
-      }
-    }
-
-    const solver: CollisionSolver = this.getSolver();
-
-    // Solve, this resolves the position/velocity so entities aren't overlapping
-    const substep = this._physics.config.substep;
-    for (let step = 0; step < substep; step++) {
-      if (step > 0) {
-        // first step is run by the MotionSystem when configured, so skip 0th
-        // elapsed is used here because step size is calcluated in motion system
-        this._motionSystem.update(elapsed);
-        // colliders sync lazily from their owner transform, so the substep narrowphase and solver lever arms
-        // always see the integrated/position-corrected body transforms without an explicit refresh
-
-        // Re-use pairs from previous collision
-        if (contacts.length) {
-          pairs = contacts.map((c) => new Pair(c.colliderA, c.colliderB));
-        }
-
-        // Dormant pairs woken during the previous substep need real detection from now on
-        if (dormantContacts.length) {
-          const stillDormant: CollisionContact[] = [];
-          for (const contact of dormantContacts) {
-            if (Pair.isDormant(contact.bodyA, contact.bodyB)) {
-              stillDormant.push(contact);
-            } else {
-              pairs.push(new Pair(contact.colliderA, contact.colliderB));
+    constructor(
+        world: World,
+        private _physics: PhysicsWorld
+    ) {
+        super();
+        this._arcadeSolver = new ArcadeSolver(_physics.config.arcade);
+        this._realisticSolver = new RealisticSolver(_physics.config.realistic);
+        this._physics.$configUpdate.subscribe(() => (this._configDirty = true));
+        this._trackCollider = (c: Collider) => this._processor.track(c);
+        this._untrackCollider = (c: Collider) => this._processor.untrack(c);
+        this.query = world.query({
+            components: {all: [TransformComponent, ColliderComponent]},
+            tags: {not: [PauseComponentTag]}
+        });
+        this.query.entityAdded$.subscribe((e) => {
+            const colliderComponent = e.get(ColliderComponent);
+            colliderComponent.$colliderAdded.subscribe(this._trackCollider);
+            colliderComponent.$colliderRemoved.subscribe(this._untrackCollider);
+            const collider = colliderComponent.get();
+            if (collider) {
+                this._processor.track(collider);
             }
-          }
-          dormantContacts = stillDormant;
+        });
+        this.query.entityRemoved$.subscribe((e) => {
+            const colliderComponent = e.get(ColliderComponent);
+            const collider = colliderComponent.get();
+            if (colliderComponent && collider) {
+                this._processor.untrack(collider);
+            }
+        });
+        this._motionSystem = world.get(MotionSystem) as MotionSystem;
+        this.bodyQuery = world.query([BodyComponent]);
+
+        this.bodyQuery.entityAdded$.subscribe((e) => {
+            this._bodies.push(e.get(BodyComponent));
+        });
+
+        this.bodyQuery.entityRemoved$.subscribe((e) => {
+            const body = e.get(BodyComponent);
+
+            const indexOf = this._bodies.indexOf(body);
+            if (indexOf > -1) {
+                this._bodies.splice(indexOf, 1);
+            }
+        });
+    }
+
+    private get _processor(): CollisionProcessor {
+        return this._physics.collisionProcessor;
+    }
+
+    override initialize(world: World, scene: Scene) {
+        this._engine = scene.engine;
+    }
+
+    update(elapsed: number): void {
+        if (!this._physics.config.enabled) {
+            return;
         }
-      }
 
-      if (pairs.length || dormantContacts.length) {
-        contacts = pairs.length ? this._processor.narrowphase(pairs, stats) : [];
-        const frameContacts = dormantContacts.length ? contacts.concat(dormantContacts) : contacts;
+        // Collect up all the colliders and update them
+        const colliders = this._updateColliders();
 
-        if (this._physics.config.solver === SolverStrategy.Realistic) {
-          // TODO we could possbily enable this for Arcade, will require some thinking
-          const islands = buildContactIslands(this._physics.config.bodies, this._bodies, frameContacts);
+        // Update the spatial partitioning data structures
+        // TODO if collider invalid it will break the processor
+        // TODO rename "update" to something more specific
+        this._processor.update(colliders, elapsed);
 
-          for (const island of islands) {
-            island.updateSleepState(elapsed / substep);
-          }
+        // Run broadphase on all colliders and locates potential collisions
+        let pairs = this._processor.broadphase(colliders, elapsed);
+
+        this._currentFrameContacts.clear();
+
+        // Given possible pairs find actual contacts
+        let contacts: CollisionContact[] = [];
+
+        // Contacts between bodies that can't move (both asleep, or asleep against fixed geometry) are excluded from the
+        // broadphase and carried over from the previous frame unchanged instead of being detected and solved again.
+        // They still take part in islands (so an awake body touching a sleeping pile wakes it) and in start/end tracking.
+        let dormantContacts: CollisionContact[] = [];
+        const stats = this._engine?.debug?.stats?.currFrame;
+        for (const contact of this._lastFrameContacts.values()) {
+            if (Pair.isDormant(contact.bodyA, contact.bodyB) && contact.colliderA.owner?.isActive && contact.colliderB.owner?.isActive) {
+                contact.persist();
+                dormantContacts.push(contact);
+                if (stats) {
+                    stats.physics.contacts.set(contact.id, contact);
+                }
+            }
         }
 
-        solver.solve(frameContacts, elapsed / substep, step, substep);
+        const solver: CollisionSolver = this.getSolver();
 
-        // Only contacts detected this substep drive the next substep's pairs, carried contacts are excluded
-        contacts = contacts.filter((c) => !c.isCanceled());
+        // Solve, this resolves the position/velocity so entities aren't overlapping
+        const substep = this._physics.config.substep;
+        for (let step = 0; step < substep; step++) {
+            if (step > 0) {
+                // first step is run by the MotionSystem when configured, so skip 0th
+                // elapsed is used here because step size is calcluated in motion system
+                this._motionSystem.update(elapsed);
+                // colliders sync lazily from their owner transform, so the substep narrowphase and solver lever arms
+                // always see the integrated/position-corrected body transforms without an explicit refresh
 
-        // Record contacts for start/end from the solver's input: dormant contacts (carried over, or whose bodies fell
-        // asleep during this substep) are filtered out of the solved list but must stay alive
-        this._recordContacts(frameContacts);
-      }
-    }
+                // Re-use pairs from previous collision
+                if (contacts.length) {
+                    pairs = contacts.map((c) => new Pair(c.colliderA, c.colliderB));
+                }
 
-    // Emit contact start/end events
-    this.runContactStartEnd();
+                // Dormant pairs woken during the previous substep need real detection from now on
+                if (dormantContacts.length) {
+                    const stillDormant: CollisionContact[] = [];
+                    for (const contact of dormantContacts) {
+                        if (Pair.isDormant(contact.bodyA, contact.bodyB)) {
+                            stillDormant.push(contact);
+                        } else {
+                            pairs.push(new Pair(contact.colliderA, contact.colliderB));
+                        }
+                    }
+                    dormantContacts = stillDormant;
+                }
+            }
 
-    // reset the last frame cache
-    this._lastFrameContacts.clear();
+            if (pairs.length || dormantContacts.length) {
+                contacts = pairs.length ? this._processor.narrowphase(pairs, stats) : [];
+                const frameContacts = dormantContacts.length ? contacts.concat(dormantContacts) : contacts;
 
-    // Keep track of collisions contacts that have started or ended
-    this._lastFrameContacts = new Map(this._currentFrameContacts);
+                if (this._physics.config.solver === SolverStrategy.Realistic) {
+                    // TODO we could possbily enable this for Arcade, will require some thinking
+                    const islands = buildContactIslands(this._physics.config.bodies, this._bodies, frameContacts);
 
-    // Process deferred collider removals
-    for (const entity of this.query.entities) {
-      const collider = entity.get(ColliderComponent);
-      if (collider) {
-        collider.processColliderRemoval();
-      }
-    }
-  }
+                    for (const island of islands) {
+                        island.updateSleepState(elapsed / substep);
+                    }
+                }
 
-  override postupdate(): void {
-    SeparatingAxis.SeparationPool.done();
-  }
+                solver.solve(frameContacts, elapsed / substep, step, substep);
 
-  private _recordContacts(contacts: CollisionContact[]) {
-    for (const contact of contacts) {
-      if (contact.isCanceled()) {
-        continue;
-      }
-      // Process composite ids, things with the same composite id are treated as the same collider for start/end
-      const index = contact.id.indexOf('|');
-      if (index > 0) {
-        const compositeId = contact.id.substring(index + 1);
-        this._currentFrameContacts.set(compositeId, contact);
-      } else {
-        this._currentFrameContacts.set(contact.id, contact);
-      }
-    }
-  }
+                // Only contacts detected this substep drive the next substep's pairs, carried contacts are excluded
+                contacts = contacts.filter((c) => !c.isCanceled());
 
-  /**
-   * Binds every active collider to its owner transform (a cheap no-op once bound) and returns the flattened list
-   */
-  private _updateColliders(): Collider[] {
-    let colliders: Collider[] = [];
-    for (let entityIndex = 0; entityIndex < this.query.entities.length; entityIndex++) {
-      const entity = this.query.entities[entityIndex];
-      const colliderComp = entity.get(ColliderComponent);
-      const collider = colliderComp?.get();
-      if (colliderComp && colliderComp.owner?.isActive && collider) {
-        colliderComp.update();
-
-        // Flatten composite colliders
-        if (collider instanceof CompositeCollider) {
-          const compositeColliders = collider.getColliders();
-          if (!collider.compositeStrategy) {
-            collider.compositeStrategy = this._physics.config.colliders.compositeStrategy;
-          }
-          colliders = colliders.concat(compositeColliders);
-        } else {
-          colliders.push(collider);
+                // Record contacts for start/end from the solver's input: dormant contacts (carried over, or whose bodies fell
+                // asleep during this substep) are filtered out of the solved list but must stay alive
+                this._recordContacts(frameContacts);
+            }
         }
-      }
-    }
-    return colliders;
-  }
 
-  getSolver(): CollisionSolver {
-    if (this._configDirty) {
-      this._configDirty = false;
-      this._arcadeSolver = new ArcadeSolver(this._physics.config.arcade);
-      this._realisticSolver = new RealisticSolver(this._physics.config.realistic);
-    }
-    return this._physics.config.solver === SolverStrategy.Realistic ? this._realisticSolver : this._arcadeSolver;
-  }
+        // Emit contact start/end events
+        this.runContactStartEnd();
 
-  debug(ex: MitraGraphicsContext) {
-    this._processor.debug(ex, 0);
-  }
+        // reset the last frame cache
+        this._lastFrameContacts.clear();
 
-  public runContactStartEnd() {
-    // If composite colliders are 'together' collisions may have a duplicate id because we want to treat those as a singular start/end
-    for (const [id, c] of this._currentFrameContacts) {
-      // find all new contacts
-      if (!this._lastFrameContacts.has(id)) {
-        const colliderA = c.colliderA;
-        const colliderB = c.colliderB;
-        // A new contact wakes both participants, sleeping bodies are not solved
-        c.bodyA!.isSleeping = false;
-        c.bodyB!.isSleeping = false;
-        const side = Side.fromDirection(c.mtv);
-        const opposite = Side.getOpposite(side);
-        colliderA.events.emit('collisionstart', new CollisionStartEvent(colliderA, colliderB, side, c));
-        colliderA.events.emit('contactstart', new ContactStartEvent(colliderA, colliderB, side, c) as any);
-        colliderB.events.emit('collisionstart', new CollisionStartEvent(colliderB, colliderA, opposite, c));
-        colliderB.events.emit('contactstart', new ContactStartEvent(colliderB, colliderA, opposite, c) as any);
-      }
+        // Keep track of collisions contacts that have started or ended
+        this._lastFrameContacts = new Map(this._currentFrameContacts);
+
+        // Process deferred collider removals
+        for (const entity of this.query.entities) {
+            const collider = entity.get(ColliderComponent);
+            if (collider) {
+                collider.processColliderRemoval();
+            }
+        }
     }
 
-    // find all contacts that have ceased
-    for (const [id, c] of this._lastFrameContacts) {
-      if (!this._currentFrameContacts.has(id)) {
-        const colliderA = c.colliderA;
-        const colliderB = c.colliderB;
-        c.bodyA!.isSleeping = false;
-        c.bodyB!.isSleeping = false;
-        const side = Side.fromDirection(c.mtv);
-        const opposite = Side.getOpposite(side);
-        colliderA.events.emit('collisionend', new CollisionEndEvent(colliderA, colliderB, side, c));
-        colliderA.events.emit('contactend', new ContactEndEvent(colliderA, colliderB, side, c) as any);
-        colliderB.events.emit('collisionend', new CollisionEndEvent(colliderB, colliderA, opposite, c));
-        colliderB.events.emit('contactend', new ContactEndEvent(colliderB, colliderA, opposite, c) as any);
-      }
+    override postupdate(): void {
+        SeparatingAxis.SeparationPool.done();
     }
-  }
+
+    getSolver(): CollisionSolver {
+        if (this._configDirty) {
+            this._configDirty = false;
+            this._arcadeSolver = new ArcadeSolver(this._physics.config.arcade);
+            this._realisticSolver = new RealisticSolver(this._physics.config.realistic);
+        }
+        return this._physics.config.solver === SolverStrategy.Realistic ? this._realisticSolver : this._arcadeSolver;
+    }
+
+    debug(ex: MitraGraphicsContext) {
+        this._processor.debug(ex, 0);
+    }
+
+    public runContactStartEnd() {
+        // If composite colliders are 'together' collisions may have a duplicate id because we want to treat those as a singular start/end
+        for (const [id, c] of this._currentFrameContacts) {
+            // find all new contacts
+            if (!this._lastFrameContacts.has(id)) {
+                const colliderA = c.colliderA;
+                const colliderB = c.colliderB;
+                // A new contact wakes both participants, sleeping bodies are not solved
+                c.bodyA!.isSleeping = false;
+                c.bodyB!.isSleeping = false;
+                const side = Side.fromDirection(c.mtv);
+                const opposite = Side.getOpposite(side);
+                colliderA.events.emit('collisionstart', new CollisionStartEvent(colliderA, colliderB, side, c));
+                colliderA.events.emit('contactstart', new ContactStartEvent(colliderA, colliderB, side, c) as any);
+                colliderB.events.emit('collisionstart', new CollisionStartEvent(colliderB, colliderA, opposite, c));
+                colliderB.events.emit('contactstart', new ContactStartEvent(colliderB, colliderA, opposite, c) as any);
+            }
+        }
+
+        // find all contacts that have ceased
+        for (const [id, c] of this._lastFrameContacts) {
+            if (!this._currentFrameContacts.has(id)) {
+                const colliderA = c.colliderA;
+                const colliderB = c.colliderB;
+                c.bodyA!.isSleeping = false;
+                c.bodyB!.isSleeping = false;
+                const side = Side.fromDirection(c.mtv);
+                const opposite = Side.getOpposite(side);
+                colliderA.events.emit('collisionend', new CollisionEndEvent(colliderA, colliderB, side, c));
+                colliderA.events.emit('contactend', new ContactEndEvent(colliderA, colliderB, side, c) as any);
+                colliderB.events.emit('collisionend', new CollisionEndEvent(colliderB, colliderA, opposite, c));
+                colliderB.events.emit('contactend', new ContactEndEvent(colliderB, colliderA, opposite, c) as any);
+            }
+        }
+    }
+
+    private _recordContacts(contacts: CollisionContact[]) {
+        for (const contact of contacts) {
+            if (contact.isCanceled()) {
+                continue;
+            }
+            // Process composite ids, things with the same composite id are treated as the same collider for start/end
+            const index = contact.id.indexOf('|');
+            if (index > 0) {
+                const compositeId = contact.id.substring(index + 1);
+                this._currentFrameContacts.set(compositeId, contact);
+            } else {
+                this._currentFrameContacts.set(contact.id, contact);
+            }
+        }
+    }
+
+    /**
+     * Binds every active collider to its owner transform (a cheap no-op once bound) and returns the flattened list
+     */
+    private _updateColliders(): Collider[] {
+        let colliders: Collider[] = [];
+        for (let entityIndex = 0; entityIndex < this.query.entities.length; entityIndex++) {
+            const entity = this.query.entities[entityIndex];
+            const colliderComp = entity.get(ColliderComponent);
+            const collider = colliderComp?.get();
+            if (colliderComp && colliderComp.owner?.isActive && collider) {
+                colliderComp.update();
+
+                // Flatten composite colliders
+                if (collider instanceof CompositeCollider) {
+                    const compositeColliders = collider.getColliders();
+                    if (!collider.compositeStrategy) {
+                        collider.compositeStrategy = this._physics.config.colliders.compositeStrategy;
+                    }
+                    colliders = colliders.concat(compositeColliders);
+                } else {
+                    colliders.push(collider);
+                }
+            }
+        }
+        return colliders;
+    }
 }

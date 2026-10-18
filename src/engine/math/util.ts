@@ -1,4 +1,4 @@
-import { Random } from './random';
+import {Random} from './random';
 
 /**
  * Two PI constant
@@ -10,68 +10,68 @@ export const TwoPI: number = Math.PI * 2;
  * @param x
  */
 export function frac(x: number): number {
-  if (x >= 0) {
-    return x - Math.floor(x);
-  } else {
-    return x - Math.ceil(x);
-  }
+    if (x >= 0) {
+        return x - Math.floor(x);
+    } else {
+        return x - Math.ceil(x);
+    }
 }
 
 /**
  * Returns the sign of a number, if 0 returns 0
  */
 export function sign(val: number): number {
-  if (val === 0) {
-    return 0;
-  }
-  return val < 0 ? -1 : 1;
+    if (val === 0) {
+        return 0;
+    }
+    return val < 0 ? -1 : 1;
 }
 
 /**
  * Clamps a value between a min and max inclusive
  */
 export function clamp(val: number, min: number, max: number) {
-  return Math.min(Math.max(min, val), max);
+    return Math.min(Math.max(min, val), max);
 }
 
 /**
  * Approximately equals
  */
 export function approximatelyEqual(val1: number, val2: number, tolerance: number) {
-  // https://dev.to/alldanielscott/how-to-compare-numbers-correctly-in-javascript-1l4i
-  return Math.abs(val1 - val2) < tolerance;
+    // https://dev.to/alldanielscott/how-to-compare-numbers-correctly-in-javascript-1l4i
+    return Math.abs(val1 - val2) < tolerance;
 }
 
 /**
  * Convert an angle to be the equivalent in the range [0, 2PI)
  */
 export function canonicalizeAngle(angle: number): number {
-  const TWO_PI = 2 * Math.PI;
-  return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
+    const TWO_PI = 2 * Math.PI;
+    return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
 }
 
 /**
  * Return the different in angles in the range [0, 2PI)
  */
 export function angleDifference(angle1: number, angle2: number): number {
-  const TWO_PI = 2 * Math.PI;
-  const diff = Math.abs(angle1 - angle2);
-  // Return the smaller of the direct distance or the wraparound distance
-  return Math.min(diff, TWO_PI - diff);
+    const TWO_PI = 2 * Math.PI;
+    const diff = Math.abs(angle1 - angle2);
+    // Return the smaller of the direct distance or the wraparound distance
+    return Math.min(diff, TWO_PI - diff);
 }
 
 /**
  * Convert radians to degrees
  */
 export function toDegrees(radians: number): number {
-  return (180 / Math.PI) * radians;
+    return (180 / Math.PI) * radians;
 }
 
 /**
  * Convert degrees to radians
  */
 export function toRadians(degrees: number): number {
-  return (degrees / 180) * Math.PI;
+    return (degrees / 180) * Math.PI;
 }
 
 /**
@@ -86,12 +86,12 @@ export const range = (from: number, to: number) => Array.from(new Array(to - fro
  * Find a random floating point number in range
  */
 export function randomInRange(min: number, max: number, random: Random = new Random()): number {
-  return random ? random.floating(min, max) : min + Math.random() * (max - min);
+    return random ? random.floating(min, max) : min + Math.random() * (max - min);
 }
 
 /**
  * Find a random integer in a range
  */
 export function randomIntInRange(min: number, max: number, random: Random = new Random()): number {
-  return random ? random.integer(min, max) : Math.round(randomInRange(min, max));
+    return random ? random.integer(min, max) : Math.round(randomInRange(min, max));
 }

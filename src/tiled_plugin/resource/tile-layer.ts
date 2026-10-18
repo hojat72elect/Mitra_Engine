@@ -37,7 +37,6 @@ export interface TileInfo {
 }
 
 export class TileLayer implements Layer {
-    private logger = Logger.getInstance();
     /**
      * Numeric id given by Tiled
      */
@@ -55,28 +54,21 @@ export class TileLayer implements Layer {
      * Number of tiles high
      */
     public readonly height: number = 0;
-
     properties = new Map<string, PropertyMapValue>();
-
     /**
      * Original list of gids for this layer from tiled
      */
     data: number[] = [];
-
     /**
      * Mitra TileMap structure for drawing in Mitra
      */
     tilemap!: TileMap;
-
-    private _gidToTileInfo = new Map<number, TileInfo[]>();
-
     /**
      * Whether the tile layer is visible in the original map
      */
     public readonly visible: boolean;
-
-
-    private _isInfinite = false;
+    private logger = Logger.getInstance();
+    private _gidToTileInfo = new Map<number, TileInfo[]>();
     /**
      * Chunk data by tile
      */
@@ -85,6 +77,18 @@ export class TileLayer implements Layer {
      * Chunk index by tile
      */
     private _tileToChunkIndex = new Map<ExTile, number>;
+
+    constructor(public tiledTileLayer: TiledTileLayer, public resource: TiledResource, public readonly order: number) {
+        this.name = tiledTileLayer.name;
+        this.id = tiledTileLayer.id;
+        this.class = tiledTileLayer.class;
+        this.width = tiledTileLayer.width;
+        this.height = tiledTileLayer.height;
+        this.visible = !!tiledTileLayer.visible;
+        mapProps(this, tiledTileLayer.properties);
+    }
+
+    private _isInfinite = false;
 
     public get isInfinite(): boolean {
         return this._isInfinite;
@@ -157,23 +161,6 @@ export class TileLayer implements Layer {
         }))
     }
 
-    private _getGidForTile(exTile: ExTile): number {
-        let gid = 0;
-        if (this._isInfinite) {
-            const chunkData = this._tileToChunkData.get(exTile);
-            const chunkIndex = this._tileToChunkIndex.get(exTile);
-            // Actually not an error, Tiled packs these sparsely so it's very possible they're missing
-            if (chunkIndex == null || !chunkData) return gid;
-
-            gid = getCanonicalGid(chunkData[chunkIndex]);
-
-        } else {
-            const tileIndex = this.tilemap.tiles.indexOf(exTile);
-            gid = getCanonicalGid(this.data[tileIndex]);
-        }
-        return gid;
-    }
-
     getTileByPoint(worldPos: Vector): TileInfo | null {
         if (!this.tilemap) {
             this.logger.warn('Tilemap has not yet been loaded! getTileByPoint() will only return null');
@@ -226,107 +213,6 @@ export class TileLayer implements Layer {
         }
 
         return null;
-    }
-
-    constructor(public tiledTileLayer: TiledTileLayer, public resource: TiledResource, public readonly order: number) {
-        this.name = tiledTileLayer.name;
-        this.id = tiledTileLayer.id;
-        this.class = tiledTileLayer.class;
-        this.width = tiledTileLayer.width;
-        this.height = tiledTileLayer.height;
-        this.visible = !!tiledTileLayer.visible;
-        mapProps(this, tiledTileLayer.properties);
-    }
-
-    private _recordTileData(gid: number, tile: ExTile) {
-        let tiles: TileInfo[] | undefined = this._gidToTileInfo.get(gid);
-        let tileset = this.resource.getTilesetForTileGid(gid);
-        let maybeTile = tileset.getTileByGid(gid);
-        if (!tiles) {
-            tiles = [{exTile: tile, tiledTile: maybeTile}];
-        } else {
-            tiles.push({exTile: tile, tiledTile: maybeTile});
-        }
-        this._gidToTileInfo.set(gid, tiles);
-        tile.data.set(MitraTiledProperties.TileData.Tiled, maybeTile);
-    }
-
-    private updateTile(tile: ExTile, gid: number, hasTint: boolean, tint: Color, isSolidLayer: boolean) {
-        this._recordTileData(gid, tile);
-        const maybeLayerConfig = this.resource.getLayerConfig(this.name) ||
-            this.resource.getLayerConfig(this.id);
-        if (maybeLayerConfig?.isSolid !== undefined) {
-            isSolidLayer = maybeLayerConfig.isSolid;
-        }
-        if (this.resource.useMitraWiring && isSolidLayer && this.visible) {
-            tile.solid = true;
-        }
-
-        const tileset = this.resource.getTilesetForTileGid(gid);
-        const headless = this.resource.headless;
-
-        if (!headless) {
-            let sprite = tileset.getSpriteForGid(gid);
-            if (hasTint) {
-                sprite = sprite.clone();
-                sprite.tint = tint;
-            }
-            tile.addGraphic(sprite, {offset: tileset.tileOffset});
-        }
-
-        // the whole tilemap uses a giant composite collider relative to the Tilemap
-        // not individual tiles
-        const colliders = tileset.getCollidersForGid(gid);
-        for (let collider of colliders) {
-            tile.addCollider(collider);
-        }
-        if (maybeLayerConfig?.useTileColliders && colliders.length > 0) {
-            if (this.visible) {
-                tile.solid = true;
-            }
-        }
-        if (maybeLayerConfig?.useTileCollidersWhenInvisible && colliders.length > 0) {
-            tile.solid = true;
-        }
-
-        let animation = headless ? null : tileset.getAnimationForGid(gid);
-        if (animation) {
-            if (hasTint) {
-                animation = animation.clone();
-                animation.tint = tint;
-            }
-            tile.clearGraphics();
-            tile.addGraphic(animation, {offset: tileset.tileOffset});
-            if (this.resource.useMitraWiring) {
-                const tileObj = tileset.getTileByGid(gid);
-                const strategy = tileObj?.properties.get(MitraTiledProperties.Animation.Strategy);
-                if (strategy && typeof strategy === 'string') {
-                    switch (strategy.toLowerCase()) {
-                        case AnimationStrategy.End.toLowerCase(): {
-                            animation.strategy = AnimationStrategy.End;
-                            break;
-                        }
-                        case AnimationStrategy.Freeze.toLowerCase(): {
-                            animation.strategy = AnimationStrategy.Freeze;
-                            break;
-                        }
-                        case AnimationStrategy.Loop.toLowerCase(): {
-                            animation.strategy = AnimationStrategy.Loop;
-                            break;
-                        }
-                        case AnimationStrategy.PingPong.toLowerCase(): {
-                            animation.strategy = AnimationStrategy.PingPong;
-                            break;
-                        }
-                        default: {
-                            // unknown animation strategy
-                            this.logger.warn(`Unknown animation strategy in tileset ${tileset.name} on tile gid ${gid}: ${strategy}`);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     async load(): Promise<void> {
@@ -434,6 +320,114 @@ export class TileLayer implements Layer {
                 if (gid !== 0) {
                     const tile = this.tilemap.tiles[i];
                     this.updateTile(tile, gid, hasTint, tint, isSolidLayer);
+                }
+            }
+        }
+    }
+
+    private _getGidForTile(exTile: ExTile): number {
+        let gid = 0;
+        if (this._isInfinite) {
+            const chunkData = this._tileToChunkData.get(exTile);
+            const chunkIndex = this._tileToChunkIndex.get(exTile);
+            // Actually not an error, Tiled packs these sparsely so it's very possible they're missing
+            if (chunkIndex == null || !chunkData) return gid;
+
+            gid = getCanonicalGid(chunkData[chunkIndex]);
+
+        } else {
+            const tileIndex = this.tilemap.tiles.indexOf(exTile);
+            gid = getCanonicalGid(this.data[tileIndex]);
+        }
+        return gid;
+    }
+
+    private _recordTileData(gid: number, tile: ExTile) {
+        let tiles: TileInfo[] | undefined = this._gidToTileInfo.get(gid);
+        let tileset = this.resource.getTilesetForTileGid(gid);
+        let maybeTile = tileset.getTileByGid(gid);
+        if (!tiles) {
+            tiles = [{exTile: tile, tiledTile: maybeTile}];
+        } else {
+            tiles.push({exTile: tile, tiledTile: maybeTile});
+        }
+        this._gidToTileInfo.set(gid, tiles);
+        tile.data.set(MitraTiledProperties.TileData.Tiled, maybeTile);
+    }
+
+    private updateTile(tile: ExTile, gid: number, hasTint: boolean, tint: Color, isSolidLayer: boolean) {
+        this._recordTileData(gid, tile);
+        const maybeLayerConfig = this.resource.getLayerConfig(this.name) ||
+            this.resource.getLayerConfig(this.id);
+        if (maybeLayerConfig?.isSolid !== undefined) {
+            isSolidLayer = maybeLayerConfig.isSolid;
+        }
+        if (this.resource.useMitraWiring && isSolidLayer && this.visible) {
+            tile.solid = true;
+        }
+
+        const tileset = this.resource.getTilesetForTileGid(gid);
+        const headless = this.resource.headless;
+
+        if (!headless) {
+            let sprite = tileset.getSpriteForGid(gid);
+            if (hasTint) {
+                sprite = sprite.clone();
+                sprite.tint = tint;
+            }
+            tile.addGraphic(sprite, {offset: tileset.tileOffset});
+        }
+
+        // the whole tilemap uses a giant composite collider relative to the Tilemap
+        // not individual tiles
+        const colliders = tileset.getCollidersForGid(gid);
+        for (let collider of colliders) {
+            tile.addCollider(collider);
+        }
+        if (maybeLayerConfig?.useTileColliders && colliders.length > 0) {
+            if (this.visible) {
+                tile.solid = true;
+            }
+        }
+        if (maybeLayerConfig?.useTileCollidersWhenInvisible && colliders.length > 0) {
+            tile.solid = true;
+        }
+
+        let animation = headless ? null : tileset.getAnimationForGid(gid);
+        if (animation) {
+            if (hasTint) {
+                animation = animation.clone();
+                animation.tint = tint;
+            }
+            tile.clearGraphics();
+            tile.addGraphic(animation, {offset: tileset.tileOffset});
+            if (this.resource.useMitraWiring) {
+                const tileObj = tileset.getTileByGid(gid);
+                const strategy = tileObj?.properties.get(MitraTiledProperties.Animation.Strategy);
+                if (strategy && typeof strategy === 'string') {
+                    switch (strategy.toLowerCase()) {
+                        case AnimationStrategy.End.toLowerCase(): {
+                            animation.strategy = AnimationStrategy.End;
+                            break;
+                        }
+                        case AnimationStrategy.Freeze.toLowerCase(): {
+                            animation.strategy = AnimationStrategy.Freeze;
+                            break;
+                        }
+                        case AnimationStrategy.Loop.toLowerCase(): {
+                            animation.strategy = AnimationStrategy.Loop;
+                            break;
+                        }
+                        case AnimationStrategy.PingPong.toLowerCase(): {
+                            animation.strategy = AnimationStrategy.PingPong;
+                            break;
+                        }
+                        default: {
+                            // unknown animation strategy
+                            this.logger.warn(`Unknown animation strategy in tileset ${tileset.name} on tile gid ${gid}: ${strategy}`);
+                            break;
+                        }
+                    }
                 }
             }
         }

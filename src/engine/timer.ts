@@ -64,38 +64,22 @@ export interface TimerOptions {
  * after a certain interval, optionally repeating.
  */
 export class Timer {
-    private _logger = Logger.getInstance();
     private static _MAX_ID: number = 0;
     public id: number = 0;
     public events = new EventEmitter<TimerEvents>();
-
-    private _elapsedTime: number = 0;
-    private _totalTimeAlive: number = 0;
-
-    private _running = false;
-
-    private _numberOfTicks: number = 0;
-    private _callbacks: Array<() => void>;
-
     public interval: number = 10;
     public repeats: boolean = false;
     public maxNumberOfRepeats: number = -1;
     public randomRange: [number, number] = [0, 0];
     public random!: Random;
-    private _baseInterval = 10;
-    private _generateRandomInterval = () => {
-        return this._baseInterval + this.random.integer(this.randomRange[0], this.randomRange[1]);
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private _onComplete: () => void = () => {
-    };
-    private _complete = false;
-    public get complete() {
-        return this._complete;
-    }
-
     public scene!: Scene;
+    private _logger = Logger.getInstance();
+    private _elapsedTime: number = 0;
+    private _totalTimeAlive: number = 0;
+    private _running = false;
+    private _numberOfTicks: number = 0;
+    private _callbacks: Array<() => void>;
+    private _baseInterval = 10;
 
     constructor(options: TimerOptions) {
         const fcn = options.action;
@@ -133,6 +117,36 @@ export class Timer {
         if (fcn) {
             this.on(fcn);
         }
+    }
+
+    private _complete = false;
+    public get complete() {
+        return this._complete;
+    }
+
+    public get timesRepeated(): number {
+        return this._numberOfTicks;
+    }
+
+    /**
+     * @returns milliseconds until the next action callback, if complete will return 0
+     */
+    public get timeToNextAction() {
+        if (this.complete) {
+            return 0;
+        }
+        return this.interval - this._elapsedTime;
+    }
+
+    /**
+     * @returns milliseconds elapsed toward the next action
+     */
+    public get timeElapsedTowardNextAction() {
+        return this._elapsedTime;
+    }
+
+    public get isRunning() {
+        return this._running;
     }
 
     /**
@@ -214,33 +228,8 @@ export class Timer {
         this._numberOfTicks = 0;
     }
 
-    public get timesRepeated(): number {
-        return this._numberOfTicks;
-    }
-
     public getTimeRunning(): number {
         return this._totalTimeAlive;
-    }
-
-    /**
-     * @returns milliseconds until the next action callback, if complete will return 0
-     */
-    public get timeToNextAction() {
-        if (this.complete) {
-            return 0;
-        }
-        return this.interval - this._elapsedTime;
-    }
-
-    /**
-     * @returns milliseconds elapsed toward the next action
-     */
-    public get timeElapsedTowardNextAction() {
-        return this._elapsedTime;
-    }
-
-    public get isRunning() {
-        return this._running;
     }
 
     /**
@@ -302,4 +291,12 @@ export class Timer {
             this.events.emit('cancel');
         }
     }
+
+    private _generateRandomInterval = () => {
+        return this._baseInterval + this.random.integer(this.randomRange[0], this.randomRange[1]);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private _onComplete: () => void = () => {
+    };
 }

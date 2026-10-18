@@ -1,64 +1,64 @@
-import type { Engine } from '../engine';
-import { Gamepads } from './gamepad';
-import { InputMapper } from './input-mapper';
-import { Keyboard } from './keyboard';
-import { PointerEventReceiver } from './pointer-event-receiver';
+import type {Engine} from '../engine';
+import {Gamepads} from './gamepad';
+import {InputMapper} from './input-mapper';
+import {Keyboard} from './keyboard';
+import {PointerEventReceiver} from './pointer-event-receiver';
 
 export interface InputHostOptions {
-  pointerTarget: Document | HTMLCanvasElement;
-  grabWindowFocus: boolean;
-  global?: GlobalEventHandlers | (() => GlobalEventHandlers);
-  engine: Engine;
+    pointerTarget: Document | HTMLCanvasElement;
+    grabWindowFocus: boolean;
+    global?: GlobalEventHandlers | (() => GlobalEventHandlers);
+    engine: Engine;
 }
 
 export class InputHost {
-  private _enabled = true;
+    keyboard: Keyboard;
+    pointers: PointerEventReceiver;
+    gamepads: Gamepads;
+    inputMapper: InputMapper;
 
-  keyboard: Keyboard;
-  pointers: PointerEventReceiver;
-  gamepads: Gamepads;
-  inputMapper: InputMapper;
+    constructor(options: InputHostOptions) {
+        const {pointerTarget, grabWindowFocus, engine, global} = options;
+        this.keyboard = new Keyboard();
+        this.pointers = new PointerEventReceiver(pointerTarget, engine);
+        this.gamepads = new Gamepads();
 
-  constructor(options: InputHostOptions) {
-    const { pointerTarget, grabWindowFocus, engine, global } = options;
-    this.keyboard = new Keyboard();
-    this.pointers = new PointerEventReceiver(pointerTarget, engine);
-    this.gamepads = new Gamepads();
-
-    if (global) {
-      this.keyboard.init({ global, grabWindowFocus });
+        if (global) {
+            this.keyboard.init({global, grabWindowFocus});
+        }
+        this.pointers.init({grabWindowFocus});
+        this.gamepads.init();
+        this.inputMapper = new InputMapper({
+            keyboard: this.keyboard,
+            pointers: this.pointers,
+            gamepads: this.gamepads
+        });
     }
-    this.pointers.init({ grabWindowFocus });
-    this.gamepads.init();
-    this.inputMapper = new InputMapper({
-      keyboard: this.keyboard,
-      pointers: this.pointers,
-      gamepads: this.gamepads
-    });
-  }
 
-  get enabled() {
-    return this._enabled;
-  }
+    private _enabled = true;
 
-  toggleEnabled(enabled: boolean) {
-    this._enabled = enabled;
-    this.keyboard.toggleEnabled(this._enabled);
-    this.pointers.toggleEnabled(this._enabled);
-    this.gamepads.toggleEnabled(this._enabled);
-  }
-
-  update() {
-    if (this._enabled) {
-      this.inputMapper.execute();
-      this.keyboard.update();
-      this.gamepads.update();
+    get enabled() {
+        return this._enabled;
     }
-  }
 
-  clear() {
-    this.keyboard.clear();
-    this.pointers.clear();
-    // this.gamepads.clear();
-  }
+    toggleEnabled(enabled: boolean) {
+        this._enabled = enabled;
+        this.keyboard.toggleEnabled(this._enabled);
+        this.pointers.toggleEnabled(this._enabled);
+        this.gamepads.toggleEnabled(this._enabled);
+    }
+
+    update() {
+        if (this._enabled) {
+            this.inputMapper.execute();
+            this.keyboard.update();
+            this.gamepads.update();
+        }
+    }
+
+    clear() {
+        this.keyboard.clear();
+        this.pointers.clear();
+        // this.gamepads.clear();
+    }
 }

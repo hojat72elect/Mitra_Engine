@@ -501,6 +501,8 @@ class BoundingBox {
 
 export class TiledParser {
 
+    _largestBounds = new BoundingBox(0, 0, 0, 0);
+
     _coerceNumber(value: any) {
         return +value;
     }
@@ -882,8 +884,6 @@ export class TiledParser {
         }
         return tileset as TiledTileset;
     }
-
-    _largestBounds = new BoundingBox(0, 0, 0, 0);
 
     parseTileLayer(layerNode: Element, infinite: boolean, strict = true): TiledLayer {
         const layer: any = {};

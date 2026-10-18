@@ -1,8 +1,8 @@
-import { Logger } from '../../util/log';
-import type { MitraGraphicsContextWebgl } from '../context/mitra-graphics-context-webgl';
-import { Shader } from '../context/shader';
-import { VertexBuffer } from '../context/vertex-buffer';
-import { VertexLayout } from '../context/vertex-layout';
+import {Logger} from '../../util/log';
+import type {MitraGraphicsContextWebgl} from '../context/mitra-graphics-context-webgl';
+import {Shader} from '../context/shader';
+import {VertexBuffer} from '../context/vertex-buffer';
+import {VertexLayout} from '../context/vertex-layout';
 
 /**
  * Helper that defines a whole screen renderer, just provide a fragment source!
@@ -11,22 +11,23 @@ import { VertexLayout } from '../context/vertex-layout';
  * - vec2 a_texcoord between 0-1 which corresponds to screen position
  */
 export class ScreenShader {
-  private _shader: Shader;
-  private _buffer: VertexBuffer;
-  private _layout: VertexLayout;
-  constructor(context: MitraGraphicsContextWebgl, fragmentSource: string) {
-    if (process.env.NODE_ENV === 'development') {
-      if (fragmentSource.includes('v_texcoord')) {
-        Logger.getInstance().warn(
-          `ScreenShader: "v_texcoord" is deprecated in postprocessing fragment shaders will be removed in v1.0,` +
-            ` use "v_uv" instead. Source [${fragmentSource}]`
-        );
-      }
-    }
-    const gl = context.__gl;
-    this._shader = new Shader({
-      graphicsContext: context,
-      vertexSource: `#version 300 es
+    private _shader: Shader;
+    private _buffer: VertexBuffer;
+    private _layout: VertexLayout;
+
+    constructor(context: MitraGraphicsContextWebgl, fragmentSource: string) {
+        if (process.env.NODE_ENV === 'development') {
+            if (fragmentSource.includes('v_texcoord')) {
+                Logger.getInstance().warn(
+                    `ScreenShader: "v_texcoord" is deprecated in postprocessing fragment shaders will be removed in v1.0,` +
+                    ` use "v_uv" instead. Source [${fragmentSource}]`
+                );
+            }
+        }
+        const gl = context.__gl;
+        this._shader = new Shader({
+            graphicsContext: context,
+            vertexSource: `#version 300 es
       in vec2 a_position;
       in vec2 a_uv;
       out vec2 v_texcoord;
@@ -38,36 +39,37 @@ export class ScreenShader {
         v_texcoord = a_uv;
         v_uv = a_uv;
       }`,
-      fragmentSource: fragmentSource
-    });
-    this._shader.compile();
-    // Setup memory layout
-    this._buffer = new VertexBuffer({
-      gl,
-      type: 'static',
-      // clip space quad + uv since we don't need a camera
-      data: new Float32Array([
-        -1, -1, 0, 0, -1, 1, 0, 1, 1, -1, 1, 0,
+            fragmentSource: fragmentSource
+        });
+        this._shader.compile();
+        // Setup memory layout
+        this._buffer = new VertexBuffer({
+            gl,
+            type: 'static',
+            // clip space quad + uv since we don't need a camera
+            data: new Float32Array([
+                -1, -1, 0, 0, -1, 1, 0, 1, 1, -1, 1, 0,
 
-        1, -1, 1, 0, -1, 1, 0, 1, 1, 1, 1, 1
-      ])
-    });
-    this._layout = new VertexLayout({
-      gl,
-      shader: this._shader,
-      vertexBuffer: this._buffer,
-      attributes: [
-        ['a_position', 2],
-        ['a_uv', 2]
-      ]
-    });
-    this._buffer.upload();
-  }
+                1, -1, 1, 0, -1, 1, 0, 1, 1, 1, 1, 1
+            ])
+        });
+        this._layout = new VertexLayout({
+            gl,
+            shader: this._shader,
+            vertexBuffer: this._buffer,
+            attributes: [
+                ['a_position', 2],
+                ['a_uv', 2]
+            ]
+        });
+        this._buffer.upload();
+    }
 
-  public getShader() {
-    return this._shader;
-  }
-  public getLayout() {
-    return this._layout;
-  }
+    public getShader() {
+        return this._shader;
+    }
+
+    public getLayout() {
+        return this._layout;
+    }
 }

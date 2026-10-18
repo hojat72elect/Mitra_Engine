@@ -11,24 +11,20 @@ import {ImageSource} from '../graphics/image-source';
  * to pre-load before starting a level or game.
  */
 export class Gif implements Loadable<ImageSource[]> {
-    private _resource: Resource<ArrayBuffer>;
-
     /**
      * The width of the texture in pixels
      */
     public width: number = 0;
-
     /**
      * The height of the texture in pixels
      */
     public height: number = 0;
-
+    public data: ImageSource[] = [];
+    private _resource: Resource<ArrayBuffer>;
     private _stream?: Stream;
     private _gif?: GifParser;
     private _images: ImageSource[] = [];
     private _animation?: Animation;
-
-    public data: ImageSource[] = [];
     private _sprites: Sprite[] = [];
 
     /**
@@ -52,6 +48,10 @@ export class Gif implements Loadable<ImageSource[]> {
 
     public set bustCache(val: boolean) {
         this._resource.bustCache = val;
+    }
+
+    public get readCheckBytes(): number[] {
+        return this._gif?.checkBytes ?? [];
     }
 
     /**
@@ -116,10 +116,6 @@ export class Gif implements Loadable<ImageSource[]> {
             return this._animation;
         }
         return null;
-    }
-
-    public get readCheckBytes(): number[] {
-        return this._gif?.checkBytes ?? [];
     }
 }
 
@@ -308,14 +304,14 @@ interface GCExtBlock extends GifBlock {
  * Roughly based on the documentation https://giflib.sourceforge.net/whatsinagif/index.html
  */
 export class GifParser {
-    private _st: Stream;
-    private _handler: any = {};
     public frames: GifFrame[] = [];
     public images: HTMLImageElement[] = [];
-    private _currentFrameCanvas: HTMLCanvasElement;
-    private _currentFrameContext: CanvasRenderingContext2D;
     public globalColorTableBytes: [number, number, number][] = [];
     public checkBytes: number[] = [];
+    private _st: Stream;
+    private _handler: any = {};
+    private _currentFrameCanvas: HTMLCanvasElement;
+    private _currentFrameContext: CanvasRenderingContext2D;
     private _gce?: GCExtBlock;
     private _hdr?: GifHeader;
 

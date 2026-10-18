@@ -22,19 +22,18 @@ import {MitraTiledProperties} from "./mitra-properties.ts";
 import {TiledDataComponent} from "./tiled-data-component";
 
 export class ObjectLayer implements Layer {
-    private logger = Logger.getInstance();
-
     public readonly name: string;
     public readonly class?: string;
     properties = new Map<string, PropertyMapValue>();
     objects: PluginObject[] = [];
     entities: Entity[] = [];
-    private _objectToEntity = new Map<PluginObject, Entity>();
-    private _entityToObject = new Map<Entity, PluginObject>();
-    private _loaded = false;
     tiledObjectLayer: TiledObjectLayer;
     resource: TiledResource;
     order: number;
+    private logger = Logger.getInstance();
+    private _objectToEntity = new Map<PluginObject, Entity>();
+    private _entityToObject = new Map<Entity, PluginObject>();
+    private _loaded = false;
 
     constructor(tiledObjectLayer: TiledObjectLayer, resource: TiledResource, order: number) {
         this.tiledObjectLayer = tiledObjectLayer;
@@ -44,10 +43,6 @@ export class ObjectLayer implements Layer {
         this.class = tiledObjectLayer.class;
 
         mapProps(this, tiledObjectLayer.properties);
-    }
-
-    private _logLoadedWarning<TMethod extends keyof ObjectLayer>(name: TMethod) {
-        this.logger.warn(`ObjectLayer ${this.name} is not yet loaded, ${name}() will always be empty!`);
     }
 
     getObjectsByName(name: string): PluginObject[] {
@@ -92,7 +87,6 @@ export class ObjectLayer implements Layer {
         return this.objects.filter(byPropertyValueMatcher(propertyName, valueMatcher));
     }
 
-
     /**
      * Search for actors that were created from tiled objects
      * @returns
@@ -106,7 +100,6 @@ export class ObjectLayer implements Layer {
         if (!this._loaded) this._logLoadedWarning('getEntitiesByPropertyValueMatcher');
         return this.getObjectsByProperty(propertyName, valueMatcher).map(o => this._objectToEntity.get(o)).filter(a => !!a) as Entity[];
     }
-
 
     /**
      * Search for an Tiled object by it's Tiled class name
@@ -126,7 +119,6 @@ export class ObjectLayer implements Layer {
         if (!this._loaded) this._logLoadedWarning('getEntitiesByClassName');
         return this.getObjectsByClassName(className).map(o => this._objectToEntity.get(o)).filter(a => !!a) as Entity[];
     }
-
 
     getTemplates(): TemplateObject[] {
         if (!this._loaded) this._logLoadedWarning('getTemplates');
@@ -414,6 +406,10 @@ export class ObjectLayer implements Layer {
         }
 
         this._loaded = true;
+    }
+
+    private _logLoadedWarning<TMethod extends keyof ObjectLayer>(name: TMethod) {
+        this.logger.warn(`ObjectLayer ${this.name} is not yet loaded, ${name}() will always be empty!`);
     }
 
     private _recordObjectEntityMapping(object: PluginObject, entity: Entity) {

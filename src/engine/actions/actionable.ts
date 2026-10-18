@@ -1,5 +1,5 @@
-﻿import type { ActionContext } from './action-context';
+﻿import type {ActionContext} from './action-context';
 
 export interface Actionable {
-  actions: ActionContext;
+    actions: ActionContext;
 }

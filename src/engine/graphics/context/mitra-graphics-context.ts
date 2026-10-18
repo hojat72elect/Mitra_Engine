@@ -304,6 +304,17 @@ export interface MitraGraphicsContext {
      * Sets the tint color to be multiplied by any images drawn, default is black 0xFFFFFFFF
      */
     tint: Color | null | undefined;
+    /**
+     * Access the debug drawing api
+     */
+    debug: DebugDraw;
+    /**
+     * Gets or sets the material to be used in the current context's drawings
+     *
+     * This allows customs shaders to be used but draw calls are no longer batched by default.
+     * @param material
+     */
+    material: Material | null | undefined;
 
     /**
      * Resets the current transform to the identity matrix
@@ -325,11 +336,6 @@ export interface MitraGraphicsContext {
      * Update the context with the current viewport dimensions (used in resizing)
      */
     updateViewport(resolution: Resolution): void;
-
-    /**
-     * Access the debug drawing api
-     */
-    debug: DebugDraw;
 
     /**
      * Draw an image to the Mitra Graphics context at an x and y coordinate using the images width and height
@@ -491,14 +497,6 @@ export interface MitraGraphicsContext {
      * @param args         Arguments forwarded to the renderer's `draw()` method
      */
     draw<TRenderer extends RendererPlugin>(rendererName: TRenderer['type'], ...args: Parameters<TRenderer['draw']>): void;
-
-    /**
-     * Gets or sets the material to be used in the current context's drawings
-     *
-     * This allows customs shaders to be used but draw calls are no longer batched by default.
-     * @param material
-     */
-    material: Material | null | undefined;
 
     /**
      * Creates and initializes the material which compiles the internal shader

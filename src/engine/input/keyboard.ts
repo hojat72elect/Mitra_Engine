@@ -333,65 +333,11 @@ export class Keyboard {
         this._enabled = enabled;
     }
 
-    private _releaseAllKeys = (ev: KeyboardEvent) => {
-        for (const code of this._keys) {
-            const keyEvent = new KeyEvent(code, ev.key, ev);
-            this.events.emit('up', keyEvent);
-            this.events.emit('release', keyEvent);
-        }
-        this._keysUp = Array.from(new Set(this._keys.concat(this._keysUp)));
-        this._keys.length = 0;
-    };
-
     public clear() {
         this._keysDown.length = 0;
         this._keysUp.length = 0;
         this._keys.length = 0;
     }
-
-    private _handleKeyDown = (ev: KeyboardEvent) => {
-        if (!this._enabled) {
-            return;
-        }
-
-        // handle macos meta key issue
-        // https://github.com/excaliburjs/Excalibur/issues/2608
-        if (!ev.metaKey && (this._keys.includes(Keys.MetaLeft) || this._keys.includes(Keys.MetaRight))) {
-            this._releaseAllKeys(ev);
-        }
-
-        const code = ev.code as Keys;
-        if (this._keys.indexOf(code) === -1) {
-            this._keys.push(code);
-            this._keysDown.push(code);
-            const keyEvent = new KeyEvent(code, ev.key, ev);
-            this.events.emit('down', keyEvent);
-            this.events.emit('press', keyEvent);
-        }
-    };
-
-    private _handleKeyUp = (ev: KeyboardEvent) => {
-        if (!this._enabled) {
-            return;
-        }
-        const code = ev.code as Keys;
-        const key = this._keys.indexOf(code);
-        if (key > -1) {
-            this._keys.splice(key, 1);
-        }
-        this._keysUp.push(code);
-        const keyEvent = new KeyEvent(code, ev.key, ev);
-
-        // alias the old api, we may want to deprecate this in the future
-        this.events.emit('up', keyEvent);
-        this.events.emit('release', keyEvent);
-
-        // handle macos meta key issue
-        // https://github.com/excaliburjs/Excalibur/issues/2608
-        if (ev.key === 'Meta') {
-            this._releaseAllKeys(ev);
-        }
-    };
 
     public update() {
         // Reset keysDown and keysUp after update is complete
@@ -468,4 +414,58 @@ export class Keyboard {
             );
         }
     }
+
+    private _releaseAllKeys = (ev: KeyboardEvent) => {
+        for (const code of this._keys) {
+            const keyEvent = new KeyEvent(code, ev.key, ev);
+            this.events.emit('up', keyEvent);
+            this.events.emit('release', keyEvent);
+        }
+        this._keysUp = Array.from(new Set(this._keys.concat(this._keysUp)));
+        this._keys.length = 0;
+    };
+
+    private _handleKeyDown = (ev: KeyboardEvent) => {
+        if (!this._enabled) {
+            return;
+        }
+
+        // handle macos meta key issue
+        // https://github.com/excaliburjs/Excalibur/issues/2608
+        if (!ev.metaKey && (this._keys.includes(Keys.MetaLeft) || this._keys.includes(Keys.MetaRight))) {
+            this._releaseAllKeys(ev);
+        }
+
+        const code = ev.code as Keys;
+        if (this._keys.indexOf(code) === -1) {
+            this._keys.push(code);
+            this._keysDown.push(code);
+            const keyEvent = new KeyEvent(code, ev.key, ev);
+            this.events.emit('down', keyEvent);
+            this.events.emit('press', keyEvent);
+        }
+    };
+
+    private _handleKeyUp = (ev: KeyboardEvent) => {
+        if (!this._enabled) {
+            return;
+        }
+        const code = ev.code as Keys;
+        const key = this._keys.indexOf(code);
+        if (key > -1) {
+            this._keys.splice(key, 1);
+        }
+        this._keysUp.push(code);
+        const keyEvent = new KeyEvent(code, ev.key, ev);
+
+        // alias the old api, we may want to deprecate this in the future
+        this.events.emit('up', keyEvent);
+        this.events.emit('release', keyEvent);
+
+        // handle macos meta key issue
+        // https://github.com/excaliburjs/Excalibur/issues/2608
+        if (ev.key === 'Meta') {
+            this._releaseAllKeys(ev);
+        }
+    };
 }

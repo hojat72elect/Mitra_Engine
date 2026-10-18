@@ -91,23 +91,19 @@ export interface LoaderOptions extends DefaultLoaderOptions {
  * ```
  */
 export class Loader extends DefaultLoader {
-    private _logger = Logger.getInstance();
     private static _DEFAULT_LOADER_OPTIONS: LoaderOptions = {
         loadables: [],
         fullscreenAfterLoad: false,
         fullscreenContainer: undefined
     };
-    private _originalOptions: LoaderOptions = {loadables: []};
     public override events = new EventEmitter();
     public screen!: Screen;
-    private _playButtonShown: boolean = false;
-
-    // logo drawing stuff
-
     // base64 string encoding of the Mitra logo (logo-white.png)
     public logo = logoImg;
     public logoWidth = 468;
     public logoHeight = 118;
+
+    // logo drawing stuff
     /**
      * Positions the top left corner of the logo image
      * If not set, the loader automatically positions the logo
@@ -123,19 +119,60 @@ export class Loader extends DefaultLoader {
      * If not set, the loader automatically positions the loading bar
      */
     public loadingBarPosition!: Vector | null;
-
     /**
      * Gets or sets the color of the loading bar, default is {@apilink Color.White}
      */
     public loadingBarColor: Color = Color.White;
-
     /**
      * Gets or sets the background color of the loader as a hex string
      */
     public backgroundColor: string = '#176BAA';
-
+    public suppressPlayButton: boolean = false;
+    /**
+     * Get/set play button text
+     */
+    public playButtonText: string = 'Play game';
+    override data: Loadable<any>[] = [];
     protected _imageElement!: HTMLImageElement;
     protected _imageLoaded: Future<void> = new Future();
+    protected _styleBlock!: HTMLStyleElement;
+    /** Loads the css from Loader.css */
+    protected _playButtonStyles: string = loaderCss;
+    private _logger = Logger.getInstance();
+    private _originalOptions: LoaderOptions = {loadables: []};
+    private _playButtonShown: boolean = false;
+
+    /**
+     * @param options Optionally provide options to loader
+     */
+    constructor(options?: LoaderOptions);
+
+    /**
+     * @param loadables  Optionally provide the list of resources you want to load at constructor time
+     */
+    constructor(loadables?: Loadable<any>[]);
+
+    constructor(loadablesOrOptions?: Loadable<any>[] | LoaderOptions) {
+        const options = Array.isArray(loadablesOrOptions)
+            ? {
+                loadables: loadablesOrOptions
+            }
+            : loadablesOrOptions;
+        super(options);
+        this._originalOptions = {...Loader._DEFAULT_LOADER_OPTIONS, ...options};
+    }
+
+    protected _playButtonRootElement!: HTMLElement;
+
+    public get playButtonRootElement(): HTMLElement | null {
+        return this._playButtonRootElement;
+    }
+
+    protected _playButtonElement!: HTMLButtonElement;
+
+    public get playButtonElement(): HTMLButtonElement | null {
+        return this._playButtonElement;
+    }
 
     protected get _image() {
         if (!this._imageElement) {
@@ -146,22 +183,6 @@ export class Loader extends DefaultLoader {
 
         return this._imageElement;
     }
-
-    public suppressPlayButton: boolean = false;
-
-    public get playButtonRootElement(): HTMLElement | null {
-        return this._playButtonRootElement;
-    }
-
-    public get playButtonElement(): HTMLButtonElement | null {
-        return this._playButtonElement;
-    }
-
-    protected _playButtonRootElement!: HTMLElement;
-    protected _playButtonElement!: HTMLButtonElement;
-    protected _styleBlock!: HTMLStyleElement;
-    /** Loads the css from Loader.css */
-    protected _playButtonStyles: string = loaderCss;
 
     protected get _playButton() {
         const existingRoot = document.getElementById('excalibur-play-root');
@@ -185,11 +206,6 @@ export class Loader extends DefaultLoader {
         }
         return this._playButtonElement;
     }
-
-    /**
-     * Get/set play button text
-     */
-    public playButtonText: string = 'Play game';
 
     /**
      * Return a html button element for Mitra to use as a play button
@@ -221,24 +237,6 @@ export class Loader extends DefaultLoader {
         }
         return buttonElement;
     };
-
-    /**
-     * @param options Optionally provide options to loader
-     */
-    constructor(options?: LoaderOptions);
-    /**
-     * @param loadables  Optionally provide the list of resources you want to load at constructor time
-     */
-    constructor(loadables?: Loadable<any>[]);
-    constructor(loadablesOrOptions?: Loadable<any>[] | LoaderOptions) {
-        const options = Array.isArray(loadablesOrOptions)
-            ? {
-                loadables: loadablesOrOptions
-            }
-            : loadablesOrOptions;
-        super(options);
-        this._originalOptions = {...Loader._DEFAULT_LOADER_OPTIONS, ...options};
-    }
 
     public override onInitialize(engine: Engine): void {
         this.engine = engine;
@@ -336,8 +334,6 @@ export class Loader extends DefaultLoader {
         }
     }
 
-    override data: Loadable<any>[] = [];
-
     public override async onUserAction(): Promise<void> {
         // short delay in showing the button for aesthetics
         await delay(200, this.engine?.clock);
@@ -360,40 +356,6 @@ export class Loader extends DefaultLoader {
         this.screen.popResolutionAndViewport();
         this.screen.applyResolutionAndViewport();
         this.dispose();
-    }
-
-    private _positionPlayButton() {
-        if (this.engine) {
-            const {
-                x: left,
-                y: top,
-                width: screenWidth,
-                height: screenHeight
-            } = this.engine.canvas.getBoundingClientRect();
-            if (this._playButtonRootElement && this._playButtonElement) {
-                const text = this._playButtonElement.querySelector('#excalibur-play-text')! as HTMLElement;
-                if (screenWidth < 450) {
-                    text.style.display = 'none';
-                } else {
-                    text.style.display = 'inline-block';
-                }
-
-                const buttonWidth = this._playButton.clientWidth;
-                const buttonHeight = this._playButton.clientHeight;
-                if (this.playButtonPosition) {
-                    this._playButtonRootElement.style.left = `${this.playButtonPosition.x}px`;
-                    this._playButtonRootElement.style.top = `${this.playButtonPosition.y}px`;
-                } else {
-                    this._playButtonRootElement.style.left = `${left + screenWidth / 2 - buttonWidth / 2}px`;
-                    this._playButtonRootElement.style.top = `${top + screenHeight / 2 - buttonHeight / 2 + 100}px`;
-                }
-
-                if (screenWidth < 450) {
-                    this._playButtonRootElement.style.left = `${left + screenWidth / 2 - buttonWidth / 2}px`;
-                    this._playButtonRootElement.style.top = `${top + screenHeight / 2 - buttonHeight / 2 + 25}px`;
-                }
-            }
-        }
     }
 
     /**
@@ -456,5 +418,39 @@ export class Loader extends DefaultLoader {
             this.loadingBarColor
         );
         this.engine.screen.antialiasing = oldAntialias;
+    }
+
+    private _positionPlayButton() {
+        if (this.engine) {
+            const {
+                x: left,
+                y: top,
+                width: screenWidth,
+                height: screenHeight
+            } = this.engine.canvas.getBoundingClientRect();
+            if (this._playButtonRootElement && this._playButtonElement) {
+                const text = this._playButtonElement.querySelector('#excalibur-play-text')! as HTMLElement;
+                if (screenWidth < 450) {
+                    text.style.display = 'none';
+                } else {
+                    text.style.display = 'inline-block';
+                }
+
+                const buttonWidth = this._playButton.clientWidth;
+                const buttonHeight = this._playButton.clientHeight;
+                if (this.playButtonPosition) {
+                    this._playButtonRootElement.style.left = `${this.playButtonPosition.x}px`;
+                    this._playButtonRootElement.style.top = `${this.playButtonPosition.y}px`;
+                } else {
+                    this._playButtonRootElement.style.left = `${left + screenWidth / 2 - buttonWidth / 2}px`;
+                    this._playButtonRootElement.style.top = `${top + screenHeight / 2 - buttonHeight / 2 + 100}px`;
+                }
+
+                if (screenWidth < 450) {
+                    this._playButtonRootElement.style.left = `${left + screenWidth / 2 - buttonWidth / 2}px`;
+                    this._playButtonRootElement.style.top = `${top + screenHeight / 2 - buttonHeight / 2 + 25}px`;
+                }
+            }
+        }
     }
 }
