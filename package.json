@@ -1,26 +1,25 @@
 {
   "name": "mitra_engine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "A 2D game engine for the web",
-  "main": "./dist/engine/index.js",
+  "main": "./dist/engine.js",
   "types": "./dist/engine/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/engine/index.d.ts",
-      "import": "./dist/engine/index.js"
+      "import": "./dist/engine.js"
     },
     "./tiled_plugin": {
       "types": "./dist/tiled_plugin/index.d.ts",
-      "import": "./dist/tiled_plugin/index.js"
+      "import": "./dist/tiled_plugin.js"
     }
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && vite build --config vite.lib.config.ts",
     "example1_flappy_bird": "vite --open /examples/example1_flappy_bird/",
     "example2_platformer": "vite --open /examples/example2_platformer/",
     "example3_space_shooter": "vite --open /examples/example3_space_shooter/",
@@ -35,6 +34,7 @@
     "@types/node": "^26.6.5",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
+    "vite-plugin-dts": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
     "eslint": "^10.12.0",
