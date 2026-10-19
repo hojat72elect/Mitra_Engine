@@ -1,21 +1,22 @@
-import type {ComponentCtor} from './component';
-import {Component, isComponentCtor} from './component';
-
-import type {Message} from '../util/observable';
-import {Observable} from '../util/observable';
-import type {OnAdd, OnInitialize, OnPostUpdate, OnPreUpdate, OnRemove} from '../interfaces/lifecycle-events';
+import {Component} from './Component';
+import type {Message} from '../util';
+import {Observable} from '../util';
+import type {OnAdd, OnInitialize, OnPostUpdate, OnPreUpdate, OnRemove} from '../interfaces';
 import type {Engine} from '../engine';
 import {AddEvent, InitializeEvent, KillEvent, PostUpdateEvent, PreUpdateEvent, RemoveEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
 import type {Scene} from '../scene';
-import {removeItemFromArray} from '../util/util';
-import type {MaybeKnownComponent} from './types';
+import {removeItemFromArray} from '../util';
+import type {MaybeKnownComponent} from './MaybeKnownComponent';
+import {ComponentCtor} from "./ComponentCtor";
+import {isComponentCtor} from "./isComponentCtor";
+import {EntityEvents} from "./EntityEvents";
 
 /**
  * Interface holding an entity component pair
  */
-export interface EntityComponent {
+interface EntityComponent {
     component: Component;
     entity: Entity;
 }
@@ -23,7 +24,7 @@ export interface EntityComponent {
 /**
  * AddedComponent message
  */
-export class AddedComponent implements Message<EntityComponent> {
+class AddedComponent implements Message<EntityComponent> {
     readonly type: 'Component Added' = 'Component Added';
 
     constructor(public data: EntityComponent) {
@@ -33,14 +34,15 @@ export class AddedComponent implements Message<EntityComponent> {
 /**
  * Type guard to know if message is f an Added Component
  */
-export function isAddedComponent(x: Message<EntityComponent>): x is AddedComponent {
+// @ts-ignore
+function isAddedComponent(x: Message<EntityComponent>): x is AddedComponent {
     return !!x && x.type === 'Component Added';
 }
 
 /**
  * RemovedComponent message
  */
-export class RemovedComponent implements Message<EntityComponent> {
+class RemovedComponent implements Message<EntityComponent> {
     readonly type: 'Component Removed' = 'Component Removed';
 
     constructor(public data: EntityComponent) {
@@ -50,34 +52,12 @@ export class RemovedComponent implements Message<EntityComponent> {
 /**
  * Type guard to know if message is for a Removed Component
  */
-export function isRemovedComponent(x: Message<EntityComponent>): x is RemovedComponent {
+// @ts-ignore
+function isRemovedComponent(x: Message<EntityComponent>): x is RemovedComponent {
     return !!x && x.type === 'Component Removed';
 }
 
-/**
- * Built in events supported by all entities
- */
-export interface EntityEvents {
-    initialize: InitializeEvent;
-    //@ts-ignore
-    add: AddEvent;
-    //@ts-ignore
-    remove: RemoveEvent;
-    preupdate: PreUpdateEvent;
-    postupdate: PostUpdateEvent;
-    kill: KillEvent;
-}
-
-export const EntityEvents = {
-    Add: 'add',
-    Remove: 'remove',
-    Initialize: 'initialize',
-    PreUpdate: 'preupdate',
-    PostUpdate: 'postupdate',
-    Kill: 'kill'
-} as const;
-
-export interface EntityOptions<TComponents extends Component> {
+interface EntityOptions<TComponents extends Component> {
     name?: string;
     components?: TComponents[];
 }

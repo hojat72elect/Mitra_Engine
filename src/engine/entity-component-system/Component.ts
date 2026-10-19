@@ -1,16 +1,5 @@
-import type {Entity} from './entity';
-
-/**
- * Component Constructor Types
- */
-export declare type ComponentCtor<TComponent extends Component = Component> = new (...args: any[]) => TComponent;
-
-/**
- *
- */
-export function isComponentCtor(value: any): value is ComponentCtor<Component> {
-    return !!value && !!value.prototype && !!value.prototype.constructor;
-}
+import type {Entity} from './Entity';
+import {ComponentCtor} from "./ComponentCtor";
 
 /**
  * Type guard to check if a component implements clone

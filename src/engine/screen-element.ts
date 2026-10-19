@@ -2,7 +2,7 @@ import {vec, Vector} from './math/vector';
 import type {Engine} from './engine';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
-import {TransformComponent} from './entity-component-system/components/transform-component';
+import {TransformComponent} from './entity-component-system/components/TransformComponent';
 import {CollisionType} from './collision/CollisionType';
 import {CoordPlane} from './math/coord-plane';
 

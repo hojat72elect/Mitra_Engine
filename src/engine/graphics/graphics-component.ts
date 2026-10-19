@@ -3,7 +3,7 @@ import {Graphic} from './graphic';
 import type {HasTick} from './animation';
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';
 import {BoundingBox} from '../collision/index';
-import {Component} from '../entity-component-system/component';
+import {Component} from '../entity-component-system/Component';
 import type {Material} from './context/material';
 import {Logger} from '../util/log';
 import {WatchVector} from '../math/watch-vector';

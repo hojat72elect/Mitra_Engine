@@ -1,6 +1,7 @@
-import {Component} from '../component';
+import {Component} from '../Component';
 
-export class TagsComponent extends Component {
+// @ts-ignore
+class TagsComponent extends Component {
     // @ts-ignore
     private static _NAME = 'TagsComponent';
     public tags = new Set<string>();

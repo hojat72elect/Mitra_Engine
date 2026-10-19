@@ -1,9 +1,10 @@
-import {System, SystemType} from '../entity-component-system/system';
-import {TransformComponent} from '../entity-component-system/components/transform-component';
+import {System} from '../entity-component-system';
+import {TransformComponent} from '../entity-component-system';
 import {IsometricEntityComponent} from './isometric-entity-component';
 import type {Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
-import {PauseComponentTag} from '../entity-component-system/components/pause-component';
+import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class IsometricEntitySystem extends System {
     static override priority: number = SystemPriority.Lower;

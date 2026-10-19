@@ -1,4 +1,4 @@
-import {Component} from '../entity-component-system/component';
+import {Component} from '../entity-component-system/Component';
 import type {BoundingBox} from '../collision/BoundingBox';
 
 export interface PointerComponentOptions {

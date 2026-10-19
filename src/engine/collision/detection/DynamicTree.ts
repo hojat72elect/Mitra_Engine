@@ -2,7 +2,7 @@ import {BoundingBox} from '../BoundingBox';
 import type {Ray} from '../../math/ray';
 import {Logger} from '../../util/log';
 import type {Id} from '../../id';
-import type {Entity} from '../../entity-component-system/entity';
+import type {Entity} from '../../entity-component-system/Entity';
 import {BodyComponent} from '../BodyComponent';
 import type {MitraGraphicsContext} from '../..';
 import {Color} from '../..';

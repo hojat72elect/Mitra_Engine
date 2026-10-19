@@ -1,4 +1,4 @@
-import {Component} from '../entity-component-system/component';
+import {Component} from '../entity-component-system/Component';
 import {Vector} from '../math/vector';
 
 export type OccluderShape =

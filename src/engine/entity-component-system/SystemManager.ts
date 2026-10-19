@@ -1,19 +1,9 @@
-import type {SystemType} from './system';
-import {System} from './system';
+import {System} from './System';
 import type {Scene} from '../scene';
-import type {World} from './world';
-import {removeItemFromArray} from '../util/util';
-
-export interface SystemCtor<T extends System> {
-    new(...args: any[]): T;
-}
-
-/**
- *
- */
-export function isSystemConstructor(x: any): x is SystemCtor<System> {
-    return !!x?.prototype && !!x?.prototype?.constructor?.name;
-}
+import type {World} from './World';
+import {removeItemFromArray} from '../util';
+import {SystemType} from "./SystemType";
+import {SystemCtor} from "./SystemCtor";
 
 /**
  * The SystemManager is responsible for keeping track of all systems in a scene.

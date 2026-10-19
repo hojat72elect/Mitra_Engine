@@ -1,13 +1,12 @@
-import {BodyComponent} from '../collision/BodyComponent';
-import {BoundingBox} from '../collision/BoundingBox';
-import {ColliderComponent} from '../collision/ColliderComponent';
-import type {Collider} from '../collision/colliders/Collider';
-import {CollisionType} from '../collision/CollisionType';
-import {CompositeCollider} from '../collision/colliders/CompositeCollider';
-import {vec, Vector} from '../math/vector';
-import {TransformComponent} from '../entity-component-system/components/transform-component';
-import type {EntityEvents} from '../entity-component-system/entity';
-import {Entity} from '../entity-component-system/entity';
+import {BodyComponent} from '../collision';
+import {BoundingBox} from '../collision';
+import {ColliderComponent} from '../collision';
+import type {Collider} from '../collision';
+import {CollisionType} from '../collision';
+import {CompositeCollider} from '../collision';
+import {vec, Vector} from '../math';
+import {TransformComponent} from '../entity-component-system';
+import {Entity} from '../entity-component-system';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {DebugGraphicsComponent, GraphicsComponent} from '../graphics';
 import {IsometricEntityComponent} from './isometric-entity-component';
@@ -20,6 +19,7 @@ import {PointerEventsToObjectDispatcher} from '../input/pointer-events-to-object
 import type {PointerEventReceiver} from '../input/pointer-event-receiver';
 import type {GlobalCoordinates} from '../math';
 import {CoordPlane} from '../math';
+import {EntityEvents} from "../entity-component-system/EntityEvents";
 
 export interface IsometricTilePointerEvents {
     pointerup: PointerEvent;

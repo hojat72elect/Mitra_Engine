@@ -1,7 +1,8 @@
-import {Vector} from '../../math/vector';
-import {Component} from '../component';
+import {Vector} from '../../math';
+import {Component} from '../Component';
 
-export interface Motion {
+// @ts-ignore
+interface Motion {
     /**
      * The velocity of an entity in pixels per second
      */

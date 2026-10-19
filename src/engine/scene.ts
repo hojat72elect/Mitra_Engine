@@ -25,7 +25,6 @@ import type {
 } from './interfaces';
 import * as Util from './util/util';
 import {Trigger} from './trigger';
-import {SystemType} from './entity-component-system';
 import {World} from './entity-component-system';
 import {MotionSystem} from './collision';
 import {CollisionSystem} from './collision';
@@ -49,6 +48,7 @@ import {PauseSystem} from './util/pause-system';
 import {FlickerSystem} from './lighting';
 import {LightingSystem} from './lighting';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
+import {SystemType} from "./entity-component-system/SystemType";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

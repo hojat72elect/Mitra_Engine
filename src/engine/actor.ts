@@ -26,7 +26,6 @@ import type {Eventable} from './interfaces';
 import type {PointerEvents} from './interfaces';
 import {CollisionType} from './collision';
 import {PauseComponent} from './entity-component-system';
-import type {EntityEvents} from './entity-component-system';
 import {Entity} from './entity-component-system';
 import {TransformComponent} from './entity-component-system';
 import {MotionComponent} from './entity-component-system';
@@ -45,7 +44,8 @@ import type {EventKey, Handler, Subscription} from './event-emitter';
 import {EventEmitter} from './event-emitter';
 import type {Component} from './entity-component-system';
 import type {Graphic, Material} from './graphics';
-import {ActionsComponent} from "./actions/actions-component/ActionsComponent";
+import {ActionsComponent} from "./actions";
+import {EntityEvents} from "./entity-component-system/EntityEvents";
 
 /**
  * Type guard for checking if something is an Actor

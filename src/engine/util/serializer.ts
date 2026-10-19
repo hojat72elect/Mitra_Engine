@@ -1,10 +1,6 @@
-// ============================================================================
-// Mitra Serialization System - Centralized Architecture
-// ============================================================================
-
 import {Entity} from '../entity-component-system';
 import {Actor} from '../actor';
-import type {Component, ComponentCtor} from '../entity-component-system';
+import type {Component} from '../entity-component-system';
 import {MotionComponent, TransformComponent} from '../entity-component-system';
 import {PointerComponent} from '../input/pointer-component';
 import {GraphicsComponent} from '../graphics';
@@ -12,11 +8,8 @@ import {BodyComponent} from '../collision';
 import {ColliderComponent} from '../collision';
 import type {Graphic} from '../graphics';
 import {Logger} from './log';
-import {ActionsComponent} from "../actions/actions-component/ActionsComponent";
-
-// ============================================================================
-// Core Serialization Interfaces
-// ============================================================================
+import {ActionsComponent} from "../actions";
+import {ComponentCtor} from "../entity-component-system/ComponentCtor";
 
 /**
  * Base interface for all serialized data

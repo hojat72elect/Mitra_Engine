@@ -1,14 +1,14 @@
-export * from './component';
-export * from './entity';
-export * from './entity-manager';
-export * from './query';
-export * from './query-manager';
-export * from './system';
-export * from './system-manager';
-export * from './world';
-export type * from './types';
-export * from './priority';
+export * from './Component';
+export * from './Entity';
+export * from './EntityManager';
+export * from './Query';
+export * from './QueryManager';
+export * from './System';
+export * from './SystemManager';
+export * from './World';
+export type * from './MaybeKnownComponent';
+export * from './SystemPriority';
 
-export * from './components/transform-component';
-export * from './components/motion-component';
-export * from './components/pause-component';
+export * from './components/TransformComponent';
+export * from './components/MotionComponent';
+export * from './components/PauseComponent';

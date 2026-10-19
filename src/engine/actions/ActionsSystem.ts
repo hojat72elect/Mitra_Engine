@@ -1,8 +1,9 @@
 import type {Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
-import {System, SystemType} from '../entity-component-system';
-import {PauseComponentTag} from '../entity-component-system';
+import {System} from '../entity-component-system';
 import {ActionsComponent} from "./actions-component/ActionsComponent";
+import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class ActionsSystem extends System {
     static override priority = SystemPriority.Higher;

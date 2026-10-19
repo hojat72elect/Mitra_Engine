@@ -1,10 +1,8 @@
-import {Component} from '../component';
+import {Component} from '../Component';
 
-export interface PauseComponentInterface {
+interface PauseComponentInterface {
     canPause: boolean;
 }
-
-export const PauseComponentTag = 'ex.paused' as const;
 
 export class PauseComponent extends Component {
     // @ts-ignore

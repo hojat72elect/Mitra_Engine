@@ -1,0 +1,1 @@
+export const PauseComponentTag = 'ex.paused' as const;

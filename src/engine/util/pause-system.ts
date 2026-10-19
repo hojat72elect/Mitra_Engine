@@ -1,7 +1,9 @@
 import type {EventEmitter, Scene, SceneEvents} from '..';
 import type {Query} from '../entity-component-system';
-import {System, SystemPriority, SystemType} from '../entity-component-system';
-import {PauseComponent, PauseComponentTag} from '../entity-component-system/components/pause-component';
+import {System, SystemPriority} from '../entity-component-system';
+import {PauseComponent} from '../entity-component-system';
+import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class PauseSystem extends System {
     static override priority = SystemPriority.Highest;

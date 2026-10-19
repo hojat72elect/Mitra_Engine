@@ -8,7 +8,7 @@ import type {TileMap} from './tile-map';
 import type {Side} from './collision/Side';
 import type {CollisionContact} from './collision/detection/CollisionContact';
 import type {Collider} from './collision/colliders/Collider';
-import type {Entity} from './entity-component-system/entity';
+import type {Entity} from './entity-component-system/Entity';
 import type {
     OnAdd,
     OnInitialize,

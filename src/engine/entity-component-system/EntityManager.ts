@@ -1,10 +1,11 @@
-import {Entity} from './entity';
-import type {World} from './world';
-import {removeItemFromArray} from '../util/util';
+import {Entity} from './Entity';
+import type {World} from './World';
+import {removeItemFromArray} from '../util';
 import type {Scene} from '../scene';
 
-// Add/Remove entities and components
-
+/**
+ * Add/Remove entities and components
+ */
 export class EntityManager {
     public entities: Entity[] = [];
     public _entityIndex: { [entityId: string]: Entity } = {};

@@ -1,14 +1,7 @@
 import type {Scene} from '../scene';
-import {SystemPriority} from './priority';
-import type {World} from './world';
-
-/**
- * Enum that determines whether to run the system in the update or draw phase
- */
-export enum SystemType {
-    Update = 'update',
-    Draw = 'draw'
-}
+import {SystemPriority} from './SystemPriority';
+import type {World} from './World';
+import {SystemType} from "./SystemType";
 
 /**
  * A Mitra {@apilink System} that updates entities of certain types.

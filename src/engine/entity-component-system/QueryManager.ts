@@ -1,8 +1,9 @@
-import type {Entity} from './entity';
-import type {QueryParams} from './query';
-import {Query} from './query';
-import type {Component, ComponentCtor} from './component';
-import type {World} from './world';
+import type {Entity} from './Entity';
+import {Query} from './Query';
+import type {Component} from './Component';
+import type {World} from './World';
+import {ComponentCtor} from "./ComponentCtor";
+import {QueryParams} from "./QueryParams";
 
 /**
  * The query manager is responsible for updating all queries when entities/components change

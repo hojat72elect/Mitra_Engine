@@ -1,4 +1,4 @@
-import {Component} from '../entity-component-system/component';
+import {Component} from '../entity-component-system/Component';
 import {Color} from '../color';
 import {Logger} from '../util/log';
 import type {FlickerOptions} from './flicker-options';

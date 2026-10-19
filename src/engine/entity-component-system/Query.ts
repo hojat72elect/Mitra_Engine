@@ -1,31 +1,17 @@
-import type {Entity} from './entity';
-import {Observable} from '../util/observable';
-import type {Component, ComponentCtor} from '../entity-component-system/component';
+import type {Entity} from './Entity';
+import {Observable} from '../util';
+import type {Component} from './Component';
+import {ComponentCtor} from "./ComponentCtor";
+import {QueryParams} from "./QueryParams";
 
-export type ComponentInstance<T> = T extends ComponentCtor<infer R> ? R : never;
+type ComponentInstance<T> = T extends ComponentCtor<infer R> ? R : never;
 
 /**
  * Turns `Entity<A | B>` into `Entity<A> | Entity<B>`
  */
-export type DistributeEntity<T> = T extends infer U extends Component ? Entity<U> : never;
+type DistributeEntity<T> = T extends infer U extends Component ? Entity<U> : never;
 
-export interface QueryParams<
-    TKnownComponentCtors extends ComponentCtor<Component> = never,
-    TAnyComponentCtors extends ComponentCtor<Component> = never
-> {
-    components?: {
-        all?: TKnownComponentCtors[];
-        any?: TAnyComponentCtors[];
-        not?: ComponentCtor<Component>[];
-    };
-    tags?: {
-        all?: string[];
-        any?: string[];
-        not?: string[];
-    };
-}
-
-export type QueryEntity<
+type QueryEntity<
     TAllComponentCtors extends ComponentCtor<Component> = never,
     TAnyComponentCtors extends ComponentCtor<Component> = never
 > = [TAnyComponentCtors] extends [never] // (trick to exclude `never` explicitly)

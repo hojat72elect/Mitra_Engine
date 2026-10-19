@@ -1,22 +1,23 @@
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';
 import type {Scene} from '../scene';
 import {GraphicsComponent} from './graphics-component';
-import {vec, Vector} from '../math/vector';
-import {TransformComponent} from '../entity-component-system/components/transform-component';
-import type {Entity} from '../entity-component-system/entity';
+import {vec, Vector} from '../math';
+import {TransformComponent} from '../entity-component-system';
+import type {Entity} from '../entity-component-system';
 import type {Camera} from '../camera';
 import type {Query, World} from '../entity-component-system';
-import {System, SystemPriority, SystemType} from '../entity-component-system';
+import {System, SystemPriority} from '../entity-component-system';
 import type {Engine} from '../engine';
 import {GraphicsGroup} from './graphics-group';
 import {ParallaxComponent} from './parallax-component';
-import {CoordPlane} from '../math/coord-plane';
-import {BodyComponent} from '../collision/BodyComponent';
+import {CoordPlane} from '../math';
+import {BodyComponent} from '../collision';
 import {FontCache} from './font-cache';
 import {PostDrawEvent, PostTransformDrawEvent, PreDrawEvent, PreTransformDrawEvent} from '../events';
-import {Transform} from '../math/transform';
+import {Transform} from '../math';
 import {blendTransform} from './transform-interpolation';
 import {Graphic} from './graphic';
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class GraphicsSystem extends System {
     static override priority = SystemPriority.Average;

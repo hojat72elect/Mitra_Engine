@@ -1,16 +1,15 @@
-import type {Vector} from '../../math/vector';
-import {CoordPlane} from '../../math/coord-plane';
-import {Transform} from '../../math/transform';
-import {Component} from '../component';
-import type {Entity} from '../entity';
-import {Observable} from '../../util/observable';
-import {Logger} from '../../util/log';
+import type {Vector} from '../../math';
+import {CoordPlane} from '../../math';
+import {Transform} from '../../math';
+import {Component} from '../Component';
+import type {Entity} from '../Entity';
+import {Observable} from '../../util';
+import {Logger} from '../../util';
 
-// =============================================================
-// Transform Component Serialization Data
-// ============================================================
-
-export interface TransformComponentData {
+/**
+ * Transform Component Serialization Data
+ */
+interface TransformComponentData {
     type: string;
     pos: { x: number; y: number };
     rotation: number;

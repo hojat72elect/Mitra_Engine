@@ -1,13 +1,14 @@
 import type {Entity, Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
-import {MotionComponent} from '../entity-component-system/components/motion-component';
-import {PauseComponentTag} from '../entity-component-system/components/pause-component';
-import {TransformComponent} from '../entity-component-system/components/transform-component';
-import {System, SystemType} from '../entity-component-system/system';
+import {MotionComponent} from '../entity-component-system';
+import {TransformComponent} from '../entity-component-system';
+import {System} from '../entity-component-system';
 import {BodyComponent} from './BodyComponent';
 import {CollisionType} from './CollisionType';
 import {EulerIntegrator} from './EulerIntegrator';
 import type {PhysicsWorld} from './PhysicsWorld';
+import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class MotionSystem extends System {
     static override priority = SystemPriority.Higher;

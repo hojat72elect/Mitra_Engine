@@ -5,7 +5,7 @@ import {MotionComponent} from '../entity-component-system';
 import {ColliderComponent} from '../collision';
 import type {Entity, Query, World} from '../entity-component-system';
 import {SystemPriority, TransformComponent} from '../entity-component-system';
-import {System, SystemType} from '../entity-component-system';
+import {System} from '../entity-component-system';
 import type {MitraGraphicsContext} from '../graphics';
 import {vec, Vector} from '../math';
 import {toDegrees} from '../math';
@@ -19,6 +19,7 @@ import {DisplayMode} from '../screen';
 import {Debug} from '../graphics';
 import {Color} from '../color';
 import type {BoundingBox} from '../collision';
+import {SystemType} from "../entity-component-system/SystemType";
 
 export class DebugSystem extends System {
     static override priority = SystemPriority.Lowest;
