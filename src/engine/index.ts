@@ -23,7 +23,7 @@ export * from './math/index';
 export * from './camera';
 export * from './debug/index';
 export * from './event-emitter';
-export * from './events/media-events';
+export * from './events/MediaEvent';
 export * from './events';
 export * from './label';
 export {FontStyle, FontUnit, TextAlign, BaseAlign, TextDirection} from './graphics/font-common';

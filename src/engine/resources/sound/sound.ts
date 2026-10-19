@@ -1,15 +1,16 @@
-import {ExResponse} from '../../interfaces/audio-implementation';
-import type {Audio} from '../../interfaces/audio';
+import {ExResponse} from '../../interfaces';
+import type {Audio} from '../../interfaces';
 import type {Engine} from '../../engine';
 import {Resource} from '../resource';
 import {WebAudioInstance} from './web-audio-instance';
 import {AudioContextFactory} from './audio-context';
-import {NativeSoundEvent, NativeSoundProcessedEvent} from '../../events/media-events';
 import {canPlayFile, canPlayMime} from '../../util/sound';
-import type {Loadable} from '../../interfaces/index';
-import {Logger} from '../../util/log';
+import type {Loadable} from '../../interfaces';
+import {Logger} from '../../util';
 import type {EventKey, Handler, Subscription} from '../../event-emitter';
 import {EventEmitter} from '../../event-emitter';
+import {NativeSoundEvent} from "../../events/NativeSoundEvent";
+import {NativeSoundProcessedEvent} from "../../events/NativeSoundProcessedEvent";
 
 export interface SoundEvents {
     volumechange: NativeSoundEvent;

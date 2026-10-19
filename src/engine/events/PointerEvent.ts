@@ -1,8 +1,8 @@
-import type {GlobalCoordinates} from '../math/global-coordinates';
+import type {GlobalCoordinates} from '../math';
 import type {WheelDeltaMode} from '../input/wheel-delta-mode';
-import {ExEvent} from './ex-event';
+import {ExEvent} from './ExEvent';
 
-export abstract class PointerEvent extends ExEvent<'down' | 'up' | 'move' | 'cancel'> {
+abstract class PointerEvent extends ExEvent<'down' | 'up' | 'move' | 'cancel'> {
     constructor(
         public pointerId: number,
         public coordinates: GlobalCoordinates,
@@ -12,23 +12,28 @@ export abstract class PointerEvent extends ExEvent<'down' | 'up' | 'move' | 'can
     }
 }
 
-export class PointerUp extends PointerEvent {
+// @ts-ignore
+class PointerUp extends PointerEvent {
     public readonly type = 'up';
 }
 
-export class PointerDown extends PointerEvent {
+// @ts-ignore
+class PointerDown extends PointerEvent {
     public readonly type = 'down';
 }
 
-export class PointerMove extends PointerEvent {
+// @ts-ignore
+class PointerMove extends PointerEvent {
     public readonly type = 'move';
 }
 
-export class PointerCancel extends PointerEvent {
+// @ts-ignore
+class PointerCancel extends PointerEvent {
     public readonly type = 'cancel';
 }
 
-export class Wheel extends ExEvent<'wheel'> {
+// @ts-ignore
+class Wheel extends ExEvent<'wheel'> {
     public readonly type = 'wheel';
 
     constructor(

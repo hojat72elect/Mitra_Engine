@@ -1,6 +1,5 @@
-import type {Sound} from '../resources/sound/sound';
+import type {Sound} from '../resources';
 import type {Actor} from '../actor';
-import type {WebAudioInstance} from '../resources/sound/web-audio-instance';
 import {GameEvent} from '../';
 
 export class MediaEvent extends GameEvent<Sound> {
@@ -70,27 +69,5 @@ export class MediaEvent extends GameEvent<Sound> {
         /**
          * Stub
          */
-    }
-}
-
-export class NativeSoundEvent extends MediaEvent {
-    constructor(
-        target: Sound,
-        public track?: WebAudioInstance
-    ) {
-        super(target, 'NativeSoundEvent');
-    }
-}
-
-export class NativeSoundProcessedEvent extends MediaEvent {
-    public data: string | AudioBuffer;
-
-    constructor(
-        target: Sound,
-        private _processedData: string | AudioBuffer
-    ) {
-        super(target, 'NativeSoundProcessedEvent');
-
-        this.data = this._processedData;
     }
 }
