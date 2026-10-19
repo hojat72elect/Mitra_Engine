@@ -1,4 +1,3 @@
-import type {FrameStats} from '../../debug';
 import type {Entity} from '../../entity-component-system';
 import type {MitraGraphicsContext} from '../../graphics';
 import {createId} from '../../id';
@@ -20,6 +19,7 @@ import type {RayCastOptions} from './RayCastOptions';
 import {SparseHashGrid} from './SparseHashGrid';
 import {HashGridProxy} from "./HashGridProxy";
 import {HashGridCell} from "./HashGridCell";
+import {FrameStats} from "../../debug/FrameStats";
 
 /**
  * Packs two collider ids into one number for pair de-duplication, supports ids up to 2^26

@@ -1,3 +1,3 @@
-export * from './debug-config';
-export * from './debug-flags';
-export * from './debug-system';
+export * from './DebugConfig';
+export * from './ColorBlindFlags';
+export * from './DebugSystem';

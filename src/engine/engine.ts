@@ -34,7 +34,6 @@ import {Color} from './color';
 import type {SceneConstructor} from './scene';
 import {isSceneConstructor, Scene} from './scene';
 import {Entity} from './entity-component-system';
-import type {DebugStats} from './debug';
 import {DebugConfig} from './debug';
 import {BrowserEvents} from './util/browser';
 import type {
@@ -71,6 +70,7 @@ import {mergeDeep} from './util';
 import {getDefaultGlobal} from './util/iframe';
 import type {Plugin} from './plugin';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
+import {DebugStats} from "./debug/DebugStats";
 
 polyfill();
 

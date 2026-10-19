@@ -1,13 +1,13 @@
-﻿import type {FrameStats} from '../../debug';
-import type {Pair} from './Pair';
+﻿import type {Pair} from './Pair';
 import type {Collider} from '../colliders/Collider';
 import type {CollisionContact} from './CollisionContact';
 import type {RayCastOptions} from './RayCastOptions';
-import type {Ray} from '../../math/ray';
+import type {Ray} from '../../math';
 import type {RayCastHit} from './RayCastHit';
-import type {MitraGraphicsContext} from '../../graphics/context/mitra-graphics-context';
+import type {MitraGraphicsContext} from '../../graphics';
 import type {BoundingBox} from '../BoundingBox';
-import type {Vector} from '../../math/vector';
+import type {Vector} from '../../math';
+import {FrameStats} from "../../debug/FrameStats";
 
 /**
  * Definition for collision processor

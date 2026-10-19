@@ -2,7 +2,7 @@ import type {Scene} from './scene';
 import type {Vector} from './math/vector';
 import type {Actor} from './actor';
 import type {Trigger} from './trigger';
-import type {FrameStats} from './debug';
+
 import type {Engine} from './engine';
 import type {TileMap} from './tile-map';
 import type {Side} from './collision/Side';
@@ -20,6 +20,7 @@ import type {
 import type {MitraGraphicsContext} from './graphics';
 import type {Axes, Buttons, Gamepad} from './input/gamepad';
 import {Action} from "./actions/action/Action";
+import {FrameStats} from "./debug/FrameStats";
 
 
 export enum EventTypes {
