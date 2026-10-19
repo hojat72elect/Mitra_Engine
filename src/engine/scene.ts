@@ -9,7 +9,7 @@ import {
     PreDrawEvent,
     PreUpdateEvent
 } from './events';
-import {Logger} from './util/log';
+import {Logger} from './util';
 import {Timer} from './timer';
 import type {Engine} from './engine';
 import {TileMap} from './tile-map';
@@ -22,33 +22,33 @@ import type {
     CanInitialize,
     CanUpdate,
     SceneActivationContext
-} from './interfaces/lifecycle-events';
+} from './interfaces';
 import * as Util from './util/util';
 import {Trigger} from './trigger';
-import {SystemType} from './entity-component-system/system';
-import {World} from './entity-component-system/world';
-import {MotionSystem} from './collision/motion-system';
-import {CollisionSystem} from './collision/collision-system';
-import {Entity} from './entity-component-system/entity';
-import {GraphicsSystem} from './graphics/graphics-system';
-import {DebugSystem} from './debug/debug-system';
+import {SystemType} from './entity-component-system';
+import {World} from './entity-component-system';
+import {MotionSystem} from './collision';
+import {CollisionSystem} from './collision';
+import {Entity} from './entity-component-system';
+import {GraphicsSystem} from './graphics';
+import {DebugSystem} from './debug';
 import {PointerSystem} from './input/pointer-system';
-import {ActionsSystem} from './actions/ActionsSystem';
-import {IsometricEntitySystem} from './tile-map/isometric-entity-system';
-import {OffscreenSystem} from './graphics/offscreen-system';
+import {ActionsSystem} from './actions';
+import {IsometricEntitySystem} from './tile-map';
+import {OffscreenSystem} from './graphics';
 import type {MitraGraphicsContext} from './graphics';
-import {PhysicsWorld} from './collision/physics-world';
+import {PhysicsWorld} from './collision';
 import type {EventKey, Handler, Subscription} from './event-emitter';
 import {EventEmitter} from './event-emitter';
 import type {Color} from './color';
-import type {DefaultLoader} from './director/default-loader';
+import type {DefaultLoader} from './director';
 import type {Transition} from './director';
 import {InputHost} from './input/input-host';
 import {PointerScope} from './input/pointer-scope';
-import {getDefaultPhysicsConfig} from './collision/physics-config';
 import {PauseSystem} from './util/pause-system';
-import {FlickerSystem} from './lighting/flicker-system';
-import {LightingSystem} from './lighting/lighting-system';
+import {FlickerSystem} from './lighting';
+import {LightingSystem} from './lighting';
+import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

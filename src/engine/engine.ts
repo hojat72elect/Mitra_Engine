@@ -5,16 +5,16 @@ import {EventEmitter} from './event-emitter';
 import {PointerScope} from './input/pointer-scope';
 import {Flags} from './flags';
 import {polyfill} from './polyfill';
-import type {CanDraw, CanInitialize, CanUpdate} from './interfaces/lifecycle-events';
-import type {Vector} from './math/vector';
+import type {CanDraw, CanInitialize, CanUpdate} from './interfaces';
+import type {Vector} from './math';
 import type {ViewportDimension} from './screen';
 import {DisplayMode, Resolution, Screen} from './screen';
 import type {ScreenElement} from './screen-element';
 import type {Actor} from './actor';
 import type {Timer} from './timer';
 import type {TileMap} from './tile-map';
-import {DefaultLoader} from './director/default-loader';
-import {Loader} from './director/loader';
+import {DefaultLoader} from './director';
+import {Loader} from './director';
 import {Detector} from './util/detector';
 import {
     GameStartEvent,
@@ -29,13 +29,13 @@ import {
     PreUpdateEvent,
     VisibleEvent
 } from './events';
-import {Logger, LogLevel} from './util/log';
+import {Logger, LogLevel} from './util';
 import {Color} from './color';
 import type {SceneConstructor} from './scene';
 import {isSceneConstructor, Scene} from './scene';
-import {Entity} from './entity-component-system/entity';
-import type {DebugStats} from './debug/debug-config';
-import {DebugConfig} from './debug/debug-config';
+import {Entity} from './entity-component-system';
+import type {DebugStats} from './debug';
+import {DebugConfig} from './debug';
 import {BrowserEvents} from './util/browser';
 import type {
     AntialiasOptions,
@@ -52,25 +52,25 @@ import {
 } from './graphics';
 import type {Clock} from './util/clock';
 import {StandardClock} from './util/clock';
-import {ImageFiltering} from './graphics/filtering';
+import {ImageFiltering} from './graphics';
 import {GraphicsDiagnostics} from './graphics/graphics-diagnostics';
 import {Toaster} from './util/toaster';
 import type {InputMapper} from './input/input-mapper';
-import type {GoToOptions, SceneMap, SceneWithOptions, StartOptions, WithRoot} from './director/director';
-import {Director, DirectorEvents} from './director/director';
+import type {GoToOptions, SceneMap, SceneWithOptions, StartOptions, WithRoot} from './director';
+import {Director, DirectorEvents} from './director';
 import {InputHost} from './input/input-host';
-import type {PhysicsConfig} from './collision/physics-config';
-import {getDefaultPhysicsConfig} from './collision/physics-config';
-import type {LightingConfig} from './lighting/lighting-config';
-import {getDefaultLightingConfig} from './lighting/lighting-config';
+import type {PhysicsConfig} from './collision';
+import type {LightingConfig} from './lighting';
+import {getDefaultLightingConfig} from './lighting';
 import type {DeepRequired} from './util/required';
 import type {Context} from './context';
 import {createContext, useContext} from './context';
 import type {GarbageCollectionOptions} from './garbage-collector';
 import {DefaultGarbageCollectionOptions, GarbageCollector} from './garbage-collector';
-import {mergeDeep} from './util/util';
+import {mergeDeep} from './util';
 import {getDefaultGlobal} from './util/iframe';
 import type {Plugin} from './plugin';
+import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 
 polyfill();
 

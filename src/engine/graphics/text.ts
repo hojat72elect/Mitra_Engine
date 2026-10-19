@@ -1,5 +1,5 @@
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 import type {SpriteFont} from './sprite-font';
 import type {GraphicOptions} from './graphic';
 import {Graphic} from './graphic';

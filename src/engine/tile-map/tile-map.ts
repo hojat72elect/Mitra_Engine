@@ -1,20 +1,20 @@
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import type {Engine} from '../engine';
 import {vec, Vector} from '../math/vector';
 import {Logger} from '../util/log';
 import type {EntityEvents} from '../entity-component-system/entity';
 import {Entity} from '../entity-component-system/entity';
 import {TransformComponent} from '../entity-component-system/components/transform-component';
-import {BodyComponent} from '../collision/body-component';
-import {CollisionType} from '../collision/collision-type';
-import {Colliders} from '../collision/colliders/colliders';
+import {BodyComponent} from '../collision/BodyComponent';
+import {CollisionType} from '../collision/CollisionType';
+import {Colliders} from '../collision/colliders/Colliders';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {GraphicsComponent, hasGraphicsTick, ParallaxComponent} from '../graphics';
 import {MotionComponent} from '../entity-component-system/components/motion-component';
-import {ColliderComponent} from '../collision/collider-component';
-import type {CompositeCollider, CompositeStrategy} from '../collision/colliders/composite-collider';
+import {ColliderComponent} from '../collision/ColliderComponent';
+import type {CompositeCollider} from '../collision/colliders/CompositeCollider';
 import {DebugGraphicsComponent} from '../graphics/debug-graphics-component';
-import type {Collider} from '../collision/colliders/collider';
+import type {Collider} from '../collision/colliders/Collider';
 import {PostDrawEvent, PostUpdateEvent, PreDrawEvent, PreUpdateEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
@@ -27,6 +27,7 @@ import type {PointerEventReceiver} from '../input/pointer-event-receiver';
 import type {HasNestedPointerEvents} from '../input/pointer-events-to-object-dispatcher';
 import {PointerEventsToObjectDispatcher} from '../input/pointer-events-to-object-dispatcher';
 import type {GlobalCoordinates} from '../math';
+import {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
 
 export interface TileMapOptions {
     /**

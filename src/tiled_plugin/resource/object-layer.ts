@@ -6,7 +6,6 @@ import {
     GraphicsComponent,
     IsometricEntityComponent,
     Logger,
-    Shape,
     toRadians,
     vec,
     Vector
@@ -20,6 +19,7 @@ import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty, byPropertyVal
 import {Tileset} from "./tileset";
 import {MitraTiledProperties} from "./mitra-properties.ts";
 import {TiledDataComponent} from "./tiled-data-component";
+import {Shape} from "../../engine/collision/colliders/Shape.ts";
 
 export class ObjectLayer implements Layer {
     public readonly name: string;

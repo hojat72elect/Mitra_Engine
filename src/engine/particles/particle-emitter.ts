@@ -2,7 +2,7 @@ import type {Engine} from '../engine';
 import {Actor} from '../actor';
 import {vec} from '../math/vector';
 import {Random} from '../math/random';
-import {CollisionType} from '../collision/collision-type';
+import {CollisionType} from '../collision/CollisionType';
 import {randomInRange} from '../math/util';
 import {EmitterType} from './emitter-type';
 import type {ParticleConfig, ParticleEmitterOptions} from './particles';

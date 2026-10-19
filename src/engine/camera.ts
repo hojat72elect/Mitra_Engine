@@ -5,7 +5,7 @@ import type {Actor} from './actor';
 import {removeItemFromArray} from './util/util';
 import type {CanInitialize, CanUpdate} from './interfaces/lifecycle-events';
 import {InitializeEvent, PostUpdateEvent, PreUpdateEvent} from './events';
-import {BoundingBox} from './collision/bounding-box';
+import {BoundingBox} from './collision/BoundingBox';
 import {Logger} from './util/log';
 import type {MitraGraphicsContext} from './graphics/context/mitra-graphics-context';
 import {AffineMatrix} from './math/affine-matrix';

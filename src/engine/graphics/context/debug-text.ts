@@ -4,7 +4,7 @@ import {SpriteFont} from '../sprite-font';
 import {SpriteSheet} from '../sprite-sheet';
 import type {Vector} from '../../math/vector';
 import {Vector as VectorClass} from '../../math/vector';
-import {BoundingBox} from '../../collision/bounding-box';
+import {BoundingBox} from '../../collision/BoundingBox';
 // import debugFont from './debug-font.png';
 import debugFont2 from './monogram-bitmap.png';
 import {Debug} from '../debug';

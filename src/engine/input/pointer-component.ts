@@ -1,5 +1,5 @@
 import {Component} from '../entity-component-system/component';
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 
 export interface PointerComponentOptions {
     useColliderShape?: boolean;

@@ -1,6 +1,6 @@
 import {vec, Vector} from '../math/vector';
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import type {Color} from '../color';
 import {watch} from '../util/watch';
 import {AffineMatrix} from '../math/affine-matrix';

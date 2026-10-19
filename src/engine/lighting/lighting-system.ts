@@ -16,7 +16,7 @@ import {ScreenElement} from '../screen-element';
 import {Canvas} from '../graphics/canvas';
 import {Logger} from '../util/log';
 import type {Observable} from '../util/observable';
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import {DarknessComponent} from './darkness-component';
 import {PointLightComponent} from './point-light-component';
 import {ConeLightComponent} from './cone-light-component';

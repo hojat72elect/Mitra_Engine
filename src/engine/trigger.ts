@@ -1,7 +1,7 @@
 import type {Vector} from './math/vector';
 import type {CollisionEndEvent, CollisionStartEvent} from './events';
 import {EnterTriggerEvent, ExitTriggerEvent} from './events';
-import {CollisionType} from './collision/collision-type';
+import {CollisionType} from './collision/CollisionType';
 import type {Entity} from './entity-component-system';
 import type {ActorArgs, ActorEvents} from './actor';
 import {Actor} from './actor';

@@ -3,7 +3,7 @@ import {Graphic} from './graphic';
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';
 import {Color} from '../color';
 import {Vector} from '../math/vector';
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import {watch} from '../util/watch';
 import type {ImageFiltering} from './filtering';
 import {omit} from '../util/util';

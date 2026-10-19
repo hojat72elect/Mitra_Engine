@@ -1,4 +1,4 @@
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import type {Color} from '../color';
 import {MitraGraphicsContextWebgl} from './context/mitra-graphics-context-webgl';
 import type {MitraGraphicsContext} from './context/mitra-graphics-context';

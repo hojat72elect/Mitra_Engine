@@ -8,7 +8,7 @@ import {System, SystemType} from '../entity-component-system//system';
 import {ParallaxComponent} from './parallax-component';
 import {Vector} from '../math/vector';
 import {CoordPlane} from '../math/coord-plane';
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 import type {Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
 

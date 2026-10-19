@@ -1,9 +1,9 @@
-import {BodyComponent} from '../collision/body-component';
-import {BoundingBox} from '../collision/bounding-box';
-import {ColliderComponent} from '../collision/collider-component';
-import type {Collider} from '../collision/colliders/collider';
-import {CollisionType} from '../collision/collision-type';
-import {CompositeCollider} from '../collision/colliders/composite-collider';
+import {BodyComponent} from '../collision/BodyComponent';
+import {BoundingBox} from '../collision/BoundingBox';
+import {ColliderComponent} from '../collision/ColliderComponent';
+import type {Collider} from '../collision/colliders/Collider';
+import {CollisionType} from '../collision/CollisionType';
+import {CompositeCollider} from '../collision/colliders/CompositeCollider';
 import {vec, Vector} from '../math/vector';
 import {TransformComponent} from '../entity-component-system/components/transform-component';
 import type {EntityEvents} from '../entity-component-system/entity';

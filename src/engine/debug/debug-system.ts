@@ -2,23 +2,23 @@ import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import type {Camera} from '../camera';
 import {MotionComponent} from '../entity-component-system/components/motion-component';
-import {ColliderComponent} from '../collision/collider-component';
+import {ColliderComponent} from '../collision/ColliderComponent';
 import type {Entity, Query, World} from '../entity-component-system';
 import {SystemPriority, TransformComponent} from '../entity-component-system';
 import {System, SystemType} from '../entity-component-system/system';
 import type {MitraGraphicsContext} from '../graphics/context/mitra-graphics-context';
 import {vec, Vector} from '../math/vector';
 import {toDegrees} from '../math/util';
-import {BodyComponent} from '../collision/body-component';
-import {CollisionSystem} from '../collision/collision-system';
-import {CompositeCollider} from '../collision/colliders/composite-collider';
+import {BodyComponent} from '../collision/BodyComponent';
+import {CollisionSystem} from '../collision/CollisionSystem';
+import {CompositeCollider} from '../collision/colliders/CompositeCollider';
 import {Particle} from '../particles/particles';
 import {DebugGraphicsComponent} from '../graphics/debug-graphics-component';
 import {CoordPlane} from '../math/coord-plane';
 import {DisplayMode} from '../screen';
 import {Debug} from '../graphics/debug';
 import {Color} from '../color';
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 
 export class DebugSystem extends System {
     static override priority = SystemPriority.Lowest;

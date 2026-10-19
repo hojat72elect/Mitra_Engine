@@ -7,7 +7,6 @@ import {
     type Frame,
     Graphic,
     ImageSource,
-    Shape,
     Sprite,
     SpriteSheet,
     toRadians,
@@ -24,6 +23,7 @@ import {
 import {Ellipse, parseObjects, PluginObject, Polygon, Rectangle} from "./objects";
 import {mapProps, type Properties, type PropertyMapValue} from "./properties";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
+import {Shape} from "../../engine/collision/colliders/Shape.ts";
 
 export interface TileOptions {
     id: number;

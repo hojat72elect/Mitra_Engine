@@ -3,7 +3,7 @@ import type {Engine} from './engine';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
 import {TransformComponent} from './entity-component-system/components/transform-component';
-import {CollisionType} from './collision/collision-type';
+import {CollisionType} from './collision/CollisionType';
 import {CoordPlane} from './math/coord-plane';
 
 /**

@@ -5,12 +5,12 @@ import type {Random} from '../math/random';
 import {TransformComponent} from '../entity-component-system/components/transform-component';
 import {GraphicsComponent} from '../graphics/graphics-component';
 import {Entity} from '../entity-component-system/entity';
-import {BoundingBox} from '../collision/bounding-box';
+import {BoundingBox} from '../collision/BoundingBox';
 import {clamp} from '../math/util';
 import type {Graphic} from '../graphics';
 import type {EmitterType} from './emitter-type';
 import {MotionComponent, PauseComponent} from '../entity-component-system';
-import {EulerIntegrator} from '../collision/integrator';
+import {EulerIntegrator} from '../collision/EulerIntegrator';
 import type {ParticleEmitter} from './particle-emitter';
 
 /**

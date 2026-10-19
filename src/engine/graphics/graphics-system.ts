@@ -11,7 +11,7 @@ import type {Engine} from '../engine';
 import {GraphicsGroup} from './graphics-group';
 import {ParallaxComponent} from './parallax-component';
 import {CoordPlane} from '../math/coord-plane';
-import {BodyComponent} from '../collision/body-component';
+import {BodyComponent} from '../collision/BodyComponent';
 import {FontCache} from './font-cache';
 import {PostDrawEvent, PostTransformDrawEvent, PreDrawEvent, PreTransformDrawEvent} from '../events';
 import {Transform} from '../math/transform';

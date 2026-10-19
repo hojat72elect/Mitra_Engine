@@ -1,7 +1,7 @@
 import {ColorBlindFlags} from './debug-flags';
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import type {CollisionContact} from '../collision/detection/collision-contact';
+import type {CollisionContact} from '../collision/detection/CollisionContact';
 import type {StandardClock, TestClock} from '../util/clock';
 import {Debug} from '../graphics/debug';
 

@@ -7,7 +7,7 @@ import type {
 } from './context/mitra-graphics-context';
 import {Color} from '../color';
 import type {Ray} from '../math/ray';
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 import type {DebugConfig} from '../debug';
 
 export class Debug {

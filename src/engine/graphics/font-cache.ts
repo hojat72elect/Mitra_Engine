@@ -1,4 +1,4 @@
-import type {BoundingBox} from '../collision/bounding-box';
+import type {BoundingBox} from '../collision/BoundingBox';
 import type {Color} from '../color';
 import {Logger} from '../util/log';
 import type {Font} from './font';

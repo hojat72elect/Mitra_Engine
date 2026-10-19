@@ -6,7 +6,7 @@ import type {Scene} from '../scene';
 import {PointerComponent} from './pointer-component';
 import type {PointerEventReceiver} from './pointer-event-receiver';
 import {CoordPlane} from '../math/coord-plane';
-import {SparseHashGrid} from '../collision/detection/sparse-hash-grid';
+import {SparseHashGrid} from '../collision/detection/SparseHashGrid';
 import {PointerEventsToObjectDispatcher} from './pointer-events-to-object-dispatcher';
 
 /**

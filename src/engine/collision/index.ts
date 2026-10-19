@@ -1,46 +1,46 @@
-export * from './body-component';
-export * from './collider-component';
-export * from './collision-type';
-export * from './solver-strategy';
+export * from './BodyComponent';
+export * from './ColliderComponent';
+export * from './CollisionType';
+export * from './SolverStrategy';
 
-export * from './colliders/collider';
-export * from './bounding-box';
+export * from './colliders/Collider';
+export * from './BoundingBox';
 
-export * from './colliders/colliders';
-export * from './colliders/collider';
-export * from './colliders/composite-collider';
-export * from './colliders/circle-collider';
-export * from './colliders/edge-collider';
-export * from './colliders/polygon-collider';
-export * from './colliders/collision-jump-table';
-export * from './colliders/closest-line-jump-table';
-export type * from './colliders/sat-shape';
-export * from './colliders/separating-axis';
+export * from './colliders/Colliders';
+export * from './colliders/Collider';
+export * from './colliders/CompositeCollider';
+export * from './colliders/CircleCollider';
+export * from './colliders/EdgeCollider';
+export * from './colliders/PolygonCollider';
+export * from './colliders/CollisionJumpTable';
+export * from './colliders/ClosestLineJumpTable';
+export type * from './colliders/SatShape';
+export * from './colliders/SeparatingAxis';
 
-export * from './group/collision-group';
-export * from './group/collision-group-manager';
+export * from './group/CollisionGroup';
+export * from './group/CollisionGroupManager';
 
-export * from './detection/pair';
-export * from './detection/collision-contact';
-export type * from './detection/ray-cast-hit';
-export type * from './detection/ray-cast-options';
-export type * from './detection/collision-processor';
-export * from './detection/dynamic-tree';
-export * from './detection/dynamic-tree-collision-processor';
-export * from './detection/sparse-hash-grid-collision-processor';
-export * from './detection/sparse-hash-grid';
-export * from './detection/spatial-partition-strategy';
-export * from './detection/quad-tree';
+export * from './detection/Pair';
+export * from './detection/CollisionContact';
+export type * from './detection/RayCastHit';
+export type * from './detection/RayCastOptions';
+export type * from './detection/CollisionProcessor';
+export * from './detection/DynamicTree';
+export * from './detection/DynamicTreeCollisionProcessor';
+export * from './detection/SparseHashGridCollisionProcessor';
+export * from './detection/SparseHashGrid';
+export * from './detection/SpatialPartitionStrategy';
+export * from './detection/QuadTree';
 
-export * from './solver/arcade-solver';
-export * from './solver/contact-bias';
-export * from './solver/contact-constraint-point';
-export * from './solver/realistic-solver';
-export type * from './solver/solver';
+export * from './solver/ArcadeSolver';
+export * from './solver/ContactBias';
+export * from './solver/ContactConstraintPoint';
+export * from './solver/RealisticSolver';
+export type * from './solver/CollisionSolver';
 
-export * from './collision-system';
-export * from './motion-system';
+export * from './CollisionSystem';
+export * from './MotionSystem';
 
-export * from './physics-world';
-export * from './physics-config';
-export * from './side';
+export * from './PhysicsWorld';
+export * from './PhysicsConfig';
+export * from './Side';

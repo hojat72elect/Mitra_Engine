@@ -1,0 +1,131 @@
+import type {Color} from '../../color';
+import type {CollisionContact} from '../detection/CollisionContact';
+import type {BoundingBox} from '../BoundingBox';
+import type {Projection} from '../../math';
+import type {LineSegment} from '../../math';
+import {Vector} from '../../math';
+import type {Ray} from '../../math';
+import type {Clonable} from '../../interfaces';
+import type {Entity} from '../../entity-component-system';
+import type {Id} from '../../id';
+import {createId} from '../../id';
+import type {MitraGraphicsContext} from '../../graphics';
+import type {Transform} from '../../math';
+import {EventEmitter} from '../../event-emitter';
+import type {RayCastHit} from '../detection/RayCastHit';
+import type {CompositeCollider} from './CompositeCollider';
+
+/**
+ * A collision collider specifies the geometry that can detect when other collision colliders intersect
+ * for the purposes of colliding 2 objects in Mitra.
+ */
+export abstract class Collider implements Clonable<Collider> {
+    private static _ID = 0;
+    public readonly id: Id<'collider'> = createId('collider', Collider._ID++);
+    /**
+     * Composite collider if any this collider is attached to
+     *
+     * **WARNING** do not tamper with this property
+     */
+    public composite: CompositeCollider | null = null;
+    public events = new EventEmitter();
+    public owner: Entity | null = null;
+    /**
+     * Pixel offset of the collision collider relative to the collider, by default (0, 0) meaning the collider is positioned
+     * on top of the collider.
+     */
+    offset: Vector = Vector.Zero;
+
+    protected _worldVersion = 0;
+
+    /**
+     * Increments whenever this collider's world space geometry changes (owner transform, offset or shape), cheap change
+     * detection for spatial data structures
+     */
+    public get worldVersion(): number {
+        return this._worldVersion;
+    }
+
+    /**
+     * Position of the collision collider in world coordinates
+     */
+    abstract get worldPos(): Vector;
+
+    /**
+     * The center point of the collision collider, for example if the collider is a circle it would be the center.
+     */
+    abstract get center(): Vector;
+
+    /**
+     * Return the axis-aligned bounding box of the collision collider in world coordinates
+     */
+    abstract get bounds(): BoundingBox;
+
+    /**
+     * Return the axis-aligned bounding box of the collision collider in local coordinates
+     */
+    abstract get localBounds(): BoundingBox;
+
+    /**
+     * Return the axes of this particular collider
+     */
+    abstract get axes(): Vector[];
+
+    /**
+     * Returns a boolean indicating whether this body collided with
+     * or was in stationary contact with
+     * the body of the other {@apilink Collider}
+     */
+    public touching(other: Collider): boolean {
+        const contact = this.collide(other);
+
+        // if there is a contact then we are touching
+        if (contact && contact.length > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Find the furthest point on the convex hull of this particular collider in a certain direction.
+     */
+    abstract getFurthestPoint(direction: Vector): Vector;
+
+    abstract getInertia(mass: number): number;
+
+    // All new CollisionShape need to do the following
+    // Create a new collision function in the CollisionJumpTable against all the primitives
+    // Currently there are 3 primitive collision collider 3! = 6 jump functions
+    abstract collide(collider: Collider): CollisionContact[];
+
+    /**
+     * Returns the closest line between the surfaces this collider and another
+     * @param collider
+     */
+    abstract getClosestLineBetween(collider: Collider): LineSegment;
+
+    /**
+     * Return wether the collider contains a point inclusive to it's border
+     */
+    abstract contains(point: Vector): boolean;
+
+    /**
+     * Return the point on the border of the collision collider that intersects with a ray (if any).
+     */
+    abstract rayCast(ray: Ray, max?: number): RayCastHit | null;
+
+    /**
+     * Create a projection of this collider along an axis. Think of this as casting a "shadow" along an axis
+     */
+    abstract project(axis: Vector): Projection;
+
+    /**
+     * Updates collider world space geometry
+     */
+    abstract update(transform: Transform): void;
+
+    abstract debug(ex: MitraGraphicsContext, color: Color, options?: { lineWidth: number; pointSize: number }): void;
+
+    abstract clone(): Collider;
+}

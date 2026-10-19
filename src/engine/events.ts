@@ -5,9 +5,9 @@ import type {Trigger} from './trigger';
 import type {FrameStats} from './debug';
 import type {Engine} from './engine';
 import type {TileMap} from './tile-map';
-import type {Side} from './collision/side';
-import type {CollisionContact} from './collision/detection/collision-contact';
-import type {Collider} from './collision/colliders/collider';
+import type {Side} from './collision/Side';
+import type {CollisionContact} from './collision/detection/CollisionContact';
+import type {Collider} from './collision/colliders/Collider';
 import type {Entity} from './entity-component-system/entity';
 import type {
     OnAdd,
