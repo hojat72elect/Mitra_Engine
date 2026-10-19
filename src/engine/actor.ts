@@ -17,36 +17,35 @@ import type {
 import {type KillEvent, PostKillEvent, PostUpdateEvent, PreKillEvent, PreUpdateEvent} from './events';
 import type {Engine} from './engine';
 import type {Color} from './color';
-import type {CanBeKilled, CanInitialize, CanUpdate} from './interfaces/lifecycle-events';
+import type {CanBeKilled, CanInitialize, CanUpdate} from './interfaces';
 import type {Scene} from './scene';
-import {Logger} from './util/log';
-import {vec, Vector} from './math/vector';
-import {BodyComponent} from './collision/body-component';
-import type {Eventable} from './interfaces/evented';
-import type {PointerEvents} from './interfaces/pointer-event-handlers';
-import {CollisionType} from './collision/collision-type';
-import {PauseComponent} from './entity-component-system/components/pause-component';
-
-import type {EntityEvents} from './entity-component-system/entity';
-import {Entity} from './entity-component-system/entity';
-import {TransformComponent} from './entity-component-system/components/transform-component';
-import {MotionComponent} from './entity-component-system/components/motion-component';
-import {GraphicsComponent} from './graphics/graphics-component';
-import {Rectangle} from './graphics/rectangle';
-import {ColliderComponent} from './collision/collider-component';
-import {Colliders} from './collision/colliders/colliders';
+import {Logger} from './util';
+import {vec, Vector} from './math';
+import {BodyComponent} from './collision';
+import type {Eventable} from './interfaces';
+import type {PointerEvents} from './interfaces';
+import {CollisionType} from './collision';
+import {PauseComponent} from './entity-component-system';
+import type {EntityEvents} from './entity-component-system';
+import {Entity} from './entity-component-system';
+import {TransformComponent} from './entity-component-system';
+import {MotionComponent} from './entity-component-system';
+import {GraphicsComponent} from './graphics';
+import {Rectangle} from './graphics';
+import {ColliderComponent} from './collision';
+import {Colliders} from './collision';
 import {watch} from './util/watch';
-import type {Collider, CollisionContact, CollisionGroup, Side} from './collision/index';
-import {Circle} from './graphics/circle';
+import type {Collider, CollisionContact, CollisionGroup, Side} from './collision';
+import {Circle} from './graphics';
 import type {PointerEvent} from './input/pointer-event';
 import type {WheelEvent} from './input/wheel-event';
 import {PointerComponent} from './input/pointer-component';
-import {ActionsComponent} from './actions/actions-component';
-import {CoordPlane} from './math/coord-plane';
+import {CoordPlane} from './math';
 import type {EventKey, Handler, Subscription} from './event-emitter';
 import {EventEmitter} from './event-emitter';
 import type {Component} from './entity-component-system';
 import type {Graphic, Material} from './graphics';
+import {ActionsComponent} from "./actions/actions-component/ActionsComponent";
 
 /**
  * Type guard for checking if something is an Actor

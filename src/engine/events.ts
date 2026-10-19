@@ -19,7 +19,8 @@ import type {
 } from './interfaces/lifecycle-events';
 import type {MitraGraphicsContext} from './graphics';
 import type {Axes, Buttons, Gamepad} from './input/gamepad';
-import type {Action} from './actions/action';
+import {Action} from "./actions/action/Action";
+
 
 export enum EventTypes {
     Kill = 'kill',

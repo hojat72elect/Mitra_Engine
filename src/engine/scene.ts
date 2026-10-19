@@ -33,7 +33,7 @@ import {Entity} from './entity-component-system/entity';
 import {GraphicsSystem} from './graphics/graphics-system';
 import {DebugSystem} from './debug/debug-system';
 import {PointerSystem} from './input/pointer-system';
-import {ActionsSystem} from './actions/actions-system';
+import {ActionsSystem} from './actions/ActionsSystem';
 import {IsometricEntitySystem} from './tile-map/isometric-entity-system';
 import {OffscreenSystem} from './graphics/offscreen-system';
 import type {MitraGraphicsContext} from './graphics';
