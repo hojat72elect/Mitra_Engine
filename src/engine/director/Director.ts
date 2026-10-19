@@ -1,95 +1,20 @@
 import type {Engine} from '../engine';
-import type {LoaderConstructor} from './default-loader';
-import {DefaultLoader, isLoaderConstructor} from './default-loader';
+import {DefaultLoader} from './DefaultLoader';
 import type {SceneConstructor} from '../scene';
 import {isSceneConstructor, Scene} from '../scene';
-import type {Transition} from './transition';
-import {Loader} from './loader';
-import {Logger} from '../util/log';
+import type {Transition} from './Transition';
+import {Loader} from './Loader';
+import {Logger} from '../util';
 import {ActivateEvent, DeactivateEvent} from '../events';
 import {EventEmitter} from '../event-emitter';
-
-export interface DirectorNavigationEvent {
-    sourceName: string;
-    sourceScene: Scene;
-    destinationName: string;
-    destinationScene: Scene;
-}
-
-export interface DirectorEvents {
-    navigationstart: DirectorNavigationEvent;
-    navigation: DirectorNavigationEvent;
-    navigationend: DirectorNavigationEvent;
-}
-
-export const DirectorEvents = {
-    NavigationStart: 'navigationstart',
-    Navigation: 'navigation',
-    NavigationEnd: 'navigationend'
-} as const;
-
-export interface SceneWithOptions {
-    /**
-     * Scene associated with this route
-     *
-     * If a constructor is provided it will not be constructed until navigation is requested
-     */
-    scene: Scene | SceneConstructor;
-    /**
-     * Specify scene transitions
-     */
-    transitions?: {
-        /**
-         * Optionally specify a transition when going "in" to this scene
-         */
-        in?: Transition;
-        /**
-         * Optionally specify a transition when going "out" of this scene
-         */
-        out?: Transition;
-    };
-    /**
-     * Optionally specify a loader for the scene
-     */
-    loader?: DefaultLoader | LoaderConstructor;
-}
-
-export type WithRoot<TScenes> = TScenes | 'root';
-
-export type SceneMap<TKnownScenes extends string = any> = Record<TKnownScenes, Scene | SceneConstructor | SceneWithOptions>;
-
-export interface StartOptions {
-    /**
-     * Optionally provide first transition from the game start screen
-     */
-    inTransition?: Transition;
-    /**
-     * Optionally provide a main loader to run before the game starts
-     */
-    loader?: DefaultLoader | LoaderConstructor;
-}
-
-/**
- * Provide scene activation data and override any existing configured route transitions or loaders
- */
-export interface GoToOptions<TActivationData = any> {
-    /**
-     * Optionally supply scene activation data passed to Scene.onActivate
-     */
-    sceneActivationData?: TActivationData;
-    /**
-     * Optionally supply destination scene "in" transition, this will override any previously defined transition
-     */
-    destinationIn?: Transition;
-    /**
-     * Optionally supply source scene "out" transition, this will override any previously defined transition
-     */
-    sourceOut?: Transition;
-    /**
-     * Optionally supply a different loader for the destination scene, this will override any previously defined loader
-     */
-    loader?: DefaultLoader;
-}
+import {isLoaderConstructor} from "./isLoaderConstructor";
+import {DirectorEvents} from "./DirectorEvents";
+import {DirectorNavigationEvent} from "./DirectorNavigationEvent";
+import {SceneWithOptions} from "./SceneWithOptions";
+import {WithRoot} from "./WithRoot";
+import {SceneMap} from "./SceneMap";
+import {StartOptions} from "./StartOptions";
+import {GoToOptions} from "./GoToOptions";
 
 /**
  * The Director is responsible for managing scenes and changing scenes in Mitra.

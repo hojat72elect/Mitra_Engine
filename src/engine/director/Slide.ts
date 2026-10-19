@@ -2,16 +2,16 @@ import type {Sprite} from '../graphics';
 import {ImageSource} from '../graphics';
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
-import type {TransitionOptions} from './transition';
-import {Transition} from './transition';
-import {vec, Vector} from '../math/vector';
-import {CoordPlane} from '../math/coord-plane';
-import {lerp} from '../math/lerp';
+import {Transition} from './Transition';
+import {vec, Vector} from '../math';
+import {CoordPlane} from '../math';
+import {lerp} from '../math';
 import type {Camera} from '../camera';
-import type {Easing} from '../math/easings';
-import {linear} from '../math/easings';
+import type {Easing} from '../math';
+import {linear} from '../math';
+import {TransitionOptions} from "./TransitionOptions";
 
-export interface SlideOptions {
+interface SlideOptions {
     /**
      * Duration of the transition in milliseconds
      */

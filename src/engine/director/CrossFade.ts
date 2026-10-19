@@ -2,11 +2,11 @@ import type {Sprite} from '../graphics';
 import {ImageSource} from '../graphics';
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
-import type {TransitionOptions} from './transition';
-import {Transition} from './transition';
-import {vec} from '../math/vector';
+import {Transition} from './Transition';
+import {vec} from '../math';
+import {TransitionOptions} from "./TransitionOptions";
 
-export interface CrossFadeOptions {
+interface CrossFadeOptions {
     duration: number;
 }
 

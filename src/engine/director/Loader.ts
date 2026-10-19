@@ -1,20 +1,19 @@
 import {Color} from '../color';
-import type {Loadable} from '../interfaces/loadable';
+import type {Loadable} from '../interfaces';
 import * as DrawUtil from '../util/draw-util';
-
 import logoImg from './Loader.logo.png';
 import loaderCss from './Loader.css?inline';
-import type {Vector} from '../math/vector';
-import {delay} from '../util/util';
+import type {Vector} from '../math';
+import {delay} from '../util';
 import {EventEmitter} from '../event-emitter';
-import type {DefaultLoaderOptions} from './default-loader';
-import {DefaultLoader} from './default-loader';
+import {DefaultLoader} from './DefaultLoader';
 import type {Engine} from '../engine';
 import type {Screen} from '../screen';
-import {Logger} from '../util/log';
+import {Logger} from '../util';
 import {Future} from '../util/future';
+import {DefaultLoaderOptions} from "./DefaultLoaderOptions";
 
-export interface LoaderOptions extends DefaultLoaderOptions {
+interface LoaderOptions extends DefaultLoaderOptions {
     /**
      * Go fullscreen after loading and clicking play
      */

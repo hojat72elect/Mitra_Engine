@@ -3,50 +3,16 @@ import type {Scene} from '../scene';
 import {Future} from '../util/future';
 import {Entity, TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
-import {CoordPlane} from '../math/coord-plane';
-import {Vector} from '../math/vector';
-import {clamp} from '../math/util';
+import {CoordPlane} from '../math';
+import {Vector} from '../math';
+import {clamp} from '../math';
 import type {CoroutineInstance} from '../util/coroutine';
 import {coroutine} from '../util/coroutine';
-import {Logger} from '../util/log';
-import type {Easing} from '../math/easings';
-import {linear} from '../math/easings';
+import {Logger} from '../util';
+import type {Easing} from '../math';
+import {linear} from '../math';
 import {lerp} from '../math';
-
-export interface TransitionOptions {
-    /**
-     * Transition duration in milliseconds
-     */
-    duration: number;
-
-    /**
-     * Optionally hides the loader during the transition
-     *
-     * If either the out or in transition have this set to true, then the loader will be hidden.
-     *
-     * Default false
-     */
-    hideLoader?: boolean;
-
-    /**
-     * Optionally blocks user input during a transition
-     *
-     * Default false
-     */
-    blockInput?: boolean;
-
-    /**
-     * Optionally specify a easing function, by default linear
-     */
-    easing?: Easing;
-    /**
-     * Optionally specify a transition direction, by default 'out'
-     *
-     * * For 'in' direction transitions start at 1 and complete is at 0
-     * * For 'out' direction transitions start at 0 and complete is at 1
-     */
-    direction?: 'out' | 'in';
-}
+import {TransitionOptions} from "./TransitionOptions";
 
 /**
  * Base Transition that can be extended to provide custom scene transitions in Mitra.

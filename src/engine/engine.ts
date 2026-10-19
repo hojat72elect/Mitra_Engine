@@ -55,8 +55,7 @@ import {ImageFiltering} from './graphics';
 import {GraphicsDiagnostics} from './graphics/graphics-diagnostics';
 import {Toaster} from './util/toaster';
 import type {InputMapper} from './input/input-mapper';
-import type {GoToOptions, SceneMap, SceneWithOptions, StartOptions, WithRoot} from './director';
-import {Director, DirectorEvents} from './director';
+import {Director} from './director';
 import {InputHost} from './input/input-host';
 import type {PhysicsConfig} from './collision';
 import type {LightingConfig} from './lighting';
@@ -71,6 +70,12 @@ import {getDefaultGlobal} from './util/iframe';
 import type {Plugin} from './plugin';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 import {DebugStats} from "./debug/DebugStats";
+import {DirectorEvents} from "./director/DirectorEvents";
+import {SceneWithOptions} from "./director/SceneWithOptions";
+import {WithRoot} from "./director/WithRoot";
+import {SceneMap} from "./director/SceneMap";
+import {StartOptions} from "./director/StartOptions";
+import {GoToOptions} from "./director/GoToOptions";
 
 polyfill();
 

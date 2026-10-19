@@ -1,24 +1,18 @@
 import {WebAudio} from '../util/web-audio';
 import type {Engine} from '../engine';
-import type {Loadable} from '../interfaces/loadable';
-import {Canvas} from '../graphics/canvas';
-import {ImageFiltering} from '../graphics/filtering';
-import {clamp} from '../math/util';
-import {Sound} from '../resources/sound/sound';
+import type {Loadable} from '../interfaces';
+import {Canvas} from '../graphics';
+import {ImageFiltering} from '../graphics';
+import {clamp} from '../math';
+import {Sound} from '../resources';
 import {Future} from '../util/future';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
 import {Color} from '../color';
-import {delay} from '../util/util';
+import {delay} from '../util';
+import {DefaultLoaderOptions} from "./DefaultLoaderOptions";
 
-export interface DefaultLoaderOptions {
-    /**
-     * List of loadables
-     */
-    loadables?: Loadable<any>[];
-}
-
-export interface LoaderEvents {
+interface LoaderEvents {
     // Add event types here
     beforeload: void;
     afterload: void;
@@ -27,7 +21,7 @@ export interface LoaderEvents {
     loadresourceend: Loadable<any>;
 }
 
-export const LoaderEvents = {
+const LoaderEvents = {
     // Add event types here
     BeforeLoad: 'beforeload',
     AfterLoad: 'afterload',
@@ -35,15 +29,6 @@ export const LoaderEvents = {
     LoadResourceStart: 'loadresourcestart',
     LoadResourceEnd: 'loadresourceend'
 };
-
-export type LoaderConstructor = new (...args: any[]) => DefaultLoader;
-
-/**
- * Returns true if the constructor is for a Mitra Loader.
- */
-export function isLoaderConstructor(x: any): x is LoaderConstructor {
-    return !!x?.prototype && !!x?.prototype?.constructor?.name;
-}
 
 export class DefaultLoader implements Loadable<Loadable<any>[]> {
     public data!: Loadable<any>[];
