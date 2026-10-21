@@ -1,7 +1,7 @@
-export type * from './clonable';
-export type * from './audio';
-export * from './audio-implementation';
-export type * from './evented';
-export type * from './loadable';
-export * from './lifecycle-events';
-export type * from './pointer-event-handlers';
+export type * from './Clonable';
+export type * from './Audio';
+export * from './AudioImplementation';
+export type * from './Eventable';
+export type * from './Loadable';
+export * from './LifecycleEvents';
+export type * from './PointerEvents';

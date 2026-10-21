@@ -1,21 +1,5 @@
-import type {Audio} from './audio';
-
-export type ExResponseType = '' | 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
-
-export interface ExResponseTypesLookup {
-    [name: string]: ExResponseType;
-}
-
-export class ExResponse {
-    public static type: ExResponseTypesLookup = {
-        any: '',
-        blob: 'blob',
-        json: 'json',
-        text: 'text',
-        document: 'document',
-        arraybuffer: 'arraybuffer'
-    };
-}
+import type {Audio} from './Audio';
+import {ExResponseType} from "./ExResponseType";
 
 /**
  * Represents an audio implementation like {@apilink WebAudioInstance}

@@ -1,5 +1,5 @@
 import {StateMachine} from '../../util/state-machine';
-import type {Audio} from '../../interfaces/audio';
+import type {Audio} from '../../interfaces/Audio';
 import {clamp} from '../../math/util';
 import {AudioContextFactory} from './audio-context';
 import {Future} from '../../util/future';

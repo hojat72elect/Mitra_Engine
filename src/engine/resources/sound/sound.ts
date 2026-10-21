@@ -1,4 +1,4 @@
-import {ExResponse} from '../../interfaces';
+import {ExResponse} from '../../interfaces/ExResponse';
 import type {Audio} from '../../interfaces';
 import type {Engine} from '../../engine';
 import {Resource} from '../resource';

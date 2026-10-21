@@ -1,5 +1,5 @@
 // vector3.ts
-import type {Clonable} from '../interfaces/clonable';
+import type {Clonable} from '../interfaces/Clonable';
 import {clamp} from './util';
 
 /**

@@ -21,22 +21,15 @@ export interface _remove {
 /**
  * Type guard checking for internal initialize method
  * @internal
- * @param a
  */
 export function has_initialize(a: any): a is _initialize {
     return !!a._initialize;
 }
 
-/**
- *
- */
 export function has_add(a: any): a is _add {
     return !!a.onAdd;
 }
 
-/**
- *
- */
 export function has_remove(a: any): a is _remove {
     return !!a.onRemove;
 }
@@ -45,9 +38,6 @@ export interface OnInitialize {
     onInitialize(engine: Engine): void;
 }
 
-/**
- *
- */
 export function hasOnInitialize(a: any): a is OnInitialize {
     return !!a.onInitialize;
 }
@@ -57,9 +47,6 @@ export interface _preupdate {
     _preupdate(engine: Engine, elapsed: number): void;
 }
 
-/**
- *
- */
 export function has_preupdate(a: any): a is _preupdate {
     return !!a._preupdate;
 }
@@ -68,9 +55,6 @@ export interface OnPreUpdate {
     onPreUpdate(engine: Engine, elapsed: number): void;
 }
 
-/**
- *
- */
 export function hasOnPreUpdate(a: any): a is OnPreUpdate {
     return !!a.onPreUpdate;
 }
@@ -80,9 +64,6 @@ export interface _postupdate {
     _postupdate(engine: Engine, elapsed: number): void;
 }
 
-/**
- *
- */
 export function has_postupdate(a: any): a is _postupdate {
     return !!a._postupdate;
 }
@@ -91,9 +72,6 @@ export interface OnPostUpdate {
     onPostUpdate(engine: Engine, elapsed: number): void;
 }
 
-/**
- *
- */
 export function hasOnPostUpdate(a: any): a is OnPostUpdate {
     return !!a.onPostUpdate;
 }
@@ -118,9 +96,6 @@ export interface OnAdd {
     onAdd(engine: Engine): void;
 }
 
-/**
- *
- */
 export function hasOnAdd(a: any): a is OnAdd {
     return !!a.onAdd;
 }
@@ -139,9 +114,6 @@ export interface OnRemove {
     onRemove(engine: Engine): void;
 }
 
-/**
- *
- */
 export function hasOnRemove(a: any): a is OnRemove {
     return !!a.onRemove;
 }
@@ -272,16 +244,10 @@ export interface CanDraw extends OnPreDraw, OnPostDraw {
     off(eventName: Events.postdraw, handler?: (event: Events.PostDrawEvent) => void): void;
 }
 
-/**
- *
- */
 export function hasPreDraw(a: any): a is OnPreDraw {
     return !!a.onPreDraw;
 }
 
-/**
- *
- */
 export function hasPostDraw(a: any): a is OnPostDraw {
     return !!a.onPostDraw;
 }
