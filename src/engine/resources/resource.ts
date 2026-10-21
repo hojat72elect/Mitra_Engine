@@ -1,5 +1,5 @@
-import type {Loadable} from '../interfaces/Loadable';
-import {Logger} from '../util/log';
+import type {Loadable} from '../interfaces';
+import {Logger} from '../util';
 import {EventEmitter} from '../event-emitter';
 
 export interface ResourceEvents {

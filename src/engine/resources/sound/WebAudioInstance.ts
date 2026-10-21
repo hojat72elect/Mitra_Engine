@@ -1,7 +1,7 @@
 import {StateMachine} from '../../util/state-machine';
-import type {Audio} from '../../interfaces/Audio';
-import {clamp} from '../../math/util';
-import {AudioContextFactory} from './audio-context';
+import type {Audio} from '../../interfaces';
+import {clamp} from '../../math';
+import {AudioContextFactory} from './AudioContextFactory';
 import {Future} from '../../util/future';
 
 interface SoundState {

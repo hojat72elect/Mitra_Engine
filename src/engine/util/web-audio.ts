@@ -1,4 +1,4 @@
-import {AudioContextFactory} from '../resources/sound/audio-context';
+import {AudioContextFactory} from '../resources/sound/AudioContextFactory';
 import {Logger} from './log';
 
 export interface LegacyWebAudioSource {
