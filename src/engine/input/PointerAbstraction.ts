@@ -1,9 +1,9 @@
-import {Vector} from '../math/vector';
-import type {PointerEvent} from './pointer-event';
+import {Vector} from '../math';
+import type {PointerEvent} from './PointerEvent';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
-import type {PointerEvents} from './pointer-event-receiver';
-import {GlobalCoordinates} from '../math/global-coordinates';
+import type {PointerEvents} from './PointerEvents';
+import {GlobalCoordinates} from '../math';
 import type {Engine} from '../engine';
 
 export class PointerAbstraction {

@@ -1,7 +1,7 @@
-import {Component} from '../entity-component-system/Component';
-import type {BoundingBox} from '../collision/BoundingBox';
+import {Component} from '../entity-component-system';
+import type {BoundingBox} from '../collision';
 
-export interface PointerComponentOptions {
+interface PointerComponentOptions {
     useColliderShape?: boolean;
     useGraphicsBounds?: boolean;
     localBounds?: BoundingBox;

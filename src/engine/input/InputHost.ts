@@ -1,10 +1,10 @@
 import type {Engine} from '../engine';
-import {Gamepads} from './gamepad';
-import {InputMapper} from './input-mapper';
-import {Keyboard} from './keyboard';
-import {PointerEventReceiver} from './pointer-event-receiver';
+import {Gamepads} from './Gamepads';
+import {InputMapper} from './InputMapper';
+import {Keyboard} from './Keyboard';
+import {PointerEventReceiver} from './PointerEventReceiver';
 
-export interface InputHostOptions {
+interface InputHostOptions {
     pointerTarget: Document | HTMLCanvasElement;
     grabWindowFocus: boolean;
     global?: GlobalEventHandlers | (() => GlobalEventHandlers);

@@ -3,11 +3,11 @@ import type {Entity, Query, World} from '../entity-component-system';
 import {System, SystemPriority, TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
 import type {Scene} from '../scene';
-import {PointerComponent} from './pointer-component';
-import type {PointerEventReceiver} from './pointer-event-receiver';
+import {PointerComponent} from './PointerComponent';
+import type {PointerEventReceiver} from './PointerEventReceiver';
 import {CoordPlane} from '../math';
 import {SparseHashGrid} from '../collision';
-import {PointerEventsToObjectDispatcher} from './pointer-events-to-object-dispatcher';
+import {PointerEventsToObjectDispatcher} from './PointerEventsToObjectDispatcher';
 import {SystemType} from "../entity-component-system/SystemType";
 
 /**

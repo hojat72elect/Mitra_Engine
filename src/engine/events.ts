@@ -1,14 +1,13 @@
 import type {Scene} from './scene';
-import type {Vector} from './math/vector';
+import type {Vector} from './math';
 import type {Actor} from './actor';
 import type {Trigger} from './trigger';
-
 import type {Engine} from './engine';
 import type {TileMap} from './tile-map';
-import type {Side} from './collision/Side';
-import type {CollisionContact} from './collision/detection/CollisionContact';
-import type {Collider} from './collision/colliders/Collider';
-import type {Entity} from './entity-component-system/Entity';
+import type {Side} from './collision';
+import type {CollisionContact} from './collision';
+import type {Collider} from './collision';
+import type {Entity} from './entity-component-system';
 import type {
     OnAdd,
     OnInitialize,
@@ -16,12 +15,13 @@ import type {
     OnPreUpdate,
     OnRemove,
     SceneActivationContext
-} from './interfaces/lifecycle-events';
+} from './interfaces';
 import type {MitraGraphicsContext} from './graphics';
-import type {Axes, Buttons, Gamepad} from './input/gamepad';
-import {Action} from "./actions/action/Action";
+import type {Gamepad} from './input/Gamepad';
+import type {Buttons} from './input/Buttons';
+import type {Axes} from './input/Axes';
+import {Action} from "./actions";
 import {FrameStats} from "./debug/FrameStats";
-
 
 export enum EventTypes {
     Kill = 'kill',

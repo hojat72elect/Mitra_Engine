@@ -2,7 +2,7 @@ import {Entity} from '../entity-component-system';
 import {Actor} from '../actor';
 import type {Component} from '../entity-component-system';
 import {MotionComponent, TransformComponent} from '../entity-component-system';
-import {PointerComponent} from '../input/pointer-component';
+import {PointerComponent} from '../input/PointerComponent';
 import {GraphicsComponent} from '../graphics';
 import {BodyComponent} from '../collision';
 import {ColliderComponent} from '../collision';

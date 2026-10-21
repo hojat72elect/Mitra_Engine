@@ -1,40 +1,27 @@
 import type {Engine} from '../engine';
 import {ScrollPreventionMode} from '../engine';
-import {GlobalCoordinates} from '../math/global-coordinates';
-import type {Vector} from '../math/vector';
-import {vec} from '../math/vector';
-import {PointerEvent} from './pointer-event';
-import {WheelEvent} from './wheel-event';
-import {PointerAbstraction} from './pointer-abstraction';
-
-import {WheelDeltaMode} from './wheel-delta-mode';
-import {PointerSystem} from './pointer-system';
-import {NativePointerButton} from './native-pointer-button';
-import {PointerButton} from './pointer-button';
-import {fail} from '../util/util';
-import {PointerType} from './pointer-type';
+import {GlobalCoordinates} from '../math';
+import type {Vector} from '../math';
+import {vec} from '../math';
+import {PointerEvent} from './PointerEvent';
+import {WheelEvent} from './WheelEvent';
+import {PointerAbstraction} from './PointerAbstraction';
+import {WheelDeltaMode} from './WheelDeltaMode';
+import {PointerSystem} from './PointerSystem';
+import {NativePointerButton} from './NativePointerButton';
+import {PointerButton} from './PointerButton';
+import {fail} from '../util';
+import {PointerType} from './PointerType';
 import {isCrossOriginIframe, isIframe} from '../util/iframe';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
+import {PointerInitOptions} from "./PointerInitOptions";
+import {PointerEvents} from "../interfaces";
 
 export type NativePointerEvent = globalThis.PointerEvent;
 export type NativeMouseEvent = globalThis.MouseEvent;
 export type NativeTouchEvent = globalThis.TouchEvent;
 export type NativeWheelEvent = globalThis.WheelEvent;
-
-export interface PointerEvents {
-    move: PointerEvent;
-    down: PointerEvent;
-    up: PointerEvent;
-    wheel: WheelEvent;
-}
-
-export const PointerEvents = {
-    Move: 'move',
-    Down: 'down',
-    Up: 'up',
-    Wheel: 'wheel'
-};
 
 /**
  * Is this event a native touch event?
@@ -50,10 +37,6 @@ function isTouchEvent(value: any): value is NativeTouchEvent {
 function isPointerEvent(value: any): value is NativePointerEvent {
     // Guard for Safari <= 13.1
     return globalThis.PointerEvent && value instanceof globalThis.PointerEvent;
-}
-
-export interface PointerInitOptions {
-    grabWindowFocus?: boolean;
 }
 
 /**

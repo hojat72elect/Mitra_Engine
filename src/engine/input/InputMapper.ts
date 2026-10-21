@@ -1,8 +1,8 @@
-import type {Gamepads} from './gamepad';
-import type {Keyboard} from './keyboard';
-import type {PointerEventReceiver} from './pointer-event-receiver';
+import type {Gamepads} from './Gamepads';
+import type {Keyboard} from './Keyboard';
+import type {PointerEventReceiver} from './PointerEventReceiver';
 
-export interface InputsOptions {
+interface InputsOptions {
     keyboard: Keyboard;
     gamepads: Gamepads;
     pointers: PointerEventReceiver;

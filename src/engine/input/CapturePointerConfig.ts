@@ -1,7 +1,6 @@
 /**
  * Turn on move and drag events for an {@apilink Actor}
  */
-
 export interface CapturePointerConfig {
     /**
      * Capture PointerMove events (may be expensive!)

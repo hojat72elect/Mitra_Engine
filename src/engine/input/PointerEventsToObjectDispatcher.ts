@@ -1,28 +1,16 @@
 import type {EventEmitter} from '../event-emitter';
-import type {PointerEvent} from './pointer-event';
+import type {PointerEvent} from './PointerEvent';
 import type {GlobalCoordinates} from '../math';
-import type {PointerEventReceiver} from './pointer-event-receiver';
+import type {PointerEventReceiver} from './PointerEventReceiver';
 import {RentalPool} from '../util/rental-pool';
-import {PointerType} from './pointer-type';
+import {PointerType} from './PointerType';
+import {HasNestedPointerEvents} from "./HasNestedPointerEvents";
 
-/**
- * Signals that an object has nested pointer events on nested objects that are not an Entity with
- * a PointerComponent. For example TileMap Tiles
- */
-export interface HasNestedPointerEvents {
-    _dispatchPointerEvents(receiver: PointerEventReceiver): void;
-
-    _processPointerToObject(receiver: PointerEventReceiver): void;
-}
-
-/**
- *
- */
 function hasNestedEvents(object: any): object is HasNestedPointerEvents {
     return object && object._dispatchPointerEvents && object._processPointerToObject;
 }
 
-export class PointerTargetObjectProxy<TObject extends { events: EventEmitter }> {
+class PointerTargetObjectProxy<TObject extends { events: EventEmitter }> {
     public object!: TObject;
     public contains!: (point: GlobalCoordinates) => boolean;
     public active!: () => boolean;

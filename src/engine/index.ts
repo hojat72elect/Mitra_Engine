@@ -59,49 +59,33 @@ export * from './graphics/index';
 
 export {events as Events};
 
-export {WheelEvent} from './input/wheel-event';
-
-export {PointerEvent} from './input/pointer-event';
-
-export {WheelDeltaMode} from './input/wheel-delta-mode';
-
-export {PointerButton} from './input/pointer-button';
-
-export {NativePointerButton} from './input/native-pointer-button';
-
-export type {CapturePointerConfig} from './input/capture-pointer-config';
-
-export type {
-    NativePointerEvent,
-    NativeMouseEvent,
-    NativeTouchEvent,
-    NativeWheelEvent,
-    PointerInitOptions
-} from './input/pointer-event-receiver';
-export {PointerEventReceiver} from './input/pointer-event-receiver';
-
-export {PointerAbstraction} from './input/pointer-abstraction';
-export {PointerComponent} from './input/pointer-component';
-export {PointerSystem} from './input/pointer-system';
-export {PointerType} from './input/pointer-type';
-export {PointerScope} from './input/pointer-scope';
-
-export type {
-    NavigatorGamepads,
-    NavigatorGamepad,
-    NavigatorGamepadButton,
-    NavigatorGamepadEvent,
-    GamepadConfiguration
-} from './input/gamepad';
-export {Gamepads, Gamepad, Buttons, Axes, GamepadEvents} from './input/gamepad';
-
-export type {KeyboardInitOptions} from './input/keyboard';
-export {Keys, KeyEvent, Keyboard} from './input/keyboard';
-export * from './input/input-host';
-export * from './input/input-mapper';
-
+export {WheelEvent} from './input/WheelEvent';
+export {PointerEvent} from './input/PointerEvent';
+export {WheelDeltaMode} from './input/WheelDeltaMode';
+export {PointerButton} from './input/PointerButton';
+export {NativePointerButton} from './input/NativePointerButton';
+export type {CapturePointerConfig} from './input/CapturePointerConfig';
+export type {PointerInitOptions} from "./input/PointerInitOptions";
+export {PointerEventReceiver} from './input/PointerEventReceiver';
+export {PointerAbstraction} from './input/PointerAbstraction';
+export {PointerComponent} from './input/PointerComponent';
+export {PointerSystem} from './input/PointerSystem';
+export {PointerType} from './input/PointerType';
+export {PointerScope} from './input/PointerScope';
+export type {NavigatorGamepads} from './input/NavigatorGamepads';
+export type {NavigatorGamepad} from './input/NavigatorGamepad';
+export type {NavigatorGamepadEvent} from "./input/NavigatorGamepadEvent"
+export type {NavigatorGamepadButton} from "./input/NavigatorGamepadButton"
+export type {GamepadConfiguration} from "./input/GamepadConfiguration";
+export {Gamepad} from './input/Gamepad';
+export {Gamepads} from './input/Gamepads';
+export {Buttons} from './input/Buttons';
+export {Axes} from './input/Axes';
+export {GamepadEvents} from './input/GamepadEvents';
+export {Keyboard} from './input/Keyboard';
+export * from './input/InputHost';
+export * from './input/InputMapper';
 export {util as Util};
-
 export * from './util/browser';
 export * from './util/detector';
 export * from './util/observable';

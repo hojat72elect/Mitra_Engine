@@ -1,5 +1,5 @@
 import type {GlobalCoordinates} from '../math';
-import type {WheelDeltaMode} from '../input/wheel-delta-mode';
+import type {WheelDeltaMode} from '../input/WheelDeltaMode';
 import {ExEvent} from './ExEvent';
 
 abstract class PointerEvent extends ExEvent<'down' | 'up' | 'move' | 'cancel'> {

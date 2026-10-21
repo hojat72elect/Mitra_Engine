@@ -8,7 +8,7 @@ import {EventEmitter} from '../event-emitter';
  *
  * Spec: https://w3c.github.io/uievents-code/#key-alphanumeric-section
  */
-export enum Keys {
+enum Keys {
     // Writing System Keys https://w3c.github.io/uievents-code/#key-alphanumeric-writing-system
     Backquote = 'Backquote',
     Backslash = 'Backslash',
@@ -223,7 +223,7 @@ export enum Keys {
 /**
  * Event thrown on a game object for a key event
  */
-export class KeyEvent extends Events.GameEvent<any> {
+class KeyEvent extends Events.GameEvent<any> {
     /**
      * @param key  The key responsible for throwing the event
      * @param value The key's typed value the browser detected
@@ -238,18 +238,18 @@ export class KeyEvent extends Events.GameEvent<any> {
     }
 }
 
-export interface KeyboardInitOptions {
+interface KeyboardInitOptions {
     global: GlobalEventHandlers | (() => GlobalEventHandlers);
     grabWindowFocus?: boolean;
 }
 
-export interface KeyEvents {
+interface KeyEvents {
     press: KeyEvent;
     hold: KeyEvent;
     release: KeyEvent;
 }
 
-export const KeyEvents = {
+const KeyEvents = {
     Press: 'press',
     Hold: 'hold',
     Release: 'release'
