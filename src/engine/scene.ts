@@ -1,4 +1,4 @@
-import {isScreenElement, ScreenElement} from './screen-element';
+import {isScreenElement, ScreenElement} from './ScreenElement.ts';
 import type {ActivateEvent, DeactivateEvent, PauseEvent, ResumeEvent} from './events';
 import {
     InitializeEvent,
@@ -37,8 +37,8 @@ import {IsometricEntitySystem} from './tile-map';
 import {OffscreenSystem} from './graphics';
 import type {MitraGraphicsContext} from './graphics';
 import {PhysicsWorld} from './collision';
-import type {EventKey, Handler, Subscription} from './event-emitter';
-import {EventEmitter} from './event-emitter';
+import type {EventKey, Handler, Subscription} from './EventEmitter.ts';
+import {EventEmitter} from './EventEmitter.ts';
 import type {Color} from './color';
 import type {DefaultLoader} from './director';
 import type {Transition} from './director';
@@ -557,7 +557,6 @@ export class Scene<TActivationData = unknown> implements CanInitialize, CanActiv
         this._postdraw(ctx, elapsed);
     }
 
-    /* istanbul ignore next */
     public debugDraw(ctx: MitraGraphicsContext) {
         this.emit('predebugdraw', new PreDebugDrawEvent(ctx, this));
         // pass

@@ -36,7 +36,7 @@ import type {ShaderOptions} from './ShaderOptions';
 import {Shader} from './Shader';
 import {ParticleRenderer} from './particle-renderer/ParticleRenderer';
 import {ImageRendererV2} from './image-renderer-v2/ImageRendererV2';
-import {Flags} from '../../flags';
+import {Flags} from '../../Flags.ts';
 import {Debug} from '../Debug';
 import {GraphicsDiagnostics} from '../GraphicsDiagnostics';
 import {MultisampleFramebuffer} from "./MultisampleFramebuffer";

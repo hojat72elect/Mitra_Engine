@@ -257,7 +257,6 @@ export class GraphicsSystem extends System {
                             }
                         }
                     } else {
-                        /* istanbul ignore next */
                         graphic?.localBounds
                             .translate(offset)
                             .debug(this._graphicsContext, {

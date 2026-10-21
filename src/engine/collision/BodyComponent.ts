@@ -10,7 +10,7 @@ import {createId} from '../id';
 import {angleDifference, canonicalizeAngle, clamp} from '../math';
 import {ColliderComponent} from './ColliderComponent';
 import {Transform} from '../math';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import type {PhysicsConfig} from './PhysicsConfig';
 import type {Entity} from '../entity-component-system';
 import type {Island} from './Island';

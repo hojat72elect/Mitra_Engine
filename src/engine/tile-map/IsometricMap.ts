@@ -13,7 +13,7 @@ import {IsometricEntityComponent} from './IsometricEntityComponent';
 import type {DebugConfig} from '../debug';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import type {HasNestedPointerEvents} from '../input/HasNestedPointerEvents';
 import {PointerEventsToObjectDispatcher} from '../input/PointerEventsToObjectDispatcher';
 import type {PointerEventReceiver} from '../input/PointerEventReceiver';

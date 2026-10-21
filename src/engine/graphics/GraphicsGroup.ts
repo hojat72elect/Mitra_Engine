@@ -130,7 +130,6 @@ export class GraphicsGroup extends Graphic implements HasTick {
             ex.translate(x, y);
             graphic.draw(ex, pos.x, pos.y);
             if (this.showDebug) {
-                /* istanbul ignore next */
                 ex.debug.drawRect(0, 0, this.width, this.height);
             }
             ex.restore();

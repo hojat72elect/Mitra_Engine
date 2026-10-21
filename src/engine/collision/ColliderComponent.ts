@@ -12,7 +12,7 @@ import {CompositeCollider} from './colliders/CompositeCollider';
 import {PolygonCollider} from './colliders/PolygonCollider';
 import {EdgeCollider} from './colliders/EdgeCollider';
 import {Colliders} from './colliders/Colliders';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import {Actor} from '../actor';
 import {Logger} from '../util';
 

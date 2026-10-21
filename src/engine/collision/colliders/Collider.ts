@@ -11,7 +11,7 @@ import type {Id} from '../../id';
 import {createId} from '../../id';
 import type {MitraGraphicsContext} from '../../graphics';
 import type {Transform} from '../../math';
-import {EventEmitter} from '../../event-emitter';
+import {EventEmitter} from '../../EventEmitter.ts';
 import type {RayCastHit} from '../detection/RayCastHit';
 import type {CompositeCollider} from './CompositeCollider';
 

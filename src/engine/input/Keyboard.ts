@@ -1,7 +1,7 @@
 import * as Events from '../events';
 import {getDefaultGlobal} from '../util/iframe';
-import type {EventKey, Handler, Subscription} from '../event-emitter';
-import {EventEmitter} from '../event-emitter';
+import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
+import {EventEmitter} from '../EventEmitter.ts';
 
 /**
  * Enum representing physical input key codes

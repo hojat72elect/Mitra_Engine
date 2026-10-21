@@ -1,10 +1,10 @@
 import type {Engine} from './engine';
 import type {Color} from './color';
-import {vec, Vector} from './math/Vector';
-import {Text} from './graphics/Text';
+import {vec, Vector} from './math';
+import {Text} from './graphics';
 import type {SpriteFont} from './graphics';
 import {GraphicsComponent} from './graphics';
-import {Font} from './graphics/Font';
+import {Font} from './graphics';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
 

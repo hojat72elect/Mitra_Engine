@@ -1,7 +1,7 @@
 import {Vector} from '../math';
 import type {PointerEvent} from './PointerEvent';
-import type {EventKey, Handler, Subscription} from '../event-emitter';
-import {EventEmitter} from '../event-emitter';
+import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
+import {EventEmitter} from '../EventEmitter.ts';
 import type {PointerEvents} from './PointerEvents';
 import {GlobalCoordinates} from '../math';
 import type {Engine} from '../engine';

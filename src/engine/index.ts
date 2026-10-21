@@ -13,7 +13,7 @@ polyfill();
 
 // This file is used as the bundle entry point and exports everything
 // that will be exposed as the `ex` global variable.
-export * from './flags';
+export * from './Flags.ts';
 export * from './id';
 export * from './engine';
 export * from './garbage-collector';
@@ -22,7 +22,7 @@ export * from './actor';
 export * from './math/index';
 export * from './camera';
 export * from './debug/index';
-export * from './event-emitter';
+export * from './EventEmitter.ts';
 export * from './events/MediaEvent';
 export * from './events';
 export * from './label';
@@ -33,7 +33,7 @@ export {FontUnit} from "./graphics/FontUnit";
 export {BaseAlign} from "./graphics/BaseAlign";
 export * from './particles/index';
 export * from './scene';
-export * from './plugin';
+export * from './Plugin.ts';
 
 export * from './tile-map/index';
 
@@ -41,7 +41,7 @@ export * from './lighting/index';
 
 export * from './timer';
 export * from './trigger';
-export * from './screen-element';
+export * from './ScreenElement.ts';
 
 export * from './actions/index';
 export * from './collision/index';

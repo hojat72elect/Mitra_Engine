@@ -2,7 +2,6 @@
  * Polyfill adding function
  */
 export function polyfill() {
-    /* istanbul ignore next */
     if (typeof window === 'undefined') {
         window = <any>{
             audioContext: function () {
@@ -10,7 +9,6 @@ export function polyfill() {
             }
         };
     }
-    /* istanbul ignore next */
     if (typeof window !== 'undefined' && !window.requestAnimationFrame) {
         (<any>window).requestAnimationFrame =
             (<any>window).webkitRequestAnimationFrame ||
@@ -19,7 +17,6 @@ export function polyfill() {
                 window.setInterval(callback, 1000 / 60);
             };
     }
-    /* istanbul ignore next */
     if (typeof window !== 'undefined' && !window.cancelAnimationFrame) {
         (<any>window).cancelAnimationFrame =
             (<any>window).webkitCancelAnimationFrame ||
@@ -28,7 +25,6 @@ export function polyfill() {
                 return;
             };
     }
-    /* istanbul ignore next */
     if (typeof window !== 'undefined' && !(<any>window).AudioContext) {
         if ((<any>window).webkitAudioContext) {
             const ctx = (<any>window).webkitAudioContext;
@@ -48,12 +44,10 @@ export function polyfill() {
             (<any>window).oAudioContext;
     }
 
-    /* istanbul ignore next */
     if (typeof window !== 'undefined' && !(<any>window).devicePixelRatio) {
         (<any>window).devicePixelRatio = window.devicePixelRatio || 1;
     }
 
-    /* istanbul ignore next */
     if (typeof window !== 'undefined' && !(window as any).requestIdleCallback) {
         // Adapted from https://developer.chrome.com/blog/using-requestidlecallback#checking_for_requestidlecallback
         (window as any).requestIdleCallback =

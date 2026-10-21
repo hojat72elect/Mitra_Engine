@@ -1,13 +1,13 @@
-import {vec, Vector} from './math/Vector';
-import {Logger} from './util/log';
+import {vec, Vector} from './math';
+import {Logger} from './util';
 import type {Camera} from './camera';
 import type {BrowserEvents} from './util/browser';
-import {BoundingBox} from './collision/index';
-import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
-import {getPosition} from './util/util';
-import {MitraGraphicsContextWebgl} from './graphics/context/MitraGraphicsContextWebgl';
-import {MitraGraphicsContext2DCanvas} from './graphics/context/MitraGraphicsContext2DCanvas';
-import {EventEmitter} from './event-emitter';
+import {BoundingBox} from './collision';
+import type {MitraGraphicsContext} from './graphics';
+import {getPosition} from './util';
+import {MitraGraphicsContextWebgl} from './graphics';
+import {MitraGraphicsContext2DCanvas} from './graphics';
+import {EventEmitter} from './EventEmitter.ts';
 
 /**
  * Enum representing the different display modes available to Mitra.
@@ -147,42 +147,34 @@ export enum DisplayMode {
  * Mostly sourced from https://emulation.gametechwiki.com/index.php/Resolution
  */
 export class Resolution {
-    /* istanbul ignore next */
     public static get SVGA(): Resolution {
         return {width: 800, height: 600};
     }
 
-    /* istanbul ignore next */
     public static get Standard(): Resolution {
         return {width: 1920, height: 1080};
     }
 
-    /* istanbul ignore next */
     public static get Atari2600(): Resolution {
         return {width: 160, height: 192};
     }
 
-    /* istanbul ignore next */
     public static get GameBoy(): Resolution {
         return {width: 160, height: 144};
     }
 
-    /* istanbul ignore next */
     public static get GameBoyAdvance(): Resolution {
         return {width: 240, height: 160};
     }
 
-    /* istanbul ignore next */
     public static get NintendoDS(): Resolution {
         return {width: 256, height: 192};
     }
 
-    /* istanbul ignore next */
     public static get NES(): Resolution {
         return {width: 256, height: 224};
     }
 
-    /* istanbul ignore next */
     public static get SNES(): Resolution {
         return {width: 256, height: 244};
     }

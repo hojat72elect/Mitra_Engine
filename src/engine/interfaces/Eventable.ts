@@ -1,4 +1,4 @@
-import type {Handler} from '../event-emitter';
+import type {Handler} from '../EventEmitter.ts';
 
 export interface Eventable {
     /**

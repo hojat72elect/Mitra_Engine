@@ -7,7 +7,7 @@ import {watch} from '../util/watch';
 import type {ImageFiltering} from './ImageFiltering';
 import {omit} from '../util';
 import {ImageSourceAttributeConstants} from './ImageSourceAttributeConstants';
-import {RasterOptions} from "./RasterOptions";
+import type {RasterOptions} from "./RasterOptions";
 
 /**
  * A Raster is a Graphic that needs to be first painted to a HTMLCanvasElement before it can be drawn to the
@@ -46,7 +46,6 @@ export abstract class Raster extends Graphic {
         this.height = bitmapHeight;
         const maybeCtx = this._bitmap.getContext('2d');
         if (!maybeCtx) {
-            /* istanbul ignore next */
             throw new Error('Browser does not support 2d canvas drawing, cannot create Raster graphic');
         } else {
             this._ctx = maybeCtx;

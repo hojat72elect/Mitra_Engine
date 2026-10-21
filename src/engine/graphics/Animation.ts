@@ -4,7 +4,7 @@ import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {SpriteSheet} from './SpriteSheet';
 import {Logger} from '../util';
 import {clamp} from '../math';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import {HasTick} from "./HasTick";
 import {AnimationStrategy} from "./AnimationStrategy";
 import {Frame} from "./Frame";

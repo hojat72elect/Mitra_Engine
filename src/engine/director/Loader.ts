@@ -5,7 +5,7 @@ import logoImg from './Loader.logo.png';
 import loaderCss from './Loader.css?inline';
 import type {Vector} from '../math';
 import {delay} from '../util';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import {DefaultLoader} from './DefaultLoader';
 import type {Engine} from '../engine';
 import type {Screen} from '../screen';

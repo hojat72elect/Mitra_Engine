@@ -7,7 +7,6 @@ import type {Vector} from '../math';
  */
 export type LineCapStyle = 'butt' | 'round' | 'square';
 
-/* istanbul ignore next */
 /**
  * Draw a line on canvas context
  * @param ctx The canvas context
@@ -41,7 +40,6 @@ export function line(
     ctx.restore();
 }
 
-/* istanbul ignore next */
 /**
  * Draw the vector as a point onto the canvas.
  */
@@ -55,11 +53,6 @@ export function point(ctx: CanvasRenderingContext2D, color: Color = Color.Red, p
 
 /**
  * Draw the vector as a line onto the canvas starting a origin point.
- */
-
-/* istanbul ignore next */
-/**
- *
  */
 export function vector(ctx: CanvasRenderingContext2D, color: Color, origin: Vector, vector: Vector, scale: number = 1.0): void {
     const c = color ? color.toString() : 'blue';

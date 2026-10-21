@@ -20,7 +20,7 @@ import type {MitraGraphicsContext} from './graphics';
 import type {Gamepad} from './input/Gamepad';
 import type {Buttons} from './input/Buttons';
 import type {Axes} from './input/Axes';
-import {Action} from "./actions";
+import type {Action} from "./actions";
 import {FrameStats} from "./debug/FrameStats";
 
 export enum EventTypes {
@@ -98,7 +98,6 @@ export enum EventTypes {
     Remove = 'remove'
 }
 
-/* istanbul ignore next */
 /* compiler only: these are internal to lib */
 export type kill = 'kill';
 export type prekill = 'prekill';

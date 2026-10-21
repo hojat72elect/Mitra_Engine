@@ -7,8 +7,8 @@ import {AudioContextFactory} from './AudioContextFactory';
 import {canPlayFile, canPlayMime} from '../../util/sound';
 import type {Loadable} from '../../interfaces';
 import {Logger} from '../../util';
-import type {EventKey, Handler, Subscription} from '../../event-emitter';
-import {EventEmitter} from '../../event-emitter';
+import type {EventKey, Handler, Subscription} from '../../EventEmitter.ts';
+import {EventEmitter} from '../../EventEmitter.ts';
 import {NativeSoundEvent} from "../../events/NativeSoundEvent";
 import {NativeSoundProcessedEvent} from "../../events/NativeSoundProcessedEvent";
 

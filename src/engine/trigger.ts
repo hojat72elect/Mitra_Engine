@@ -1,11 +1,11 @@
-import type {Vector} from './math/Vector';
+import type {Vector} from './math';
 import type {CollisionEndEvent, CollisionStartEvent} from './events';
 import {EnterTriggerEvent, ExitTriggerEvent} from './events';
-import {CollisionType} from './collision/CollisionType';
+import {CollisionType} from './collision';
 import type {Entity} from './entity-component-system';
 import type {ActorArgs, ActorEvents} from './actor';
 import {Actor} from './actor';
-import {EventEmitter} from './event-emitter';
+import {EventEmitter} from './EventEmitter.ts';
 
 export interface TriggerEvents extends ActorEvents {
     exit: ExitTriggerEvent;

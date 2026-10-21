@@ -13,8 +13,8 @@ import {PointerButton} from './PointerButton';
 import {fail} from '../util';
 import {PointerType} from './PointerType';
 import {isCrossOriginIframe, isIframe} from '../util/iframe';
-import type {EventKey, Handler, Subscription} from '../event-emitter';
-import {EventEmitter} from '../event-emitter';
+import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
+import {EventEmitter} from '../EventEmitter.ts';
 import {PointerInitOptions} from "./PointerInitOptions";
 import {PointerEvents} from "../interfaces";
 

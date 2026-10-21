@@ -1,4 +1,4 @@
-import type {EventEmitter} from '../event-emitter';
+import type {EventEmitter} from '../EventEmitter.ts';
 import type {PointerEvent} from './PointerEvent';
 import type {GlobalCoordinates} from '../math';
 import type {PointerEventReceiver} from './PointerEventReceiver';

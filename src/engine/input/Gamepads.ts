@@ -1,4 +1,4 @@
-import {EventEmitter, type EventKey, type Handler, type Subscription} from "../event-emitter";
+import {EventEmitter, type EventKey, type Handler, type Subscription} from "../EventEmitter.ts";
 import {GamepadEvents} from "./GamepadEvents";
 import {NavigatorGamepads} from "./NavigatorGamepads";
 import {GamepadConfiguration} from "./GamepadConfiguration";

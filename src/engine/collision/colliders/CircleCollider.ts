@@ -266,7 +266,6 @@ export class CircleCollider extends Collider {
         return (mass * this.radius * this.radius) / 2;
     }
 
-    /* istanbul ignore next */
     public update(transform: Transform): void {
         if (transform !== this._transform) {
             this._transform = transform;

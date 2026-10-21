@@ -12,7 +12,7 @@ import type {AffineMatrix} from '../math';
 import {CoordPlane} from '../math';
 import {canonicalizeAngle} from '../math';
 import {Color} from '../color';
-import {ScreenElement} from '../screen-element';
+import {ScreenElement} from '../ScreenElement.ts';
 import {Canvas} from '../graphics';
 import {Logger} from '../util';
 import type {Observable} from '../util';

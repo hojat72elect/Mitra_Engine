@@ -6,7 +6,7 @@ import type {Transition} from './Transition';
 import {Loader} from './Loader';
 import {Logger} from '../util';
 import {ActivateEvent, DeactivateEvent} from '../events';
-import {EventEmitter} from '../event-emitter';
+import {EventEmitter} from '../EventEmitter.ts';
 import {isLoaderConstructor} from "./isLoaderConstructor";
 import {DirectorEvents} from "./DirectorEvents";
 import {DirectorNavigationEvent} from "./DirectorNavigationEvent";
