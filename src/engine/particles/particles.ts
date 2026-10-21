@@ -1,17 +1,17 @@
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import {vec, Vector} from '../math/Vector';
-import type {Random} from '../math/Random';
-import {TransformComponent} from '../entity-component-system/components/TransformComponent';
-import {GraphicsComponent} from '../graphics/GraphicsComponent';
-import {Entity} from '../entity-component-system/Entity';
-import {BoundingBox} from '../collision/BoundingBox';
-import {clamp} from '../math/util';
+import {vec, Vector} from '../math';
+import type {Random} from '../math';
+import {TransformComponent} from '../entity-component-system';
+import {GraphicsComponent} from '../graphics';
+import {Entity} from '../entity-component-system';
+import {BoundingBox} from '../collision';
+import {clamp} from '../math';
 import type {Graphic} from '../graphics';
-import type {EmitterType} from './emitter-type';
+import type {EmitterType} from './EmitterType';
 import {MotionComponent, PauseComponent} from '../entity-component-system';
 import {EulerIntegrator} from '../collision/EulerIntegrator';
-import type {ParticleEmitter} from './particle-emitter';
+import type {ParticleEmitter} from './ParticleEmitter';
 
 /**
  /**

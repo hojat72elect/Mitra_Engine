@@ -1,24 +1,12 @@
-import {randomInRange, TwoPI} from '../math/util';
-import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
-import type {GpuParticleEmitter} from './gpu-particle-emitter';
-import type {ParticleConfig} from './particles';
+import {randomInRange, TwoPI} from '../math';
+import type {MitraGraphicsContextWebgl} from '../graphics';
+import type {GpuParticleEmitter} from './GpuParticleEmitter';
 import {ParticleTransform} from './particles';
-import type {Random} from '../math/Random';
-import type {Sprite} from '../graphics/Sprite';
-import {EmitterType} from './emitter-type';
+import type {Random} from '../math';
+import {EmitterType} from './EmitterType';
 import {assert} from '../util/assert';
-import {vec} from '../math/Vector';
-
-export interface GpuParticleConfig extends ParticleConfig {
-    /**
-     * Only Sprite graphics are supported in GPU particles at the moment
-     */
-    graphic?: Sprite;
-    /**
-     * Set the maximum particles to use for this emitter
-     */
-    maxParticles?: number;
-}
+import {vec} from '../math';
+import {GpuParticleConfig} from "./GpuParticleConfig";
 
 /**
  * Container for the GPU Particle State contains the internal state needed for the GPU

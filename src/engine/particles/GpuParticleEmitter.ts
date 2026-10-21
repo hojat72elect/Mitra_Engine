@@ -1,17 +1,17 @@
 import type {Engine} from '../engine';
 import {Actor} from '../actor';
-import {EmitterType} from './emitter-type';
+import {EmitterType} from './EmitterType';
 import type {ParticleEmitterOptions} from './particles';
 import {ParticleTransform} from './particles';
-import type {GpuParticleConfig} from './gpu-particle-renderer';
-import {GpuParticleRenderer} from './gpu-particle-renderer';
-import {GraphicsComponent} from '../graphics/GraphicsComponent';
-import {Random} from '../math/Random';
-import type {Vector} from '../math/Vector';
-import {vec} from '../math/Vector';
+import type {GpuParticleConfig} from './GpuParticleConfig';
+import {GpuParticleRenderer} from './GpuParticleRenderer';
+import {GraphicsComponent} from '../graphics';
+import {Random} from '../math';
+import type {Vector} from '../math';
+import {vec} from '../math';
 import {clamp} from '../math';
-import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
-import type {ParticleRenderer} from '../graphics/context/particle-renderer/ParticleRenderer';
+import type {MitraGraphicsContextWebgl} from '../graphics';
+import type {ParticleRenderer} from '../graphics';
 
 export class GpuParticleEmitter extends Actor {
     public particle: GpuParticleConfig = {

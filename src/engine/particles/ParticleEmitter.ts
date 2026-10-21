@@ -1,10 +1,10 @@
 import type {Engine} from '../engine';
 import {Actor} from '../actor';
-import {vec} from '../math/Vector';
-import {Random} from '../math/Random';
-import {CollisionType} from '../collision/CollisionType';
-import {randomInRange} from '../math/util';
-import {EmitterType} from './emitter-type';
+import {vec} from '../math';
+import {Random} from '../math';
+import {CollisionType} from '../collision';
+import {randomInRange} from '../math';
+import {EmitterType} from './EmitterType';
 import type {ParticleConfig, ParticleEmitterOptions} from './particles';
 import {Particle, ParticleTransform} from './particles';
 import {RentalPool} from '../util/rental-pool';
