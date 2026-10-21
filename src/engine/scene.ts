@@ -28,7 +28,6 @@ import {Trigger} from './trigger';
 import {World} from './entity-component-system';
 import {Entity} from './entity-component-system';
 import {GraphicsSystem} from './graphics';
-import {DebugSystem} from './debug';
 import {PointerSystem} from './input/PointerSystem';
 import {IsometricEntitySystem} from './tile-map';
 import {OffscreenSystem} from './graphics';
@@ -49,6 +48,7 @@ import {ActionsSystem} from "./actions/ActionsSystem";
 import {PhysicsWorld} from "./collision/PhysicsWorld";
 import {MotionSystem} from "./collision/MotionSystem";
 import {CollisionSystem} from "./collision/CollisionSystem";
+import {DebugSystem} from "./debug/DebugSystem";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

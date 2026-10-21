@@ -11,7 +11,6 @@ import {PostDrawEvent, PostUpdateEvent, PreDrawEvent, PreUpdateEvent} from '../e
 import type {EventKey, Handler, Subscription} from '../EventEmitter';
 import {EventEmitter} from '../EventEmitter';
 import {CoordPlane} from '../math';
-import type {DebugConfig} from '../debug';
 import {clamp} from '../math';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';
@@ -29,6 +28,7 @@ import {BodyComponent} from "../collision/BodyComponent";
 import {CollisionType} from "../collision/CollisionType";
 import {BoundingBox} from "../collision/BoundingBox";
 import {Colliders} from "../collision/colliders/Colliders";
+import type {DebugConfig} from "../debug/DebugConfig";
 
 export interface TileMapOptions {
     /**

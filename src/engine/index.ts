@@ -13,7 +13,7 @@ polyfill();
 
 // This file is used as the bundle entry point and exports everything
 // that will be exposed as the `ex` global variable.
-export * from './Flags.ts';
+export * from './Flags';
 export * from './id';
 export * from './engine';
 export * from './garbage-collector';
@@ -21,8 +21,7 @@ export * from './screen';
 export * from './actor';
 export * from './math/index';
 export * from './camera';
-export * from './debug/index';
-export * from './EventEmitter.ts';
+export * from './EventEmitter';
 export * from './events/MediaEvent';
 export * from './events';
 export * from './label';
@@ -33,7 +32,7 @@ export {FontUnit} from "./graphics/FontUnit";
 export {BaseAlign} from "./graphics/BaseAlign";
 export * from './particles/index';
 export * from './scene';
-export * from './Plugin.ts';
+export * from './Plugin';
 
 export * from './tile-map/index';
 
@@ -41,7 +40,7 @@ export * from './lighting/index';
 
 export * from './timer';
 export * from './trigger';
-export * from './ScreenElement.ts';
+export * from './ScreenElement';
 
 export * from './interfaces/index';
 export * from './resources/index';
@@ -87,16 +86,16 @@ export * from './util/browser';
 export * from './util/detector';
 export * from './util/observable';
 export * from './util/log';
-export * from './util/ArenaPool.ts';
+export * from './util/ArenaPool';
 export * from './util/fps';
 export * from './util/clock';
-export * from './util/WebAudio.ts';
-export * from './util/Toaster.ts';
-export * from './util/StateMachine.ts';
-export * from './util/Future.ts';
-export * from './util/Semaphore.ts';
+export * from './util/WebAudio';
+export * from './util/Toaster';
+export * from './util/StateMachine';
+export * from './util/Future';
+export * from './util/Semaphore';
 export * from './util/coroutine';
 export * from './util/assert';
-export * from './util/RentalPool.ts';
-export * from './util/PauseSystem.ts';
-export * from './util/Serializer.ts';
+export * from './util/RentalPool';
+export * from './util/PauseSystem';
+export * from './util/Serializer';

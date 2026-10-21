@@ -4,7 +4,6 @@ import {Entity} from '../entity-component-system';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {DebugGraphicsComponent, GraphicsComponent} from '../graphics';
 import {IsometricEntityComponent} from './IsometricEntityComponent';
-import type {DebugConfig} from '../debug';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';
 import {EventEmitter} from '../EventEmitter';
@@ -20,6 +19,7 @@ import {ColliderComponent} from "../collision/ColliderComponent";
 import {CompositeCollider} from "../collision/colliders/CompositeCollider";
 import {BodyComponent} from "../collision/BodyComponent";
 import {CollisionType} from "../collision/CollisionType";
+import type {DebugConfig} from "../debug/DebugConfig";
 
 export interface IsometricTilePointerEvents {
     pointerup: PointerEvent;
