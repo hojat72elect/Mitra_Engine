@@ -7,7 +7,7 @@ import {randomInRange} from '../math';
 import {EmitterType} from './EmitterType';
 import type {ParticleConfig, ParticleEmitterOptions} from './particles';
 import {Particle, ParticleTransform} from './particles';
-import {RentalPool} from '../util/rental-pool';
+import {RentalPool} from '../util/RentalPool.ts';
 
 /**
  * Using a particle emitter is a great way to create interesting effects

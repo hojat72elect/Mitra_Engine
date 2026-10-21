@@ -2,7 +2,7 @@ import type {EventEmitter} from '../event-emitter';
 import type {PointerEvent} from './PointerEvent';
 import type {GlobalCoordinates} from '../math';
 import type {PointerEventReceiver} from './PointerEventReceiver';
-import {RentalPool} from '../util/rental-pool';
+import {RentalPool} from '../util/RentalPool.ts';
 import {PointerType} from './PointerType';
 import {HasNestedPointerEvents} from "./HasNestedPointerEvents";
 

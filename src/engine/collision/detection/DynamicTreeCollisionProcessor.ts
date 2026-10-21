@@ -12,7 +12,7 @@ import {CompositeCollider} from '../colliders/CompositeCollider';
 import {CollisionGroup} from '../group/CollisionGroup';
 import type {MitraGraphicsContext} from '../../graphics';
 import type {RayCastHit} from './RayCastHit';
-import type {DeepRequired} from '../../util/required';
+import type {DeepRequired} from '../../util/DeepRequired.ts';
 import type {PhysicsConfig} from '../PhysicsConfig';
 import type {RayCastOptions} from './RayCastOptions';
 import {BoundingBox} from '../BoundingBox';

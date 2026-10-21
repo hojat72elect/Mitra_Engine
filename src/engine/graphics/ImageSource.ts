@@ -4,7 +4,7 @@ import {Sprite} from './Sprite';
 import type {Loadable} from '../interfaces';
 import {Logger} from '../util';
 import {ImageFiltering} from './ImageFiltering';
-import {Future} from '../util/future';
+import {Future} from '../util/Future.ts';
 import {TextureLoader} from './context/TextureLoader';
 import {ImageWrapping} from './ImageWrapping';
 import type {GraphicOptions} from './GraphicOptions';

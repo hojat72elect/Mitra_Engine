@@ -44,7 +44,7 @@ import type {DefaultLoader} from './director';
 import type {Transition} from './director';
 import {InputHost} from './input/InputHost';
 import {PointerScope} from './input/PointerScope';
-import {PauseSystem} from './util/pause-system';
+import {PauseSystem} from './util/PauseSystem.ts';
 import {FlickerSystem} from './lighting';
 import {LightingSystem} from './lighting';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";

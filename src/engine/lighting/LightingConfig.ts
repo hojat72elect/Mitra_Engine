@@ -1,4 +1,4 @@
-import type {DeepRequired} from '../util/required';
+import type {DeepRequired} from '../util/DeepRequired.ts';
 import type {Color} from '../color';
 
 /**

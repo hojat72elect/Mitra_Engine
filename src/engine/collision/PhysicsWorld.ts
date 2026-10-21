@@ -1,5 +1,5 @@
 import type {Ray} from '../math';
-import type {DeepRequired} from '../util/required';
+import type {DeepRequired} from '../util/DeepRequired.ts';
 import {Observable} from '../util';
 import type {BoundingBox, Collider, CollisionProcessor, RayCastHit, RayCastOptions} from './index';
 import {DynamicTreeCollisionProcessor, SparseHashGridCollisionProcessor} from './index';

@@ -1,4 +1,4 @@
-import {Logger} from '../util/log';
+import {Logger} from './log.ts';
 
 /**
  * This pool works like an arena allocator, it preallocates a large list of objects and passes them out sequentially

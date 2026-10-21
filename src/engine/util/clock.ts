@@ -1,4 +1,4 @@
-import {Logger} from '../util/log';
+import {Logger} from './log.ts';
 import {FpsSampler} from './fps';
 
 export type ScheduledCallbackTiming = 'preframe' | 'postframe' | 'preupdate' | 'postupdate' | 'predraw' | 'postdraw';

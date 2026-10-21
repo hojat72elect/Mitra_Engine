@@ -1,6 +1,6 @@
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
-import {Future} from '../util/future';
+import {Future} from '../util/Future.ts';
 import {Entity, TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
 import {CoordPlane} from '../math';

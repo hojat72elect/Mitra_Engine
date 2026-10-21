@@ -1,5 +1,5 @@
 import {Color} from '../../color';
-import {RentalPool} from '../../util/rental-pool';
+import {RentalPool} from '../../util/RentalPool.ts';
 import type {MitraGraphicsContextState} from './MitraGraphicsContext';
 import type {Material} from './Material';
 

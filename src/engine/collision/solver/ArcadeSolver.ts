@@ -6,7 +6,7 @@ import type {CollisionSolver} from './CollisionSolver';
 import {BodyComponent} from '../BodyComponent';
 import type {ContactBias} from './ContactBias';
 import type {PhysicsConfig} from '../PhysicsConfig';
-import type {DeepRequired} from '../../util/required';
+import type {DeepRequired} from '../../util/DeepRequired.ts';
 import {ContactSolveBias} from "./ContactSolveBias";
 import {VerticalFirst} from "./VerticalFirst";
 import {HorizontalFirst} from "./HorizontalFirst";

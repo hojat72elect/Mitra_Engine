@@ -1,4 +1,4 @@
-import type {DeepRequired} from "../util/required";
+import type {DeepRequired} from "../util/DeepRequired.ts";
 import {vec} from "../math";
 import {SolverStrategy} from "./SolverStrategy";
 import {SpatialPartitionStrategy} from "./detection/SpatialPartitionStrategy";

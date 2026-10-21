@@ -5,7 +5,7 @@ import type {Collider} from './Collider';
 import type {CircleCollider} from './CircleCollider';
 import type {PolygonCollider} from './PolygonCollider';
 import {AffineMatrix} from '../../math';
-import {ArenaPool} from '../../util/arena-pool';
+import {ArenaPool} from '../../util/ArenaPool.ts';
 import type {SatShape} from './SatShape';
 import {SeparationInfo} from "./SeparationInfo";
 

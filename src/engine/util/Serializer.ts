@@ -9,7 +9,7 @@ import {ColliderComponent} from '../collision';
 import type {Graphic} from '../graphics';
 import {Logger} from './log';
 import {ActionsComponent} from "../actions";
-import {ComponentCtor} from "../entity-component-system/ComponentCtor";
+import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 
 /**
  * Base interface for all serialized data
@@ -40,18 +40,11 @@ export interface ComponentData extends SerializedData {
     [key: string]: any;
 }
 
-// ============================================================================
-// Serialization System - Central Manager
-// ============================================================================
-
 /**
  * Central serialization system for Mitra.
  * Handles all serialization/deserialization with extensible registry
  */
 export class Serializer {
-    // ============================================================================
-    // Private Members
-    // ============================================================================
     private static _LOGGER = Logger.getInstance();
     // Component type registry
     private static _COMPONENTREGISTRY = new Map<string, ComponentCtor>();
@@ -68,10 +61,6 @@ export class Serializer {
         }
     >();
     private static _INITIALIZED = false;
-
-    // ============================================================================
-    // Initialization
-    // ============================================================================
 
     static init(autoRegisterComponents: boolean = true): void {
         if (Serializer._INITIALIZED) {
@@ -91,11 +80,6 @@ export class Serializer {
         return Serializer._INITIALIZED;
     }
 
-    // ============================================================================
-    // Component Registry
-    // ============================================================================
-
-    // #region compRegistry
     static registerComponent<T extends Component>(ctor: ComponentCtor<T>): void {
         const typeName = ctor.name;
         if (Serializer._COMPONENTREGISTRY.has(typeName)) {
@@ -205,14 +189,6 @@ export class Serializer {
         }
         Serializer._GRAPHICSREGISTRY.set(id, graphic);
     }
-
-    // #endregion customActorRegistry
-
-    // ============================================================================
-    // Graphics Registry
-    // ============================================================================
-
-    // #region graphicsRegistry
 
     static registerGraphics(graphics: Record<string, any>): void {
         for (const [id, graphic] of Object.entries(graphics)) {
@@ -360,14 +336,6 @@ export class Serializer {
         };
     }
 
-    // #endregion componentSerialization
-
-    // ============================================================================
-    // Entity Serialization
-    // ============================================================================
-
-    // #region entitySerialization
-
     static deserializeEntity(data: EntityData): Entity | null {
         try {
             const entity = new Entity();
@@ -437,14 +405,6 @@ export class Serializer {
             customInstance
         };
     }
-
-    // #endregion entitySerialization
-
-    // ============================================================================
-    // Actor Serialization
-    // ============================================================================
-
-    // #region actorSerialization
 
     static deserializeActor(data: EntityData): Actor | null {
         try {
@@ -522,14 +482,6 @@ export class Serializer {
         return JSON.stringify(data, null, pretty ? 2 : 0);
     }
 
-    // #endregion actorSerialization
-
-    // ============================================================================
-    // JSON Conversion
-    // ============================================================================
-
-    // #region JSONConversion
-
     /**
      * Deserialize entity from JSON string
      */
@@ -595,18 +547,9 @@ export class Serializer {
         return true;
     }
 
-    // #endregion JSONConversion
-
-    // ============================================================================
-    // Validation
-    // ============================================================================
-
-    // #region validation
-
     /**
      * Reset all registrations (useful for testing)
      */
-
     static reset(): void {
         Serializer._COMPONENTREGISTRY.clear();
         Serializer._CUSTOMSERIALIZERS.clear();
@@ -615,14 +558,6 @@ export class Serializer {
         Serializer._INITIALIZED = false;
     }
 
-    // #endregion validation
-
-    // ============================================================================
-    // Utilities
-    // ============================================================================
-
-    // #region Utilities
-
     /**
      * Register a custom serializer for a specific type
      * Useful for types like Vector, Color, BoundingBox, etc.
@@ -630,10 +565,6 @@ export class Serializer {
     static registerCustomSerializer(typeName: string, serialize: (obj: any) => any, deserialize: (data: any) => any): void {
         Serializer._CUSTOMSERIALIZERS.set(typeName, {serialize, deserialize});
     }
-
-    // ============================================================================
-    // Custom Type Serializers
-    // ============================================================================
 
     static getCustomSerializer(typeName: string): {
         serialize: (obj: any) => any;
@@ -689,6 +620,4 @@ export class Serializer {
             (data) => ({left: data.left, top: data.top, right: data.right, bottom: data.bottom})
         );
     }
-
-    // #endregion Utilities
 }

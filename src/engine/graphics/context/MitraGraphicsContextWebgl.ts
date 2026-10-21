@@ -27,7 +27,7 @@ import {ScreenPassPainter} from './screen-pass-painter/ScreenPassPainter';
 import {ImageRenderer} from './image-renderer/ImageRenderer';
 import {RectangleRenderer} from './rectangle-renderer/RectangleRenderer';
 import {CircleRenderer} from './circle-renderer/CircleRenderer';
-import {ArenaPool} from '../../util/arena-pool';
+import {ArenaPool} from '../../util/ArenaPool.ts';
 import {DrawCall} from './DrawCall';
 import type {AffineMatrix} from '../../math';
 import {Material} from './Material';

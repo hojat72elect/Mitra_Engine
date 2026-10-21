@@ -1,10 +1,10 @@
-import {WebAudio} from '../util/web-audio';
+import {WebAudio} from '../util/WebAudio.ts';
 import type {Engine} from '../engine';
 import type {Loadable} from '../interfaces';
 import {Canvas} from '../graphics';
 import {clamp} from '../math';
 import {Sound} from '../resources';
-import {Future} from '../util/future';
+import {Future} from '../util/Future.ts';
 import type {EventKey, Handler, Subscription} from '../event-emitter';
 import {EventEmitter} from '../event-emitter';
 import {Color} from '../color';

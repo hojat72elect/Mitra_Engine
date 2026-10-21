@@ -1,4 +1,4 @@
-import {Future} from './future';
+import {Future} from './Future.ts';
 
 class AsyncWaitQueue<T> {
     // Code from StephenCleary https://gist.github.com/StephenCleary/ba50b2da419c03b9cba1d20cb4654d5e

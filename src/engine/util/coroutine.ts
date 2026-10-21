@@ -9,9 +9,6 @@ const InsideCoroutineContext = createContext<boolean>();
 
 const generatorFunctionDeclaration = /^\s*(?:function)?\*/;
 
-/**
- *
- */
 function isCoroutineGenerator(x: any): x is CoroutineGenerator {
     if (typeof x !== 'function') {
         return false;
@@ -108,9 +105,6 @@ export function coroutine(coroutineGenerator: CoroutineGenerator, options?: Coro
  * @param {CoroutineOptions} options optionally schedule coroutine pre/post update
  */
 export function coroutine(thisArg: any, coroutineGenerator: CoroutineGenerator, options?: CoroutineOptions): CoroutineInstance;
-/**
- *
- */
 export function coroutine(...args: any[]): CoroutineInstance {
     const logger = Logger.getInstance();
     let coroutineGenerator: CoroutineGenerator;

@@ -8,7 +8,7 @@ import {Animation} from './Animation';
 import type {GraphicOptions} from './GraphicOptions';
 import {TiledSprite} from './TiledSprite';
 import {watch} from '../util/watch';
-import {Future} from '../util/future';
+import {Future} from '../util/Future.ts';
 
 interface TiledAnimationOptions {
     /**

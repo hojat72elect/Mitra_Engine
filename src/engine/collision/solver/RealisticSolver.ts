@@ -10,7 +10,7 @@ import type {CollisionSolver} from './CollisionSolver';
 import type {BodyComponent} from '../BodyComponent';
 import {CollisionJumpTable} from '../colliders/CollisionJumpTable';
 import {Pair} from '../detection/Pair';
-import type {DeepRequired} from '../../util/required';
+import type {DeepRequired} from '../../util/DeepRequired.ts';
 import type {PhysicsConfig} from '../PhysicsConfig';
 import type {ContactBias} from './ContactBias';
 import {ContactSolveBias} from "./ContactSolveBias";

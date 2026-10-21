@@ -8,4 +8,4 @@ import * as drawUtil from './draw-util';
 
 export {drawUtil as DrawUtil};
 
-export {Serializer} from './serializer';
+export {Serializer} from './Serializer.ts';

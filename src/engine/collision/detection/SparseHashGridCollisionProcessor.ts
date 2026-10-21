@@ -4,7 +4,7 @@ import {createId} from '../../id';
 import type {Ray} from '../../math';
 import type {Vector} from '../../math';
 import {vec} from '../../math';
-import {ArenaPool} from '../../util/arena-pool';
+import {ArenaPool} from '../../util/ArenaPool.ts';
 import {BodyComponent} from '../BodyComponent';
 import type {BoundingBox} from '../BoundingBox';
 import type {Collider} from '../colliders/Collider';

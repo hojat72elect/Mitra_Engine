@@ -1,10 +1,7 @@
-import {vec, Vector} from '../math/Vector';
+import {vec, Vector} from '../math';
 import type {Clock} from './clock';
-import {Future} from './future';
+import {Future} from './Future.ts';
 
-/**
- *
- */
 export function getMinIndex(array: number[]): number {
     if (array.length === 0) {
         throw new Error('Cannot find minIndex of array.length == 0');

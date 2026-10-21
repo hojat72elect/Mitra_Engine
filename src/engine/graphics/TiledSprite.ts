@@ -1,4 +1,4 @@
-import {Future} from '../util/future';
+import {Future} from '../util/Future.ts';
 import type {GraphicOptions} from './GraphicOptions';
 import {ImageSource} from './ImageSource';
 import {Sprite} from './Sprite';
