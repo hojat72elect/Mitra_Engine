@@ -1,10 +1,10 @@
-import {vec, Vector} from './math/vector';
+import {vec, Vector} from './math/Vector';
 import type {Engine} from './engine';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
 import {TransformComponent} from './entity-component-system/components/TransformComponent';
 import {CollisionType} from './collision/CollisionType';
-import {CoordPlane} from './math/coord-plane';
+import {CoordPlane} from './math/CoordPlane';
 
 /**
  * Type guard to detect a screen element

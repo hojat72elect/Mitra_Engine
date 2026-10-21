@@ -1,9 +1,9 @@
-import {AffineMatrix} from './affine-matrix';
+import {AffineMatrix} from './AffineMatrix';
 import {canonicalizeAngle, sign} from './util';
-import type {Vector} from './vector';
-import {vec} from './vector';
-import {VectorView} from './vector-view';
-import {WatchVector} from './watch-vector';
+import type {Vector} from './Vector';
+import {vec} from './Vector';
+import {VectorView} from './VectorView';
+import {WatchVector} from './WatchVector';
 
 export class Transform {
     private _isDirty = false;

@@ -1,5 +1,5 @@
 import {BoundingBox} from '../BoundingBox';
-import type {Ray} from '../../math/ray';
+import type {Ray} from '../../math/Ray';
 import {Logger} from '../../util/log';
 import type {Id} from '../../id';
 import type {Entity} from '../../entity-component-system/Entity';

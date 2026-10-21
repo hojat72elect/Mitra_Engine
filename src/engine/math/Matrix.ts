@@ -1,9 +1,10 @@
 import {canonicalizeAngle, sign} from './util';
-import {vec, Vector} from './vector';
-import {vec3, Vector3} from './vector3';
-import {vec4, Vector4} from './vector4';
+import {vec, Vector} from './Vector';
+import {vec3, Vector3} from './Vector3';
+import {vec4, Vector4} from './Vector4';
 
-export enum MatrixLocations {
+// @ts-ignore
+enum MatrixLocations {
     X = 12,
     Y = 13
 }

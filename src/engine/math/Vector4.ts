@@ -1,7 +1,6 @@
-// vector4.ts
-import type {Clonable} from '../interfaces/Clonable';
-import type {Matrix} from './matrix';
-import {Vector3} from './vector3';
+import type {Clonable} from '../interfaces';
+import type {Matrix} from './Matrix';
+import {Vector3} from './Vector3';
 import {clamp} from './util';
 
 /**

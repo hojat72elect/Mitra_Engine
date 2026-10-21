@@ -1,4 +1,4 @@
-import type {Vector} from '../../math/vector';
+import type {Vector} from '../../math/Vector';
 import type {Collider} from '../colliders/Collider';
 import type {BodyComponent} from '../BodyComponent';
 

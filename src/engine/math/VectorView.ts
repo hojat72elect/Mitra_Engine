@@ -1,6 +1,6 @@
-import {Vector} from './vector';
+import {Vector} from './Vector';
 
-export interface VectorViewOptions {
+interface VectorViewOptions {
     getX: () => number;
     getY: () => number;
     setX: (x: number) => void;

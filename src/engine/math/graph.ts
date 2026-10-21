@@ -1,5 +1,5 @@
-import {Random} from './random';
-import type {Vector} from './vector';
+import {Random} from './Random';
+import type {Vector} from './Vector';
 
 /**
  * A unique identifier for a graph node or edge.

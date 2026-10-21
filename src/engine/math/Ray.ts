@@ -1,10 +1,9 @@
-import type {LineSegment} from './line-segment';
-import type {Vector} from './vector';
+import type {LineSegment} from './LineSegment';
+import type {Vector} from './Vector';
 
 /**
  * A 2D ray that can be cast into the scene to do collision detection
  */
-
 export class Ray {
     public pos: Vector;
     public dir: Vector;

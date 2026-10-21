@@ -12,7 +12,7 @@ import {AffineMatrix} from './math';
 import type {EventKey, Handler, Subscription} from './event-emitter';
 import {EventEmitter} from './event-emitter';
 import {sign} from './math';
-import {WatchVector} from './math/watch-vector';
+import {WatchVector} from './math/WatchVector';
 import type {Easing} from './math';
 import {easeInOutCubic, lerp} from './math';
 import {pixelSnapEpsilon} from "./graphics/context/pixelSnapEpsilon";

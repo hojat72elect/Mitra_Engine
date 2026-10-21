@@ -3,11 +3,11 @@ import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsC
 import type {GpuParticleEmitter} from './gpu-particle-emitter';
 import type {ParticleConfig} from './particles';
 import {ParticleTransform} from './particles';
-import type {Random} from '../math/random';
+import type {Random} from '../math/Random';
 import type {Sprite} from '../graphics/Sprite';
 import {EmitterType} from './emitter-type';
 import {assert} from '../util/assert';
-import {vec} from '../math/vector';
+import {vec} from '../math/Vector';
 
 export interface GpuParticleConfig extends ParticleConfig {
     /**

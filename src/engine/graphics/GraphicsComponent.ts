@@ -5,7 +5,7 @@ import {BoundingBox} from '../collision';
 import {Component} from '../entity-component-system';
 import type {Material} from './context/Material';
 import {Logger} from '../util';
-import {WatchVector} from '../math/watch-vector';
+import {WatchVector} from '../math/WatchVector';
 import {TransformComponent} from '../entity-component-system';
 import {GraphicsGroup} from './GraphicsGroup';
 import {Color} from '../color';

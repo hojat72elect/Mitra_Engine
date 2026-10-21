@@ -4,17 +4,17 @@ import {EdgeCollider} from './EdgeCollider';
 import {CollisionJumpTable} from './CollisionJumpTable';
 import {CircleCollider} from './CircleCollider';
 import type {CollisionContact} from '../detection/CollisionContact';
-import {Projection} from '../../math/projection';
-import {LineSegment} from '../../math/line-segment';
-import {vec, Vector} from '../../math/vector';
-import {Ray} from '../../math/ray';
+import {Projection} from '../../math/Projection';
+import {LineSegment} from '../../math/LineSegment';
+import {vec, Vector} from '../../math/Vector';
+import {Ray} from '../../math/Ray';
 import {ClosestLineJumpTable} from './ClosestLineJumpTable';
 import {Collider} from './Collider';
 import type {MitraGraphicsContext} from '../..';
 import {BodyComponent, Debug, Logger, sign} from '../..';
 import {CompositeCollider} from './CompositeCollider';
 import {Colliders} from './Colliders';
-import {Transform} from '../../math/transform';
+import {Transform} from '../../math/Transform';
 import type {RayCastHit} from '../detection/RayCastHit';
 
 interface PolygonColliderOptions {

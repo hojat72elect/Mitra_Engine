@@ -1,4 +1,4 @@
-import {Vector} from './vector';
+import {Vector} from './Vector';
 
 /**
  * Wraps a vector and watches for changes in the x/y, modifies the original vector.

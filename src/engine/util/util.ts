@@ -1,4 +1,4 @@
-import {vec, Vector} from '../math/vector';
+import {vec, Vector} from '../math/Vector';
 import type {Clock} from './clock';
 import {Future} from './future';
 

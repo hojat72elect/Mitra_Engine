@@ -1,6 +1,6 @@
 import type {Scene} from './scene';
 import {Logger} from './util/log';
-import {Random} from './math/random';
+import {Random} from './math/Random';
 import {EventEmitter} from './event-emitter';
 
 /**

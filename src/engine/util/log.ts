@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import type {Engine} from '../engine';
-import {vec} from '../math/vector';
+import {vec} from '../math/Vector';
 import {Color} from '../color';
 
 /**

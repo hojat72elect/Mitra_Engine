@@ -1,4 +1,4 @@
-import {vec, Vector} from './math/vector';
+import {vec, Vector} from './math/Vector';
 import {Logger} from './util/log';
 import type {Camera} from './camera';
 import type {BrowserEvents} from './util/browser';

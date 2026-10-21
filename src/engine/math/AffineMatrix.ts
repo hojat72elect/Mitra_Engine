@@ -1,7 +1,7 @@
-import {Matrix} from './matrix';
+import {Matrix} from './Matrix';
 import {canonicalizeAngle, sign} from './util';
-import {vec, Vector} from './vector';
-import {Vector3} from './vector3';
+import {vec, Vector} from './Vector';
+import {Vector3} from './Vector3';
 
 export class AffineMatrix {
     /**

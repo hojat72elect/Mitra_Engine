@@ -1,6 +1,6 @@
-import type {Vector} from '../../math/vector';
+import type {Vector} from '../../math/Vector';
 import type {Id} from '../../id';
-import type {Transform} from '../../math/transform';
+import type {Transform} from '../../math/Transform';
 
 /**
  * Minimal convex shape description the separating axis test and contact clipping operate on.

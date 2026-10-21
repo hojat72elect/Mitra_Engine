@@ -1,5 +1,5 @@
 import type {Engine} from '../engine';
-import {Vector} from './vector';
+import {Vector} from './Vector';
 
 export class GlobalCoordinates {
     constructor(

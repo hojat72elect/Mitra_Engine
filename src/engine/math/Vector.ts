@@ -1,11 +1,10 @@
-import type {Clonable} from '../interfaces/Clonable';
-import {RotationType} from './rotation-type';
+import type {Clonable} from '../interfaces';
+import {RotationType} from './RotationType';
 import {canonicalizeAngle, clamp, TwoPI} from './util';
 
 /**
  * A 2D vector on a plane.
  */
-
 export class Vector implements Clonable<Vector> {
     /**
      * Get or set the vector equals epsilon, by default 0.001 meaning vectors within that tolerance on x or y will be considered equal.

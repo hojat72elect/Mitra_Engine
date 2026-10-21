@@ -1,4 +1,4 @@
-import type {Vector} from '../math/vector';
+import type {Vector} from '../math/Vector';
 
 /**
  * An enum that describes the sides of an axis aligned box for collision

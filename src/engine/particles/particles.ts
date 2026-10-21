@@ -1,7 +1,7 @@
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import {vec, Vector} from '../math/vector';
-import type {Random} from '../math/random';
+import {vec, Vector} from '../math/Vector';
+import type {Random} from '../math/Random';
 import {TransformComponent} from '../entity-component-system/components/TransformComponent';
 import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import {Entity} from '../entity-component-system/Entity';

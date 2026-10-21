@@ -1,4 +1,4 @@
-import type {Vector} from './math/vector';
+import type {Vector} from './math/Vector';
 import type {CollisionEndEvent, CollisionStartEvent} from './events';
 import {EnterTriggerEvent, ExitTriggerEvent} from './events';
 import {CollisionType} from './collision/CollisionType';

@@ -1,10 +1,9 @@
-import type {AffineMatrix} from './affine-matrix';
-import {Vector} from './vector';
+import type {AffineMatrix} from './AffineMatrix';
+import {Vector} from './Vector';
 
 /**
  * A 2D line segment
  */
-
 export class LineSegment {
     private _normal!: Vector;
     private _dir!: Vector;
