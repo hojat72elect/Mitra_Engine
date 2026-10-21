@@ -1,12 +1,12 @@
 import {Color, Font, Text as ExText, toRadians, vec, Vector} from "../../engine";
-import {type TiledObject, type TiledObjectGroup, TiledText} from "../parser/tiled-parser";
-import {mapProps, type Properties, type PropertyMapValue} from "./properties";
-import {Template} from "./template";
+import {type TiledObject, type TiledObjectGroup, TiledText} from "../parser/TiledParser.ts";
+import {mapProps, type Properties, type PropertyMapValue} from "./Properties.ts";
+import {Template} from "./Template.ts";
 import {filenameFromPath} from "./path-util";
-import {TiledResource} from "./tiled-resource";
+import {TiledResource} from "./TiledResource.ts";
 import {FontUnit} from "../../engine";
 import {TextAlign} from "../../engine";
-import {BaseAlign} from "../../engine/graphics/BaseAlign.ts";
+import {BaseAlign} from "../../engine";
 
 export interface PluginObjectProps {
     tiledObject: TiledObject;

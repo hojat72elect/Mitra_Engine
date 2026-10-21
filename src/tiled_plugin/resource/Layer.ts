@@ -1,4 +1,4 @@
-import type {Properties} from "./properties";
+import type {Properties} from "./Properties.ts";
 
 export interface Layer extends Properties {
     /**

@@ -1,8 +1,8 @@
 import {Actor, Color, ImageSource, ParallaxComponent, vec, Vector} from "../../engine";
-import type {Layer} from "./layer";
-import type {TiledImageLayer} from "../parser/tiled-parser";
-import {TiledResource} from "./tiled-resource";
-import {mapProps, type PropertyMapValue} from "./properties";
+import type {Layer} from "./Layer.ts";
+import type {TiledImageLayer} from "../parser/TiledParser.ts";
+import {TiledResource} from "./TiledResource.ts";
+import {mapProps, type PropertyMapValue} from "./Properties.ts";
 import {pathRelativeToBase} from "./path-util";
 
 export class ImageLayer implements Layer {

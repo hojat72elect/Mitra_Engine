@@ -1,15 +1,15 @@
 import {ImageSource, type Loadable} from "../../engine";
-import {Tileset} from "./tileset";
+import {Tileset} from "./Tileset.ts";
 import {
     isTiledTilesetCollectionOfImages,
     isTiledTilesetSingleImage,
     TiledParser,
     TiledTile,
     TiledTilesetFile
-} from "../parser/tiled-parser";
-import {FetchLoader, type FileLoader} from "./file-loader";
+} from "../parser/TiledParser.ts";
+import {FetchLoader, type FileLoader} from "./FileLoader.ts";
 import {type PathMap, pathRelativeToBase} from "./path-util";
-import {LoaderCache} from "./loader-cache";
+import {LoaderCache} from "./LoaderCache.ts";
 
 export interface TilesetResourceOptions {
     orientation?: 'isometric' | 'orthogonal';

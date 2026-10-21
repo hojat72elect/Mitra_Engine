@@ -10,15 +10,15 @@ import {
     vec,
     Vector
 } from "../../engine";
-import {mapProps, type PropertyMapValue} from "./properties";
-import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/tiled-parser";
-import {Decoder} from "./decoder";
-import {TiledResource} from "./tiled-resource";
+import {mapProps, type PropertyMapValue} from "./Properties.ts";
+import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/TiledParser.ts";
+import {Decoder} from "./Decoder.ts";
+import {TiledResource} from "./TiledResource.ts";
 import {getCanonicalGid} from "./gid-util";
-import {MitraTiledProperties} from "./mitra-properties.ts";
-import {TiledLayerDataComponent} from "./tiled-layer-component";
-import type {Layer} from "./layer";
-import {Tile} from "./tileset";
+import {MitraTiledProperties} from "./MitraTiledProperties.ts";
+import {TiledLayerDataComponent} from "./TiledLayerDataComponent.ts";
+import type {Layer} from "./Layer.ts";
+import {Tile} from "./Tileset.ts";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";
 

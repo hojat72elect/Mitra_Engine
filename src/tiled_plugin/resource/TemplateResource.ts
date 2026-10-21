@@ -1,12 +1,12 @@
 import {ImageSource, type Loadable} from "../../engine";
-import {TiledParser, TiledTemplate} from "../parser/tiled-parser";
-import {FetchLoader, type FileLoader} from "./file-loader";
-import {LoaderCache} from "./loader-cache";
+import {TiledParser, TiledTemplate} from "../parser/TiledParser.ts";
+import {FetchLoader, type FileLoader} from "./FileLoader.ts";
+import {LoaderCache} from "./LoaderCache.ts";
 import {parseObject} from "./objects";
 import {type PathMap, pathRelativeToBase} from "./path-util";
-import {Tileset} from "./tileset";
-import {Template} from "./template";
-import {TilesetResource, type TilesetResourceOptions} from "./tileset-resource";
+import {Tileset} from "./Tileset.ts";
+import {Template} from "./Template.ts";
+import {TilesetResource, type TilesetResourceOptions} from "./TilesetResource.ts";
 
 export interface TemplateResourceOptions {
     headless?: boolean;

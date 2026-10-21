@@ -19,26 +19,26 @@ import {
     TiledMap,
     TiledParser,
     TiledTile
-} from "../parser/tiled-parser";
-import {Tile, Tileset} from "./tileset";
-import type {Layer} from "./layer";
-import type {IsometricTileInfo} from "./iso-tile-layer";
-import {IsoTileLayer} from "./iso-tile-layer";
-import type {TileInfo} from "./tile-layer";
-import {TileLayer} from "./tile-layer";
-import {ObjectLayer} from './object-layer';
-import {Template} from "./template";
+} from "../parser/TiledParser.ts";
+import {Tile, Tileset} from "./Tileset.ts";
+import type {Layer} from "./Layer.ts";
+import type {IsometricTileInfo} from "./IsoTileLayer.ts";
+import {IsoTileLayer} from "./IsoTileLayer.ts";
+import type {TileInfo} from "./TileLayer.ts";
+import {TileLayer} from "./TileLayer.ts";
+import {ObjectLayer} from './ObjectLayer.ts';
+import {Template} from "./Template.ts";
 import {compare} from "compare-versions";
 import {getCanonicalGid} from "./gid-util";
 import {type PathMap, pathRelativeToBase} from "./path-util";
 import {PluginObject} from "./objects";
 import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty} from "./filter-util";
-import {MitraTiledProperties} from "./mitra-properties.ts";
-import {FetchLoader, type FileLoader} from './file-loader';
-import {TilesetResource, type TilesetResourceOptions} from "./tileset-resource";
-import {LoaderCache} from "./loader-cache";
-import {TemplateResource, type TemplateResourceOptions} from "./template-resource";
-import {ImageLayer} from "./image-layer";
+import {MitraTiledProperties} from "./MitraTiledProperties.ts";
+import {FetchLoader, type FileLoader} from './FileLoader.ts';
+import {TilesetResource, type TilesetResourceOptions} from "./TilesetResource.ts";
+import {LoaderCache} from "./LoaderCache.ts";
+import {TemplateResource, type TemplateResourceOptions} from "./TemplateResource.ts";
+import {ImageLayer} from "./ImageLayer.ts";
 
 export interface TiledLayerConfig {
     /**

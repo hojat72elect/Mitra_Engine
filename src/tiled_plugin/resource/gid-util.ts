@@ -28,7 +28,6 @@ export const isFlippedDiagonally = (gid: number): boolean => {
     return !!(gid & FLIPPED_DIAGONALLY_FLAG);
 }
 
-
 /**
  * Removes bit flags from gid
  * @param gid

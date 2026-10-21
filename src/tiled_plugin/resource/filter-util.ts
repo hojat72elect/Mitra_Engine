@@ -1,4 +1,4 @@
-import type {PropertyMapValue} from "./properties";
+import type {PropertyMapValue} from "./Properties.ts";
 
 export const byNameCaseInsensitive = (name?: string) => {
     return <TObject extends { name?: string }>(object: TObject) => {

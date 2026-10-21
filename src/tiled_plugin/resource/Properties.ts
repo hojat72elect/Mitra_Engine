@@ -1,4 +1,4 @@
-import type {TiledListItemValue, TiledProperty} from "../parser/tiled-parser";
+import type {TiledListItemValue, TiledProperty} from "../parser/TiledParser.ts";
 
 export type PropertyValue = string | number | boolean;
 export type PropertyMapValue = PropertyValue | TiledListItemValue[];

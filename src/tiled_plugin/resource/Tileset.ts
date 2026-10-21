@@ -17,9 +17,9 @@ import {
     isTiledTilesetSingleImage,
     TiledTile,
     TiledTileset
-} from "../parser/tiled-parser";
+} from "../parser/TiledParser.ts";
 import {Ellipse, parseObjects, PluginObject, Polygon, Rectangle} from "./objects";
-import {mapProps, type Properties, type PropertyMapValue} from "./properties";
+import {mapProps, type Properties, type PropertyMapValue} from "./Properties.ts";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {Shape} from "../../engine/collision/colliders/Shape.ts";
 import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";

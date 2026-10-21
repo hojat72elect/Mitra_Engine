@@ -1,6 +1,6 @@
-import {TiledTemplate} from "../parser/tiled-parser";
+import {TiledTemplate} from "../parser/TiledParser.ts";
 import {PluginObject} from "./objects";
-import {Tileset} from "./tileset";
+import {Tileset} from "./Tileset.ts";
 
 export interface TemplateOptions {
     templatePath: string;

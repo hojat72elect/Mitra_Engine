@@ -48,7 +48,6 @@ export function pathInMap(inputPath: string, pathMap?: PathMap): boolean {
     return false;
 }
 
-
 export function pathRelativeToBase(basePath: string, relativeToBase: string, pathMap?: PathMap) {
     if (pathInMap(relativeToBase, pathMap) && pathMap) {
         return mapPath(relativeToBase, pathMap);

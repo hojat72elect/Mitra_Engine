@@ -10,15 +10,15 @@ import {
     vec,
     Vector
 } from "../../engine";
-import type {Layer} from "./layer";
+import type {Layer} from "./Layer.ts";
 import {Ellipse, InsertedTile, parseObjects, PluginObject, Polygon, Rectangle, TemplateObject, Text} from "./objects";
-import type {TiledObjectLayer} from "../parser/tiled-parser";
-import {type FactoryProps, TiledResource} from "./tiled-resource";
-import {mapProps, type PropertyMapValue} from "./properties";
+import type {TiledObjectLayer} from "../parser/TiledParser.ts";
+import {type FactoryProps, TiledResource} from "./TiledResource.ts";
+import {mapProps, type PropertyMapValue} from "./Properties.ts";
 import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
-import {Tileset} from "./tileset";
-import {MitraTiledProperties} from "./mitra-properties.ts";
-import {TiledDataComponent} from "./tiled-data-component";
+import {Tileset} from "./Tileset.ts";
+import {MitraTiledProperties} from "./MitraTiledProperties.ts";
+import {TiledDataComponent} from "./TiledDataComponent.ts";
 import {Shape} from "../../engine/collision/colliders/Shape.ts";
 
 export class ObjectLayer implements Layer {
