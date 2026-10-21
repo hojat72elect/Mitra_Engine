@@ -1,8 +1,8 @@
 import {StateMachine} from '../../util/StateMachine.ts';
 import type {Audio} from '../../interfaces';
-import {clamp} from '../../math';
 import {AudioContextFactory} from './AudioContextFactory';
 import {Future} from '../../util/Future.ts';
+import {clamp} from "../../math/util.ts";
 
 interface SoundState {
     startedAt: number;

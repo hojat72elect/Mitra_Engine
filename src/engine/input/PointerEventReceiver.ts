@@ -1,8 +1,5 @@
 import type {Engine} from '../engine';
 import {ScrollPreventionMode} from '../engine';
-import {GlobalCoordinates} from '../math';
-import type {Vector} from '../math';
-import {vec} from '../math';
 import {PointerEvent} from './PointerEvent';
 import {WheelEvent} from './WheelEvent';
 import {PointerAbstraction} from './PointerAbstraction';
@@ -10,13 +7,15 @@ import {WheelDeltaMode} from './WheelDeltaMode';
 import {PointerSystem} from './PointerSystem';
 import {NativePointerButton} from './NativePointerButton';
 import {PointerButton} from './PointerButton';
-import {fail} from '../util';
 import {PointerType} from './PointerType';
 import {isCrossOriginIframe, isIframe} from '../util/iframe';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import type {PointerInitOptions} from "./PointerInitOptions";
 import type {PointerEvents} from "../interfaces";
+import {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
+import {vec, type Vector} from "../math/Vector.ts";
+import {fail} from "node:assert";
 
 export type NativePointerEvent = globalThis.PointerEvent;
 export type NativeMouseEvent = globalThis.MouseEvent;

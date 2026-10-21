@@ -1,8 +1,12 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {clamp, lerpVector, remap, vec, Vector} from "../../../math";
 import type {ScaleByOptions} from "./ScaleByOptions";
 import type {Action} from "../Action";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {vec, Vector} from "../../../math/Vector.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
+import {clamp} from "../../../math/util.ts";
+import {lerpVector, remap} from "../../../math/lerp.ts";
 
 export class ScaleByWithOptions implements Action {
     id = nextActionId();

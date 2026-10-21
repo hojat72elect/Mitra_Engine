@@ -3,15 +3,15 @@ import type {Loadable} from '../interfaces';
 import * as DrawUtil from '../util/draw-util';
 import logoImg from './Loader.logo.png';
 import loaderCss from './Loader.css?inline';
-import type {Vector} from '../math';
-import {delay} from '../util';
 import {EventEmitter} from '../EventEmitter.ts';
 import {DefaultLoader} from './DefaultLoader';
 import type {Engine} from '../engine';
 import type {Screen} from '../screen';
-import {Logger} from '../util';
 import {Future} from '../util/Future.ts';
 import type {DefaultLoaderOptions} from "./DefaultLoaderOptions";
+import type {Vector} from "../math/Vector.ts";
+import {Logger} from "../util/log.ts";
+import {delay} from "../util/util.ts";
 
 interface LoaderOptions extends DefaultLoaderOptions {
     /**

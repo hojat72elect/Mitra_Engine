@@ -1,6 +1,6 @@
 import type {Loadable} from '../interfaces';
-import {Logger} from '../util';
 import {EventEmitter} from '../EventEmitter.ts';
+import {Logger} from "../util/log.ts";
 
 export interface ResourceEvents {
     complete: any;

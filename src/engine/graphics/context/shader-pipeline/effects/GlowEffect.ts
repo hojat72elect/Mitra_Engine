@@ -1,5 +1,4 @@
 import {Color} from '../../../../color';
-import {vec} from '../../../../math';
 import type {MitraGraphicsContextWebgl} from '../../MitraGraphicsContextWebgl';
 import {Glsl} from '../../Glsl';
 import type {Shader} from '../../Shader';
@@ -10,6 +9,7 @@ import {ShaderPipeline} from '../ShaderPipeline';
 import {gaussianBlurFragmentSource} from './BlurEffect';
 import type {ShaderPassSource} from "../ShaderPassSource";
 import type {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
+import {vec} from "../../../../math/Vector.ts";
 
 interface GlowPassesOptions {
     graphicsContext: MitraGraphicsContextWebgl;

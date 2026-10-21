@@ -1,20 +1,21 @@
-import {Util} from '../..';
+
 import {Pair} from '../detection/Pair';
 import type {Color} from '../../color';
 import type {MitraGraphicsContext} from '../../graphics';
-import type {LineSegment} from '../../math';
-import {Projection} from '../../math';
-import type {Ray} from '../../math';
-import {Vector} from '../../math';
 import {BoundingBox} from '../BoundingBox';
 import type {CollisionContact} from '../detection/CollisionContact';
 import {DynamicTree} from '../detection/DynamicTree';
 import {DynamicTreeCollisionProcessor} from '../detection/DynamicTreeCollisionProcessor';
 import type {RayCastHit} from '../detection/RayCastHit';
 import {Collider} from './Collider';
-import type {Transform} from '../../math';
 import type {CompositeStrategy} from "./CompositeStrategy";
 import {getDefaultPhysicsConfig} from "../getDefaultPhysicsConfig";
+import {Vector} from "../../math/Vector.ts";
+import type {LineSegment} from "../../math/LineSegment.ts";
+import type {Ray} from "../../math/Ray.ts";
+import {Projection} from "../../math/Projection.ts";
+import type {Transform} from "../../math/Transform.ts";
+import {removeItemFromArray} from "../../util/util.ts";
 
 export class CompositeCollider extends Collider {
     private _transform!: Transform;
@@ -122,7 +123,7 @@ export class CompositeCollider extends Collider {
     removeCollider(collider: Collider) {
         collider.events.unpipe(this.events);
         collider.composite = null;
-        Util.removeItemFromArray(collider, this._colliders);
+        removeItemFromArray(collider, this._colliders);
         this._collisionProcessor.untrack(collider);
         this._dynamicAABBTree.untrackCollider(collider as any);
     }

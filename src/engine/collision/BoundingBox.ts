@@ -1,10 +1,10 @@
-import {Vector} from '../math';
-import type {Ray} from '../math';
 import {Color} from '../color';
 import {Side} from './Side';
 import type {MitraGraphicsContext, RectGraphicsOptions} from '../graphics';
-import type {AffineMatrix} from '../math';
-import {getMinIndex} from '../util';
+import {Vector} from "../math/Vector.ts";
+import type {Ray} from "../math/Ray.ts";
+import {getMinIndex} from "../util/util.ts";
+import type {AffineMatrix} from "../math/AffineMatrix.ts";
 
 interface BoundingBoxOptions {
     left: number;

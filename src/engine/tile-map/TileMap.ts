@@ -1,23 +1,15 @@
 import type {Engine} from '../engine';
-import {vec, Vector} from '../math';
-import {Logger} from '../util';
-import {Entity} from '../entity-component-system';
-import {TransformComponent} from '../entity-component-system';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {GraphicsComponent, ParallaxComponent} from '../graphics';
-import {MotionComponent} from '../entity-component-system';
 import {DebugGraphicsComponent} from '../graphics';
 import {PostDrawEvent, PostUpdateEvent, PreDrawEvent, PreUpdateEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../EventEmitter';
 import {EventEmitter} from '../EventEmitter';
-import {CoordPlane} from '../math';
-import {clamp} from '../math';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';
 import type {PointerEventReceiver} from '../input/PointerEventReceiver';
 import type {HasNestedPointerEvents} from '../input/HasNestedPointerEvents';
 import {PointerEventsToObjectDispatcher} from '../input/PointerEventsToObjectDispatcher';
-import type {GlobalCoordinates} from '../math';
 import type {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
 import {EntityEvents} from "../entity-component-system/EntityEvents";
 import {hasGraphicsTick} from "../graphics/hasGraphicsTick";
@@ -29,6 +21,14 @@ import {CollisionType} from "../collision/CollisionType";
 import {BoundingBox} from "../collision/BoundingBox";
 import {Colliders} from "../collision/colliders/Colliders";
 import type {DebugConfig} from "../debug/DebugConfig";
+import {vec, Vector} from "../math/Vector";
+import {MotionComponent} from "../entity-component-system/components/MotionComponent.ts";
+import { TransformComponent } from "../entity-component-system/components/TransformComponent";
+import { Entity } from "../entity-component-system/Entity.ts";
+import { Logger } from "../util/log.ts";
+import type {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
+import {clamp} from "../math/util.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
 
 export interface TileMapOptions {
     /**

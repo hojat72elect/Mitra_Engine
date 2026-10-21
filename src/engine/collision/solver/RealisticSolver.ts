@@ -1,7 +1,4 @@
 import {CollisionPostSolveEvent, CollisionPreSolveEvent, PostCollisionEvent, PreCollisionEvent} from '../../events';
-import {clamp} from '../../math';
-import type {Vector} from '../../math';
-import {vec} from '../../math';
 import type {CollisionContact} from '../detection/CollisionContact';
 import {CollisionType} from '../CollisionType';
 import {ContactConstraintPoint} from './ContactConstraintPoint';
@@ -18,6 +15,8 @@ import {VerticalFirst} from "./VerticalFirst";
 import {HorizontalFirst} from "./HorizontalFirst";
 import {None} from "./None";
 import {DegreeOfFreedom} from "../DegreeOfFreedom";
+import {clamp} from "../../math/util.ts";
+import {vec, type Vector} from "../../math/Vector.ts";
 
 /**
  * Direct component access, skips accessor dispatch in the solver hot loops (same trick as the separating axis code)

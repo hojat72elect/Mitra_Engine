@@ -1,19 +1,23 @@
-import {Component, type Entity, MotionComponent, TransformComponent} from "../../entity-component-system";
 import {ActionContext} from "../ActionContext";
 import type {ActionQueue} from "../ActionQueue";
 import type {CurveByOptions} from "../action/curve-by/CurveByOptions";
 import type {CurveToOptions} from "../action/curve-to/CurveToOptions";
 import type {MoveToOptions} from "../action/move-to/MoveToOptions";
-import type {RotationType, Vector} from "../../math";
 import type {MoveByOptions} from "../action/move-by/MoveByOptions";
 import type {RotateToOptions} from "../action/rotate-to/RotateToOptions";
 import type {ScaleToOptions} from "../action/scale-to/ScaleToOptions";
 import type {ScaleByOptions} from "../action/scale-by/ScaleByOptions";
 import type {Color} from "../../color";
-import type {Actor} from "../../actor";
+import {Actor} from "../../actor";
 import type {Action} from "../action/Action.ts";
 import type {ActionContextMethods} from "./ActionContextMethods";
 import type {RotateByOptions} from "../action/rotate-by/RotateByOptions";
+import {Component} from "../../entity-component-system/Component.ts";
+import {TransformComponent} from "../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../entity-component-system/components/MotionComponent.ts";
+import type {Entity} from "../../entity-component-system/Entity.ts";
+import type {Vector} from "../../math/Vector.ts";
+import type {RotationType} from "../../math/RotationType.ts";
 
 export class ActionsComponent extends Component implements ActionContextMethods {
     // @ts-ignore

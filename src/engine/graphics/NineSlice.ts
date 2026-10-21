@@ -2,8 +2,8 @@ import type {GraphicOptions} from './GraphicOptions';
 import {Graphic} from './Graphic';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {ImageSource} from './ImageSource';
-import {Logger} from '../util';
-import {Vector} from '../math';
+import {Logger} from "../util/log.ts";
+import {Vector} from "../math/Vector.ts";
 
 /**
  * Nine slice stretch mode

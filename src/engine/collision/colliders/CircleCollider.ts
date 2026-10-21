@@ -3,19 +3,19 @@ import {CollisionJumpTable} from './CollisionJumpTable';
 import type {CollisionContact} from '../detection/CollisionContact';
 import {PolygonCollider} from './PolygonCollider';
 import {EdgeCollider} from './EdgeCollider';
-import {Projection} from '../../math';
-import type {LineSegment} from '../../math';
-import {Vector} from '../../math';
-import type {Ray} from '../../math';
 import {Color} from '../../color';
 import {Collider} from './Collider';
 import {ClosestLineJumpTable} from './ClosestLineJumpTable';
 import type {MitraGraphicsContext} from '../../graphics';
-import type {Transform} from '../../math';
-import {AffineMatrix} from '../../math';
 import type {RayCastHit} from '../detection/RayCastHit';
-import {approximatelyEqual} from '../../math';
 import {BodyComponent} from "../BodyComponent";
+import {Vector} from "../../math/Vector.ts";
+import {Projection} from "../../math/Projection.ts";
+import type {Transform} from "../../math/Transform.ts";
+import type {LineSegment} from "../../math/LineSegment.ts";
+import {approximatelyEqual} from "../../math/util.ts";
+import type {Ray} from "../../math/Ray.ts";
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 interface CircleColliderOptions {
     /**

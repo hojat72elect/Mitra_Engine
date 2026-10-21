@@ -1,10 +1,11 @@
 import {Color} from '../../color';
 import type {MitraGraphicsContext} from '../../graphics';
-import type {Vector} from '../../math';
+
 import {RentalPool} from '../../util/RentalPool.ts';
 import {BoundingBox} from '../BoundingBox';
 import {HashGridProxy} from "./HashGridProxy";
 import {HashGridCell} from "./HashGridCell";
+import type {Vector} from "../../math/Vector.ts";
 
 export class SparseHashGrid<TObject extends {
     bounds: BoundingBox

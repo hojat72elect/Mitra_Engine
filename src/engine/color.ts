@@ -1,4 +1,5 @@
-import {lerp, Random} from './math';
+import {Random} from "./math/Random.ts";
+import {lerp} from "./math/lerp.ts";
 
 /**
  * Provides standard colors (e.g. {@apilink Color.Black})

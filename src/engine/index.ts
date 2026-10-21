@@ -7,7 +7,6 @@ import {polyfill} from './polyfill';
 // Events namespace
 import * as events from './events';
 // ex.Util namespaces
-import * as util from './util/index';
 
 polyfill();
 
@@ -19,7 +18,6 @@ export * from './engine';
 export * from './garbage-collector';
 export * from './screen';
 export * from './actor';
-export * from './math/index';
 export * from './camera';
 export * from './EventEmitter';
 export * from './events/MediaEvent';
@@ -30,11 +28,8 @@ export {FontStyle} from './graphics/FontStyle';
 export {TextAlign} from "./graphics/TextAlign";
 export {FontUnit} from "./graphics/FontUnit";
 export {BaseAlign} from "./graphics/BaseAlign";
-export * from './particles/index';
 export * from './scene';
 export * from './Plugin';
-
-export * from './tile-map/index';
 
 export * from './lighting/index';
 
@@ -43,11 +38,6 @@ export * from './trigger';
 export * from './ScreenElement';
 
 export * from './interfaces/index';
-export * from './resources/index';
-
-export * from './entity-component-system/index';
-
-export * from './director/index';
 
 export * from './color';
 
@@ -81,7 +71,6 @@ export {GamepadEvents} from './input/GamepadEvents';
 export {Keyboard} from './input/Keyboard';
 export * from './input/InputHost';
 export * from './input/InputMapper';
-export {util as Util};
 export * from './util/browser';
 export * from './util/detector';
 export * from './util/observable';

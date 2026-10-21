@@ -1,13 +1,13 @@
-import type {Vector} from '../../math';
 import type {Color} from '../../color';
 import type {Resolution} from '../../screen';
 import type {PostProcessor} from '../post-processor/PostProcessor';
-import type {AffineMatrix} from '../../math';
 import type {Material} from './Material';
 import type {RendererPlugin} from './RendererPlugin';
 import {ImageFiltering} from '../ImageFiltering';
 import type {MaterialOptions} from "./MaterialOptions";
 import type {HTMLImageSource} from "./HTMLImageSource";
+import type {Vector} from "../../math/Vector.ts";
+import type {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 export interface AntialiasOptions {
     /**
@@ -327,8 +327,7 @@ export interface MitraGraphicsContext {
     getTransform(): AffineMatrix;
 
     /**
-     * Multiplies the current transform by a matrix
-     * @param m
+     * Multiplies the current transform by a matrix.
      */
     multiply(m: AffineMatrix): void;
 

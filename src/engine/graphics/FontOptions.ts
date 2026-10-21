@@ -3,8 +3,8 @@ import {FontStyle} from "./FontStyle";
 import {TextAlign} from "./TextAlign";
 import {BaseAlign} from "./BaseAlign";
 import {TextDirection} from "./TextDirection";
-import type {Vector} from "../math";
 import type {Color} from "../color";
+import type {Vector} from "../math/Vector.ts";
 
 /**
  * Font rendering option

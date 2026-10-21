@@ -1,6 +1,5 @@
 import {Color} from '../../../color';
-import type {Vector} from '../../../math';
-import {vec} from '../../../math';
+
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import type {MitraGraphicsContextWebgl} from '../MitraGraphicsContextWebgl';
 import {QuadIndexBuffer} from '../QuadIndexBuffer';
@@ -11,6 +10,7 @@ import {VertexLayout} from '../VertexLayout';
 import frag from './debug-circle-renderer.frag.glsl?raw';
 import vert from './debug-circle-renderer.vert.glsl?raw';
 import {pixelSnapEpsilon} from "../pixelSnapEpsilon";
+import {vec, type Vector} from "../../../math/Vector.ts";
 
 export class DebugCircleRenderer implements RendererPlugin {
     public readonly type = 'ex.debug-circle';

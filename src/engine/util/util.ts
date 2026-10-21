@@ -1,6 +1,6 @@
-import {vec, Vector} from '../math';
 import type {Clock} from './clock';
 import {Future} from './Future.ts';
+import {vec, Vector} from "../math/Vector.ts";
 
 export function getMinIndex(array: number[]): number {
     if (array.length === 0) {

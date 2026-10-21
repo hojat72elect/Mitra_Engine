@@ -1,10 +1,10 @@
-import {vec, Vector} from '../math';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {BoundingBox} from "../collision/BoundingBox";
 import type {Color} from '../color';
 import {watch} from '../util/watch';
-import {AffineMatrix} from '../math';
 import type {GraphicOptions} from "./GraphicOptions";
+import {AffineMatrix} from "../math/AffineMatrix.ts";
+import {vec, Vector} from "../math/Vector.ts";
 
 /**
  * A Graphic is the base Mitra primitive for something that can be drawn to the {@apilink MitraGraphicsContext}.

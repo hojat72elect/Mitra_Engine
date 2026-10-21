@@ -1,13 +1,13 @@
 import {Graphic} from './Graphic';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {Color} from '../color';
-import {Vector} from '../math';
 import {watch} from '../util/watch';
 import type {ImageFiltering} from './ImageFiltering';
-import {omit} from '../util';
 import {ImageSourceAttributeConstants} from './ImageSourceAttributeConstants';
 import type {RasterOptions} from "./RasterOptions";
 import {BoundingBox} from "../collision/BoundingBox";
+import {omit} from "../util/util.ts";
+import {Vector} from "../math/Vector.ts";
 
 /**
  * A Raster is a Graphic that needs to be first painted to a HTMLCanvasElement before it can be drawn to the

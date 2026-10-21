@@ -1,12 +1,7 @@
 import {
     Color,
-    IsometricEntityComponent,
-    IsometricMap,
-    IsometricTile,
     Logger,
-    ParallaxComponent,
-    vec,
-    Vector
+    ParallaxComponent
 } from "../../engine";
 import {mapProps, type PropertyMapValue} from "./Properties";
 import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/TiledParser";
@@ -20,6 +15,9 @@ import {Tile} from "./Tileset";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy";
 import {BodyComponent} from "../../engine/collision/BodyComponent";
+import {IsometricMap, type IsometricTile} from "../../engine/tile-map/IsometricMap.ts";
+import {vec, type Vector} from "../../engine/math/Vector.ts";
+import {IsometricEntityComponent} from "../../engine/tile-map/IsometricEntityComponent.ts";
 
 export interface IsometricTileInfo {
     /**

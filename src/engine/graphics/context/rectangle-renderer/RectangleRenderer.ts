@@ -1,5 +1,4 @@
 import {Color} from '../../../color';
-import {vec, Vector} from '../../../math';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import type {MitraGraphicsContextWebgl} from '../MitraGraphicsContextWebgl';
 import {pixelSnapEpsilon} from "../pixelSnapEpsilon";
@@ -8,9 +7,9 @@ import type {RendererPlugin} from '../RendererPlugin';
 import {Shader} from '../Shader';
 import {VertexBuffer} from '../VertexBuffer';
 import {VertexLayout} from '../VertexLayout';
-
 import frag from './rectangle-renderer.frag.glsl?raw';
 import vert from './rectangle-renderer.vert.glsl?raw';
+import {vec, Vector} from "../../../math/Vector.ts";
 
 export class RectangleRenderer implements RendererPlugin {
     public readonly type = 'ex.rectangle';

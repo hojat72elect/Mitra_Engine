@@ -1,9 +1,4 @@
-import {Vector} from '../math';
-import {TransformComponent} from '../entity-component-system';
-import {Component} from '../entity-component-system';
-import type {Entity} from '../entity-component-system';
 import {CollisionEndEvent, CollisionStartEvent, PostCollisionEvent, PreCollisionEvent} from '../events';
-import {Observable} from '../util';
 import {BoundingBox} from './BoundingBox';
 import type {CollisionContact} from './detection/CollisionContact';
 import {CircleCollider} from './colliders/CircleCollider';
@@ -14,7 +9,12 @@ import {EdgeCollider} from './colliders/EdgeCollider';
 import {Colliders} from './colliders/Colliders';
 import {EventEmitter} from '../EventEmitter.ts';
 import {Actor} from '../actor';
-import {Logger} from '../util';
+import {Logger} from "../util/log.ts";
+import { Observable } from "../excalibur";
+import {Component} from "../entity-component-system/Component.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {Vector} from "../math/Vector.ts";
+import type {Entity} from "../entity-component-system/Entity.ts";
 
 /**
  * ColliderComponent Serialization Data

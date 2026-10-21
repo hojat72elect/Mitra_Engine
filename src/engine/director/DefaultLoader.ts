@@ -2,15 +2,15 @@ import {WebAudio} from '../util/WebAudio.ts';
 import type {Engine} from '../engine';
 import type {Loadable} from '../interfaces';
 import {Canvas} from '../graphics';
-import {clamp} from '../math';
-import {Sound} from '../resources';
 import {Future} from '../util/Future.ts';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import {Color} from '../color';
-import {delay} from '../util';
 import type {DefaultLoaderOptions} from "./DefaultLoaderOptions";
 import {ImageFiltering} from "../graphics/ImageFiltering";
+import {clamp} from "../math/util.ts";
+import {Sound} from "../resources/sound/sound.ts";
+import {delay} from "../util/util.ts";
 
 interface LoaderEvents {
     // Add event types here

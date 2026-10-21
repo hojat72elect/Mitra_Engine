@@ -1,5 +1,6 @@
-import {AffineMatrix} from '../../math';
+
 import {RentalPool} from '../../util/RentalPool.ts';
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 export class TransformStack {
     private _pool = new RentalPool(

@@ -2,12 +2,12 @@
 import type {Collider} from '../colliders/Collider';
 import type {CollisionContact} from './CollisionContact';
 import type {RayCastOptions} from './RayCastOptions';
-import type {Ray} from '../../math';
 import type {RayCastHit} from './RayCastHit';
 import type {MitraGraphicsContext} from '../../graphics';
 import type {BoundingBox} from '../BoundingBox';
-import type {Vector} from '../../math';
 import {FrameStats} from "../../debug/FrameStats";
+import type {Ray} from "../../math/Ray.ts";
+import type {Vector} from "../../math/Vector.ts";
 
 /**
  * Definition for collision processor

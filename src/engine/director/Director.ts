@@ -4,7 +4,6 @@ import type {SceneConstructor} from '../scene';
 import {isSceneConstructor, Scene} from '../scene';
 import type {Transition} from './Transition';
 import {Loader} from './Loader';
-import {Logger} from '../util';
 import {ActivateEvent, DeactivateEvent} from '../events';
 import {EventEmitter} from '../EventEmitter.ts';
 import {isLoaderConstructor} from "./isLoaderConstructor";
@@ -15,6 +14,7 @@ import type {WithRoot} from "./WithRoot";
 import type {SceneMap} from "./SceneMap";
 import type {StartOptions} from "./StartOptions";
 import type {GoToOptions} from "./GoToOptions";
+import {Logger} from "../util/log.ts";
 
 /**
  * The Director is responsible for managing scenes and changing scenes in Mitra.

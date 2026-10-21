@@ -1,7 +1,7 @@
 import type {Scene} from './scene';
-import {Logger} from './util';
-import {Random} from './math';
 import {EventEmitter} from './EventEmitter.ts';
+import {Random} from "./math/Random.ts";
+import {Logger} from "./util/log.ts";
 
 /**
  * Built in events supported by all entities

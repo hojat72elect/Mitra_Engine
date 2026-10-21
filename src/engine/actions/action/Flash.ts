@@ -1,10 +1,10 @@
 import {GraphicsComponent} from '../../graphics';
-import type {Entity} from '../../entity-component-system';
 import {nextActionId} from "./nextActionId";
 import type {Actor} from '../../actor';
 import type {Material} from '../../graphics';
 import type {Color} from '../../color';
 import type {Action} from "./Action";
+import type {Entity} from "../../entity-component-system/Entity.ts";
 
 export class Flash implements Action {
     id = nextActionId();

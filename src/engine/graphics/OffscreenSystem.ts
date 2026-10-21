@@ -2,16 +2,17 @@ import {GraphicsComponent} from './GraphicsComponent';
 import {EnterViewportEvent, ExitViewportEvent} from '../events';
 import type {Scene} from '../scene';
 import type {Screen} from '../screen';
-import {TransformComponent} from '../entity-component-system';
 import type {Camera} from '../camera';
-import {System} from '../entity-component-system';
 import {ParallaxComponent} from './ParallaxComponent';
-import {Vector} from '../math';
-import {CoordPlane} from '../math';
-import type {Query, World} from '../entity-component-system';
-import {SystemPriority} from '../entity-component-system';
 import {SystemType} from "../entity-component-system/SystemType";
 import type {BoundingBox} from "../collision/BoundingBox";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import type {Query} from "../entity-component-system/Query.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import type {World} from "../entity-component-system/World.ts";
+import {Vector} from "../math/Vector.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
 
 export class OffscreenSystem extends System {
     static override priority: number = SystemPriority.Higher;

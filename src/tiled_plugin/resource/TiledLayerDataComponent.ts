@@ -1,5 +1,5 @@
-import {Component} from "../../engine";
 import {TiledTileLayer} from "../parser/TiledParser.ts";
+import {Component} from "../../engine/entity-component-system/Component.ts";
 
 export interface TiledLayerDataComponentOptions {
     tiledTileLayer: TiledTileLayer;

@@ -1,22 +1,22 @@
-import {vec, Vector} from '../math';
 import {CollisionType} from './CollisionType';
 import type {Clonable} from '../interfaces';
-import {TransformComponent} from '../entity-component-system';
-import {MotionComponent} from '../entity-component-system';
-import {Component} from '../entity-component-system';
 import {CollisionGroup} from './group/CollisionGroup';
 import type {Id} from '../id';
 import {createId} from '../id';
-import {angleDifference, canonicalizeAngle, clamp} from '../math';
 import {ColliderComponent} from './ColliderComponent';
-import {Transform} from '../math';
 import {EventEmitter} from '../EventEmitter.ts';
 import type {PhysicsConfig} from './PhysicsConfig';
-import type {Entity} from '../entity-component-system';
 import type {Island} from './Island';
 import {DegreeOfFreedom} from "./DegreeOfFreedom";
 import type {BodyConfig} from "./BodyConfig";
 import {getDefaultPhysicsConfig} from "./getDefaultPhysicsConfig";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../entity-component-system/components/MotionComponent.ts";
+import {Component} from "../entity-component-system/Component.ts";
+import {vec, Vector} from "../math/Vector.ts";
+import type {Entity} from "../entity-component-system/Entity.ts";
+import {angleDifference, canonicalizeAngle, clamp} from "../math/util.ts";
+import {Transform} from "../math/Transform.ts";
 
 interface BodyComponentOptions {
     type?: CollisionType;

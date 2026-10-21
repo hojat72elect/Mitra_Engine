@@ -1,5 +1,4 @@
 import type {Scene} from '../scene';
-import {Logger} from '../util';
 import type {Component} from './Component';
 import {Entity} from './Entity';
 import {EntityManager} from './EntityManager';
@@ -12,6 +11,7 @@ import type {QueryParams} from "./QueryParams";
 import {SystemType} from "./SystemType";
 import type {SystemCtor} from "./SystemCtor";
 import {isSystemConstructor} from "./isSystemConstructor";
+import {Logger} from "../util/log.ts";
 
 /**
  * The World is a self-contained entity component system for a particular context.

@@ -1,9 +1,9 @@
-import type {Vector} from '../math';
 import {SolverStrategy} from './SolverStrategy';
 import {SpatialPartitionStrategy} from './detection/SpatialPartitionStrategy';
 import {ContactSolveBias} from "./solver/ContactSolveBias";
 import type {DynamicTreeConfig} from "./DynamicTreeConfig";
 import type {SparseHashGridConfig} from "./SparseHashGridConfig";
+import type {Vector} from "../math/Vector.ts";
 
 export interface PhysicsConfig {
     /**

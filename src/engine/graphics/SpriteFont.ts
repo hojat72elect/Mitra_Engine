@@ -1,5 +1,3 @@
-import {Vector} from '../math';
-import {Logger} from '../util';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {FontRenderer} from './FontRenderer';
 import type {GraphicOptions} from './GraphicOptions';
@@ -7,6 +5,8 @@ import {Graphic} from './Graphic';
 import type {Sprite} from './Sprite';
 import type {SpriteSheet} from './SpriteSheet';
 import {BoundingBox} from "../collision/BoundingBox";
+import {Vector} from "../math/Vector.ts";
+import {Logger} from "../util/log.ts";
 
 interface SpriteFontOptions {
     /**

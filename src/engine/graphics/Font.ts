@@ -1,4 +1,3 @@
-import type {Vector} from '../math';
 import {Color} from '../color';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {FontRenderer} from './FontRenderer';
@@ -16,6 +15,7 @@ import {BaseAlign} from "./BaseAlign";
 import {FontStyle} from "./FontStyle";
 import type {FontOptions} from "./FontOptions";
 import {BoundingBox} from "../collision/BoundingBox";
+import type {Vector} from "../math/Vector.ts";
 
 /**
  * Represents a system or web font in Mitra.

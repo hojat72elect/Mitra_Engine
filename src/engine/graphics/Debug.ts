@@ -1,4 +1,3 @@
-import type {Vector} from '../math';
 import type {
     LineGraphicsOptions,
     MitraGraphicsContext,
@@ -6,9 +5,10 @@ import type {
     RectGraphicsOptions
 } from './context/MitraGraphicsContext';
 import {Color} from '../color';
-import type {Ray} from '../math';
 import type {BoundingBox} from "../collision/BoundingBox";
 import type {DebugConfig} from "../debug/DebugConfig";
+import type {Vector} from "../math/Vector.ts";
+import type {Ray} from "../math/Ray.ts";
 
 export class Debug {
     static _drawCalls: ((ctx: MitraGraphicsContext) => void)[] = [];

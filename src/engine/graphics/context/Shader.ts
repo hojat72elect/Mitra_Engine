@@ -1,16 +1,11 @@
 import type {ImageSource, TextureLoader} from '../..';
 import {
-    AffineMatrix,
     Color,
     Logger,
     MitraGraphicsContextWebgl,
     parseImageFiltering,
-    parseImageWrapping,
-    Vector,
-    Vector3,
-    Vector4
+    parseImageWrapping
 } from '../..';
-import {Matrix} from '../../math';
 import {watch} from '../../util/watch';
 import {UniformBuffer} from './UniformBuffer';
 import {getAttributePointerType} from './getAttributePointerType';
@@ -19,6 +14,11 @@ import type {ShaderOptions} from "./ShaderOptions";
 import type {VertexAttributeDefinition} from "./VertexAttributeDefinition";
 import {getAttributeComponentSize} from "./getAttributeComponentSize";
 import {ImageSourceAttributeConstants} from "../ImageSourceAttributeConstants";
+import {Vector3} from "../../math/Vector3.ts";
+import {Vector4} from "../../math/Vector4.ts";
+import  {Vector} from "../../math/Vector.ts";
+import {Matrix} from "../../math/Matrix.ts";
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 /*
  * List of the possible glsl uniform types

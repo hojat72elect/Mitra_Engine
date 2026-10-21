@@ -6,7 +6,6 @@ import type {
     MitraGraphicsContextOptions,
     PointGraphicsOptions
 } from './MitraGraphicsContext';
-import type {Vector} from '../../math';
 import {Color} from '../../color';
 import {StateStack} from './StateStack';
 import {GraphicsDiagnostics} from '../GraphicsDiagnostics';
@@ -14,10 +13,11 @@ import {DebugText} from './DebugText';
 import type {Resolution} from '../../screen';
 import type {PostProcessor} from '../post-processor/PostProcessor';
 import type {RendererPlugin} from './RendererPlugin';
-import {AffineMatrix} from '../../math';
 import type {Material} from './Material';
 import type {MaterialOptions} from "./MaterialOptions";
 import type {HTMLImageSource} from "./HTMLImageSource";
+import type {Vector} from "../../math/Vector.ts";
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 const pixelSnapEpsilon = 0.0001;
 

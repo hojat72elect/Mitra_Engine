@@ -1,4 +1,3 @@
-import {vec} from '../../../../math';
 import {ImageFiltering} from '../../../ImageFiltering';
 import type {MitraGraphicsContextWebgl} from '../../MitraGraphicsContextWebgl';
 import {Framebuffer} from '../../Framebuffer';
@@ -11,6 +10,7 @@ import type {ShaderPassSource} from "../ShaderPassSource";
 import type {ShaderPassDestination} from "../ShaderPassDestination";
 import {getSourceDimensions} from "../getSourceDimensions";
 import type {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
+import {vec} from "../../../../math/Vector.ts";
 
 interface BloomEffectOptions {
     graphicsContext: MitraGraphicsContextWebgl;

@@ -1,5 +1,3 @@
-import {Logger} from '../../../util';
-import {vec} from '../../../math';
 import {parseImageFiltering} from '../../parseImageFiltering';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import {ImageSource} from '../../ImageSource';
@@ -14,6 +12,8 @@ import type {ShaderPassDestination} from "./ShaderPassDestination";
 import type {UniformDictionary} from "../UniformDictionary";
 import {ImageFiltering} from "../../ImageFiltering";
 import {ImageSourceAttributeConstants} from "../../ImageSourceAttributeConstants";
+import {Logger} from "../../../util/log.ts";
+import {vec} from "../../../math/Vector.ts";
 
 interface ShaderPassOptions {
     graphicsContext: MitraGraphicsContextWebgl;

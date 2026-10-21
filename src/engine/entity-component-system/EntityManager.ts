@@ -1,7 +1,7 @@
 import {Entity} from './Entity';
 import type {World} from './World';
-import {removeItemFromArray} from '../util';
 import type {Scene} from '../scene';
+import {removeItemFromArray} from "../util/util.ts";
 
 /**
  * Add/Remove entities and components

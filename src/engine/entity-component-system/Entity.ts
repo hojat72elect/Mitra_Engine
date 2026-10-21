@@ -1,17 +1,16 @@
 import {Component} from './Component';
-import type {Message} from '../util';
-import {Observable} from '../util';
 import type {OnAdd, OnInitialize, OnPostUpdate, OnPreUpdate, OnRemove} from '../interfaces';
 import type {Engine} from '../engine';
 import {AddEvent, InitializeEvent, KillEvent, PostUpdateEvent, PreUpdateEvent, RemoveEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import type {Scene} from '../scene';
-import {removeItemFromArray} from '../util';
 import type {MaybeKnownComponent} from './MaybeKnownComponent';
 import type {ComponentCtor} from "./ComponentCtor";
 import {isComponentCtor} from "./isComponentCtor";
 import {EntityEvents} from "./EntityEvents";
+import {type Message, Observable} from "../util/observable.ts";
+import {removeItemFromArray} from "../util/util.ts";
 
 /**
  * Interface holding an entity component pair

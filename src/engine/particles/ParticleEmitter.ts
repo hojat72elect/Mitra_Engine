@@ -1,13 +1,14 @@
 import type {Engine} from '../engine';
 import {Actor} from '../actor';
-import {vec} from '../math';
-import {Random} from '../math';
-import {randomInRange} from '../math';
+
 import {EmitterType} from './EmitterType';
 import type {ParticleConfig, ParticleEmitterOptions} from './particles';
 import {Particle, ParticleTransform} from './particles';
 import {RentalPool} from '../util/RentalPool';
 import {CollisionType} from "../collision/CollisionType";
+import {Random} from "../math/Random.ts";
+import {vec} from "../math/Vector.ts";
+import {randomInRange} from "../math/util.ts";
 
 /**
  * Using a particle emitter is a great way to create interesting effects

@@ -1,5 +1,5 @@
-import {Component} from '../entity-component-system';
 import {Color} from '../color';
+import {Component} from "../entity-component-system/Component.ts";
 
 interface DarknessComponentOptions {
     /**

@@ -1,4 +1,4 @@
-import {Vector} from "../../../math";
+import type {Vector} from "../../../math/Vector.ts";
 
 export interface ScaleToOptions {
     /**

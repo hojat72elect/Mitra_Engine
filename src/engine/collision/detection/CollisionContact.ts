@@ -1,9 +1,9 @@
-import type {Vector} from '../../math';
 import type {Collider} from '../colliders/Collider';
 import {Pair} from './Pair';
 import {BodyComponent} from '../BodyComponent';
 import {SeparationInfo} from "../colliders/SeparationInfo";
 import {cloneSeparationInfo} from "../colliders/cloneSeparationInfo";
+import type {Vector} from "../../math/Vector.ts";
 
 /**
  * Collision contacts are used internally by Mitra to resolve collision between colliders. This

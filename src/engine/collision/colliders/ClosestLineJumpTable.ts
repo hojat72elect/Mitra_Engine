@@ -1,10 +1,10 @@
-import {LineSegment} from '../../math';
-import {Vector} from '../../math';
-import {Ray} from '../../math';
 import type {PolygonCollider} from './PolygonCollider';
 import type {EdgeCollider} from './EdgeCollider';
 import type {CircleCollider} from './CircleCollider';
-import {clamp} from '../../math';
+import {LineSegment} from "../../math/LineSegment.ts";
+import {clamp} from "../../math/util.ts";
+import {Ray} from "../../math/Ray.ts";
+import {Vector} from "../../math/Vector.ts";
 
 /**
  * Finds the closest line segment between two given line segments.

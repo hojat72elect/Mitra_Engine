@@ -1,5 +1,4 @@
 import {Color} from '../../../color';
-import {sign} from '../../../math';
 import {parseImageFiltering} from '../../parseImageFiltering';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import {ImageSourceAttributeConstants} from '../../ImageSourceAttributeConstants';
@@ -15,6 +14,7 @@ import {getMaxShaderComplexity} from '../getMaxShaderComplexity';
 import frag from './image-renderer.frag.glsl?raw';
 import vert from './image-renderer.vert.glsl?raw';
 import type {HTMLImageSource} from "../HTMLImageSource";
+import {sign} from "../../../math/util.ts";
 
 interface ImageRendererOptions {
     pixelArtSampler: boolean;

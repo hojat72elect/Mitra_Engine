@@ -9,10 +9,8 @@ import {
     PreDrawEvent,
     PreUpdateEvent
 } from './events';
-import {Logger} from './util';
 import {Timer} from './timer';
 import type {Engine} from './engine';
-import {TileMap} from './tile-map';
 import {Camera} from './camera';
 import {Actor} from './actor';
 import type {
@@ -25,18 +23,13 @@ import type {
 } from './interfaces';
 import * as Util from './util/util';
 import {Trigger} from './trigger';
-import {World} from './entity-component-system';
-import {Entity} from './entity-component-system';
 import {GraphicsSystem} from './graphics';
 import {PointerSystem} from './input/PointerSystem';
-import {IsometricEntitySystem} from './tile-map';
 import {OffscreenSystem} from './graphics';
 import type {MitraGraphicsContext} from './graphics';
 import type {EventKey, Handler, Subscription} from './EventEmitter';
 import {EventEmitter} from './EventEmitter';
 import type {Color} from './color';
-import type {DefaultLoader} from './director';
-import type {Transition} from './director';
 import {InputHost} from './input/InputHost';
 import {PointerScope} from './input/PointerScope';
 import {PauseSystem} from './util/PauseSystem';
@@ -49,6 +42,13 @@ import {PhysicsWorld} from "./collision/PhysicsWorld";
 import {MotionSystem} from "./collision/MotionSystem";
 import {CollisionSystem} from "./collision/CollisionSystem";
 import {DebugSystem} from "./debug/DebugSystem";
+import type {DefaultLoader} from "./director/DefaultLoader.ts";
+import type {Transition} from "./director/Transition.ts";
+import {TileMap} from "./tile-map/TileMap.ts";
+import {Entity} from "./entity-component-system/Entity.ts";
+import {Logger} from "./util/log.ts";
+import {World} from "./entity-component-system/World.ts";
+import {IsometricEntitySystem} from "./tile-map/IsometricEntitySystem.ts";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

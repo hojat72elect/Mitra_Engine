@@ -1,13 +1,8 @@
 import {
     Actor,
     Color,
-    Entity,
     GraphicsComponent,
-    IsometricEntityComponent,
-    Logger,
-    toRadians,
-    vec,
-    Vector
+    Logger
 } from "../../engine";
 import type {Layer} from "./Layer";
 import {Ellipse, InsertedTile, parseObjects, PluginObject, Polygon, Rectangle, TemplateObject, Text} from "./objects";
@@ -20,6 +15,10 @@ import {MitraTiledProperties} from "./MitraTiledProperties";
 import {TiledDataComponent} from "./TiledDataComponent";
 import {Shape} from "../../engine/collision/colliders/Shape";
 import {CollisionType} from "../../engine/collision/CollisionType";
+import type {Entity} from "../../engine/entity-component-system/Entity.ts";
+import {vec, Vector} from "../../engine/math/Vector.ts";
+import {toRadians} from "../../engine/math/util.ts";
+import {IsometricEntityComponent} from "../../engine/tile-map/IsometricEntityComponent.ts";
 
 export class ObjectLayer implements Layer {
     public readonly name: string;

@@ -1,5 +1,5 @@
-import {Component} from '../entity-component-system';
 import type {IsometricMap} from './IsometricMap';
+import {Component} from "../entity-component-system/Component.ts";
 
 export interface IsometricEntityComponentOptions {
     columns: number;

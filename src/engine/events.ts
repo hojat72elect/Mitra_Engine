@@ -1,10 +1,7 @@
 import type {Scene} from './scene';
-import type {Vector} from './math';
 import type {Actor} from './actor';
 import type {Trigger} from './trigger';
 import type {Engine} from './engine';
-import type {TileMap} from './tile-map';
-import type {Entity} from './entity-component-system';
 import type {
     OnAdd,
     OnInitialize,
@@ -22,6 +19,9 @@ import type {Action} from "./actions/action/Action";
 import type {Side} from "./collision/Side";
 import type {CollisionContact} from "./collision/detection/CollisionContact";
 import type {Collider} from "./collision/colliders/Collider";
+import type {Entity} from "./entity-component-system/Entity.ts";
+import type {Vector} from "./math/Vector.ts";
+import type {TileMap} from "./tile-map/TileMap.ts";
 
 export enum EventTypes {
     Kill = 'kill',

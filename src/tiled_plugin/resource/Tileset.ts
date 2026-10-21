@@ -1,13 +1,9 @@
 import {
-    AffineMatrix,
     Animation,
     Graphic,
     ImageSource,
     Sprite,
-    SpriteSheet,
-    toRadians,
-    vec,
-    Vector
+    SpriteSheet
 } from "../../engine";
 import {getCanonicalGid, isFlippedDiagonally, isFlippedHorizontally, isFlippedVertically} from "./gid-util";
 import {
@@ -24,6 +20,9 @@ import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy";
 import type {Frame} from "../../engine/graphics/Frame";
 import type {Collider} from "../../engine/collision/colliders/Collider";
 import {BoundingBox} from "../../engine/collision/BoundingBox";
+import {AffineMatrix} from "../../engine/math/AffineMatrix.ts";
+import {vec, Vector} from "../../engine/math/Vector.ts";
+import {toRadians} from "../../engine/math/util.ts";
 
 export interface TileOptions {
     id: number;

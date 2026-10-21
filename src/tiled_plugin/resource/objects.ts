@@ -1,4 +1,4 @@
-import {Color, Font, Text as ExText, toRadians, vec, Vector} from "../../engine";
+import {Color, Font, Text as ExText} from "../../engine";
 import {type TiledObject, type TiledObjectGroup, TiledText} from "../parser/TiledParser.ts";
 import {mapProps, type Properties, type PropertyMapValue} from "./Properties.ts";
 import {Template} from "./Template.ts";
@@ -7,6 +7,8 @@ import {TiledResource} from "./TiledResource.ts";
 import {FontUnit} from "../../engine";
 import {TextAlign} from "../../engine";
 import {BaseAlign} from "../../engine";
+import {vec, Vector} from "../../engine/math/Vector.ts";
+import {toRadians} from "../../engine/math/util.ts";
 
 export interface PluginObjectProps {
     tiledObject: TiledObject;

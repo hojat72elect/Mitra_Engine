@@ -1,9 +1,9 @@
 import {System} from './System';
 import type {Scene} from '../scene';
 import type {World} from './World';
-import {removeItemFromArray} from '../util';
 import {SystemType} from "./SystemType";
 import type {SystemCtor} from "./SystemCtor";
+import {removeItemFromArray} from "../util/util.ts";
 
 /**
  * The SystemManager is responsible for keeping track of all systems in a scene.

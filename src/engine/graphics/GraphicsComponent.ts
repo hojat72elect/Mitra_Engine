@@ -1,18 +1,18 @@
-import {vec, Vector} from '../math';
 import {Graphic} from './Graphic';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {BoundingBox} from "../collision/BoundingBox";
-import {Component} from '../entity-component-system';
 import type {Material} from './context/Material';
-import {Logger} from '../util';
 import {WatchVector} from '../math/WatchVector';
-import {TransformComponent} from '../entity-component-system';
 import {GraphicsGroup} from './GraphicsGroup';
 import {Color} from '../color';
 import {Raster} from './Raster';
 import {Text} from './Text';
-import {CoordPlane} from '../math';
 import {hasGraphicsTick} from "./hasGraphicsTick";
+import {vec, Vector} from "../math/Vector";
+import {Component} from "../entity-component-system/Component.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
+import {Logger} from "../util/log.ts";
 
 interface GraphicsShowOptions {
     offset?: Vector;

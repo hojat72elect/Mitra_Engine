@@ -1,6 +1,6 @@
-import {AffineMatrix} from '../../math';
 import {Color} from '../../color';
 import type {MitraGraphicsContextState} from './MitraGraphicsContext';
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 export class DrawCall {
     public z: number = 0;

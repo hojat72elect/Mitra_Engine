@@ -3,13 +3,12 @@ import {ImageSource} from '../graphics';
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Transition} from './Transition';
-import {vec, Vector} from '../math';
-import {CoordPlane} from '../math';
-import {lerp} from '../math';
 import type {Camera} from '../camera';
-import type {Easing} from '../math';
-import {linear} from '../math';
 import type {TransitionOptions} from "./TransitionOptions";
+import {type Easing, linear} from "../math/easings.ts";
+import {vec, Vector} from "../math/Vector.ts";
+import {lerp} from "../math/lerp.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
 
 interface SlideOptions {
     /**

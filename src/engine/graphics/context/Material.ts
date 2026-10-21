@@ -1,7 +1,6 @@
 import {Color} from '../../color';
 import {MitraGraphicsContextWebgl} from './MitraGraphicsContextWebgl';
 import type {Shader} from './Shader';
-import {Logger} from '../../util';
 import type {ImageSource} from '../ImageSource';
 import {ImageFiltering} from '../ImageFiltering';
 import {Framebuffer} from './Framebuffer';
@@ -11,6 +10,7 @@ import type {ShaderPipelineLike} from "./shader-pipeline/ShaderPipelineLike";
 import type {ShaderPassLike} from "./shader-pipeline/ShaderPassLike";
 import type {MaterialOptions} from "./MaterialOptions";
 import type {UniformDictionary} from "./UniformDictionary";
+import {Logger} from "../../util/log.ts";
 
 const defaultVertexSource = `#version 300 es
 in vec2 a_position;

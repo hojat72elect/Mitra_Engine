@@ -1,6 +1,5 @@
-import {Component} from '../entity-component-system';
-import type {Vector} from '../math';
-import {vec} from '../math';
+import {vec, Vector} from "../math/Vector.ts";
+import {Component} from "../entity-component-system/Component.ts";
 
 export class ParallaxComponent extends Component {
     // @ts-ignore

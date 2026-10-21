@@ -5,11 +5,11 @@ import {EdgeCollider} from './EdgeCollider';
 import {SeparatingAxis} from './SeparatingAxis';
 import type {SatShape} from './SatShape';
 import type {Collider} from './Collider';
-import {Vector} from '../../math';
-import {TransformComponent} from '../../entity-component-system';
-import {AffineMatrix} from '../../math';
-import type {Transform} from '../../math';
 import {SeparationInfo} from "./SeparationInfo";
+import {Vector} from "../../math/Vector.ts";
+import {TransformComponent} from "../../entity-component-system/components/TransformComponent.ts";
+import {AffineMatrix} from "../../math/AffineMatrix.ts";
+import type {Transform} from "../../math/Transform.ts";
 
 const ScratchZero = Vector.Zero; // TODO constant vector
 

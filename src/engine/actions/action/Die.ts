@@ -1,7 +1,7 @@
-import type {Entity} from '../../entity-component-system';
 import {nextActionId} from "./nextActionId";
 import type {Action} from "./Action";
 import {ActionsComponent} from "../actions-component/ActionsComponent";
+import type {Entity} from "../../entity-component-system/Entity.ts";
 
 export class Die implements Action {
     id = nextActionId();

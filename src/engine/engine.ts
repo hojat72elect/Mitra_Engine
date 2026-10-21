@@ -1,4 +1,4 @@
-import {EX_VERSION} from './';
+import {EX_VERSION, Logger, LogLevel} from './';
 import {Future} from './util/Future';
 import type {EventKey, Handler, Subscription} from './EventEmitter';
 import {EventEmitter} from './EventEmitter';
@@ -6,15 +6,11 @@ import {PointerScope} from './input/PointerScope';
 import {Flags} from './Flags';
 import {polyfill} from './polyfill';
 import type {CanDraw, CanInitialize, CanUpdate} from './interfaces';
-import type {Vector} from './math';
 import type {ViewportDimension} from './screen';
 import {DisplayMode, Resolution, Screen} from './screen';
 import type {ScreenElement} from './ScreenElement';
 import type {Actor} from './actor';
 import type {Timer} from './timer';
-import type {TileMap} from './tile-map';
-import {DefaultLoader} from './director';
-import {Loader} from './director';
 import {Detector} from './util/detector';
 import {
     GameStartEvent,
@@ -29,11 +25,9 @@ import {
     PreUpdateEvent,
     VisibleEvent
 } from './events';
-import {Logger, LogLevel} from './util';
 import {Color} from './color';
 import type {SceneConstructor} from './scene';
 import {isSceneConstructor, Scene} from './scene';
-import {Entity} from './entity-component-system';
 import {BrowserEvents} from './util/browser';
 import type {
     AntialiasOptions,
@@ -53,7 +47,6 @@ import {ImageFiltering} from './graphics/ImageFiltering';
 import {GraphicsDiagnostics} from './graphics/GraphicsDiagnostics';
 import {Toaster} from './util/Toaster';
 import type {InputMapper} from './input/InputMapper';
-import {Director} from './director';
 import {InputHost} from './input/InputHost';
 import type {LightingConfig} from './lighting';
 import {getDefaultLightingConfig} from './lighting';
@@ -62,7 +55,6 @@ import type {Context} from './context';
 import {createContext, useContext} from './context';
 import type {GarbageCollectionOptions} from './garbage-collector';
 import {DefaultGarbageCollectionOptions, GarbageCollector} from './garbage-collector';
-import {mergeDeep} from './util';
 import {getDefaultGlobal} from './util/iframe';
 import type {Plugin} from './Plugin';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
@@ -76,6 +68,13 @@ import type {GoToOptions} from "./director/GoToOptions";
 import type {MitraGraphicsContextWebGLOptions} from "./graphics/context/MitraGraphicsContextWebGLOptions";
 import type {PhysicsConfig} from "./collision/PhysicsConfig";
 import {DebugConfig} from "./debug/DebugConfig";
+import {Director} from "./director/Director.ts";
+import {DefaultLoader} from "./director/DefaultLoader.ts";
+import {mergeDeep} from "./util/util.ts";
+import type {TileMap} from "./tile-map/TileMap.ts";
+import {Entity} from "./entity-component-system/Entity.ts";
+import type {Vector} from "./math/Vector.ts";
+import {Loader} from "./director/Loader.ts";
 
 polyfill();
 

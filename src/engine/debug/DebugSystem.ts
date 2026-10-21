@@ -1,16 +1,8 @@
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import type {Camera} from '../camera';
-import {MotionComponent} from '../entity-component-system';
-import type {Entity, Query, World} from '../entity-component-system';
-import {SystemPriority, TransformComponent} from '../entity-component-system';
-import {System} from '../entity-component-system';
 import type {MitraGraphicsContext} from '../graphics';
-import {vec, Vector} from '../math';
-import {toDegrees} from '../math';
-import {Particle} from '../particles';
 import {DebugGraphicsComponent} from '../graphics';
-import {CoordPlane} from '../math';
 import {DisplayMode} from '../screen';
 import {Debug} from '../graphics';
 import {Color} from '../color';
@@ -20,6 +12,17 @@ import {ColliderComponent} from "../collision/ColliderComponent";
 import {BodyComponent} from "../collision/BodyComponent";
 import {CompositeCollider} from "../collision/colliders/CompositeCollider";
 import type {BoundingBox} from "../collision/BoundingBox";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import type { Query } from "../entity-component-system/Query";
+import type {World} from "../entity-component-system/World.ts";
+import {MotionComponent} from "../entity-component-system/components/MotionComponent.ts";
+import {vec, Vector} from "../math/Vector.ts";
+import {toDegrees} from "../math/util.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
+import {Particle} from "../particles/particles.ts";
+import type {Entity} from "../entity-component-system/Entity.ts";
 
 export class DebugSystem extends System {
     static override priority = SystemPriority.Lowest;

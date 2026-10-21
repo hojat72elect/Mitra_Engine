@@ -1,7 +1,7 @@
-import {Component} from '../entity-component-system';
 import {Color} from '../color';
-import {Logger} from '../util';
 import type {FlickerOptions} from './FlickerOptions';
+import {Component} from "../entity-component-system/Component.ts";
+import {Logger} from "../util/log.ts";
 
 export interface PointLightComponentOptions {
     /**

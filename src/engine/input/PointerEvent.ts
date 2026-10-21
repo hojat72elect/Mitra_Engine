@@ -1,7 +1,7 @@
-import type {GlobalCoordinates} from '../math';
-import type {Vector} from '../math';
 import type {PointerButton} from './PointerButton';
 import type {PointerType} from './PointerType';
+import type {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
+import type {Vector} from "../math/Vector.ts";
 
 export class PointerEvent {
     public active = true;

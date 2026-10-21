@@ -1,14 +1,18 @@
 import type {Engine} from '../engine';
-import type {Entity, Query, World} from '../entity-component-system';
-import {System, SystemPriority, TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
 import type {Scene} from '../scene';
 import {PointerComponent} from './PointerComponent';
 import type {PointerEventReceiver} from './PointerEventReceiver';
-import {CoordPlane} from '../math';
 import {PointerEventsToObjectDispatcher} from './PointerEventsToObjectDispatcher';
 import {SystemType} from "../entity-component-system/SystemType";
 import {SparseHashGrid} from "../collision/detection/SparseHashGrid";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import type {Query} from "../entity-component-system/Query.ts";
+import type {Entity} from "../entity-component-system/Entity.ts";
+import type {World} from "../entity-component-system/World.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
 
 /**
  * The PointerSystem is responsible for dispatching pointer events to entities

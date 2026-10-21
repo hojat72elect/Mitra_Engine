@@ -1,4 +1,4 @@
-import type {Easing} from "../math";
+import type {Easing} from "../math/easings.ts";
 
 export interface TransitionOptions {
     /**

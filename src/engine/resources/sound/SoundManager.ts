@@ -1,5 +1,5 @@
-import {clamp} from '../../math';
 import {Sound} from './sound';
+import {clamp} from "../../math/util.ts";
 
 export type AnyString = {} & string;
 

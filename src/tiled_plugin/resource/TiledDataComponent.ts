@@ -1,5 +1,5 @@
-import {Component} from "../../engine";
 import {PluginObject} from "./objects";
+import {Component} from "../../engine/entity-component-system/Component.ts";
 
 export interface TiledDataComponentOptions {
     tiledObject: PluginObject;

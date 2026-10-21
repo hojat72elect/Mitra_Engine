@@ -1,11 +1,11 @@
-import {vec, Vector} from "../../math";
 import {PolygonCollider} from "./PolygonCollider";
 import {BoundingBox} from "../BoundingBox";
 import {CircleCollider} from "./CircleCollider";
 import {EdgeCollider} from "./EdgeCollider";
 import {CompositeCollider} from "./CompositeCollider";
-import {Logger} from "../../util";
 import {Colliders} from "./Colliders";
+import {vec, Vector} from "../../math/Vector.ts";
+import {Logger} from "../../util/log.ts";
 
 /**
  * Mitra helper for defining colliders quickly.

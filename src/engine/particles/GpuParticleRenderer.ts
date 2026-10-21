@@ -1,12 +1,12 @@
-import {randomInRange, TwoPI} from '../math';
 import type {MitraGraphicsContextWebgl} from '../graphics';
 import type {GpuParticleEmitter} from './GpuParticleEmitter';
 import {ParticleTransform} from './particles';
-import type {Random} from '../math';
 import {EmitterType} from './EmitterType';
 import {assert} from '../util/assert';
-import {vec} from '../math';
 import type {GpuParticleConfig} from "./GpuParticleConfig";
+import {vec} from "../math/Vector.ts";
+import {randomInRange, TwoPI} from "../math/util.ts";
+import type {Random} from "../math/Random.ts";
 
 /**
  * Container for the GPU Particle State contains the internal state needed for the GPU

@@ -1,8 +1,8 @@
-import {Logger} from '../../util';
 import type {MitraGraphicsContextWebgl} from '../context/MitraGraphicsContextWebgl';
 import {Shader} from '../context/Shader';
 import {VertexBuffer} from '../context/VertexBuffer';
 import {VertexLayout} from '../context/VertexLayout';
+import {Logger} from "../../util/log.ts";
 
 /**
  * Helper that defines a whole screen renderer, just provide a fragment source!

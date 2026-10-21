@@ -1,9 +1,9 @@
 import type {DeepRequired} from "../util/DeepRequired.ts";
-import {vec} from "../math";
 import {SolverStrategy} from "./SolverStrategy";
 import {SpatialPartitionStrategy} from "./detection/SpatialPartitionStrategy";
 import {ContactSolveBias} from "./solver/ContactSolveBias";
 import type {PhysicsConfig} from "./PhysicsConfig";
+import {vec} from "../math/Vector.ts";
 
 export const getDefaultPhysicsConfig: () => DeepRequired<PhysicsConfig> = () => ({
     enabled: true,

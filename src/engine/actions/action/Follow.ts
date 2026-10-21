@@ -1,9 +1,9 @@
-import {MotionComponent} from '../../entity-component-system';
-import {TransformComponent} from '../../entity-component-system';
-import type {Entity} from '../../entity-component-system';
-import {vec, Vector} from '../../math';
 import {nextActionId} from "./nextActionId";
 import type {Action} from "./Action";
+import {TransformComponent} from "../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../entity-component-system/components/MotionComponent.ts";
+import {vec, Vector} from "../../math/Vector.ts";
+import type {Entity} from "../../entity-component-system/Entity.ts";
 
 export class Follow implements Action {
     id = nextActionId();

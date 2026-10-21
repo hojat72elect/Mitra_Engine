@@ -1,8 +1,6 @@
-import {Resource} from '../resources';
 import type {SpriteOptions} from './SpriteOptions';
 import {Sprite} from './Sprite';
 import type {Loadable} from '../interfaces';
-import {Logger} from '../util';
 import {ImageFiltering} from './ImageFiltering';
 import {Future} from '../util/Future.ts';
 import {TextureLoader} from './context/TextureLoader';
@@ -11,6 +9,8 @@ import type {GraphicOptions} from './GraphicOptions';
 import type {ImageSourceOptions} from "./ImageSourceOptions";
 import type {ImageWrapConfiguration} from "./ImageWrapConfiguration";
 import {ImageSourceAttributeConstants} from "./ImageSourceAttributeConstants";
+import {Logger} from "../util/log.ts";
+import {Resource} from "../resources/resource.ts";
 
 export class ImageSource implements Loadable<HTMLImageElement> {
     public filtering?: ImageFiltering;

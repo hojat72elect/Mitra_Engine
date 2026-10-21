@@ -1,6 +1,5 @@
 import pointVertexSource from './debug-point-vertex.glsl?raw';
 import pointFragmentSource from './debug-point-fragment.glsl?raw';
-import type {Vector} from '../../../math';
 import type {Color} from '../../../color';
 import type {MitraGraphicsContextWebgl} from '../MitraGraphicsContextWebgl';
 import {pixelSnapEpsilon} from "../pixelSnapEpsilon";
@@ -9,6 +8,7 @@ import {Shader} from '../Shader';
 import {VertexBuffer} from '../VertexBuffer';
 import {VertexLayout} from '../VertexLayout';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
+import type {Vector} from "../../../math/Vector.ts";
 
 export class DebugPointRenderer implements RendererPlugin {
     public readonly type = 'ex.debug-point';

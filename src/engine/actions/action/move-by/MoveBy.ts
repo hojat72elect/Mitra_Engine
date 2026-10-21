@@ -1,9 +1,10 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {vec, Vector} from "../../../math";
-import {Logger} from "../../../util";
 import type {Action} from "../Action.ts";
-
+import {vec, Vector} from "../../../math/Vector.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
+import {Logger} from "../../../util/log.ts";
 
 export class MoveBy implements Action {
     id = nextActionId();

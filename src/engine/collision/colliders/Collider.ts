@@ -1,19 +1,19 @@
 import type {Color} from '../../color';
 import type {CollisionContact} from '../detection/CollisionContact';
 import type {BoundingBox} from '../BoundingBox';
-import type {Projection} from '../../math';
-import type {LineSegment} from '../../math';
-import {Vector} from '../../math';
-import type {Ray} from '../../math';
 import type {Clonable} from '../../interfaces';
-import type {Entity} from '../../entity-component-system';
 import type {Id} from '../../id';
 import {createId} from '../../id';
 import type {MitraGraphicsContext} from '../../graphics';
-import type {Transform} from '../../math';
 import {EventEmitter} from '../../EventEmitter.ts';
 import type {RayCastHit} from '../detection/RayCastHit';
 import type {CompositeCollider} from './CompositeCollider';
+import {Vector} from "../../math/Vector.ts";
+import type {Entity} from "../../entity-component-system/Entity.ts";
+import type {LineSegment} from "../../math/LineSegment.ts";
+import type {Projection} from "../../math/Projection.ts";
+import type {Ray} from "../../math/Ray.ts";
+import type {Transform} from "../../math/Transform.ts";
 
 /**
  * A collision collider specifies the geometry that can detect when other collision colliders intersect

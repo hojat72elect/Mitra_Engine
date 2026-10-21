@@ -2,9 +2,9 @@ import type {GraphicOptions} from './GraphicOptions';
 import {Graphic} from './Graphic';
 import type {ImageSource} from './ImageSource';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
-import {Logger} from '../util';
 import type {SourceView} from "./SourceView";
 import type {SpriteOptions} from "./SpriteOptions";
+import {Logger} from "../util/log.ts";
 
 type DestinationSize = { width: number; height: number };
 

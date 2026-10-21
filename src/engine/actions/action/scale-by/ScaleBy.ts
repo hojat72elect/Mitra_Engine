@@ -1,7 +1,9 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {Vector} from "../../../math";
 import type {Action} from "../Action";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {Vector} from "../../../math/Vector.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
 
 export class ScaleBy implements Action {
     id = nextActionId();

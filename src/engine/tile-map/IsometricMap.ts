@@ -1,6 +1,5 @@
-import {vec, Vector} from '../math';
-import {TransformComponent} from '../entity-component-system';
-import {Entity} from '../entity-component-system';
+
+
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {DebugGraphicsComponent, GraphicsComponent} from '../graphics';
 import {IsometricEntityComponent} from './IsometricEntityComponent';
@@ -10,8 +9,7 @@ import {EventEmitter} from '../EventEmitter';
 import type {HasNestedPointerEvents} from '../input/HasNestedPointerEvents';
 import {PointerEventsToObjectDispatcher} from '../input/PointerEventsToObjectDispatcher';
 import type {PointerEventReceiver} from '../input/PointerEventReceiver';
-import type {GlobalCoordinates} from '../math';
-import {CoordPlane} from '../math';
+
 import {EntityEvents} from "../entity-component-system/EntityEvents";
 import {BoundingBox} from "../collision/BoundingBox";
 import type {Collider} from "../collision/colliders/Collider";
@@ -20,6 +18,11 @@ import {CompositeCollider} from "../collision/colliders/CompositeCollider";
 import {BodyComponent} from "../collision/BodyComponent";
 import {CollisionType} from "../collision/CollisionType";
 import type {DebugConfig} from "../debug/DebugConfig";
+import {Entity} from "../entity-component-system/Entity.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {vec, Vector} from "../math/Vector";
+import {CoordPlane} from "../math/CoordPlane.ts";
+import type {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
 
 export interface IsometricTilePointerEvents {
     pointerup: PointerEvent;

@@ -6,12 +6,11 @@ import {ParticleTransform} from './particles';
 import type {GpuParticleConfig} from './GpuParticleConfig';
 import {GpuParticleRenderer} from './GpuParticleRenderer';
 import {GraphicsComponent} from '../graphics';
-import {Random} from '../math';
-import type {Vector} from '../math';
-import {vec} from '../math';
-import {clamp} from '../math';
 import type {MitraGraphicsContextWebgl} from '../graphics';
 import type {ParticleRenderer} from '../graphics';
+import {Random} from "../math/Random.ts";
+import {clamp} from "../math/util.ts";
+import {vec, Vector} from "../math/Vector.ts";
 
 export class GpuParticleEmitter extends Actor {
     public particle: GpuParticleConfig = {

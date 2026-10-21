@@ -1,4 +1,3 @@
-import {vec} from '../../../../math';
 import type {MitraGraphicsContextWebgl} from '../../MitraGraphicsContextWebgl';
 import {Glsl} from '../../Glsl';
 import type {Shader} from '../../Shader';
@@ -8,6 +7,7 @@ import type {ShaderPipelineLike} from '../ShaderPipelineLike';
 import {ShaderPipeline} from '../ShaderPipeline';
 import type {ShaderPassSource} from "../ShaderPassSource";
 import type {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
+import {vec} from "../../../../math/Vector.ts";
 
 interface BlurPassesOptions {
     graphicsContext: MitraGraphicsContextWebgl;

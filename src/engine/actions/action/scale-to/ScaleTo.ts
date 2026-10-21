@@ -1,7 +1,9 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {vec} from "../../../math";
 import type {Action} from "../Action";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
+import {vec} from "../../../math/Vector.ts";
 
 export class ScaleTo implements Action {
     id = nextActionId();

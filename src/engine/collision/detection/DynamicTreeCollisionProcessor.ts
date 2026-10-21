@@ -1,9 +1,6 @@
 import type {CollisionProcessor} from './CollisionProcessor';
 import {DynamicTree} from './DynamicTree';
 import {Pair} from './Pair';
-import {Vector} from '../../math';
-import {Ray} from '../../math';
-import {Logger} from '../../util';
 import {CollisionType} from '../CollisionType';
 import type {Collider} from '../colliders/Collider';
 import type {CollisionContact} from './CollisionContact';
@@ -18,6 +15,9 @@ import type {RayCastOptions} from './RayCastOptions';
 import {BoundingBox} from '../BoundingBox';
 import {createId} from '../../id';
 import {FrameStats} from "../../debug/FrameStats";
+import {Ray} from "../../math/Ray.ts";
+import {Vector} from "../../math/Vector.ts";
+import {Logger} from "../../util/log.ts";
 
 /**
  * Responsible for performing the collision broadphase (locating potential collisions) and

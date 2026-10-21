@@ -1,5 +1,6 @@
 import {MediaEvent} from "./MediaEvent";
-import {Sound, WebAudioInstance} from "../resources";
+import type {Sound} from "../resources/sound/sound.ts";
+import type {WebAudioInstance} from "../resources/sound/WebAudioInstance.ts";
 
 export class NativeSoundEvent extends MediaEvent {
     constructor(

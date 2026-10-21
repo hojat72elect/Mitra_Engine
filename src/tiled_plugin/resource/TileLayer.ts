@@ -3,12 +3,8 @@ import {
     GraphicsComponent,
     Logger,
     ParallaxComponent,
-    Tile as ExTile,
-    TileMap,
-    TransformComponent,
-    vec,
-    Vector
 } from "../../engine";
+import {Tile as ExTile} from "../../engine/tile-map/TileMap.ts"
 import {mapProps, type PropertyMapValue} from "./Properties";
 import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/TiledParser";
 import {Decoder} from "./Decoder";
@@ -21,6 +17,9 @@ import {Tile} from "./Tileset";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy";
 import {BodyComponent} from "../../engine/collision/BodyComponent";
+import {TileMap} from "../../engine/tile-map/TileMap.ts";
+import {TransformComponent} from "../../engine/entity-component-system/components/TransformComponent.ts";
+import {vec, type Vector} from "../../engine/math/Vector.ts";
 
 /**
  * Tile information for both Mitra and tiled tile representations

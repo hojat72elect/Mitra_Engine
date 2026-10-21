@@ -1,5 +1,6 @@
 import type {Collider} from "./Collider";
-import {LineSegment, vec, Vector} from "../../math";
+import {vec, type Vector} from "../../math/Vector.ts";
+import {LineSegment} from "../../math/LineSegment.ts";
 
 /**
  * Specific information about a contact and it's separation

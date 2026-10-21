@@ -1,6 +1,6 @@
 import type {Action} from "./action/Action";
-import {Entity} from "../entity-component-system";
 import {ActionCompleteEvent, ActionStartEvent} from "../events";
+import type {Entity} from "../entity-component-system/Entity";
 
 /**
  * Action Queues represent an ordered sequence of actions

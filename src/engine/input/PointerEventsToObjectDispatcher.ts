@@ -1,10 +1,10 @@
 import type {EventEmitter} from '../EventEmitter.ts';
 import type {PointerEvent} from './PointerEvent';
-import type {GlobalCoordinates} from '../math';
 import type {PointerEventReceiver} from './PointerEventReceiver';
 import {RentalPool} from '../util/RentalPool.ts';
 import {PointerType} from './PointerType';
 import type {HasNestedPointerEvents} from "./HasNestedPointerEvents";
+import type {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
 
 function hasNestedEvents(object: any): object is HasNestedPointerEvents {
     return object && object._dispatchPointerEvents && object._processPointerToObject;

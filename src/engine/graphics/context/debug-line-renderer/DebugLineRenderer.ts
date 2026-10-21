@@ -1,5 +1,3 @@
-import type {Vector} from '../../../math';
-import {vec} from '../../../math';
 import type {Color} from '../../../color';
 import lineVertexSource from './debug-line-vertex.glsl?raw';
 import lineFragmentSource from './debug-line-fragment.glsl?raw';
@@ -7,6 +5,7 @@ import type {MitraGraphicsContextWebgl} from '../MitraGraphicsContextWebgl';
 import type {RendererPlugin} from '../RendererPlugin';
 import {Shader, VertexBuffer, VertexLayout} from '../..';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
+import {vec, Vector} from "../../../math/Vector.ts";
 
 export class DebugLineRenderer implements RendererPlugin {
     public readonly type = 'ex.debug-line';

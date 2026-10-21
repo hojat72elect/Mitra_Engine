@@ -1,23 +1,25 @@
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {Scene} from '../scene';
 import {GraphicsComponent} from './GraphicsComponent';
-import {vec, Vector} from '../math';
-import {TransformComponent} from '../entity-component-system';
-import type {Entity} from '../entity-component-system';
 import type {Camera} from '../camera';
-import type {Query, World} from '../entity-component-system';
-import {System, SystemPriority} from '../entity-component-system';
 import type {Engine} from '../engine';
 import {GraphicsGroup} from './GraphicsGroup';
 import {ParallaxComponent} from './ParallaxComponent';
-import {CoordPlane} from '../math';
 import {BodyComponent} from "../collision/BodyComponent";
 import {FontCache} from './FontCache';
 import {PostDrawEvent, PostTransformDrawEvent, PreDrawEvent, PreTransformDrawEvent} from '../events';
-import {Transform} from '../math';
 import {blendTransform} from './blendTransform';
 import {Graphic} from './Graphic';
 import {SystemType} from "../entity-component-system/SystemType";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import type {Query} from "../entity-component-system/Query.ts";
+import type {World} from "../entity-component-system/World.ts";
+import {Transform} from "node:stream";
+import type {Entity} from "../entity-component-system/Entity.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
+import {vec, Vector} from "../math/Vector.ts";
 
 export class GraphicsSystem extends System {
     static override priority = SystemPriority.Average;

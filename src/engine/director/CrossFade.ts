@@ -3,8 +3,8 @@ import {ImageSource} from '../graphics';
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Transition} from './Transition';
-import {vec} from '../math';
 import type {TransitionOptions} from "./TransitionOptions";
+import {vec} from "../math/Vector.ts";
 
 interface CrossFadeOptions {
     duration: number;

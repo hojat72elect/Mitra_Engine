@@ -1,18 +1,18 @@
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Future} from '../util/Future.ts';
-import {Entity, TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
-import {CoordPlane} from '../math';
-import {Vector} from '../math';
-import {clamp} from '../math';
 import type {CoroutineInstance} from '../util/coroutine';
 import {coroutine} from '../util/coroutine';
-import {Logger} from '../util';
-import type {Easing} from '../math';
-import {linear} from '../math';
-import {lerp} from '../math';
 import type {TransitionOptions} from "./TransitionOptions";
+import {Entity} from "../entity-component-system/Entity.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {type Easing, linear} from "../math/easings.ts";
+import {Logger} from "../util/log.ts";
+import {CoordPlane} from "../math/CoordPlane.ts";
+import {Vector} from "../math/Vector.ts";
+import {clamp} from "../math/util.ts";
+import {lerp} from "../math/lerp.ts";
 
 /**
  * Base Transition that can be extended to provide custom scene transitions in Mitra.

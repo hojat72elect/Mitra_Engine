@@ -1,5 +1,5 @@
-import {AudioContextFactory} from '../resources';
 import {Logger} from './log';
+import {AudioContextFactory} from "../resources/sound/AudioContextFactory.ts";
 
 export interface LegacyWebAudioSource {
     playbackState: string;

@@ -1,4 +1,3 @@
-import {vec} from '../../../math';
 import {parseImageFiltering} from '../../parseImageFiltering';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import {ImageSourceAttributeConstants} from '../../ImageSourceAttributeConstants';
@@ -11,6 +10,7 @@ import {ShaderPass} from '../shader-pipeline/ShaderPass';
 import {VertexBuffer} from '../VertexBuffer';
 import {VertexLayout} from '../VertexLayout';
 import type {HTMLImageSource} from "../HTMLImageSource";
+import {vec} from "../../../math/Vector.ts";
 
 /**
  * Seeds a material pipeline: copies the graphic's source view into the inner rect of the padded

@@ -1,4 +1,4 @@
-import {Transform} from '../math';
+import {Transform} from "../math/Transform.ts";
 
 export function blendGlobalTransform(oldTx: Transform, newTx: Transform, blend: number, target?: Transform): Transform {
     let interpolatedPos = newTx.globalPos;

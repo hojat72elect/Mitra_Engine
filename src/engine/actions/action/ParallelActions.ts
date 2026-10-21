@@ -1,6 +1,6 @@
-import type {Entity} from '../../entity-component-system';
 import {nextActionId} from "./nextActionId";
 import type {Action} from "./Action";
+import type {Entity} from "../../entity-component-system/Entity.ts";
 
 /**
  * Action that can run multiple {@apilink Action}s or {@apilink ActionSequence}s at the same time

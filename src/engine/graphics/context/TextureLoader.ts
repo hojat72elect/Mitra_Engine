@@ -1,10 +1,10 @@
 import type {GarbageCollector} from '../../garbage-collector';
-import {Logger} from '../../util';
 import {ImageFiltering} from '../ImageFiltering';
 import type {ImageWrapConfiguration} from '../ImageWrapConfiguration';
 import {ImageWrapping} from '../ImageWrapping';
 import type {HTMLImageSource} from "./HTMLImageSource";
 import type {ImageSourceOptions} from "../ImageSourceOptions";
+import {Logger} from "../../util/log.ts";
 
 /**
  * Manages loading image sources into webgl textures, a unique id is associated with all sources

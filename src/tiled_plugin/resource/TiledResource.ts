@@ -1,13 +1,9 @@
 import {
     Color,
-    Entity,
     ImageSource,
     type Loadable,
     Logger,
-    Scene,
-    TransformComponent,
-    vec,
-    Vector
+    Scene
 } from "../../engine";
 import {
     isTiledTilesetCollectionOfImages,
@@ -39,6 +35,9 @@ import {TemplateResource, type TemplateResourceOptions} from "./TemplateResource
 import {ImageLayer} from "./ImageLayer";
 import type {CollisionGroup} from "../../engine/collision/group/CollisionGroup";
 import {BoundingBox} from "../../engine/collision/BoundingBox";
+import {vec, Vector} from "../../engine/math/Vector.ts";
+import type {Entity} from "../../engine/entity-component-system/Entity.ts";
+import {TransformComponent} from "../../engine/entity-component-system/components/TransformComponent.ts";
 
 export interface TiledLayerConfig {
     /**

@@ -1,7 +1,3 @@
-import type {Query, World} from '../entity-component-system';
-import {SystemPriority} from '../entity-component-system';
-import {TransformComponent} from '../entity-component-system';
-import {System} from '../entity-component-system';
 import {CollisionEndEvent, CollisionStartEvent, ContactEndEvent, ContactStartEvent} from '../events';
 import {SolverStrategy} from './SolverStrategy';
 import {ArcadeSolver} from './solver/ArcadeSolver';
@@ -25,6 +21,11 @@ import {PauseComponentTag} from "../entity-component-system/components/PauseComp
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
 import {BodyComponent} from "./BodyComponent";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import type {World} from "../entity-component-system/World.ts";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import type {Query} from "../entity-component-system/Query.ts";
 
 export class CollisionSystem extends System {
     static override priority = SystemPriority.Higher;

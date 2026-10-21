@@ -1,4 +1,5 @@
-import {type Easing, Vector} from "../../../math";
+import type {Vector} from "../../../math/Vector.ts";
+import type {Easing} from "../../../math/easings.ts";
 
 export interface MoveByOptions {
     offset: Vector;

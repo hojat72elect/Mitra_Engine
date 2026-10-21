@@ -2,14 +2,14 @@ import type {GraphicOptions} from './GraphicOptions';
 import {Graphic} from './Graphic';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {SpriteSheet} from './SpriteSheet';
-import {Logger} from '../util';
-import {clamp} from '../math';
 import {EventEmitter} from '../EventEmitter.ts';
 import type {HasTick} from "./HasTick";
 import {AnimationStrategy} from "./AnimationStrategy";
 import type {Frame} from "./Frame";
 import type {AnimationOptions} from "./AnimationOptions";
 import type {GetSpriteOptions} from "./GetSpriteOptions";
+import {Logger} from "../util/log.ts";
+import {clamp} from "../math/util.ts";
 
 enum AnimationDirection {
     /**

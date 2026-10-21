@@ -1,5 +1,5 @@
-import type {Sound} from "../resources";
 import {MediaEvent} from "./MediaEvent";
+import type {Sound} from "../resources/sound/sound.ts";
 
 export class NativeSoundProcessedEvent extends MediaEvent {
     public data: string | AudioBuffer;

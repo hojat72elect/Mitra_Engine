@@ -1,9 +1,9 @@
-import {MotionComponent} from '../../entity-component-system';
-import {TransformComponent} from '../../entity-component-system';
-import type {Entity} from '../../entity-component-system';
-import {vec, Vector} from '../../math';
 import type {Action} from "./Action";
 import {nextActionId} from "./nextActionId";
+import {TransformComponent} from "../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../entity-component-system/components/MotionComponent.ts";
+import {vec, Vector} from "../../math/Vector.ts";
+import {Entity} from "../../entity-component-system/Entity.ts";
 
 /**
  * @deprecated use moveBy({offset: Vector, duration: number, easing: EasingFunction})

@@ -1,8 +1,12 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {clamp, lerpAngle, remap, RotationType} from "../../../math";
 import type {Action} from "../Action.ts";
 import type {RotateToOptions} from "./RotateToOptions.ts";
+import {RotationType} from "../../../math/RotationType.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
+import {clamp} from "../../../math/util.ts";
+import {lerpAngle, remap} from "../../../math/lerp.ts";
 
 export class RotateToWithOptions implements Action {
     id = nextActionId();

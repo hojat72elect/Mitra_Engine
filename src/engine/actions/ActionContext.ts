@@ -28,19 +28,19 @@ import {Delay} from './action/Delay';
 import {Die} from './action/Die';
 import {Follow} from './action/Follow';
 import {Meet} from './action/Meet';
-import type {RotationType} from '../math';
-import {Vector} from '../math';
-import type {Entity} from '../entity-component-system';
 import type {Color} from '../color';
 import {Flash} from './action/Flash';
 import type {CurveToOptions} from './action/curve-to/CurveToOptions';
 import {CurveTo} from './action/curve-to/CurveTo';
 import type {CurveByOptions} from './action/curve-by/CurveByOptions';
 import {CurveBy} from './action/curve-by/CurveBy';
-import {Logger} from '../util';
 import {ScaleByWithOptions} from "./action/scale-by/ScaleByWithOptions";
 import {ScaleBy} from "./action/scale-by/ScaleBy";
-import type {Action} from "./action/Action.ts";
+import type {Action} from "./action/Action";
+import type {Entity} from "../entity-component-system/Entity";
+import {Vector} from "../math/Vector";
+import type {RotationType} from "../math/RotationType";
+import {Logger} from "../util/log";
 
 /**
  * The fluent Action API allows you to perform "actions" on

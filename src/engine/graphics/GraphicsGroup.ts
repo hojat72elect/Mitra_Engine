@@ -1,11 +1,11 @@
-import {Vector} from '../math';
 import type {GraphicOptions} from './GraphicOptions';
 import {Graphic} from './Graphic';
 import type {HasTick} from './HasTick';
 import {Animation} from './Animation';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {BoundingBox} from "../collision/BoundingBox";
-import {Logger} from '../util';
+import {Vector} from "../math/Vector.ts";
+import {Logger} from "../util/log.ts";
 
 interface GraphicsGroupingOptions {
     members: (GraphicsGrouping | Graphic)[];

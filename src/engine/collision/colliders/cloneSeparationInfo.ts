@@ -1,5 +1,5 @@
 import {SeparationInfo} from "./SeparationInfo";
-import {LineSegment} from "../../math";
+import {LineSegment} from "../../math/LineSegment.ts";
 
 /**
  * Deep copies separation info out of the per frame {@apilink SeparatingAxis.SeparationPool} so it can outlive the frame

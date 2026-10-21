@@ -1,10 +1,10 @@
-import {System} from '../entity-component-system';
-import {SystemPriority} from '../entity-component-system';
-import type {World} from '../entity-component-system';
-import type {Query} from '../entity-component-system';
 import {PointLightComponent} from './PointLightComponent';
 import {ConeLightComponent} from './ConeLightComponent';
 import {SystemType} from "../entity-component-system/SystemType";
+import {System} from "../entity-component-system/System.ts";
+import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
+import type {Query} from "../entity-component-system/Query.ts";
+import type {World} from "../entity-component-system/World.ts";
 
 /**
  * Modulates active light intensities ahead of the lighting render pass

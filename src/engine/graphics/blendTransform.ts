@@ -1,4 +1,4 @@
-import {Transform} from "../math";
+import {Transform} from "../math/Transform.ts";
 
 /**
  * Blend 2 transforms for interpolation, will interpolate from the context of newTx's parent if it exists

@@ -1,5 +1,5 @@
-import {Component} from '../entity-component-system';
-import {Vector} from '../math';
+import {Vector} from "../math/Vector.ts";
+import {Component} from "../entity-component-system/Component.ts";
 
 type OccluderShape =
     | { kind: 'box'; width: number; height: number; anchor?: Vector }

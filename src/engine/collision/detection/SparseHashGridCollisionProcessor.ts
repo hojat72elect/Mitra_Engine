@@ -1,9 +1,5 @@
-import type {Entity} from '../../entity-component-system';
 import type {MitraGraphicsContext} from '../../graphics';
 import {createId} from '../../id';
-import type {Ray} from '../../math';
-import type {Vector} from '../../math';
-import {vec} from '../../math';
 import {ArenaPool} from '../../util/ArenaPool.ts';
 import {BodyComponent} from '../BodyComponent';
 import type {BoundingBox} from '../BoundingBox';
@@ -20,6 +16,9 @@ import {SparseHashGrid} from './SparseHashGrid';
 import {HashGridProxy} from "./HashGridProxy";
 import {HashGridCell} from "./HashGridCell";
 import {FrameStats} from "../../debug/FrameStats";
+import type {Entity} from "../../entity-component-system/Entity.ts";
+import {vec, type Vector} from "../../math/Vector.ts";
+import type {Ray} from "../../math/Ray.ts";
 
 /**
  * Packs two collider ids into one number for pair de-duplication, supports ids up to 2^26

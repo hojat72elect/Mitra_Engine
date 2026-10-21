@@ -1,5 +1,5 @@
-import {Vector} from "../math";
 import {Color} from "../color";
+import type {Vector} from "../math/Vector.ts";
 
 export interface GraphicOptions {
     /**

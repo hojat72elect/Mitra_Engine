@@ -1,6 +1,6 @@
-import type {GlobalCoordinates} from '../math';
 import type {WheelDeltaMode} from '../input/WheelDeltaMode';
 import {ExEvent} from './ExEvent';
+import type {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
 
 abstract class PointerEvent extends ExEvent<'down' | 'up' | 'move' | 'cancel'> {
     constructor(

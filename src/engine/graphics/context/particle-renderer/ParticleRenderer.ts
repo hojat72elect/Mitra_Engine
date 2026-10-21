@@ -3,14 +3,14 @@ import type {RendererPlugin} from '../RendererPlugin';
 import {Shader} from '../Shader';
 import particleVertexSource from './particle-vertex.glsl?raw';
 import particleFragmentSource from './particle-fragment.glsl?raw';
-import type {GpuParticleRenderer} from '../../../particles';
-import {vec} from '../../../math';
 import {Color} from '../../../color';
 import {ImageSourceAttributeConstants} from '../../ImageSourceAttributeConstants';
 import {parseImageWrapping} from '../../parseImageWrapping';
 import {parseImageFiltering} from '../../parseImageFiltering';
-import {ParticleTransform} from '../../../particles';
 import type {HTMLImageSource} from "../HTMLImageSource";
+import type {GpuParticleRenderer} from "../../../particles/GpuParticleRenderer.ts";
+import {ParticleTransform} from "../../../particles/particles.ts";
+import {vec} from "../../../math/Vector.ts";
 
 export class ParticleRenderer implements RendererPlugin {
     public readonly type = 'ex.particle' as const;

@@ -1,7 +1,10 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {RotationType, TwoPI} from "../../../math";
 import type {Action} from "../Action.ts";
+import {RotationType} from "../../../math/RotationType.ts";
+import {TwoPI} from "../../../math/util.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
 
 export class RotateTo implements Action {
     id = nextActionId();

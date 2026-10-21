@@ -1,9 +1,9 @@
-import type {Entity} from '../../entity-component-system';
-import {TransformComponent} from '../../entity-component-system';
-import {MotionComponent} from '../../entity-component-system';
-import {vec, Vector} from '../../math';
 import {nextActionId} from "./nextActionId";
 import type {Action} from "./Action";
+import {TransformComponent} from "../../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../../entity-component-system/components/MotionComponent.ts";
+import {vec, Vector} from "../../math/Vector.ts";
+import type {Entity} from "../../entity-component-system/Entity.ts";
 
 /**
  * @deprecated use moveTo({pos: Vector, duration: number, easing: EasingFunction})

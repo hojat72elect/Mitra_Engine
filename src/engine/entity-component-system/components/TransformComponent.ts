@@ -1,10 +1,10 @@
-import type {Vector} from '../../math';
-import {CoordPlane} from '../../math';
-import {Transform} from '../../math';
 import {Component} from '../Component';
 import type {Entity} from '../Entity';
-import {Observable} from '../../util';
-import {Logger} from '../../util';
+import {CoordPlane} from "../../math/CoordPlane.ts";
+import {Observable} from "../../util/observable.ts";
+import {Logger} from "../../util/log.ts";
+import {Transform} from "../../math/Transform.ts";
+import type {Vector} from "../../math/Vector.ts";
 
 /**
  * Transform Component Serialization Data

@@ -1,4 +1,5 @@
-import {Logger} from '../../util';
+import {Logger} from "../../util/log.ts";
+
 
 /**
  * Emitted into the preamble so that re-applying the tag to its own output is a no-op.

@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
 import type {Engine} from '../engine';
-import {vec} from '../math';
 import {Color} from '../color';
+import {vec} from "../math/Vector.ts";
 
 /**
  * Logging level that Mitra will tag

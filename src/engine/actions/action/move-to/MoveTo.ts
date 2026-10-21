@@ -1,7 +1,9 @@
 import {nextActionId} from "../nextActionId";
-import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {vec, Vector} from "../../../math";
 import type {Action} from "../Action.ts";
+import {vec, Vector} from "../../../math/Vector.ts";
+import {MotionComponent} from "../../../entity-component-system/components/MotionComponent.ts";
+import {TransformComponent} from "../../../entity-component-system/components/TransformComponent.ts";
+import type {Entity} from "../../../entity-component-system/Entity.ts";
 
 export class MoveTo implements Action {
     id = nextActionId();

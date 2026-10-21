@@ -1,5 +1,5 @@
-import {Vector} from '../../math';
 import {Component} from '../Component';
+import {Vector} from "../../math/Vector.ts";
 
 // @ts-ignore
 interface Motion {

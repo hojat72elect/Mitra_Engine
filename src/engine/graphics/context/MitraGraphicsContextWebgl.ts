@@ -6,13 +6,9 @@ import type {
     PointGraphicsOptions,
     RectGraphicsOptions
 } from './MitraGraphicsContext';
-import {Matrix} from '../../math';
 import {TransformStack} from './TransformStack';
-import type {Vector} from '../../math';
-import {vec} from '../../math';
 import {Color} from '../../color';
 import {StateStack} from './StateStack';
-import {Logger} from '../../util';
 import {DebugText} from './DebugText';
 import type {Resolution} from '../../screen';
 import {Framebuffer} from './Framebuffer';
@@ -29,7 +25,6 @@ import {RectangleRenderer} from './rectangle-renderer/RectangleRenderer';
 import {CircleRenderer} from './circle-renderer/CircleRenderer';
 import {ArenaPool} from '../../util/ArenaPool.ts';
 import {DrawCall} from './DrawCall';
-import type {AffineMatrix} from '../../math';
 import {Material} from './Material';
 import {MaterialRenderer} from './material-renderer/MaterialRenderer';
 import type {ShaderOptions} from './ShaderOptions';
@@ -44,6 +39,10 @@ import type {MaterialOptionsWithoutContext} from "./MaterialOptionsWithoutContex
 import type {HTMLImageSource} from "./HTMLImageSource";
 import {pixelSnapEpsilon} from "./pixelSnapEpsilon";
 import type {MitraGraphicsContextWebGLOptions} from "./MitraGraphicsContextWebGLOptions";
+import {vec, Vector} from "../../math/Vector.ts";
+import {Matrix} from "../../math/Matrix.ts";
+import {Logger} from "../../util/log.ts";
+import type {AffineMatrix} from "../../math/AffineMatrix.ts";
 
 class MitraGraphicsContextWebGLDebug implements DebugDraw {
     private _debugText = new DebugText();

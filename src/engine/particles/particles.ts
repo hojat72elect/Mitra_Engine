@@ -1,19 +1,20 @@
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import {vec, Vector} from '../math';
-import type {Random} from '../math';
-import {TransformComponent} from '../entity-component-system';
 import {GraphicsComponent} from '../graphics';
-import {Entity} from '../entity-component-system';
-import {clamp} from '../math';
 import type {Graphic} from '../graphics';
 import type {EmitterType} from './EmitterType';
-import {MotionComponent, PauseComponent} from '../entity-component-system';
 import {EulerIntegrator} from '../collision/EulerIntegrator';
 import type {ParticleEmitter} from './ParticleEmitter';
 import {BoundingBox} from "../collision/BoundingBox";
+import {Entity} from "../entity-component-system/Entity.ts";
+import {vec, Vector} from "../math/Vector.ts";
+import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
+import {MotionComponent} from "../entity-component-system/components/MotionComponent.ts";
+import {PauseComponent} from "../entity-component-system/components/PauseComponent.ts";
+import {clamp} from "../math/util.ts";
+import type {Random} from "../math/Random.ts";
 
-/**
+
  /**
  * CPU Particle is used in a {@apilink ParticleEmitter}
  */

@@ -1,13 +1,13 @@
-import {vec, Vector} from './math';
-import {Logger} from './util';
 import type {Camera} from './camera';
 import type {BrowserEvents} from './util/browser';
 import type {MitraGraphicsContext} from './graphics';
-import {getPosition} from './util';
 import {MitraGraphicsContextWebgl} from './graphics';
 import {MitraGraphicsContext2DCanvas} from './graphics';
 import {EventEmitter} from './EventEmitter';
 import {BoundingBox} from "./collision/BoundingBox";
+import {Logger} from "./util/log.ts";
+import {vec, Vector} from "./math/Vector.ts";
+import {getPosition} from "./util/util.ts";
 
 /**
  * Enum representing the different display modes available to Mitra.

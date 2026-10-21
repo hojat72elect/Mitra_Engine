@@ -3,9 +3,9 @@ import type {SourceView} from './SourceView';
 import {Sprite} from './Sprite';
 import type {GraphicOptions} from './GraphicOptions';
 import {TiledSprite} from './TiledSprite';
-import {Vector} from '../math';
 import type {GetSpriteOptions} from "./GetSpriteOptions";
 import type {TiledSpriteOptions} from "./TiledSpriteOptions";
+import {Vector} from "../math/Vector.ts";
 
 /**
  * Specify sprite sheet spacing options, useful if your sprites are not tightly packed

@@ -1,6 +1,6 @@
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
-import {Component} from '../entity-component-system';
 import type {DebugConfig} from "../debug/DebugConfig";
+import {Component} from "../entity-component-system/Component.ts";
 
 /**
  * Provide arbitrary drawing for the purposes of debugging your game

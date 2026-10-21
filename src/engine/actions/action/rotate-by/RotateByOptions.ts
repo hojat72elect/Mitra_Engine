@@ -1,4 +1,4 @@
-import {RotationType} from "../../../math";
+import type {RotationType} from "../../../math/RotationType.ts";
 
 export interface RotateByOptions {
     /**
