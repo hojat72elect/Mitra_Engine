@@ -1,7 +1,7 @@
-import {Component} from '../entity-component-system/Component';
+import {Component} from '../entity-component-system';
 import {Color} from '../color';
-import {Logger} from '../util/log';
-import type {FlickerOptions} from './flicker-options';
+import {Logger} from '../util';
+import type {FlickerOptions} from './FlickerOptions';
 
 export interface PointLightComponentOptions {
     /**

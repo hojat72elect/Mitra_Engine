@@ -1,10 +1,10 @@
-import {Component} from '../entity-component-system/Component';
+import {Component} from '../entity-component-system';
 import {Color} from '../color';
-import {Logger} from '../util/log';
-import type {FlickerOptions} from './flicker-options';
-import type {PointLightComponentOptions} from './point-light-component';
+import {Logger} from '../util';
+import type {FlickerOptions} from './FlickerOptions';
+import type {PointLightComponentOptions} from './PointLightComponent';
 
-export interface ConeLightComponentOptions extends PointLightComponentOptions {
+interface ConeLightComponentOptions extends PointLightComponentOptions {
     /**
      * Radius of the light in world pixels. Default 200
      */

@@ -1,7 +1,7 @@
-import {Component} from '../entity-component-system/Component';
+import {Component} from '../entity-component-system';
 import {Color} from '../color';
 
-export interface DarknessComponentOptions {
+interface DarknessComponentOptions {
     /**
      * Color of the darkness veil. Default rgb(0, 0, 10)
      */

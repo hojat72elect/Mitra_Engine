@@ -2,8 +2,8 @@ import {System} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
 import type {World} from '../entity-component-system';
 import type {Query} from '../entity-component-system';
-import {PointLightComponent} from './point-light-component';
-import {ConeLightComponent} from './cone-light-component';
+import {PointLightComponent} from './PointLightComponent';
+import {ConeLightComponent} from './ConeLightComponent';
 import {SystemType} from "../entity-component-system/SystemType";
 
 /**

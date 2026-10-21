@@ -1,19 +1,19 @@
-import {Component} from '../entity-component-system/Component';
-import {Vector} from '../math/vector';
+import {Component} from '../entity-component-system';
+import {Vector} from '../math';
 
-export type OccluderShape =
+type OccluderShape =
     | { kind: 'box'; width: number; height: number; anchor?: Vector }
     | { kind: 'polygon'; vertices: Vector[] }
     | { kind: 'circle'; radius: number };
 
 /** A shadow volume silhouette approximated by a closed polygon in screen space */
-export type PolyOccluder = { kind: 'poly'; verts: Vector[] };
+type PolyOccluder = { kind: 'poly'; verts: Vector[] };
 /** A shadow volume silhouette approximated by a circle in screen space */
-export type CircleOccluder = { kind: 'circle'; center: Vector; radius: number };
+type CircleOccluder = { kind: 'circle'; center: Vector; radius: number };
 /** World/screen-space occluder geometry consumed by {@apilink LightingSystem} to cast shadows */
 export type Occluder = PolyOccluder | CircleOccluder;
 
-export interface LightOccluderComponentOptions {
+interface LightOccluderComponentOptions {
     /**
      * Shape of the occluder, independent of any collider geometry on the entity
      */

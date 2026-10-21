@@ -1,8 +1,8 @@
-export * from './lighting-config';
-export type * from './flicker-options';
-export * from './darkness-component';
-export * from './point-light-component';
-export * from './cone-light-component';
-export * from './light-occluder-component';
-export * from './flicker-system';
-export * from './lighting-system';
+export * from './LightingConfig';
+export type * from './FlickerOptions';
+export * from './DarknessComponent';
+export * from './PointLightComponent';
+export * from './ConeLightComponent';
+export * from './LightOccluderComponent';
+export * from './FlickerSystem';
+export * from './LightingSystem';

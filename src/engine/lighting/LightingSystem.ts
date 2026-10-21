@@ -17,11 +17,11 @@ import {Canvas} from '../graphics';
 import {Logger} from '../util';
 import type {Observable} from '../util';
 import {BoundingBox} from '../collision';
-import {DarknessComponent} from './darkness-component';
-import {PointLightComponent} from './point-light-component';
-import {ConeLightComponent} from './cone-light-component';
-import type {Occluder} from './light-occluder-component';
-import {LightOccluderComponent} from './light-occluder-component';
+import {DarknessComponent} from './DarknessComponent';
+import {PointLightComponent} from './PointLightComponent';
+import {ConeLightComponent} from './ConeLightComponent';
+import type {Occluder} from './LightOccluderComponent';
+import {LightOccluderComponent} from './LightOccluderComponent';
 import {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
 
