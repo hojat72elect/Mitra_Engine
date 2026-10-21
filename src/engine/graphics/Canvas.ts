@@ -1,0 +1,46 @@
+import type {GraphicOptions} from './GraphicOptions';
+import type {RasterOptions} from './RasterOptions';
+import {Raster} from './Raster';
+
+interface CanvasOptions {
+    draw?: (ctx: CanvasRenderingContext2D) => void;
+    cache?: boolean;
+}
+
+/**
+ * A canvas {@apilink Graphic} to provide an adapter between the 2D Canvas API and the {@apilink MitraGraphicsContext}.
+ *
+ * The {@apilink Canvas} works by re-rastering a draw handler to a HTMLCanvasElement for every draw which is then passed
+ * to the {@apilink MitraGraphicsContext} implementation as a rendered image.
+ *
+ * **Low performance API**
+ */
+export class Canvas extends Raster {
+    constructor(private _options: GraphicOptions & RasterOptions & CanvasOptions = {}) {
+        super(_options);
+    }
+
+    /**
+     * Return the 2D graphics context of this canvas
+     */
+    public get ctx() {
+        return this._ctx;
+    }
+
+    public clone(): Canvas {
+        return new Canvas({
+            ...this._options,
+            ...this.cloneGraphicOptions(),
+            ...this.cloneRasterOptions()
+        });
+    }
+
+    execute(ctx: CanvasRenderingContext2D): void {
+        if (this._options?.draw) {
+            this._options?.draw(ctx);
+        }
+        if (!this._options.cache) {
+            this.flagDirty();
+        }
+    }
+}

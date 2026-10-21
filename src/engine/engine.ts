@@ -39,8 +39,7 @@ import {BrowserEvents} from './util/browser';
 import type {
     AntialiasOptions,
     MitraGraphicsContext,
-    MitraGraphicsContextOptions,
-    MitraGraphicsContextWebGLOptions
+    MitraGraphicsContextOptions
 } from './graphics';
 import {
     DefaultAntialiasOptions,
@@ -51,8 +50,8 @@ import {
 } from './graphics';
 import type {Clock} from './util/clock';
 import {StandardClock} from './util/clock';
-import {ImageFiltering} from './graphics';
-import {GraphicsDiagnostics} from './graphics/graphics-diagnostics';
+import {ImageFiltering} from './graphics/ImageFiltering';
+import {GraphicsDiagnostics} from './graphics/GraphicsDiagnostics';
 import {Toaster} from './util/toaster';
 import type {InputMapper} from './input/input-mapper';
 import {Director} from './director';
@@ -76,6 +75,7 @@ import {WithRoot} from "./director/WithRoot";
 import {SceneMap} from "./director/SceneMap";
 import {StartOptions} from "./director/StartOptions";
 import {GoToOptions} from "./director/GoToOptions";
+import {MitraGraphicsContextWebGLOptions} from "./graphics/context/MitraGraphicsContextWebGLOptions";
 
 polyfill();
 

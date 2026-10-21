@@ -1,7 +1,7 @@
-﻿import {ColorBlindnessMode} from '../graphics/post-processor/color-blindness-mode';
-import {ColorBlindnessPostProcessor} from '../graphics/post-processor/color-blindness-post-processor';
+﻿import {ColorBlindnessMode} from '../graphics/post-processor/ColorBlindnessMode';
+import {ColorBlindnessPostProcessor} from '../graphics/post-processor/ColorBlindnessPostProcessor';
 import type {Engine} from '../engine';
-import {MitraGraphicsContextWebgl} from '../graphics/context/mitra-graphics-context-webgl';
+import {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
 
 export class ColorBlindFlags {
     private _engine: Engine;

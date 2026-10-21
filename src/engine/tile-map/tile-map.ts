@@ -8,7 +8,7 @@ import {BodyComponent} from '../collision';
 import {CollisionType} from '../collision';
 import {Colliders} from '../collision';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
-import {GraphicsComponent, hasGraphicsTick, ParallaxComponent} from '../graphics';
+import {GraphicsComponent, ParallaxComponent} from '../graphics';
 import {MotionComponent} from '../entity-component-system';
 import {ColliderComponent} from '../collision';
 import type {CompositeCollider} from '../collision';
@@ -28,6 +28,7 @@ import {PointerEventsToObjectDispatcher} from '../input/pointer-events-to-object
 import type {GlobalCoordinates} from '../math';
 import {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
 import {EntityEvents} from "../entity-component-system/EntityEvents";
+import {hasGraphicsTick} from "../graphics/hasGraphicsTick";
 
 export interface TileMapOptions {
     /**

@@ -1,9 +1,9 @@
 import {Resource} from './resource';
-import type {Sprite} from '../graphics/sprite';
-import {SpriteSheet} from '../graphics/sprite-sheet';
-import {Animation} from '../graphics/animation';
+import type {Sprite} from '../graphics/Sprite';
+import {SpriteSheet} from '../graphics/SpriteSheet';
+import {Animation} from '../graphics/Animation';
 import type {Loadable} from '../interfaces/index';
-import {ImageSource} from '../graphics/image-source';
+import {ImageSource} from '../graphics/ImageSource';
 
 /**
  * The {@apilink Texture} object allows games built in Mitra to load image resources.

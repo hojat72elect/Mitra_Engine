@@ -1,10 +1,10 @@
 import {randomInRange, TwoPI} from '../math/util';
-import type {MitraGraphicsContextWebgl} from '../graphics/context/mitra-graphics-context-webgl';
+import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
 import type {GpuParticleEmitter} from './gpu-particle-emitter';
 import type {ParticleConfig} from './particles';
 import {ParticleTransform} from './particles';
 import type {Random} from '../math/random';
-import type {Sprite} from '../graphics/sprite';
+import type {Sprite} from '../graphics/Sprite';
 import {EmitterType} from './emitter-type';
 import {assert} from '../util/assert';
 import {vec} from '../math/vector';

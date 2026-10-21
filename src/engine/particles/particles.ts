@@ -3,7 +3,7 @@ import {Color} from '../color';
 import {vec, Vector} from '../math/vector';
 import type {Random} from '../math/random';
 import {TransformComponent} from '../entity-component-system/components/TransformComponent';
-import {GraphicsComponent} from '../graphics/graphics-component';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import {Entity} from '../entity-component-system/Entity';
 import {BoundingBox} from '../collision/BoundingBox';
 import {clamp} from '../math/util';

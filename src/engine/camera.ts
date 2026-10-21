@@ -1,21 +1,21 @@
 import type {Engine} from './engine';
 import type {Screen} from './screen';
-import {vec, Vector} from './math/vector';
+import {vec, Vector} from './math';
 import type {Actor} from './actor';
-import {removeItemFromArray} from './util/util';
-import type {CanInitialize, CanUpdate} from './interfaces/lifecycle-events';
+import {removeItemFromArray} from './util';
+import type {CanInitialize, CanUpdate} from './interfaces';
 import {InitializeEvent, PostUpdateEvent, PreUpdateEvent} from './events';
-import {BoundingBox} from './collision/BoundingBox';
-import {Logger} from './util/log';
-import type {MitraGraphicsContext} from './graphics/context/mitra-graphics-context';
-import {AffineMatrix} from './math/affine-matrix';
+import {BoundingBox} from './collision';
+import {Logger} from './util';
+import type {MitraGraphicsContext} from './graphics';
+import {AffineMatrix} from './math';
 import type {EventKey, Handler, Subscription} from './event-emitter';
 import {EventEmitter} from './event-emitter';
-import {pixelSnapEpsilon} from './graphics';
-import {sign} from './math/util';
+import {sign} from './math';
 import {WatchVector} from './math/watch-vector';
 import type {Easing} from './math';
 import {easeInOutCubic, lerp} from './math';
+import {pixelSnapEpsilon} from "./graphics/context/pixelSnapEpsilon";
 
 /**
  * Interface that describes a custom camera strategy for tracking targets

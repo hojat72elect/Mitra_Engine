@@ -3,10 +3,10 @@ import {Logger} from './util/log';
 import type {Camera} from './camera';
 import type {BrowserEvents} from './util/browser';
 import {BoundingBox} from './collision/index';
-import type {MitraGraphicsContext} from './graphics/context/mitra-graphics-context';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import {getPosition} from './util/util';
-import {MitraGraphicsContextWebgl} from './graphics/context/mitra-graphics-context-webgl';
-import {MitraGraphicsContext2DCanvas} from './graphics/context/mitra-graphics-context2-d-canvas';
+import {MitraGraphicsContextWebgl} from './graphics/context/MitraGraphicsContextWebgl';
+import {MitraGraphicsContext2DCanvas} from './graphics/context/MitraGraphicsContext2DCanvas';
 import {EventEmitter} from './event-emitter';
 
 /**

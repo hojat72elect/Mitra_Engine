@@ -1,72 +1,72 @@
 // Graphics
-export * from './graphic';
-export * from './sprite';
-export * from './sprite-sheet';
-export * from './graphics-group';
-export * from './image-source';
-export * from './animation';
-export * from './line';
+export * from './Graphic';
+export * from './Sprite';
+export * from './SpriteSheet';
+export * from './GraphicsGroup';
+export * from './ImageSource';
+export * from './Animation';
+export * from './Line';
 
 // graphics ecs
-export * from './graphics-component';
-export * from './debug-graphics-component';
-export * from './graphics-system';
-export * from './offscreen-system';
-export * from './parallax-component';
+export * from './GraphicsComponent';
+export * from './DebugGraphicsComponent';
+export * from './GraphicsSystem';
+export * from './OffscreenSystem';
+export * from './ParallaxComponent';
 
 // raster graphics
-export * from './raster';
-export * from './circle';
-export * from './rectangle';
-export * from './polygon';
-export * from './text';
-export * from './font-common';
-export * from './font';
-export * from './font-cache';
-export * from './sprite-font';
-export * from './canvas';
-export * from './nine-slice';
-export * from './tiled-sprite';
-export * from './tiled-animation';
+export * from './Raster';
+export * from './Circle';
+export * from './Rectangle';
+export * from './Polygon';
+export * from './Text';
+export * from './FontRenderer';
+export * from './Font';
+export * from './FontCache';
+export * from './SpriteFont';
+export * from './Canvas';
+export * from './NineSlice';
+export * from './TiledSprite';
+export * from './TiledAnimation';
 
-export * from './context/mitra-graphics-context';
-export * from './context/mitra-graphics-context2-d-canvas';
-export * from './context/mitra-graphics-context-webgl';
-export * from './context/particle-renderer/particle-renderer';
-export * from './context/debug-text';
+export * from './context/MitraGraphicsContext';
+export * from './context/MitraGraphicsContext2DCanvas';
+export * from './context/MitraGraphicsContextWebgl';
+export * from './context/particle-renderer/ParticleRenderer';
+export * from './context/DebugText';
 
 // post processor
-export type * from './post-processor/post-processor';
-export * from './post-processor/screen-shader';
-export * from './post-processor/shader-pipeline-post-processor';
-export * from './post-processor/color-blindness-mode';
-export * from './post-processor/color-blindness-post-processor';
+export type * from './post-processor/PostProcessor';
+export * from './post-processor/ScreenShader';
+export * from './post-processor/ShaderPipelinePostProcessor';
+export * from './post-processor/ColorBlindnessMode';
+export * from './post-processor/ColorBlindnessPostProcessor';
 
-export * from './context/texture-loader';
-export * from './filtering';
-export * from './wrapping';
+export * from './context/TextureLoader';
+export * from './parseImageFiltering';
+export * from './parseImageWrapping';
 
 // rendering
-export * from './context/glsl';
-export * from './context/shader';
-export * from './context/framebuffer';
-export * from './context/shader-pipeline/shader-pass';
-export * from './context/shader-pipeline/shader-pipeline';
-export * from './context/shader-pipeline/effects/blur-passes';
-export * from './context/shader-pipeline/effects/bloom-effect';
-export * from './context/shader-pipeline/effects/glow-passes';
-export * from './context/vertex-buffer';
-export * from './context/uniform-buffer';
-export * from './context/vertex-layout';
-export * from './context/quad-index-buffer';
-export * from './context/material';
-export type * from './context/renderer';
+export * from './context/Glsl';
+export * from './context/Shader';
+export * from './context/Framebuffer';
+export * from './context/shader-pipeline/ShaderPass';
+export * from './context/shader-pipeline/ShaderPipeline';
+export * from './context/shader-pipeline/effects/BlurEffect';
+export * from './context/shader-pipeline/effects/BloomEffect';
+export * from './context/shader-pipeline/effects/GlowEffect';
+export * from './context/VertexBuffer';
+export * from './context/UniformBuffer';
+export * from './context/VertexLayout';
+export * from './context/QuadIndexBuffer';
+export * from './context/Material';
+export type * from './context/RendererPlugin';
 
 // debug
-export * from './debug';
+export * from './Debug';
 
 // util
 
-import * as webgl from './context/webgl-util';
+import * as webgl from './context/getMaxShaderComplexity';
 
 export {webgl};

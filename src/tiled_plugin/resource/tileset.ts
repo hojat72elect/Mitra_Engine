@@ -1,10 +1,8 @@
 import {
     AffineMatrix,
     Animation,
-    AnimationStrategy,
     BoundingBox,
     Collider,
-    type Frame,
     Graphic,
     ImageSource,
     Sprite,
@@ -24,6 +22,8 @@ import {Ellipse, parseObjects, PluginObject, Polygon, Rectangle} from "./objects
 import {mapProps, type Properties, type PropertyMapValue} from "./properties";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
 import {Shape} from "../../engine/collision/colliders/Shape.ts";
+import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";
+import type {Frame} from "../../engine/graphics/Frame.ts";
 
 export interface TileOptions {
     id: number;

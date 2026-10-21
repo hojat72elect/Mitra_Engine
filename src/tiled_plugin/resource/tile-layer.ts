@@ -1,5 +1,4 @@
 import {
-    AnimationStrategy,
     BodyComponent,
     Color,
     GraphicsComponent,
@@ -21,6 +20,7 @@ import {TiledLayerDataComponent} from "./tiled-layer-component";
 import type {Layer} from "./layer";
 import {Tile} from "./tileset";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
+import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";
 
 /**
  * Tile information for both Mitra and tiled tile representations

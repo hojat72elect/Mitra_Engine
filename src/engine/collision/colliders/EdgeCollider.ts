@@ -10,7 +10,7 @@ import type {Ray} from '../../math/ray';
 import type {Color} from '../../color';
 import {Collider} from './Collider';
 import {ClosestLineJumpTable} from './ClosestLineJumpTable';
-import type {MitraGraphicsContext} from '../../graphics/context/mitra-graphics-context';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import {Transform} from '../../math/transform';
 import {AffineMatrix} from '../../math/affine-matrix';
 import {BodyComponent} from '../index';

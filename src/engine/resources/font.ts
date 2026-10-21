@@ -1,8 +1,9 @@
-import {Font} from '../graphics/font';
-import type {FontOptions} from '../graphics/font-common';
-import type {GraphicOptions, RasterOptions} from '../graphics';
-import type {Loadable} from '../interfaces/loadable';
+import {Font} from '../graphics';
+import type {FontOptions} from '../graphics/FontOptions';
+import type {RasterOptions} from '../graphics/RasterOptions';
+import type {Loadable} from '../interfaces';
 import {Resource} from './resource';
+import {GraphicOptions} from "../graphics/GraphicOptions";
 
 export interface FontSourceOptions extends Omit<FontOptions, 'family'>, GraphicOptions, RasterOptions {
     /**

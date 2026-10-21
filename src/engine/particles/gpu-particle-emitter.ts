@@ -5,13 +5,13 @@ import type {ParticleEmitterOptions} from './particles';
 import {ParticleTransform} from './particles';
 import type {GpuParticleConfig} from './gpu-particle-renderer';
 import {GpuParticleRenderer} from './gpu-particle-renderer';
-import {GraphicsComponent} from '../graphics/graphics-component';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import {Random} from '../math/random';
 import type {Vector} from '../math/vector';
 import {vec} from '../math/vector';
 import {clamp} from '../math';
-import type {MitraGraphicsContextWebgl} from '../graphics/context/mitra-graphics-context-webgl';
-import type {ParticleRenderer} from '../graphics/context/particle-renderer/particle-renderer';
+import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
+import type {ParticleRenderer} from '../graphics/context/particle-renderer/ParticleRenderer';
 
 export class GpuParticleEmitter extends Actor {
     public particle: GpuParticleConfig = {

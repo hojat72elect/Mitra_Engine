@@ -1,5 +1,4 @@
 import {
-    AnimationStrategy,
     BodyComponent,
     Color,
     IsometricEntityComponent,
@@ -10,7 +9,6 @@ import {
     vec,
     Vector
 } from "../../engine";
-
 import {mapProps, type PropertyMapValue} from "./properties";
 import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/tiled-parser";
 import {Decoder} from "./decoder";
@@ -21,6 +19,7 @@ import {TiledLayerDataComponent} from "./tiled-layer-component";
 import type {Layer} from "./layer";
 import {Tile} from "./tileset";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
+import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";
 
 export interface IsometricTileInfo {
     /**

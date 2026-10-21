@@ -1,0 +1,1 @@
+export type SourceView = { x: number; y: number; width: number; height: number };

@@ -2,7 +2,6 @@ import {WebAudio} from '../util/web-audio';
 import type {Engine} from '../engine';
 import type {Loadable} from '../interfaces';
 import {Canvas} from '../graphics';
-import {ImageFiltering} from '../graphics';
 import {clamp} from '../math';
 import {Sound} from '../resources';
 import {Future} from '../util/future';
@@ -11,6 +10,7 @@ import {EventEmitter} from '../event-emitter';
 import {Color} from '../color';
 import {delay} from '../util';
 import {DefaultLoaderOptions} from "./DefaultLoaderOptions";
+import {ImageFiltering} from "../graphics/ImageFiltering";
 
 interface LoaderEvents {
     // Add event types here
