@@ -12,8 +12,8 @@ import type {ScaleByOptions} from "../action/scale-by/ScaleByOptions";
 import type {Color} from "../../color";
 import type {Actor} from "../../actor";
 import type {Action} from "../action/Action.ts";
-import type {ActionContextMethods} from "./ActionContextMethods.ts";
-import type {RotateByOptions} from "../action/rotate-by/RotateByOptions.ts";
+import type {ActionContextMethods} from "./ActionContextMethods";
+import type {RotateByOptions} from "../action/rotate-by/RotateByOptions";
 
 export class ActionsComponent extends Component implements ActionContextMethods {
     // @ts-ignore

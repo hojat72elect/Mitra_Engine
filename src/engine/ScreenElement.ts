@@ -3,8 +3,8 @@ import type {Engine} from './engine';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
 import {TransformComponent} from './entity-component-system';
-import {CollisionType} from './collision';
 import {CoordPlane} from './math';
+import {CollisionType} from "./collision/CollisionType";
 
 /**
  * Type guard to detect a screen element

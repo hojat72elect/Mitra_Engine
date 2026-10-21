@@ -6,9 +6,9 @@ import type {Scene} from '../scene';
 import {PointerComponent} from './PointerComponent';
 import type {PointerEventReceiver} from './PointerEventReceiver';
 import {CoordPlane} from '../math';
-import {SparseHashGrid} from '../collision';
 import {PointerEventsToObjectDispatcher} from './PointerEventsToObjectDispatcher';
 import {SystemType} from "../entity-component-system/SystemType";
+import {SparseHashGrid} from "../collision/detection/SparseHashGrid";
 
 /**
  * The PointerSystem is responsible for dispatching pointer events to entities

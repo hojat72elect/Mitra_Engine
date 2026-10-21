@@ -4,9 +4,6 @@ import type {Actor} from './actor';
 import type {Trigger} from './trigger';
 import type {Engine} from './engine';
 import type {TileMap} from './tile-map';
-import type {Side} from './collision';
-import type {CollisionContact} from './collision';
-import type {Collider} from './collision';
 import type {Entity} from './entity-component-system';
 import type {
     OnAdd,
@@ -21,7 +18,10 @@ import type {Gamepad} from './input/Gamepad';
 import type {Buttons} from './input/Buttons';
 import type {Axes} from './input/Axes';
 import {FrameStats} from "./debug/FrameStats";
-import type {Action} from "./actions/action/Action.ts";
+import type {Action} from "./actions/action/Action";
+import type {Side} from "./collision/Side";
+import type {CollisionContact} from "./collision/detection/CollisionContact";
+import type {Collider} from "./collision/colliders/Collider";
 
 export enum EventTypes {
     Kill = 'kill',

@@ -1,13 +1,18 @@
 import type {Ray} from '../math';
-import type {DeepRequired} from '../util/DeepRequired.ts';
+import type {DeepRequired} from '../util/DeepRequired';
 import {Observable} from '../util';
-import type {BoundingBox, Collider, CollisionProcessor, RayCastHit, RayCastOptions} from './index';
-import {DynamicTreeCollisionProcessor, SparseHashGridCollisionProcessor} from './index';
 import {BodyComponent} from './BodyComponent';
 import type {PhysicsConfig} from './PhysicsConfig';
 import {watchDeep} from '../util/watch';
 import type {Vector} from '../math';
 import {SpatialPartitionStrategy} from './detection/SpatialPartitionStrategy';
+import {DynamicTreeCollisionProcessor} from "./detection/DynamicTreeCollisionProcessor";
+import {SparseHashGridCollisionProcessor} from "./detection/SparseHashGridCollisionProcessor";
+import type {CollisionProcessor} from "./detection/CollisionProcessor";
+import type {BoundingBox} from "./BoundingBox";
+import type {Collider} from "./colliders/Collider";
+import type {RayCastHit} from "./detection/RayCastHit";
+import type {RayCastOptions} from "./detection/RayCastOptions";
 
 export class PhysicsWorld {
     $configUpdate = new Observable<DeepRequired<PhysicsConfig>>();

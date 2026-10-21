@@ -4,10 +4,10 @@ import {SpriteFont} from '../SpriteFont';
 import {SpriteSheet} from '../SpriteSheet';
 import type {Vector} from '../../math';
 import {Vector as VectorClass} from '../../math/Vector';
-import {BoundingBox} from '../../collision';
 import debugFont2 from './monogram-bitmap.png';
 import {Debug} from '../Debug';
 import {Color} from '../../color';
+import {BoundingBox} from "../../collision/BoundingBox";
 
 /**
  * Internal debug text helper

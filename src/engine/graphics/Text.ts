@@ -1,10 +1,10 @@
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
-import type {BoundingBox} from '../collision';
 import type {SpriteFont} from './SpriteFont';
 import type {GraphicOptions} from './GraphicOptions';
 import {Graphic} from './Graphic';
 import {Color} from '../color';
 import {Font} from './Font';
+import type {BoundingBox} from "../collision/BoundingBox.ts";
 
 interface TextOptions {
     /**

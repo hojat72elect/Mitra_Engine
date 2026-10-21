@@ -1,10 +1,11 @@
-import {BoundingBox} from '../collision';
+
 import type {Color} from '../color';
 import {MitraGraphicsContextWebgl} from './context/MitraGraphicsContextWebgl';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import type {Font} from './Font';
 import {vec, Vector} from '../math';
 import {combineHashes, hashString} from '../util/string';
+import {BoundingBox} from "../collision/BoundingBox";
 
 export class FontTextInstance {
     public canvas: HTMLCanvasElement;

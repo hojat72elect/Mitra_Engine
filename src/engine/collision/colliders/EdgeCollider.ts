@@ -3,18 +3,18 @@ import type {CollisionContact} from '../detection/CollisionContact';
 import {CollisionJumpTable} from './CollisionJumpTable';
 import {CircleCollider} from './CircleCollider';
 import {PolygonCollider} from './PolygonCollider';
-import {Projection} from '../../math/Projection';
-import {LineSegment} from '../../math/LineSegment';
-import {Vector} from '../../math/Vector';
-import type {Ray} from '../../math/Ray';
+import {Projection} from '../../math';
+import {LineSegment} from '../../math';
+import {Vector} from '../../math';
+import type {Ray} from '../../math';
 import type {Color} from '../../color';
 import {Collider} from './Collider';
 import {ClosestLineJumpTable} from './ClosestLineJumpTable';
-import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
-import {Transform} from '../../math/Transform';
-import {AffineMatrix} from '../../math/AffineMatrix';
-import {BodyComponent} from '../index';
+import type {MitraGraphicsContext} from '../../graphics';
+import {Transform} from '../../math';
+import {AffineMatrix} from '../../math';
 import type {RayCastHit} from '../detection/RayCastHit';
+import {BodyComponent} from "../BodyComponent";
 
 interface EdgeColliderOptions {
     /**

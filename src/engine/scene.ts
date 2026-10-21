@@ -1,4 +1,4 @@
-import {isScreenElement, ScreenElement} from './ScreenElement.ts';
+import {isScreenElement, ScreenElement} from './ScreenElement';
 import type {ActivateEvent, DeactivateEvent, PauseEvent, ResumeEvent} from './events';
 import {
     InitializeEvent,
@@ -26,8 +26,6 @@ import type {
 import * as Util from './util/util';
 import {Trigger} from './trigger';
 import {World} from './entity-component-system';
-import {MotionSystem} from './collision';
-import {CollisionSystem} from './collision';
 import {Entity} from './entity-component-system';
 import {GraphicsSystem} from './graphics';
 import {DebugSystem} from './debug';
@@ -35,20 +33,22 @@ import {PointerSystem} from './input/PointerSystem';
 import {IsometricEntitySystem} from './tile-map';
 import {OffscreenSystem} from './graphics';
 import type {MitraGraphicsContext} from './graphics';
-import {PhysicsWorld} from './collision';
-import type {EventKey, Handler, Subscription} from './EventEmitter.ts';
-import {EventEmitter} from './EventEmitter.ts';
+import type {EventKey, Handler, Subscription} from './EventEmitter';
+import {EventEmitter} from './EventEmitter';
 import type {Color} from './color';
 import type {DefaultLoader} from './director';
 import type {Transition} from './director';
 import {InputHost} from './input/InputHost';
 import {PointerScope} from './input/PointerScope';
-import {PauseSystem} from './util/PauseSystem.ts';
+import {PauseSystem} from './util/PauseSystem';
 import {FlickerSystem} from './lighting';
 import {LightingSystem} from './lighting';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 import {SystemType} from "./entity-component-system/SystemType";
 import {ActionsSystem} from "./actions/ActionsSystem";
+import {PhysicsWorld} from "./collision/PhysicsWorld";
+import {MotionSystem} from "./collision/MotionSystem";
+import {CollisionSystem} from "./collision/CollisionSystem";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

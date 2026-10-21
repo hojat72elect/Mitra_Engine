@@ -12,11 +12,10 @@ import type {AffineMatrix} from '../math';
 import {CoordPlane} from '../math';
 import {canonicalizeAngle} from '../math';
 import {Color} from '../color';
-import {ScreenElement} from '../ScreenElement.ts';
+import {ScreenElement} from '../ScreenElement';
 import {Canvas} from '../graphics';
 import {Logger} from '../util';
 import type {Observable} from '../util';
-import {BoundingBox} from '../collision';
 import {DarknessComponent} from './DarknessComponent';
 import {PointLightComponent} from './PointLightComponent';
 import {ConeLightComponent} from './ConeLightComponent';
@@ -24,6 +23,7 @@ import type {Occluder} from './LightOccluderComponent';
 import {LightOccluderComponent} from './LightOccluderComponent';
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
+import {BoundingBox} from "../collision/BoundingBox";
 
 interface DarknessEntry {
     comp: DarknessComponent;

@@ -20,11 +20,11 @@ import type {CollisionProcessor} from './detection/CollisionProcessor';
 import {SeparatingAxis} from './colliders/SeparatingAxis';
 import {MotionSystem} from './MotionSystem';
 import {Pair} from './detection/Pair';
-import {BodyComponent} from './index';
 import {buildContactIslands} from "./buildContactIslands";
 import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
+import {BodyComponent} from "./BodyComponent";
 
 export class CollisionSystem extends System {
     static override priority = SystemPriority.Higher;

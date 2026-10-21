@@ -1,22 +1,15 @@
-import {BoundingBox} from '../collision';
 import type {Engine} from '../engine';
 import {vec, Vector} from '../math';
 import {Logger} from '../util';
 import {Entity} from '../entity-component-system';
 import {TransformComponent} from '../entity-component-system';
-import {BodyComponent} from '../collision';
-import {CollisionType} from '../collision';
-import {Colliders} from '../collision';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {GraphicsComponent, ParallaxComponent} from '../graphics';
 import {MotionComponent} from '../entity-component-system';
-import {ColliderComponent} from '../collision';
-import type {CompositeCollider} from '../collision';
 import {DebugGraphicsComponent} from '../graphics';
-import type {Collider} from '../collision';
 import {PostDrawEvent, PostUpdateEvent, PreDrawEvent, PreUpdateEvent} from '../events';
-import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
-import {EventEmitter} from '../EventEmitter.ts';
+import type {EventKey, Handler, Subscription} from '../EventEmitter';
+import {EventEmitter} from '../EventEmitter';
 import {CoordPlane} from '../math';
 import type {DebugConfig} from '../debug';
 import {clamp} from '../math';
@@ -29,6 +22,13 @@ import type {GlobalCoordinates} from '../math';
 import type {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
 import {EntityEvents} from "../entity-component-system/EntityEvents";
 import {hasGraphicsTick} from "../graphics/hasGraphicsTick";
+import {ColliderComponent} from "../collision/ColliderComponent";
+import type {CompositeCollider} from "../collision/colliders/CompositeCollider";
+import type {Collider} from "../collision/colliders/Collider";
+import {BodyComponent} from "../collision/BodyComponent";
+import {CollisionType} from "../collision/CollisionType";
+import {BoundingBox} from "../collision/BoundingBox";
+import {Colliders} from "../collision/colliders/Colliders";
 
 export interface TileMapOptions {
     /**

@@ -13,9 +13,9 @@ import {ClosestLineJumpTable} from './ClosestLineJumpTable';
 import type {MitraGraphicsContext} from '../../graphics';
 import type {Transform} from '../../math';
 import {AffineMatrix} from '../../math';
-import {BodyComponent} from '../index';
 import type {RayCastHit} from '../detection/RayCastHit';
 import {approximatelyEqual} from '../../math';
+import {BodyComponent} from "../BodyComponent";
 
 interface CircleColliderOptions {
     /**

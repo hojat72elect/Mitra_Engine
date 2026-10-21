@@ -1,6 +1,4 @@
 import {
-    BoundingBox,
-    CollisionGroup,
     Color,
     Entity,
     ImageSource,
@@ -19,26 +17,28 @@ import {
     TiledMap,
     TiledParser,
     TiledTile
-} from "../parser/TiledParser.ts";
-import {Tile, Tileset} from "./Tileset.ts";
-import type {Layer} from "./Layer.ts";
-import type {IsometricTileInfo} from "./IsoTileLayer.ts";
-import {IsoTileLayer} from "./IsoTileLayer.ts";
-import type {TileInfo} from "./TileLayer.ts";
-import {TileLayer} from "./TileLayer.ts";
-import {ObjectLayer} from './ObjectLayer.ts';
-import {Template} from "./Template.ts";
+} from "../parser/TiledParser";
+import {Tile, Tileset} from "./Tileset";
+import type {Layer} from "./Layer";
+import type {IsometricTileInfo} from "./IsoTileLayer";
+import {IsoTileLayer} from "./IsoTileLayer";
+import type {TileInfo} from "./TileLayer";
+import {TileLayer} from "./TileLayer";
+import {ObjectLayer} from './ObjectLayer';
+import {Template} from "./Template";
 import {compare} from "compare-versions";
 import {getCanonicalGid} from "./gid-util";
 import {type PathMap, pathRelativeToBase} from "./path-util";
 import {PluginObject} from "./objects";
 import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty} from "./filter-util";
-import {MitraTiledProperties} from "./MitraTiledProperties.ts";
-import {FetchLoader, type FileLoader} from './FileLoader.ts';
-import {TilesetResource, type TilesetResourceOptions} from "./TilesetResource.ts";
-import {LoaderCache} from "./LoaderCache.ts";
-import {TemplateResource, type TemplateResourceOptions} from "./TemplateResource.ts";
-import {ImageLayer} from "./ImageLayer.ts";
+import {MitraTiledProperties} from "./MitraTiledProperties";
+import {FetchLoader, type FileLoader} from './FileLoader';
+import {TilesetResource, type TilesetResourceOptions} from "./TilesetResource";
+import {LoaderCache} from "./LoaderCache";
+import {TemplateResource, type TemplateResourceOptions} from "./TemplateResource";
+import {ImageLayer} from "./ImageLayer";
+import type {CollisionGroup} from "../../engine/collision/group/CollisionGroup";
+import {BoundingBox} from "../../engine/collision/BoundingBox";
 
 export interface TiledLayerConfig {
     /**

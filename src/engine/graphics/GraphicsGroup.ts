@@ -4,7 +4,7 @@ import {Graphic} from './Graphic';
 import type {HasTick} from './HasTick';
 import {Animation} from './Animation';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
-import {BoundingBox} from '../collision';
+import {BoundingBox} from "../collision/BoundingBox";
 import {Logger} from '../util';
 
 interface GraphicsGroupingOptions {

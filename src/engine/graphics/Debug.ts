@@ -7,8 +7,8 @@ import type {
 } from './context/MitraGraphicsContext';
 import {Color} from '../color';
 import type {Ray} from '../math';
-import type {BoundingBox} from '../collision';
 import type {DebugConfig} from '../debug';
+import type {BoundingBox} from "../collision/BoundingBox";
 
 export class Debug {
     static _drawCalls: ((ctx: MitraGraphicsContext) => void)[] = [];

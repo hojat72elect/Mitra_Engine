@@ -1,6 +1,6 @@
-import type {BoundingBox} from '../collision';
 import type {Color} from '../color';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
+import type {BoundingBox} from "../collision/BoundingBox";
 
 /**
  * @internal

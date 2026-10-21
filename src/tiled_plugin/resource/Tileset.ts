@@ -1,8 +1,6 @@
 import {
     AffineMatrix,
     Animation,
-    BoundingBox,
-    Collider,
     Graphic,
     ImageSource,
     Sprite,
@@ -17,13 +15,15 @@ import {
     isTiledTilesetSingleImage,
     TiledTile,
     TiledTileset
-} from "../parser/TiledParser.ts";
+} from "../parser/TiledParser";
 import {Ellipse, parseObjects, PluginObject, Polygon, Rectangle} from "./objects";
-import {mapProps, type Properties, type PropertyMapValue} from "./Properties.ts";
+import {mapProps, type Properties, type PropertyMapValue} from "./Properties";
 import {byClassCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
-import {Shape} from "../../engine/collision/colliders/Shape.ts";
-import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy.ts";
-import type {Frame} from "../../engine/graphics/Frame.ts";
+import {Shape} from "../../engine/collision/colliders/Shape";
+import {AnimationStrategy} from "../../engine/graphics/AnimationStrategy";
+import type {Frame} from "../../engine/graphics/Frame";
+import type {Collider} from "../../engine/collision/colliders/Collider";
+import {BoundingBox} from "../../engine/collision/BoundingBox";
 
 export interface TileOptions {
     id: number;

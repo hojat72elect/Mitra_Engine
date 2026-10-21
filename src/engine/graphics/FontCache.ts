@@ -1,8 +1,8 @@
-import type {BoundingBox} from '../collision';
 import type {Color} from '../color';
 import {Logger} from '../util';
 import type {Font} from './Font';
 import {FontTextInstance} from './FontTextInstance';
+import type {BoundingBox} from "../collision/BoundingBox";
 
 export class FontCache {
     public static FONT_TIMEOUT = 500;

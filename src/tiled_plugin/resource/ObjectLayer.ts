@@ -1,6 +1,5 @@
 import {
     Actor,
-    CollisionType,
     Color,
     Entity,
     GraphicsComponent,
@@ -10,16 +9,17 @@ import {
     vec,
     Vector
 } from "../../engine";
-import type {Layer} from "./Layer.ts";
+import type {Layer} from "./Layer";
 import {Ellipse, InsertedTile, parseObjects, PluginObject, Polygon, Rectangle, TemplateObject, Text} from "./objects";
-import type {TiledObjectLayer} from "../parser/TiledParser.ts";
-import {type FactoryProps, TiledResource} from "./TiledResource.ts";
-import {mapProps, type PropertyMapValue} from "./Properties.ts";
+import type {TiledObjectLayer} from "../parser/TiledParser";
+import {type FactoryProps, TiledResource} from "./TiledResource";
+import {mapProps, type PropertyMapValue} from "./Properties";
 import {byClassCaseInsensitive, byNameCaseInsensitive, byProperty, byPropertyValueMatcher} from "./filter-util";
-import {Tileset} from "./Tileset.ts";
-import {MitraTiledProperties} from "./MitraTiledProperties.ts";
-import {TiledDataComponent} from "./TiledDataComponent.ts";
-import {Shape} from "../../engine/collision/colliders/Shape.ts";
+import {Tileset} from "./Tileset";
+import {MitraTiledProperties} from "./MitraTiledProperties";
+import {TiledDataComponent} from "./TiledDataComponent";
+import {Shape} from "../../engine/collision/colliders/Shape";
+import {CollisionType} from "../../engine/collision/CollisionType";
 
 export class ObjectLayer implements Layer {
     public readonly name: string;

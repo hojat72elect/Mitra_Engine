@@ -8,10 +8,10 @@ import {System} from '../entity-component-system';
 import {ParallaxComponent} from './ParallaxComponent';
 import {Vector} from '../math';
 import {CoordPlane} from '../math';
-import type {BoundingBox} from '../collision';
 import type {Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
 import {SystemType} from "../entity-component-system/SystemType";
+import type {BoundingBox} from "../collision/BoundingBox";
 
 export class OffscreenSystem extends System {
     static override priority: number = SystemPriority.Higher;

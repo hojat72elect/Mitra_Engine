@@ -4,12 +4,12 @@ import type {Component} from '../entity-component-system';
 import {MotionComponent, TransformComponent} from '../entity-component-system';
 import {PointerComponent} from '../input/PointerComponent';
 import {GraphicsComponent} from '../graphics';
-import {BodyComponent} from '../collision';
-import {ColliderComponent} from '../collision';
 import type {Graphic} from '../graphics';
 import {Logger} from './log';
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {ActionsComponent} from "../actions/actions-component/ActionsComponent";
+import {ColliderComponent} from "../collision/ColliderComponent";
+import {BodyComponent} from "../collision/BodyComponent";
 
 /**
  * Base interface for all serialized data

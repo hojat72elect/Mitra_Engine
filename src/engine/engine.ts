@@ -56,7 +56,6 @@ import {Toaster} from './util/Toaster.ts';
 import type {InputMapper} from './input/InputMapper';
 import {Director} from './director';
 import {InputHost} from './input/InputHost';
-import type {PhysicsConfig} from './collision';
 import type {LightingConfig} from './lighting';
 import {getDefaultLightingConfig} from './lighting';
 import type {DeepRequired} from './util/DeepRequired.ts';
@@ -66,7 +65,7 @@ import type {GarbageCollectionOptions} from './garbage-collector';
 import {DefaultGarbageCollectionOptions, GarbageCollector} from './garbage-collector';
 import {mergeDeep} from './util';
 import {getDefaultGlobal} from './util/iframe';
-import type {Plugin} from './Plugin.ts';
+import type {Plugin} from './Plugin';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 import type {DebugStats} from "./debug/DebugStats";
 import {DirectorEvents} from "./director/DirectorEvents";
@@ -76,6 +75,7 @@ import type {SceneMap} from "./director/SceneMap";
 import type {StartOptions} from "./director/StartOptions";
 import type {GoToOptions} from "./director/GoToOptions";
 import type {MitraGraphicsContextWebGLOptions} from "./graphics/context/MitraGraphicsContextWebGLOptions";
+import type {PhysicsConfig} from "./collision/PhysicsConfig";
 
 polyfill();
 

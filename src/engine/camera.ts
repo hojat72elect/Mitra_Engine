@@ -5,17 +5,17 @@ import type {Actor} from './actor';
 import {removeItemFromArray} from './util';
 import type {CanInitialize, CanUpdate} from './interfaces';
 import {InitializeEvent, PostUpdateEvent, PreUpdateEvent} from './events';
-import {BoundingBox} from './collision';
 import {Logger} from './util';
 import type {MitraGraphicsContext} from './graphics';
 import {AffineMatrix} from './math';
-import type {EventKey, Handler, Subscription} from './EventEmitter.ts';
-import {EventEmitter} from './EventEmitter.ts';
+import type {EventKey, Handler, Subscription} from './EventEmitter';
+import {EventEmitter} from './EventEmitter';
 import {sign} from './math';
 import {WatchVector} from './math/WatchVector';
 import type {Easing} from './math';
 import {easeInOutCubic, lerp} from './math';
 import {pixelSnapEpsilon} from "./graphics/context/pixelSnapEpsilon";
+import {BoundingBox} from "./collision/BoundingBox";
 
 /**
  * Interface that describes a custom camera strategy for tracking targets

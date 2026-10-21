@@ -1,7 +1,7 @@
 import {vec, Vector} from '../math';
 import {Graphic} from './Graphic';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
-import {BoundingBox} from '../collision';
+import {BoundingBox} from "../collision/BoundingBox";
 import {Component} from '../entity-component-system';
 import type {Material} from './context/Material';
 import {Logger} from '../util';

@@ -1,5 +1,5 @@
-import type {CollisionContact} from "../collision";
 import type {PhysicsStatistics} from "./PhysicsStatistics";
+import type {CollisionContact} from "../collision/detection/CollisionContact";
 
 export class PhysicsStats implements PhysicsStatistics {
     private _pairs: number = 0;

@@ -1,4 +1,4 @@
-import type {CollisionContact} from "../collision";
+import type {CollisionContact} from "../collision/detection/CollisionContact";
 
 /**
  * Represents physics stats for the current frame

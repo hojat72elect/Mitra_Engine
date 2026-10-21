@@ -1,8 +1,8 @@
-import {BoundingBox} from '../collision';
 import {Color} from '../color';
 import type {Vector} from '../math';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {Graphic} from './Graphic';
+import {BoundingBox} from "../collision/BoundingBox";
 
 interface LineOptions {
     start: Vector;
