@@ -40,10 +40,10 @@ import {Flags} from '../../Flags.ts';
 import {Debug} from '../Debug';
 import {GraphicsDiagnostics} from '../GraphicsDiagnostics';
 import {MultisampleFramebuffer} from "./MultisampleFramebuffer";
-import {MaterialOptionsWithoutContext} from "./MaterialOptionsWithoutContext";
-import {HTMLImageSource} from "./HTMLImageSource";
+import type {MaterialOptionsWithoutContext} from "./MaterialOptionsWithoutContext";
+import type {HTMLImageSource} from "./HTMLImageSource";
 import {pixelSnapEpsilon} from "./pixelSnapEpsilon";
-import {MitraGraphicsContextWebGLOptions} from "./MitraGraphicsContextWebGLOptions";
+import type {MitraGraphicsContextWebGLOptions} from "./MitraGraphicsContextWebGLOptions";
 
 class MitraGraphicsContextWebGLDebug implements DebugDraw {
     private _debugText = new DebugText();

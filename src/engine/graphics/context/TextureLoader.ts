@@ -3,8 +3,8 @@ import {Logger} from '../../util';
 import {ImageFiltering} from '../ImageFiltering';
 import type {ImageWrapConfiguration} from '../ImageWrapConfiguration';
 import {ImageWrapping} from '../ImageWrapping';
-import {HTMLImageSource} from "./HTMLImageSource";
-import {ImageSourceOptions} from "../ImageSourceOptions";
+import type {HTMLImageSource} from "./HTMLImageSource";
+import type {ImageSourceOptions} from "../ImageSourceOptions";
 
 /**
  * Manages loading image sources into webgl textures, a unique id is associated with all sources

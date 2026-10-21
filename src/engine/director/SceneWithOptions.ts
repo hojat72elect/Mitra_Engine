@@ -1,7 +1,7 @@
 import {Scene, type SceneConstructor} from "../scene";
 import type {Transition} from "./Transition";
 import {DefaultLoader} from "./DefaultLoader";
-import {LoaderConstructor} from "./LoaderConstructor";
+import type {LoaderConstructor} from "./LoaderConstructor";
 
 export interface SceneWithOptions {
     /**

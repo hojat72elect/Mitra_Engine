@@ -1,4 +1,4 @@
-import {ContactBias} from "./ContactBias";
+import type {ContactBias} from "./ContactBias";
 
 /**
  * None value, {@apilink ArcadeSolver} sorts contacts using distance by default

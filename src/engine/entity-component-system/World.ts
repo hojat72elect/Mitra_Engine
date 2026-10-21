@@ -7,10 +7,10 @@ import type {Query} from './Query';
 import {QueryManager} from './QueryManager';
 import {System} from './System';
 import {SystemManager} from './SystemManager';
-import {ComponentCtor} from "./ComponentCtor";
-import {QueryParams} from "./QueryParams";
+import type {ComponentCtor} from "./ComponentCtor";
+import type {QueryParams} from "./QueryParams";
 import {SystemType} from "./SystemType";
-import {SystemCtor} from "./SystemCtor";
+import type {SystemCtor} from "./SystemCtor";
 import {isSystemConstructor} from "./isSystemConstructor";
 
 /**

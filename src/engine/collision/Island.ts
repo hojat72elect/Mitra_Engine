@@ -1,5 +1,5 @@
 import {type BodyComponent, type CollisionContact} from './index';
-import {BodyConfig} from "./BodyConfig";
+import type {BodyConfig} from "./BodyConfig";
 
 export class Island {
     bodies: BodyComponent[] = [];

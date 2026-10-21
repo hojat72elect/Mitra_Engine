@@ -4,8 +4,8 @@ import {Sprite} from './Sprite';
 import type {GraphicOptions} from './GraphicOptions';
 import {TiledSprite} from './TiledSprite';
 import {Vector} from '../math';
-import {GetSpriteOptions} from "./GetSpriteOptions";
-import {TiledSpriteOptions} from "./TiledSpriteOptions";
+import type {GetSpriteOptions} from "./GetSpriteOptions";
+import type {TiledSpriteOptions} from "./TiledSpriteOptions";
 
 /**
  * Specify sprite sheet spacing options, useful if your sprites are not tightly packed

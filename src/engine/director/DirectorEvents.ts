@@ -1,4 +1,4 @@
-import {DirectorNavigationEvent} from "./DirectorNavigationEvent";
+import type {DirectorNavigationEvent} from "./DirectorNavigationEvent";
 
 export interface DirectorEvents {
     navigationstart: DirectorNavigationEvent;

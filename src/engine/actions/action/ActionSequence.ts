@@ -1,7 +1,7 @@
 import type {Entity} from '../../entity-component-system';
 import {ActionContext} from '../ActionContext';
 import type {ActionQueue} from '../ActionQueue';
-import {Action} from "./Action";
+import type {Action} from "./Action";
 import {nextActionId} from "./nextActionId";
 
 /**

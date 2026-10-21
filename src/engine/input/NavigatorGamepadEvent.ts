@@ -1,4 +1,4 @@
-import {NavigatorGamepad} from "./NavigatorGamepad";
+import type {NavigatorGamepad} from "./NavigatorGamepad";
 
 /**
  * @internal

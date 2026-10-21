@@ -11,7 +11,7 @@ import type {Engine} from '../engine';
 import type {Screen} from '../screen';
 import {Logger} from '../util';
 import {Future} from '../util/Future.ts';
-import {DefaultLoaderOptions} from "./DefaultLoaderOptions";
+import type {DefaultLoaderOptions} from "./DefaultLoaderOptions";
 
 interface LoaderOptions extends DefaultLoaderOptions {
     /**

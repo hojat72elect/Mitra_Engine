@@ -1,7 +1,7 @@
-import {PhysicsStatistics} from "./PhysicsStatistics";
-import {GraphicsStatistics} from "./GraphicsStatistics";
-import {FrameDurationStats} from "./FrameDurationStats";
-import {FrameActorStats} from "./FrameActorStats";
+import type {PhysicsStatistics} from "./PhysicsStatistics";
+import type {GraphicsStatistics} from "./GraphicsStatistics";
+import type {FrameDurationStats} from "./FrameDurationStats";
+import type {FrameActorStats} from "./FrameActorStats";
 
 /**
  * Represents a frame's individual statistics

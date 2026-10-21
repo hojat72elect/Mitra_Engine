@@ -3,7 +3,7 @@ import {ImageFiltering} from '../ImageFiltering';
 import type {ImageWrapConfiguration} from '../ImageWrapConfiguration';
 import {ImageWrapping} from '../ImageWrapping';
 import type {MitraGraphicsContextWebgl} from './MitraGraphicsContextWebgl';
-import {FramebufferOptions} from "./FramebufferOptions";
+import type {FramebufferOptions} from "./FramebufferOptions";
 
 declare global {
     interface WebGL2RenderingContext {

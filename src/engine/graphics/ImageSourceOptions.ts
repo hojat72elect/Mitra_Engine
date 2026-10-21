@@ -1,6 +1,6 @@
 import {ImageFiltering} from "./ImageFiltering";
 import {ImageWrapping} from "./ImageWrapping";
-import {ImageWrapConfiguration} from "./ImageWrapConfiguration";
+import type {ImageWrapConfiguration} from "./ImageWrapConfiguration";
 
 export interface ImageSourceOptions {
     filtering?: ImageFiltering;

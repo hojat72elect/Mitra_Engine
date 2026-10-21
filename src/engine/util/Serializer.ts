@@ -8,8 +8,8 @@ import {BodyComponent} from '../collision';
 import {ColliderComponent} from '../collision';
 import type {Graphic} from '../graphics';
 import {Logger} from './log';
-import {ActionsComponent} from "../actions";
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
+import {ActionsComponent} from "../actions/actions-component/ActionsComponent";
 
 /**
  * Base interface for all serialized data

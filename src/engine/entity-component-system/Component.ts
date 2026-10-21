@@ -1,5 +1,5 @@
 import type {Entity} from './Entity';
-import {ComponentCtor} from "./ComponentCtor";
+import type {ComponentCtor} from "./ComponentCtor";
 
 /**
  * Type guard to check if a component implements clone

@@ -2,8 +2,8 @@ import type {Entity} from './Entity';
 import {Query} from './Query';
 import type {Component} from './Component';
 import type {World} from './World';
-import {ComponentCtor} from "./ComponentCtor";
-import {QueryParams} from "./QueryParams";
+import type {ComponentCtor} from "./ComponentCtor";
+import type {QueryParams} from "./QueryParams";
 
 /**
  * The query manager is responsible for updating all queries when entities/components change

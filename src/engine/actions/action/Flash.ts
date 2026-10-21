@@ -4,7 +4,7 @@ import {nextActionId} from "./nextActionId";
 import type {Actor} from '../../actor';
 import type {Material} from '../../graphics';
 import type {Color} from '../../color';
-import {Action} from "./Action";
+import type {Action} from "./Action";
 
 export class Flash implements Action {
     id = nextActionId();

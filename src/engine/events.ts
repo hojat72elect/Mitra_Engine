@@ -20,8 +20,8 @@ import type {MitraGraphicsContext} from './graphics';
 import type {Gamepad} from './input/Gamepad';
 import type {Buttons} from './input/Buttons';
 import type {Axes} from './input/Axes';
-import type {Action} from "./actions";
 import {FrameStats} from "./debug/FrameStats";
+import type {Action} from "./actions/action/Action.ts";
 
 export enum EventTypes {
     Kill = 'kill',

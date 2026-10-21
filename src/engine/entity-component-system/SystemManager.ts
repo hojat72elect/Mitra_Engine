@@ -3,7 +3,7 @@ import type {Scene} from '../scene';
 import type {World} from './World';
 import {removeItemFromArray} from '../util';
 import {SystemType} from "./SystemType";
-import {SystemCtor} from "./SystemCtor";
+import type {SystemCtor} from "./SystemCtor";
 
 /**
  * The SystemManager is responsible for keeping track of all systems in a scene.

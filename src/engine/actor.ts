@@ -44,8 +44,8 @@ import type {EventKey, Handler, Subscription} from './EventEmitter.ts';
 import {EventEmitter} from './EventEmitter.ts';
 import type {Component} from './entity-component-system';
 import type {Graphic, Material} from './graphics';
-import {ActionsComponent} from "./actions";
 import {EntityEvents} from "./entity-component-system/EntityEvents";
+import {ActionsComponent} from "./actions/actions-component/ActionsComponent.ts";
 
 /**
  * Type guard for checking if something is an Actor

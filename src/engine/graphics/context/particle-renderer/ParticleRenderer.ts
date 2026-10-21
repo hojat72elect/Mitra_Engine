@@ -10,7 +10,7 @@ import {ImageSourceAttributeConstants} from '../../ImageSourceAttributeConstants
 import {parseImageWrapping} from '../../parseImageWrapping';
 import {parseImageFiltering} from '../../parseImageFiltering';
 import {ParticleTransform} from '../../../particles';
-import {HTMLImageSource} from "../HTMLImageSource";
+import type {HTMLImageSource} from "../HTMLImageSource";
 
 export class ParticleRenderer implements RendererPlugin {
     public readonly type = 'ex.particle' as const;

@@ -1,4 +1,4 @@
-import {ShaderPassSource} from "./ShaderPassSource";
+import type {ShaderPassSource} from "./ShaderPassSource";
 
 /**
  * Adds `extra` sources onto `sources` without clobbering the pass's own reserved names

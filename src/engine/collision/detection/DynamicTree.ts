@@ -1,12 +1,12 @@
 import {BoundingBox} from '../BoundingBox';
-import type {Ray} from '../../math/Ray';
-import {Logger} from '../../util/log';
+import type {Ray} from '../../math';
+import {Logger} from '../../util';
 import type {Id} from '../../id';
-import type {Entity} from '../../entity-component-system/Entity';
+import type {Entity} from '../../entity-component-system';
 import {BodyComponent} from '../BodyComponent';
 import type {MitraGraphicsContext} from '../..';
 import {Color} from '../..';
-import {DynamicTreeConfig} from "../DynamicTreeConfig";
+import type {DynamicTreeConfig} from "../DynamicTreeConfig";
 
 /**
  * Dynamic Tree Node used for tracking bounds within the tree

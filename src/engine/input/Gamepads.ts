@@ -1,8 +1,8 @@
 import {EventEmitter, type EventKey, type Handler, type Subscription} from "../EventEmitter.ts";
 import {GamepadEvents} from "./GamepadEvents";
-import {NavigatorGamepads} from "./NavigatorGamepads";
-import {GamepadConfiguration} from "./GamepadConfiguration";
-import {NavigatorGamepad} from "./NavigatorGamepad";
+import type {NavigatorGamepads} from "./NavigatorGamepads";
+import type {GamepadConfiguration} from "./GamepadConfiguration";
+import type {NavigatorGamepad} from "./NavigatorGamepad";
 import {GamepadAxisEvent, GamepadButtonEvent, GamepadConnectEvent, GamepadDisconnectEvent} from "../events";
 import {Buttons} from "./Buttons";
 import {Gamepad} from "./Gamepad";

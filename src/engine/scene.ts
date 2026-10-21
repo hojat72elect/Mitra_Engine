@@ -32,7 +32,6 @@ import {Entity} from './entity-component-system';
 import {GraphicsSystem} from './graphics';
 import {DebugSystem} from './debug';
 import {PointerSystem} from './input/PointerSystem';
-import {ActionsSystem} from './actions';
 import {IsometricEntitySystem} from './tile-map';
 import {OffscreenSystem} from './graphics';
 import type {MitraGraphicsContext} from './graphics';
@@ -49,6 +48,7 @@ import {FlickerSystem} from './lighting';
 import {LightingSystem} from './lighting';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 import {SystemType} from "./entity-component-system/SystemType";
+import {ActionsSystem} from "./actions/ActionsSystem";
 
 export class PreLoadEvent {
     loader!: DefaultLoader;

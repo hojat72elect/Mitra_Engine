@@ -1,5 +1,5 @@
 import {ImageFiltering} from "./ImageFiltering";
-import {GraphicOptions} from "./GraphicOptions";
+import type {GraphicOptions} from "./GraphicOptions";
 import {Color} from "../color";
 
 export interface RasterOptions extends GraphicOptions {

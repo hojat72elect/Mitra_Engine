@@ -1,7 +1,7 @@
-import {MitraGraphicsContext} from "./MitraGraphicsContext";
+import type {MitraGraphicsContext} from "./MitraGraphicsContext";
 import {Color} from "../../color";
 import {ImageSource} from "../ImageSource";
-import {UniformDictionary} from "./UniformDictionary";
+import type {UniformDictionary} from "./UniformDictionary";
 
 
 export type MaterialSharedOptions = {

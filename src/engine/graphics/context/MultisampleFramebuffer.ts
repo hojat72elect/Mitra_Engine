@@ -1,5 +1,5 @@
 import {Framebuffer} from "./Framebuffer";
-import {FramebufferOptions} from "./FramebufferOptions";
+import type {FramebufferOptions} from "./FramebufferOptions";
 
 export interface MultisampleFramebufferOptions extends FramebufferOptions {
     /**

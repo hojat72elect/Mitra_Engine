@@ -2,7 +2,7 @@ import type {Entity} from '../../entity-component-system';
 import {GraphicsComponent} from '../../graphics';
 import {Logger} from '../../util';
 import {nextActionId} from "./nextActionId";
-import {Action} from "./Action";
+import type {Action} from "./Action";
 
 export class Fade implements Action {
     id = nextActionId();

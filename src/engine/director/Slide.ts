@@ -9,7 +9,7 @@ import {lerp} from '../math';
 import type {Camera} from '../camera';
 import type {Easing} from '../math';
 import {linear} from '../math';
-import {TransitionOptions} from "./TransitionOptions";
+import type {TransitionOptions} from "./TransitionOptions";
 
 interface SlideOptions {
     /**

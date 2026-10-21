@@ -12,7 +12,7 @@ import {Logger} from '../util';
 import type {Easing} from '../math';
 import {linear} from '../math';
 import {lerp} from '../math';
-import {TransitionOptions} from "./TransitionOptions";
+import type {TransitionOptions} from "./TransitionOptions";
 
 /**
  * Base Transition that can be extended to provide custom scene transitions in Mitra.

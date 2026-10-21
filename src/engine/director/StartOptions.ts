@@ -1,6 +1,6 @@
 import type {Transition} from "./Transition";
 import {DefaultLoader} from "./DefaultLoader";
-import {LoaderConstructor} from "./LoaderConstructor";
+import type {LoaderConstructor} from "./LoaderConstructor";
 
 export interface StartOptions {
     /**

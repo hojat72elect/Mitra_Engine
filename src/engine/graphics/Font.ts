@@ -15,7 +15,7 @@ import {FontUnit} from "./FontUnit";
 import {TextAlign} from "./TextAlign";
 import {BaseAlign} from "./BaseAlign";
 import {FontStyle} from "./FontStyle";
-import {FontOptions} from "./FontOptions";
+import type {FontOptions} from "./FontOptions";
 
 /**
  * Represents a system or web font in Mitra.

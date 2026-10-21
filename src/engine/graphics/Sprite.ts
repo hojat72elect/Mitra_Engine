@@ -3,8 +3,8 @@ import {Graphic} from './Graphic';
 import type {ImageSource} from './ImageSource';
 import type {MitraGraphicsContext} from './context/MitraGraphicsContext';
 import {Logger} from '../util';
-import {SourceView} from "./SourceView";
-import {SpriteOptions} from "./SpriteOptions";
+import type {SourceView} from "./SourceView";
+import type {SpriteOptions} from "./SpriteOptions";
 
 type DestinationSize = { width: number; height: number };
 

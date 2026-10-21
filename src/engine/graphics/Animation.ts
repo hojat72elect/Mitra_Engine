@@ -5,11 +5,11 @@ import type {SpriteSheet} from './SpriteSheet';
 import {Logger} from '../util';
 import {clamp} from '../math';
 import {EventEmitter} from '../EventEmitter.ts';
-import {HasTick} from "./HasTick";
+import type {HasTick} from "./HasTick";
 import {AnimationStrategy} from "./AnimationStrategy";
-import {Frame} from "./Frame";
-import {AnimationOptions} from "./AnimationOptions";
-import {GetSpriteOptions} from "./GetSpriteOptions";
+import type {Frame} from "./Frame";
+import type {AnimationOptions} from "./AnimationOptions";
+import type {GetSpriteOptions} from "./GetSpriteOptions";
 
 enum AnimationDirection {
     /**

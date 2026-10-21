@@ -40,7 +40,7 @@ import {CurveBy} from './action/curve-by/CurveBy';
 import {Logger} from '../util';
 import {ScaleByWithOptions} from "./action/scale-by/ScaleByWithOptions";
 import {ScaleBy} from "./action/scale-by/ScaleBy";
-import {Action} from "./action/Action";
+import type {Action} from "./action/Action.ts";
 
 /**
  * The fluent Action API allows you to perform "actions" on

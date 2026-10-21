@@ -1,8 +1,8 @@
 import {BezierCurve, clamp, remap, vec} from "../../../math";
 import {Entity, TransformComponent} from "../../../entity-component-system";
-import {CurveByOptions} from "./CurveByOptions";
-import {Action} from "../Action";
 import {nextActionId} from "../nextActionId";
+import type {Action} from "../Action.ts";
+import type {CurveByOptions} from "./CurveByOptions.ts";
 
 export class CurveBy implements Action {
     id: number = nextActionId();

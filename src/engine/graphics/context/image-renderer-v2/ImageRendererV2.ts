@@ -11,7 +11,7 @@ import {VertexBuffer} from '../VertexBuffer';
 import {getMaxShaderComplexity} from '../getMaxShaderComplexity';
 import frag from './image-renderer-v2.frag.glsl?raw';
 import vert from './image-renderer-v2.vert.glsl?raw';
-import {HTMLImageSource} from "../HTMLImageSource";
+import type {HTMLImageSource} from "../HTMLImageSource";
 
 interface ImageRendererOptions {
     pixelArtSampler: boolean;

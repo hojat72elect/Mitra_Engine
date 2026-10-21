@@ -1,7 +1,7 @@
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import {GamepadEvents} from "./GamepadEvents";
-import {NavigatorGamepad} from "./NavigatorGamepad";
+import type {NavigatorGamepad} from "./NavigatorGamepad";
 import {Axes} from "./Axes";
 import {Buttons} from "./Buttons";
 import {Gamepads} from "./Gamepads";

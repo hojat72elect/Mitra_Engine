@@ -1,4 +1,4 @@
-import {Action} from "./Action";
+import type {Action} from "./Action";
 import {nextActionId} from "./nextActionId";
 
 export class CallMethod implements Action {

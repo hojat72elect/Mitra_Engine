@@ -14,9 +14,9 @@ import {Matrix} from '../../math';
 import {watch} from '../../util/watch';
 import {UniformBuffer} from './UniformBuffer';
 import {getAttributePointerType} from './getAttributePointerType';
-import {UniformDictionary} from "./UniformDictionary";
-import {ShaderOptions} from "./ShaderOptions";
-import {VertexAttributeDefinition} from "./VertexAttributeDefinition";
+import type {UniformDictionary} from "./UniformDictionary";
+import type {ShaderOptions} from "./ShaderOptions";
+import type {VertexAttributeDefinition} from "./VertexAttributeDefinition";
 import {getAttributeComponentSize} from "./getAttributeComponentSize";
 import {ImageSourceAttributeConstants} from "../ImageSourceAttributeConstants";
 

@@ -4,7 +4,7 @@ import {Color} from '../color';
 import type {StandardClock, TestClock} from '../util/clock';
 import {Debug} from '../graphics';
 import {FrameStats} from "./FrameStats";
-import {DebugStats} from "./DebugStats";
+import type {DebugStats} from "./DebugStats";
 
 /**
  * Debug statistics and flags for Mitra. If polling these values, it would be

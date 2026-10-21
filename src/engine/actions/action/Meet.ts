@@ -3,7 +3,7 @@ import {TransformComponent} from '../../entity-component-system';
 import type {Entity} from '../../entity-component-system';
 import {vec, Vector} from '../../math';
 import {nextActionId} from "./nextActionId";
-import {Action} from "./Action";
+import type {Action} from "./Action";
 
 export class Meet implements Action {
     id = nextActionId();

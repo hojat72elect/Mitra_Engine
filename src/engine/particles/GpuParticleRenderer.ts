@@ -6,7 +6,7 @@ import type {Random} from '../math';
 import {EmitterType} from './EmitterType';
 import {assert} from '../util/assert';
 import {vec} from '../math';
-import {GpuParticleConfig} from "./GpuParticleConfig";
+import type {GpuParticleConfig} from "./GpuParticleConfig";
 
 /**
  * Container for the GPU Particle State contains the internal state needed for the GPU

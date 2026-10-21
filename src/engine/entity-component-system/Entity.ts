@@ -9,7 +9,7 @@ import {EventEmitter} from '../EventEmitter.ts';
 import type {Scene} from '../scene';
 import {removeItemFromArray} from '../util';
 import type {MaybeKnownComponent} from './MaybeKnownComponent';
-import {ComponentCtor} from "./ComponentCtor";
+import type {ComponentCtor} from "./ComponentCtor";
 import {isComponentCtor} from "./isComponentCtor";
 import {EntityEvents} from "./EntityEvents";
 

@@ -15,8 +15,8 @@ import {PointerType} from './PointerType';
 import {isCrossOriginIframe, isIframe} from '../util/iframe';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
-import {PointerInitOptions} from "./PointerInitOptions";
-import {PointerEvents} from "../interfaces";
+import type {PointerInitOptions} from "./PointerInitOptions";
+import type {PointerEvents} from "../interfaces";
 
 export type NativePointerEvent = globalThis.PointerEvent;
 export type NativeMouseEvent = globalThis.MouseEvent;

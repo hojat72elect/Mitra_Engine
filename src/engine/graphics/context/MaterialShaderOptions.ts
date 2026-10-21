@@ -1,5 +1,5 @@
-import {ShaderPassLike} from "./shader-pipeline/ShaderPassLike";
-import {ShaderPipelineLike} from "./shader-pipeline/ShaderPipelineLike";
+import type {ShaderPassLike} from "./shader-pipeline/ShaderPassLike";
+import type {ShaderPipelineLike} from "./shader-pipeline/ShaderPipelineLike";
 
 export type MaterialShaderOptions =
     | // single pass custom shading

@@ -7,10 +7,10 @@ import type {Shader} from '../../Shader';
 import {ShaderPass} from '../ShaderPass';
 import type {ShaderPipelineLike} from '../ShaderPipelineLike';
 import {mergePassSources} from '../mergePassSources';
-import {ShaderPassSource} from "../ShaderPassSource";
-import {ShaderPassDestination} from "../ShaderPassDestination";
+import type {ShaderPassSource} from "../ShaderPassSource";
+import type {ShaderPassDestination} from "../ShaderPassDestination";
 import {getSourceDimensions} from "../getSourceDimensions";
-import {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
+import type {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
 
 interface BloomEffectOptions {
     graphicsContext: MitraGraphicsContextWebgl;

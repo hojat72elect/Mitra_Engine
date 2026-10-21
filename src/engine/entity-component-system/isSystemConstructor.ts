@@ -1,4 +1,4 @@
-import {SystemCtor} from "./SystemCtor";
+import type {SystemCtor} from "./SystemCtor";
 import {System} from "./System";
 
 export function isSystemConstructor(x: any): x is SystemCtor<System> {

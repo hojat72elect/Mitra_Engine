@@ -1,5 +1,5 @@
 import {nextActionId} from "./nextActionId";
-import {Action} from "./Action";
+import type {Action} from "./Action";
 
 export class Delay implements Action {
     id = nextActionId();

@@ -1,5 +1,5 @@
-import {MaterialSharedOptions} from "./MaterialSharedOptions";
-import {MaterialShaderOptions} from "./MaterialShaderOptions";
+import type {MaterialSharedOptions} from "./MaterialSharedOptions";
+import type {MaterialShaderOptions} from "./MaterialShaderOptions";
 
 /**
  * {@apilink MaterialOptions} without the graphics context, preserving the valid

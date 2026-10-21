@@ -1,5 +1,5 @@
 import type {Audio} from './Audio';
-import {ExResponseType} from "./ExResponseType";
+import type {ExResponseType} from "./ExResponseType";
 
 /**
  * Represents an audio implementation like {@apilink WebAudioInstance}

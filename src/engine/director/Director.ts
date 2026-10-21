@@ -9,12 +9,12 @@ import {ActivateEvent, DeactivateEvent} from '../events';
 import {EventEmitter} from '../EventEmitter.ts';
 import {isLoaderConstructor} from "./isLoaderConstructor";
 import {DirectorEvents} from "./DirectorEvents";
-import {DirectorNavigationEvent} from "./DirectorNavigationEvent";
-import {SceneWithOptions} from "./SceneWithOptions";
-import {WithRoot} from "./WithRoot";
-import {SceneMap} from "./SceneMap";
-import {StartOptions} from "./StartOptions";
-import {GoToOptions} from "./GoToOptions";
+import type {DirectorNavigationEvent} from "./DirectorNavigationEvent";
+import type {SceneWithOptions} from "./SceneWithOptions";
+import type {WithRoot} from "./WithRoot";
+import type {SceneMap} from "./SceneMap";
+import type {StartOptions} from "./StartOptions";
+import type {GoToOptions} from "./GoToOptions";
 
 /**
  * The Director is responsible for managing scenes and changing scenes in Mitra.

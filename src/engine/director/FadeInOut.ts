@@ -2,7 +2,7 @@ import type {Engine} from '../engine';
 import {Color} from '../color';
 import {Rectangle} from '../graphics';
 import {Transition} from './Transition';
-import {TransitionOptions} from "./TransitionOptions";
+import type {TransitionOptions} from "./TransitionOptions";
 
 interface FadeOptions {
     duration?: number;

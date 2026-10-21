@@ -1,4 +1,4 @@
-import {Action} from "./action/Action";
+import type {Action} from "./action/Action";
 import {Entity} from "../entity-component-system";
 import {ActionCompleteEvent, ActionStartEvent} from "../events";
 

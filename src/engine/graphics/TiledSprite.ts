@@ -3,7 +3,7 @@ import type {GraphicOptions} from './GraphicOptions';
 import {ImageSource} from './ImageSource';
 import {Sprite} from './Sprite';
 import {ImageWrapping} from './ImageWrapping';
-import {TiledSpriteOptions} from "./TiledSpriteOptions";
+import type {TiledSpriteOptions} from "./TiledSpriteOptions";
 
 export class TiledSprite extends Sprite {
     private _ready = new Future<void>();

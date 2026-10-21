@@ -26,7 +26,7 @@ import type {PointerEventReceiver} from '../input/PointerEventReceiver';
 import type {HasNestedPointerEvents} from '../input/HasNestedPointerEvents';
 import {PointerEventsToObjectDispatcher} from '../input/PointerEventsToObjectDispatcher';
 import type {GlobalCoordinates} from '../math';
-import {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
+import type {CompositeStrategy} from "../collision/colliders/CompositeStrategy";
 import {EntityEvents} from "../entity-component-system/EntityEvents";
 import {hasGraphicsTick} from "../graphics/hasGraphicsTick";
 

@@ -1,4 +1,4 @@
-import {ExResponseType} from "./ExResponseType";
+import type {ExResponseType} from "./ExResponseType";
 
 interface ExResponseTypesLookup {
     [name: string]: ExResponseType;

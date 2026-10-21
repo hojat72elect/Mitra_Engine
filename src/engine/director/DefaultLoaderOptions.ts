@@ -1,4 +1,4 @@
-import {Loadable} from "../interfaces";
+import type {Loadable} from "../interfaces";
 
 export interface DefaultLoaderOptions {
     /**

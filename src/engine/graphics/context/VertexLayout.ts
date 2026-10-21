@@ -1,7 +1,7 @@
 import {Logger} from '../..';
 import type {Shader} from './Shader';
 import type {VertexBuffer} from './VertexBuffer';
-import {VertexAttributeDefinition} from "./VertexAttributeDefinition";
+import type {VertexAttributeDefinition} from "./VertexAttributeDefinition";
 import {getGlTypeSizeBytes} from "./getGlTypeSizeBytes";
 import {isAttributeInSource} from "./isAttributeInSource";
 import {getGLTypeFromSource} from "./getGLTypeFromSource";

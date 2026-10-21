@@ -1,4 +1,4 @@
-import {ContactBias} from "./ContactBias";
+import type {ContactBias} from "./ContactBias";
 
 /**
  * Vertical First contact solve bias Used by the {@apilink ArcadeSolver} to sort contacts

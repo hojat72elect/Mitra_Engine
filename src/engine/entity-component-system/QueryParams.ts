@@ -1,4 +1,4 @@
-import {ComponentCtor} from "./ComponentCtor";
+import type {ComponentCtor} from "./ComponentCtor";
 import type {Component} from "./Component";
 
 export interface QueryParams<

@@ -6,8 +6,8 @@ import type {AffineMatrix} from '../../math';
 import type {Material} from './Material';
 import type {RendererPlugin} from './RendererPlugin';
 import {ImageFiltering} from '../ImageFiltering';
-import {MaterialOptions} from "./MaterialOptions";
-import {HTMLImageSource} from "./HTMLImageSource";
+import type {MaterialOptions} from "./MaterialOptions";
+import type {HTMLImageSource} from "./HTMLImageSource";
 
 export interface AntialiasOptions {
     /**

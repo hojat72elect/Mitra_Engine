@@ -7,10 +7,10 @@ import {ImageFiltering} from '../ImageFiltering';
 import {Framebuffer} from './Framebuffer';
 import {ShaderPipeline} from './shader-pipeline/ShaderPipeline';
 import {Glsl} from './Glsl';
-import {ShaderPipelineLike} from "./shader-pipeline/ShaderPipelineLike";
-import {ShaderPassLike} from "./shader-pipeline/ShaderPassLike";
-import {MaterialOptions} from "./MaterialOptions";
-import {UniformDictionary} from "./UniformDictionary";
+import type {ShaderPipelineLike} from "./shader-pipeline/ShaderPipelineLike";
+import type {ShaderPassLike} from "./shader-pipeline/ShaderPassLike";
+import type {MaterialOptions} from "./MaterialOptions";
+import type {UniformDictionary} from "./UniformDictionary";
 
 const defaultVertexSource = `#version 300 es
 in vec2 a_position;

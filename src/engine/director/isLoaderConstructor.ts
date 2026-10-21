@@ -1,4 +1,4 @@
-import {LoaderConstructor} from "./LoaderConstructor";
+import type {LoaderConstructor} from "./LoaderConstructor";
 
 /**
  * Returns true if the constructor is for a Mitra Loader.

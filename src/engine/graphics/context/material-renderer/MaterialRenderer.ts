@@ -10,7 +10,7 @@ import type {RendererPlugin} from '../RendererPlugin';
 import {ShaderPass} from '../shader-pipeline/ShaderPass';
 import {VertexBuffer} from '../VertexBuffer';
 import {VertexLayout} from '../VertexLayout';
-import {HTMLImageSource} from "../HTMLImageSource";
+import type {HTMLImageSource} from "../HTMLImageSource";
 
 /**
  * Seeds a material pipeline: copies the graphic's source view into the inner rect of the padded

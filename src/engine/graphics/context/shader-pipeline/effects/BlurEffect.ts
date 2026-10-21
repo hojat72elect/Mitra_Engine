@@ -6,8 +6,8 @@ import type {ShaderPassDestination} from '../ShaderPassDestination';
 import {ShaderPass} from '../ShaderPass';
 import type {ShaderPipelineLike} from '../ShaderPipelineLike';
 import {ShaderPipeline} from '../ShaderPipeline';
-import {ShaderPassSource} from "../ShaderPassSource";
-import {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
+import type {ShaderPassSource} from "../ShaderPassSource";
+import type {ShaderPipelineProcessOptions} from "../ShaderPipelineProcessOptions";
 
 interface BlurPassesOptions {
     graphicsContext: MitraGraphicsContextWebgl;

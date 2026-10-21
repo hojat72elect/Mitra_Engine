@@ -4,7 +4,7 @@ import {BoundingBox} from '../collision';
 import type {Color} from '../color';
 import {watch} from '../util/watch';
 import {AffineMatrix} from '../math';
-import {GraphicOptions} from "./GraphicOptions";
+import type {GraphicOptions} from "./GraphicOptions";
 
 /**
  * A Graphic is the base Mitra primitive for something that can be drawn to the {@apilink MitraGraphicsContext}.

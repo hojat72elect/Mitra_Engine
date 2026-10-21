@@ -1,5 +1,5 @@
 import {MitraGraphicsContextWebgl} from "../MitraGraphicsContextWebgl";
-import {ShaderPassSource} from "./ShaderPassSource";
+import type {ShaderPassSource} from "./ShaderPassSource";
 import {Framebuffer} from "../Framebuffer";
 import {ImageSource} from "../../ImageSource";
 

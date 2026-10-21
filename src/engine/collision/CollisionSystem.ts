@@ -23,7 +23,7 @@ import {Pair} from './detection/Pair';
 import {BodyComponent} from './index';
 import {buildContactIslands} from "./buildContactIslands";
 import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
-import {ComponentCtor} from "../entity-component-system/ComponentCtor";
+import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
 
 export class CollisionSystem extends System {

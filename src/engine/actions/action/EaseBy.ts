@@ -2,7 +2,7 @@ import {MotionComponent} from '../../entity-component-system';
 import {TransformComponent} from '../../entity-component-system';
 import type {Entity} from '../../entity-component-system';
 import {vec, Vector} from '../../math';
-import {Action} from "./Action";
+import type {Action} from "./Action";
 import {nextActionId} from "./nextActionId";
 
 /**

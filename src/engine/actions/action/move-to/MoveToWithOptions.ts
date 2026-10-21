@@ -1,8 +1,9 @@
 import {nextActionId} from "../nextActionId";
 import {clamp, type Easing, lerp, linear, remap, vec, Vector} from "../../../math";
 import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {MoveToOptions} from "./MoveToOptions";
-import {Action} from "../Action";
+import type {Action} from "../Action.ts";
+import type {MoveToOptions} from "./MoveToOptions.ts";
+
 
 export class MoveToWithOptions implements Action {
     id = nextActionId();

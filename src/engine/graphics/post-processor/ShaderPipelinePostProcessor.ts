@@ -2,8 +2,8 @@ import type {MitraGraphicsContextWebgl} from '../context/MitraGraphicsContextWeb
 import type {Framebuffer} from '../context/Framebuffer';
 import {ShaderPipeline} from '../context/shader-pipeline/ShaderPipeline';
 import type {PostProcessor} from './PostProcessor';
-import {ShaderPipelineLike} from "../context/shader-pipeline/ShaderPipelineLike";
-import {ShaderPassLike} from "../context/shader-pipeline/ShaderPassLike";
+import type {ShaderPipelineLike} from "../context/shader-pipeline/ShaderPipelineLike";
+import type {ShaderPassLike} from "../context/shader-pipeline/ShaderPassLike";
 
 interface ShaderPipelinePostProcessorOptions {
     /**

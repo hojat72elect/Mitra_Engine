@@ -9,9 +9,9 @@ import {Framebuffer} from '../Framebuffer';
 import {Glsl} from '../Glsl';
 import type {Shader} from '../Shader';
 import {VertexLayout} from '../VertexLayout';
-import {ShaderPassSource} from "./ShaderPassSource";
-import {ShaderPassDestination} from "./ShaderPassDestination";
-import {UniformDictionary} from "../UniformDictionary";
+import type {ShaderPassSource} from "./ShaderPassSource";
+import type {ShaderPassDestination} from "./ShaderPassDestination";
+import type {UniformDictionary} from "../UniformDictionary";
 import {ImageFiltering} from "../../ImageFiltering";
 import {ImageSourceAttributeConstants} from "../../ImageSourceAttributeConstants";
 

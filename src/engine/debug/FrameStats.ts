@@ -1,8 +1,8 @@
 import {PhysicsStats} from "./PhysicsStats";
-import {GraphicsStatistics} from "./GraphicsStatistics";
-import {FrameStatistics} from "./FrameStatistics";
-import {FrameDurationStats} from "./FrameDurationStats";
-import {FrameActorStats} from "./FrameActorStats";
+import type {GraphicsStatistics} from "./GraphicsStatistics";
+import type {FrameStatistics} from "./FrameStatistics";
+import type {FrameDurationStats} from "./FrameDurationStats";
+import type {FrameActorStats} from "./FrameActorStats";
 
 /**
  * Implementation of a frame's stats. Meant to have values copied via {@apilink FrameStats.reset}, avoid

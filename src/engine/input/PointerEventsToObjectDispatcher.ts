@@ -4,7 +4,7 @@ import type {GlobalCoordinates} from '../math';
 import type {PointerEventReceiver} from './PointerEventReceiver';
 import {RentalPool} from '../util/RentalPool.ts';
 import {PointerType} from './PointerType';
-import {HasNestedPointerEvents} from "./HasNestedPointerEvents";
+import type {HasNestedPointerEvents} from "./HasNestedPointerEvents";
 
 function hasNestedEvents(object: any): object is HasNestedPointerEvents {
     return object && object._dispatchPointerEvents && object._processPointerToObject;

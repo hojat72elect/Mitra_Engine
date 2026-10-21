@@ -1,8 +1,8 @@
 import {nextActionId} from "../nextActionId";
 import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
 import {clamp, lerpVector, remap, vec, Vector} from "../../../math";
-import {ScaleToOptions} from "./ScaleToOptions";
-import {Action} from "../Action";
+import type {ScaleToOptions} from "./ScaleToOptions";
+import type {Action} from "../Action";
 
 export class ScaleToWithOptions implements Action {
     id = nextActionId();

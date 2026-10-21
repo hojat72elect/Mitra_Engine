@@ -1,5 +1,5 @@
-import {ShaderPassSource} from "./ShaderPassSource";
-import {UniformDictionary} from "../UniformDictionary";
+import type {ShaderPassSource} from "./ShaderPassSource";
+import type {UniformDictionary} from "../UniformDictionary";
 
 export interface ShaderPipelineProcessOptions {
     /**

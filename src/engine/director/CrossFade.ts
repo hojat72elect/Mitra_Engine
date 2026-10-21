@@ -4,7 +4,7 @@ import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Transition} from './Transition';
 import {vec} from '../math';
-import {TransitionOptions} from "./TransitionOptions";
+import type {TransitionOptions} from "./TransitionOptions";
 
 interface CrossFadeOptions {
     duration: number;

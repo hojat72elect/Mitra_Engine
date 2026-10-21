@@ -1,4 +1,4 @@
-import {ComponentCtor} from "./ComponentCtor";
+import type {ComponentCtor} from "./ComponentCtor";
 import {Component} from "./Component";
 
 export function isComponentCtor(value: any): value is ComponentCtor<Component> {

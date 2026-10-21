@@ -3,12 +3,12 @@ import {Framebuffer} from '../Framebuffer';
 import type {Shader} from '../Shader';
 import type {ShaderPassDestination} from './ShaderPassDestination';
 import {ShaderPass} from './ShaderPass';
-import {ShaderPassSource} from "./ShaderPassSource";
+import type {ShaderPassSource} from "./ShaderPassSource";
 import {getSourceDimensions} from "./getSourceDimensions";
-import {ShaderPipelineProcessOptions} from "./ShaderPipelineProcessOptions";
+import type {ShaderPipelineProcessOptions} from "./ShaderPipelineProcessOptions";
 import {mergePassSources} from "./mergePassSources";
-import {ShaderPipelineLike} from "./ShaderPipelineLike";
-import {ShaderPassLike} from "./ShaderPassLike";
+import type {ShaderPipelineLike} from "./ShaderPipelineLike";
+import type {ShaderPassLike} from "./ShaderPassLike";
 
 interface ShaderPipelineOptions {
     graphicsContext: MitraGraphicsContextWebgl;

@@ -13,7 +13,7 @@ import {DynamicTreeCollisionProcessor} from '../detection/DynamicTreeCollisionPr
 import type {RayCastHit} from '../detection/RayCastHit';
 import {Collider} from './Collider';
 import type {Transform} from '../../math';
-import {CompositeStrategy} from "./CompositeStrategy";
+import type {CompositeStrategy} from "./CompositeStrategy";
 import {getDefaultPhysicsConfig} from "../getDefaultPhysicsConfig";
 
 export class CompositeCollider extends Collider {

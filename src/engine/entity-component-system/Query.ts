@@ -1,8 +1,8 @@
 import type {Entity} from './Entity';
 import {Observable} from '../util';
 import type {Component} from './Component';
-import {ComponentCtor} from "./ComponentCtor";
-import {QueryParams} from "./QueryParams";
+import type {ComponentCtor} from "./ComponentCtor";
+import type {QueryParams} from "./QueryParams";
 
 type ComponentInstance<T> = T extends ComponentCtor<infer R> ? R : never;
 

@@ -1,5 +1,5 @@
 import type {MitraGraphicsContext} from "./MitraGraphicsContext";
-import {UniformDictionary} from "./UniformDictionary";
+import type {UniformDictionary} from "./UniformDictionary";
 import type {ImageSource} from "../ImageSource";
 import {Shader} from "./Shader";
 

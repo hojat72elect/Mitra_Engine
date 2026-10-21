@@ -9,7 +9,7 @@ import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import {Color} from '../color';
 import {delay} from '../util';
-import {DefaultLoaderOptions} from "./DefaultLoaderOptions";
+import type {DefaultLoaderOptions} from "./DefaultLoaderOptions";
 import {ImageFiltering} from "../graphics/ImageFiltering";
 
 interface LoaderEvents {

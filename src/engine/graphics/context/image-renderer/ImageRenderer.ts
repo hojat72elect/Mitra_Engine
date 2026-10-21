@@ -14,7 +14,7 @@ import {VertexLayout} from '../VertexLayout';
 import {getMaxShaderComplexity} from '../getMaxShaderComplexity';
 import frag from './image-renderer.frag.glsl?raw';
 import vert from './image-renderer.vert.glsl?raw';
-import {HTMLImageSource} from "../HTMLImageSource";
+import type {HTMLImageSource} from "../HTMLImageSource";
 
 interface ImageRendererOptions {
     pixelArtSampler: boolean;

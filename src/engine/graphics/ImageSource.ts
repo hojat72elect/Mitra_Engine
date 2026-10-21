@@ -8,8 +8,8 @@ import {Future} from '../util/Future.ts';
 import {TextureLoader} from './context/TextureLoader';
 import {ImageWrapping} from './ImageWrapping';
 import type {GraphicOptions} from './GraphicOptions';
-import {ImageSourceOptions} from "./ImageSourceOptions";
-import {ImageWrapConfiguration} from "./ImageWrapConfiguration";
+import type {ImageSourceOptions} from "./ImageSourceOptions";
+import type {ImageWrapConfiguration} from "./ImageWrapConfiguration";
 import {ImageSourceAttributeConstants} from "./ImageSourceAttributeConstants";
 
 export class ImageSource implements Loadable<HTMLImageElement> {

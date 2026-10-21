@@ -22,7 +22,7 @@ import {PointLightComponent} from './PointLightComponent';
 import {ConeLightComponent} from './ConeLightComponent';
 import type {Occluder} from './LightOccluderComponent';
 import {LightOccluderComponent} from './LightOccluderComponent';
-import {ComponentCtor} from "../entity-component-system/ComponentCtor";
+import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {SystemType} from "../entity-component-system/SystemType";
 
 interface DarknessEntry {

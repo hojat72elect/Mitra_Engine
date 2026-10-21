@@ -1,8 +1,8 @@
 import {nextActionId} from "../nextActionId";
 import {clamp, type Easing, lerp, linear, remap, vec, Vector} from "../../../math";
 import {type Entity, MotionComponent, TransformComponent} from "../../../entity-component-system";
-import {MoveByOptions} from "./MoveByOptions";
-import {Action} from "../Action";
+import type {MoveByOptions} from "./MoveByOptions.ts";
+import type {Action} from "../Action.ts";
 
 export class MoveByWithOptions implements Action {
     id = nextActionId();

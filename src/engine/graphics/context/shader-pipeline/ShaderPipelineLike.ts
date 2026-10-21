@@ -1,6 +1,6 @@
-import {ShaderPassSource} from "./ShaderPassSource";
-import {ShaderPassDestination} from "./ShaderPassDestination";
-import {ShaderPipelineProcessOptions} from "./ShaderPipelineProcessOptions";
+import type {ShaderPassSource} from "./ShaderPassSource";
+import type {ShaderPassDestination} from "./ShaderPassDestination";
+import type {ShaderPipelineProcessOptions} from "./ShaderPipelineProcessOptions";
 import {Shader} from "../Shader";
 
 /**

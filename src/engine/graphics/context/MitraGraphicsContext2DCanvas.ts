@@ -16,8 +16,8 @@ import type {PostProcessor} from '../post-processor/PostProcessor';
 import type {RendererPlugin} from './RendererPlugin';
 import {AffineMatrix} from '../../math';
 import type {Material} from './Material';
-import {MaterialOptions} from "./MaterialOptions";
-import {HTMLImageSource} from "./HTMLImageSource";
+import type {MaterialOptions} from "./MaterialOptions";
+import type {HTMLImageSource} from "./HTMLImageSource";
 
 const pixelSnapEpsilon = 0.0001;
 

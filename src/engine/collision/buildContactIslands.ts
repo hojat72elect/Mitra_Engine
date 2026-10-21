@@ -2,7 +2,7 @@ import type {BodyComponent} from "./BodyComponent";
 import type {CollisionContact} from "./detection/CollisionContact";
 import {CollisionType} from "./CollisionType";
 import {Island} from "./Island";
-import {BodyConfig} from "./BodyConfig";
+import type {BodyConfig} from "./BodyConfig";
 
 export function buildContactIslands(config: BodyConfig, bodies: BodyComponent[], contacts: CollisionContact[]): Island[] {
     // Union-find to group connected bodies

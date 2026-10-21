@@ -3,7 +3,7 @@ import {TransformComponent} from '../../entity-component-system';
 import {MotionComponent} from '../../entity-component-system';
 import {vec, Vector} from '../../math';
 import {nextActionId} from "./nextActionId";
-import {Action} from "./Action";
+import type {Action} from "./Action";
 
 /**
  * @deprecated use moveTo({pos: Vector, duration: number, easing: EasingFunction})

@@ -15,7 +15,7 @@ import type {PhysicsConfig} from './PhysicsConfig';
 import type {Entity} from '../entity-component-system';
 import type {Island} from './Island';
 import {DegreeOfFreedom} from "./DegreeOfFreedom";
-import {BodyConfig} from "./BodyConfig";
+import type {BodyConfig} from "./BodyConfig";
 import {getDefaultPhysicsConfig} from "./getDefaultPhysicsConfig";
 
 interface BodyComponentOptions {

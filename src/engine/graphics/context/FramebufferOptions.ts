@@ -1,6 +1,6 @@
 import {MitraGraphicsContextWebgl} from "./MitraGraphicsContextWebgl";
 import {ImageFiltering} from "../ImageFiltering";
-import {ImageWrapConfiguration} from "../ImageWrapConfiguration";
+import type {ImageWrapConfiguration} from "../ImageWrapConfiguration";
 import {ImageWrapping} from "../ImageWrapping";
 
 export interface FramebufferOptions {

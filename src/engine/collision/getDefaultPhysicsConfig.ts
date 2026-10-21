@@ -3,7 +3,7 @@ import {vec} from "../math";
 import {SolverStrategy} from "./SolverStrategy";
 import {SpatialPartitionStrategy} from "./detection/SpatialPartitionStrategy";
 import {ContactSolveBias} from "./solver/ContactSolveBias";
-import {PhysicsConfig} from "./PhysicsConfig";
+import type {PhysicsConfig} from "./PhysicsConfig";
 
 export const getDefaultPhysicsConfig: () => DeepRequired<PhysicsConfig> = () => ({
     enabled: true,

@@ -43,7 +43,6 @@ export * from './timer';
 export * from './trigger';
 export * from './ScreenElement.ts';
 
-export * from './actions/index';
 export * from './collision/index';
 
 export * from './interfaces/index';
