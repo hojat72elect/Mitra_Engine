@@ -1,6 +1,6 @@
 import {System} from '../entity-component-system';
 import {TransformComponent} from '../entity-component-system';
-import {IsometricEntityComponent} from './isometric-entity-component';
+import {IsometricEntityComponent} from './IsometricEntityComponent';
 import type {Query, World} from '../entity-component-system';
 import {SystemPriority} from '../entity-component-system';
 import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";

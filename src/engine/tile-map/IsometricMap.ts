@@ -9,7 +9,7 @@ import {TransformComponent} from '../entity-component-system';
 import {Entity} from '../entity-component-system';
 import type {Graphic, MitraGraphicsContext} from '../graphics';
 import {DebugGraphicsComponent, GraphicsComponent} from '../graphics';
-import {IsometricEntityComponent} from './isometric-entity-component';
+import {IsometricEntityComponent} from './IsometricEntityComponent';
 import type {DebugConfig} from '../debug';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';
