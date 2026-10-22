@@ -7,7 +7,6 @@ import type {EventKey, Handler, Subscription} from './EventEmitter';
 import {EventEmitter} from './EventEmitter';
 import {PointerScope} from './input/PointerScope';
 import {Flags} from './Flags';
-import {polyfill} from './polyfill';
 import type {CanDraw} from './interfaces/LifecycleEvents';
 import type {CanInitialize} from './interfaces/LifecycleEvents';
 import type {CanUpdate} from './interfaces/LifecycleEvents';
@@ -76,8 +75,6 @@ import type {TileMap} from "./tile-map/TileMap.ts";
 import {Entity} from "./entity-component-system/Entity.ts";
 import type {Vector} from "./math/Vector.ts";
 import {Loader} from "./director/Loader.ts";
-
-polyfill();
 
 export interface EngineEvents extends DirectorEvents {
     fallbackgraphicscontext: MitraGraphicsContext2DCanvas;
