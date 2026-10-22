@@ -3,6 +3,12 @@
   "version": "0.1.3",
   "type": "module",
   "description": "A 2D game engine for the web",
+  "keywords": ["game-engine","game","graphics","2d"],
+  "homepage": "https://github.com/hojat72elect/Mitra_Engine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hojat72elect/Mitra_Engine.git"
+  },
   "main": "./dist/engine.js",
   "types": "./dist/engine/index.d.ts",
   "exports": {
