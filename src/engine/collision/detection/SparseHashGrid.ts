@@ -1,5 +1,5 @@
 import {Color} from '../../color';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 
 import {RentalPool} from '../../util/RentalPool.ts';
 import {BoundingBox} from '../BoundingBox';

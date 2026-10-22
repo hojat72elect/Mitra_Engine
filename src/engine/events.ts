@@ -10,7 +10,7 @@ import type {
     OnRemove,
     SceneActivationContext
 } from './interfaces';
-import type {MitraGraphicsContext} from './graphics';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import type {Gamepad} from './input/Gamepad';
 import type {Buttons} from './input/Buttons';
 import type {Axes} from './input/Axes';

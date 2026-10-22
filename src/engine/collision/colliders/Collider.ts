@@ -4,7 +4,7 @@ import type {BoundingBox} from '../BoundingBox';
 import type {Clonable} from '../../interfaces';
 import type {Id} from '../../id';
 import {createId} from '../../id';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import {EventEmitter} from '../../EventEmitter.ts';
 import type {RayCastHit} from '../detection/RayCastHit';
 import type {CompositeCollider} from './CompositeCollider';

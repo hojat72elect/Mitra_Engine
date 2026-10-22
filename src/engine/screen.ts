@@ -1,8 +1,8 @@
 import type {Camera} from './camera';
 import type {BrowserEvents} from './util/browser';
-import type {MitraGraphicsContext} from './graphics';
-import {MitraGraphicsContextWebgl} from './graphics';
-import {MitraGraphicsContext2DCanvas} from './graphics';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
+import {MitraGraphicsContextWebgl} from './graphics/context/MitraGraphicsContextWebgl';
+import {MitraGraphicsContext2DCanvas} from './graphics/context/MitraGraphicsContext2DCanvas';
 import {EventEmitter} from './EventEmitter';
 import {BoundingBox} from "./collision/BoundingBox";
 import {Logger} from "./util/log.ts";

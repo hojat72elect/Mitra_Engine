@@ -1,4 +1,4 @@
-import type {MitraGraphicsContextWebgl} from '../graphics';
+import type {MitraGraphicsContextWebgl} from '../graphics/context/MitraGraphicsContextWebgl';
 import type {GpuParticleEmitter} from './GpuParticleEmitter';
 import {ParticleTransform} from './particles';
 import {EmitterType} from './EmitterType';

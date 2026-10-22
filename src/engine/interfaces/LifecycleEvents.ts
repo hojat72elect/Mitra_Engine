@@ -1,7 +1,7 @@
 import type {Engine} from '../engine';
 import type * as Events from '../events';
 import type {Scene} from '../scene';
-import type {MitraGraphicsContext} from '../graphics';
+import type {MitraGraphicsContext} from '../graphics/context/MitraGraphicsContext';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface _initialize {

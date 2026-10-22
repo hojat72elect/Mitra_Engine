@@ -1,5 +1,5 @@
 import type {ParticleConfig} from "./particles";
-import {Sprite} from "../graphics";
+import {Sprite} from "../graphics/Sprite";
 
 export interface GpuParticleConfig extends ParticleConfig {
     /**

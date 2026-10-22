@@ -1,9 +1,7 @@
-import {
-    Color,
-    GraphicsComponent,
-    Logger,
-    ParallaxComponent,
-} from "../../engine";
+import {Color} from "../../engine/color";
+import {GraphicsComponent} from "../../engine/graphics/GraphicsComponent";
+import {Logger} from "../../engine/util/log";
+import {ParallaxComponent} from "../../engine/graphics/ParallaxComponent";
 import {Tile as ExTile} from "../../engine/tile-map/TileMap.ts"
 import {mapProps, type PropertyMapValue} from "./Properties";
 import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/TiledParser";

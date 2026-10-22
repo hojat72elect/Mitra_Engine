@@ -1,7 +1,7 @@
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import {GraphicsComponent} from '../graphics';
-import type {Graphic} from '../graphics';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
+import type {Graphic} from '../graphics/Graphic';
 import type {EmitterType} from './EmitterType';
 import {EulerIntegrator} from '../collision/EulerIntegrator';
 import type {ParticleEmitter} from './ParticleEmitter';

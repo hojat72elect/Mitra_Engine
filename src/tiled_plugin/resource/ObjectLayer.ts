@@ -1,9 +1,7 @@
-import {
-    Actor,
-    Color,
-    GraphicsComponent,
-    Logger
-} from "../../engine";
+import {Actor} from "../../engine/actor";
+import {Color} from "../../engine/color";
+import {GraphicsComponent} from "../../engine/graphics/GraphicsComponent";
+import {Logger} from "../../engine/util/log";
 import type {Layer} from "./Layer";
 import {Ellipse, InsertedTile, parseObjects, PluginObject, Polygon, Rectangle, TemplateObject, Text} from "./objects";
 import type {TiledObjectLayer} from "../parser/TiledParser";

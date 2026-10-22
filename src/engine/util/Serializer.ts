@@ -1,7 +1,7 @@
 import {Actor} from '../actor';
 import {PointerComponent} from '../input/PointerComponent';
-import {GraphicsComponent} from '../graphics';
-import type {Graphic} from '../graphics';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
+import type {Graphic} from '../graphics/Graphic';
 import {Logger} from './log';
 import type {ComponentCtor} from "../entity-component-system/ComponentCtor";
 import {ActionsComponent} from "../actions/actions-component/ActionsComponent";

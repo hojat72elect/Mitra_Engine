@@ -1,8 +1,9 @@
 import {BoundingBox} from '../BoundingBox';
 import type {Id} from '../../id';
 import {BodyComponent} from '../BodyComponent';
-import {Logger, type MitraGraphicsContext} from '../..';
-import {Color} from '../..';
+import {Logger} from '../../util/log';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
+import {Color} from '../../color';
 import type {DynamicTreeConfig} from "../DynamicTreeConfig";
 import type {Entity} from "../../entity-component-system/Entity.ts";
 import type {Ray} from "../../math/Ray.ts";

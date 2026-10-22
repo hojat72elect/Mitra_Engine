@@ -1,7 +1,7 @@
 import {WebAudio} from '../util/WebAudio.ts';
 import type {Engine} from '../engine';
 import type {Loadable} from '../interfaces';
-import {Canvas} from '../graphics';
+import {Canvas} from '../graphics/Canvas';
 import {Future} from '../util/Future.ts';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';

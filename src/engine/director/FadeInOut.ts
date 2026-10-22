@@ -1,6 +1,6 @@
 import type {Engine} from '../engine';
 import {Color} from '../color';
-import {Rectangle} from '../graphics';
+import {Rectangle} from '../graphics/Rectangle';
 import {Transition} from './Transition';
 import type {TransitionOptions} from "./TransitionOptions";
 

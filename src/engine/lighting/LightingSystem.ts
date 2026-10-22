@@ -3,7 +3,7 @@ import type {Engine} from '../engine';
 import type {Camera} from '../camera';
 import {Color} from '../color';
 import {ScreenElement} from '../ScreenElement';
-import {Canvas} from '../graphics';
+import {Canvas} from '../graphics/Canvas';
 import {DarknessComponent} from './DarknessComponent';
 import {PointLightComponent} from './PointLightComponent';
 import {ConeLightComponent} from './ConeLightComponent';

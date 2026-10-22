@@ -1,7 +1,7 @@
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Future} from '../util/Future.ts';
-import {GraphicsComponent} from '../graphics';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import type {CoroutineInstance} from '../util/coroutine';
 import {coroutine} from '../util/coroutine';
 import type {TransitionOptions} from "./TransitionOptions";

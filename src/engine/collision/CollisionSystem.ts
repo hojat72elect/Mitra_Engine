@@ -8,7 +8,7 @@ import type {CollisionSolver} from './solver/CollisionSolver';
 import {ColliderComponent} from './ColliderComponent';
 import {CompositeCollider} from './colliders/CompositeCollider';
 import type {Engine} from '../engine';
-import type {MitraGraphicsContext} from '../graphics';
+import type {MitraGraphicsContext} from '../graphics/context/MitraGraphicsContext';
 import type {Scene} from '../scene';
 import {Side} from './Side';
 import type {PhysicsWorld} from './PhysicsWorld';

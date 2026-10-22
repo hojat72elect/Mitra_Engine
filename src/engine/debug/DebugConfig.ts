@@ -2,7 +2,7 @@ import {ColorBlindFlags} from './ColorBlindFlags';
 import type {Engine} from '../engine';
 import {Color} from '../color';
 import type {StandardClock, TestClock} from '../util/clock';
-import {Debug} from '../graphics';
+import {Debug} from '../graphics/Debug';
 import {FrameStats} from "./FrameStats";
 import type {DebugStats} from "./DebugStats";
 

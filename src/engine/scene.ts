@@ -23,10 +23,10 @@ import type {
 } from './interfaces';
 import * as Util from './util/util';
 import {Trigger} from './trigger';
-import {GraphicsSystem} from './graphics';
+import {GraphicsSystem} from './graphics/GraphicsSystem';
 import {PointerSystem} from './input/PointerSystem';
-import {OffscreenSystem} from './graphics';
-import type {MitraGraphicsContext} from './graphics';
+import {OffscreenSystem} from './graphics/OffscreenSystem';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import type {EventKey, Handler, Subscription} from './EventEmitter';
 import {EventEmitter} from './EventEmitter';
 import type {Color} from './color';

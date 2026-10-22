@@ -1,4 +1,7 @@
-import {Actor, Color, ImageSource, ParallaxComponent} from "../../engine";
+import {Actor} from "../../engine/actor";
+import {Color} from "../../engine/color";
+import {ImageSource} from "../../engine/graphics/ImageSource";
+import {ParallaxComponent} from "../../engine/graphics/ParallaxComponent";
 import type {Layer} from "./Layer.ts";
 import type {TiledImageLayer} from "../parser/TiledParser.ts";
 import {TiledResource} from "./TiledResource.ts";

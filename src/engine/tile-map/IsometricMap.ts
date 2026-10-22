@@ -1,7 +1,9 @@
 
 
-import type {Graphic, MitraGraphicsContext} from '../graphics';
-import {DebugGraphicsComponent, GraphicsComponent} from '../graphics';
+import type {Graphic} from '../graphics/Graphic';
+import type {MitraGraphicsContext} from '../graphics/context/MitraGraphicsContext';
+import {DebugGraphicsComponent} from '../graphics/DebugGraphicsComponent';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import {IsometricEntityComponent} from './IsometricEntityComponent';
 import {PointerComponent} from '../input/PointerComponent';
 import type {PointerEvent} from '../input/PointerEvent';

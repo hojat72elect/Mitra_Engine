@@ -7,7 +7,7 @@ import type {CollisionContact} from './CollisionContact';
 import {BodyComponent} from '../BodyComponent';
 import {CompositeCollider} from '../colliders/CompositeCollider';
 import {CollisionGroup} from '../group/CollisionGroup';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import type {RayCastHit} from './RayCastHit';
 import type {DeepRequired} from '../../util/DeepRequired.ts';
 import type {PhysicsConfig} from '../PhysicsConfig';

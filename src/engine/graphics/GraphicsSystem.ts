@@ -16,10 +16,10 @@ import {SystemPriority} from "../entity-component-system/SystemPriority.ts";
 import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
 import type {Query} from "../entity-component-system/Query.ts";
 import type {World} from "../entity-component-system/World.ts";
-import {Transform} from "node:stream";
 import type {Entity} from "../entity-component-system/Entity.ts";
 import {CoordPlane} from "../math/CoordPlane.ts";
 import {vec, Vector} from "../math/Vector.ts";
+import {Transform} from "../math/Transform.ts";
 
 export class GraphicsSystem extends System {
     static override priority = SystemPriority.Average;

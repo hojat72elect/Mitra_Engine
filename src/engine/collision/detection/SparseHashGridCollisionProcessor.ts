@@ -1,4 +1,4 @@
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import {createId} from '../../id';
 import {ArenaPool} from '../../util/ArenaPool.ts';
 import {BodyComponent} from '../BodyComponent';

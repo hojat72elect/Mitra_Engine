@@ -1,4 +1,4 @@
-import {Font} from '../graphics';
+import {Font} from '../graphics/Font';
 import type {FontOptions} from '../graphics/FontOptions';
 import type {RasterOptions} from '../graphics/RasterOptions';
 import type {Loadable} from '../interfaces';

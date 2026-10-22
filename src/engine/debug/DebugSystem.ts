@@ -1,10 +1,10 @@
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import type {Camera} from '../camera';
-import type {MitraGraphicsContext} from '../graphics';
-import {DebugGraphicsComponent} from '../graphics';
+import type {MitraGraphicsContext} from '../graphics/context/MitraGraphicsContext';
+import {DebugGraphicsComponent} from '../graphics/DebugGraphicsComponent';
 import {DisplayMode} from '../screen';
-import {Debug} from '../graphics';
+import {Debug} from '../graphics/Debug';
 import {Color} from '../color';
 import {SystemType} from "../entity-component-system/SystemType";
 import {CollisionSystem} from "../collision/CollisionSystem";

@@ -1,10 +1,8 @@
-import {
-    Animation,
-    Graphic,
-    ImageSource,
-    Sprite,
-    SpriteSheet
-} from "../../engine";
+import {Animation} from "../../engine/graphics/Animation";
+import type {Graphic} from "../../engine/graphics/Graphic";
+import {ImageSource} from "../../engine/graphics/ImageSource";
+import {Sprite} from "../../engine/graphics/Sprite";
+import {SpriteSheet} from "../../engine/graphics/SpriteSheet";
 import {getCanonicalGid, isFlippedDiagonally, isFlippedHorizontally, isFlippedVertically} from "./gid-util";
 import {
     isTiledTilesetCollectionOfImages,

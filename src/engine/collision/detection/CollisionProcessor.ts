@@ -3,7 +3,7 @@ import type {Collider} from '../colliders/Collider';
 import type {CollisionContact} from './CollisionContact';
 import type {RayCastOptions} from './RayCastOptions';
 import type {RayCastHit} from './RayCastHit';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import type {BoundingBox} from '../BoundingBox';
 import {FrameStats} from "../../debug/FrameStats";
 import type {Ray} from "../../math/Ray.ts";

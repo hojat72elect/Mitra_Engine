@@ -1,12 +1,14 @@
-import {Color, Font, Text as ExText} from "../../engine";
+import {Color} from "../../engine/color";
+import {Font} from "../../engine/graphics/Font";
+import {Text as ExText} from "../../engine/graphics/Text";
 import {type TiledObject, type TiledObjectGroup, TiledText} from "../parser/TiledParser.ts";
 import {mapProps, type Properties, type PropertyMapValue} from "./Properties.ts";
 import {Template} from "./Template.ts";
 import {filenameFromPath} from "./path-util";
 import {TiledResource} from "./TiledResource.ts";
-import {FontUnit} from "../../engine";
-import {TextAlign} from "../../engine";
-import {BaseAlign} from "../../engine";
+import {FontUnit} from "../../engine/graphics/FontUnit";
+import {TextAlign} from "../../engine/graphics/TextAlign";
+import {BaseAlign} from "../../engine/graphics/BaseAlign";
 import {vec, Vector} from "../../engine/math/Vector.ts";
 import {toRadians} from "../../engine/math/util.ts";
 

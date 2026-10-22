@@ -3,7 +3,9 @@ import lineVertexSource from './debug-line-vertex.glsl?raw';
 import lineFragmentSource from './debug-line-fragment.glsl?raw';
 import type {MitraGraphicsContextWebgl} from '../MitraGraphicsContextWebgl';
 import type {RendererPlugin} from '../RendererPlugin';
-import {Shader, VertexBuffer, VertexLayout} from '../..';
+import {Shader} from '../Shader';
+import {VertexBuffer} from '../VertexBuffer';
+import {VertexLayout} from '../VertexLayout';
 import {GraphicsDiagnostics} from '../../GraphicsDiagnostics';
 import {vec, Vector} from "../../../math/Vector.ts";
 

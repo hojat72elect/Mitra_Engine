@@ -1,10 +1,8 @@
-import {
-    Color,
-    ImageSource,
-    type Loadable,
-    Logger,
-    Scene
-} from "../../engine";
+import {Color} from "../../engine/color";
+import {ImageSource} from "../../engine/graphics/ImageSource";
+import type {Loadable} from "../../engine/interfaces";
+import {Logger} from "../../engine/util/log";
+import {Scene} from "../../engine/scene";
 import {
     isTiledTilesetCollectionOfImages,
     isTiledTilesetEmbedded,

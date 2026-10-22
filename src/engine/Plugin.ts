@@ -1,5 +1,6 @@
 import type {Engine, EngineOptions} from './engine';
-import type {MitraGraphicsContext, MitraGraphicsContextOptions} from './graphics';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
+import type {MitraGraphicsContextOptions} from './graphics/context/MitraGraphicsContext';
 import type {Scene} from './scene';
 
 /**

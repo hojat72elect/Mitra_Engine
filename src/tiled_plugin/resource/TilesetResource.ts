@@ -1,4 +1,5 @@
-import {ImageSource, type Loadable} from "../../engine";
+import {ImageSource} from "../../engine/graphics/ImageSource";
+import type {Loadable} from "../../engine/interfaces";
 import {Tileset} from "./Tileset.ts";
 import {
     isTiledTilesetCollectionOfImages,

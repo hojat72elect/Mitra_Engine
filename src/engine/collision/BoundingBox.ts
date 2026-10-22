@@ -1,6 +1,6 @@
 import {Color} from '../color';
 import {Side} from './Side';
-import type {MitraGraphicsContext, RectGraphicsOptions} from '../graphics';
+import type {MitraGraphicsContext, RectGraphicsOptions} from '../graphics/context/MitraGraphicsContext';
 import {Vector} from "../math/Vector.ts";
 import type {Ray} from "../math/Ray.ts";
 import {getMinIndex} from "../util/util.ts";

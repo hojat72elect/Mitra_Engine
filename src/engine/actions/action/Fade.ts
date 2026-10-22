@@ -1,4 +1,4 @@
-import {GraphicsComponent} from '../../graphics';
+import {GraphicsComponent} from '../../graphics/GraphicsComponent';
 import {nextActionId} from "./nextActionId";
 import type {Action} from "./Action";
 import {Entity} from "../../entity-component-system/Entity.ts";

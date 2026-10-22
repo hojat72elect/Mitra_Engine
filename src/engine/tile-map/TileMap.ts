@@ -1,7 +1,9 @@
 import type {Engine} from '../engine';
-import type {Graphic, MitraGraphicsContext} from '../graphics';
-import {GraphicsComponent, ParallaxComponent} from '../graphics';
-import {DebugGraphicsComponent} from '../graphics';
+import type {Graphic} from '../graphics/Graphic';
+import type {MitraGraphicsContext} from '../graphics/context/MitraGraphicsContext';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
+import {ParallaxComponent} from '../graphics/ParallaxComponent';
+import {DebugGraphicsComponent} from '../graphics/DebugGraphicsComponent';
 import {PostDrawEvent, PostUpdateEvent, PreDrawEvent, PreUpdateEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../EventEmitter';
 import {EventEmitter} from '../EventEmitter';

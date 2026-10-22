@@ -1,9 +1,9 @@
 import type {Engine} from './engine';
 import type {Color} from './color';
-import {Text} from './graphics';
-import type {SpriteFont} from './graphics';
-import {GraphicsComponent} from './graphics';
-import {Font} from './graphics';
+import {Text} from './graphics/Text';
+import type {SpriteFont} from './graphics/SpriteFont';
+import {GraphicsComponent} from './graphics/GraphicsComponent';
+import {Font} from './graphics/Font';
 import type {ActorOptions} from './actor';
 import {Actor} from './actor';
 import {vec, Vector} from "./math/Vector.ts";

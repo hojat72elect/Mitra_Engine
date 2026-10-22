@@ -1,5 +1,5 @@
 import {Color} from '../../color';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import {BoundingBox} from '../BoundingBox';
 
 interface QuadTreeItem {

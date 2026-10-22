@@ -6,7 +6,7 @@ import {EdgeCollider} from './EdgeCollider';
 import {Color} from '../../color';
 import {Collider} from './Collider';
 import {ClosestLineJumpTable} from './ClosestLineJumpTable';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import type {RayCastHit} from '../detection/RayCastHit';
 import {BodyComponent} from "../BodyComponent";
 import {Vector} from "../../math/Vector.ts";

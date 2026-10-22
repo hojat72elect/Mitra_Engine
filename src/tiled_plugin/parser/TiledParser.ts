@@ -646,16 +646,6 @@ export class TiledParser {
             return domParser.parseFromString(xml, 'application/xml');
         }
 
-        try {
-            const {JSDOM} = require('jsdom');
-            const dom = new JSDOM(xml, {
-                contentType: 'application/xml',
-                encoding: 'utf-8',
-            });
-            return dom.window.document as Document;
-        } catch (e) { /* ignored */
-        }
-
         const error = new Error('Could not find DOM parser');
         console.error(error.message, error);
         throw error;

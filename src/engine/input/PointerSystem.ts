@@ -1,5 +1,5 @@
 import type {Engine} from '../engine';
-import {GraphicsComponent} from '../graphics';
+import {GraphicsComponent} from '../graphics/GraphicsComponent';
 import type {Scene} from '../scene';
 import {PointerComponent} from './PointerComponent';
 import type {PointerEventReceiver} from './PointerEventReceiver';

@@ -3,7 +3,7 @@ import type {Screen} from './screen';
 import type {Actor} from './actor';
 import type {CanInitialize, CanUpdate} from './interfaces';
 import {InitializeEvent, PostUpdateEvent, PreUpdateEvent} from './events';
-import type {MitraGraphicsContext} from './graphics';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import type {EventKey, Handler, Subscription} from './EventEmitter';
 import {EventEmitter} from './EventEmitter';
 import {WatchVector} from './math/WatchVector';

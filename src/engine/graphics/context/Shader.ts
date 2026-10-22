@@ -1,11 +1,10 @@
-import type {ImageSource, TextureLoader} from '../..';
-import {
-    Color,
-    Logger,
-    MitraGraphicsContextWebgl,
-    parseImageFiltering,
-    parseImageWrapping
-} from '../..';
+import type {ImageSource} from '../ImageSource';
+import type {TextureLoader} from './TextureLoader';
+import {Color} from '../../color';
+import {Logger} from '../../util/log';
+import {MitraGraphicsContextWebgl} from './MitraGraphicsContextWebgl';
+import {parseImageFiltering} from '../parseImageFiltering';
+import {parseImageWrapping} from '../parseImageWrapping';
 import {watch} from '../../util/watch';
 import {UniformBuffer} from './UniformBuffer';
 import {getAttributePointerType} from './getAttributePointerType';
@@ -254,7 +253,8 @@ export class Shader {
         if (!(graphicsContext instanceof MitraGraphicsContextWebgl)) {
             throw new Error(`MitraGraphicsContext provided to a shader ${this.name} must be WebGL`);
         }
-        this._gl = graphicsContext.__gl;
+        const webglContext = graphicsContext as MitraGraphicsContextWebgl;
+        this._gl = webglContext.__gl;
         this._startingTextureSlot = startingTextureSlot ?? this._startingTextureSlot;
         this._maxTextureSlots = this._gl.getParameter(this._gl.MAX_TEXTURE_IMAGE_UNITS);
         this.vertexSource = vertexSource;
@@ -268,7 +268,7 @@ export class Shader {
                 `no more textures will be uploaded due to hardware constraints.`
             );
         }
-        this._textureLoader = graphicsContext.textureLoader;
+        this._textureLoader = webglContext.textureLoader;
         this._onPreLink = onPreLink;
         this._onPostCompile = onPostCompile;
     }

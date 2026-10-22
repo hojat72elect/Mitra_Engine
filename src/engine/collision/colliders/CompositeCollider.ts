@@ -1,7 +1,7 @@
 
 import {Pair} from '../detection/Pair';
 import type {Color} from '../../color';
-import type {MitraGraphicsContext} from '../../graphics';
+import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';
 import {BoundingBox} from '../BoundingBox';
 import type {CollisionContact} from '../detection/CollisionContact';
 import {DynamicTree} from '../detection/DynamicTree';

@@ -1,5 +1,5 @@
-import type {Sprite} from '../graphics';
-import {ImageSource} from '../graphics';
+import type {Sprite} from '../graphics/Sprite';
+import {ImageSource} from '../graphics/ImageSource';
 import type {Engine} from '../engine';
 import type {Scene} from '../scene';
 import {Transition} from './Transition';

@@ -1,8 +1,6 @@
-import {
-    Color,
-    Logger,
-    ParallaxComponent
-} from "../../engine";
+import {Color} from "../../engine/color";
+import {Logger} from "../../engine/util/log";
+import {ParallaxComponent} from "../../engine/graphics/ParallaxComponent";
 import {mapProps, type PropertyMapValue} from "./Properties";
 import {isCSV, isInfiniteLayer, needsDecoding, TiledTileLayer} from "../parser/TiledParser";
 import {Decoder} from "./Decoder";

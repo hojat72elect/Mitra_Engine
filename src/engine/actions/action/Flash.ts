@@ -1,7 +1,7 @@
-import {GraphicsComponent} from '../../graphics';
+import {GraphicsComponent} from '../../graphics/GraphicsComponent';
 import {nextActionId} from "./nextActionId";
 import type {Actor} from '../../actor';
-import type {Material} from '../../graphics';
+import type {Material} from '../../graphics/context/Material';
 import type {Color} from '../../color';
 import type {Action} from "./Action";
 import type {Entity} from "../../entity-component-system/Entity.ts";

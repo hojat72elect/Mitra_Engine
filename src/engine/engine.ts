@@ -29,18 +29,14 @@ import {Color} from './color';
 import type {SceneConstructor} from './scene';
 import {isSceneConstructor, Scene} from './scene';
 import {BrowserEvents} from './util/browser';
-import type {
-    AntialiasOptions,
-    MitraGraphicsContext,
-    MitraGraphicsContextOptions
-} from './graphics';
-import {
-    DefaultAntialiasOptions,
-    DefaultPixelArtOptions,
-    MitraGraphicsContext2DCanvas,
-    MitraGraphicsContextWebgl,
-    TextureLoader
-} from './graphics';
+import type {AntialiasOptions} from './graphics/context/MitraGraphicsContext';
+import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
+import type {MitraGraphicsContextOptions} from './graphics/context/MitraGraphicsContext';
+import {DefaultAntialiasOptions} from './graphics/context/MitraGraphicsContext';
+import {DefaultPixelArtOptions} from './graphics/context/MitraGraphicsContext';
+import {MitraGraphicsContext2DCanvas} from './graphics/context/MitraGraphicsContext2DCanvas';
+import {MitraGraphicsContextWebgl} from './graphics/context/MitraGraphicsContextWebgl';
+import {TextureLoader} from './graphics/context/TextureLoader';
 import type {Clock} from './util/clock';
 import {StandardClock} from './util/clock';
 import {ImageFiltering} from './graphics/ImageFiltering';

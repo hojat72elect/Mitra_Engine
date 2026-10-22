@@ -41,8 +41,6 @@ export * from './interfaces/index';
 
 export * from './color';
 
-export * from './graphics/index';
-
 export {events as Events};
 
 export {WheelEvent} from './input/WheelEvent';
