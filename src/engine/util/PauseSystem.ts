@@ -1,4 +1,6 @@
-import type {EventEmitter, Scene, SceneEvents} from '..';
+import type {EventEmitter} from '../EventEmitter';
+import type {Scene} from '../scene';
+import type {SceneEvents} from '../scene';
 import {PauseComponentTag} from "../entity-component-system/components/PauseComponentTag";
 import {SystemType} from "../entity-component-system/SystemType";
 import {System} from "../entity-component-system/System.ts";

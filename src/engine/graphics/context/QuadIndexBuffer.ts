@@ -1,4 +1,4 @@
-import {Logger} from '../..';
+import {Logger} from '../../util/log';
 
 /**
  * Helper that defines and index buffer for quad geometry

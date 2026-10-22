@@ -9,7 +9,7 @@ import type {
     OnPreUpdate,
     OnRemove,
     SceneActivationContext
-} from './interfaces';
+} from './interfaces/LifecycleEvents';
 import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import type {Gamepad} from './input/Gamepad';
 import type {Buttons} from './input/Buttons';

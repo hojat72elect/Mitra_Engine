@@ -1,5 +1,5 @@
 import {StateMachine} from '../../util/StateMachine.ts';
-import type {Audio} from '../../interfaces';
+import type {Audio} from '../../interfaces/Audio';
 import {AudioContextFactory} from './AudioContextFactory';
 import {Future} from '../../util/Future.ts';
 import {clamp} from "../../math/util.ts";

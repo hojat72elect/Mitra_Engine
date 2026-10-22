@@ -1,5 +1,5 @@
 import {Component} from './Component';
-import type {OnAdd, OnInitialize, OnPostUpdate, OnPreUpdate, OnRemove} from '../interfaces';
+import type {OnAdd, OnInitialize, OnPostUpdate, OnPreUpdate, OnRemove} from '../interfaces/LifecycleEvents';
 import type {Engine} from '../engine';
 import {AddEvent, InitializeEvent, KillEvent, PostUpdateEvent, PreUpdateEvent, RemoveEvent} from '../events';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';

@@ -1,4 +1,4 @@
-import type {Clonable} from '../interfaces';
+import type {Clonable} from '../interfaces/Clonable';
 import {clamp} from './util';
 
 /**

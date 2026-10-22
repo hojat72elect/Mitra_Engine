@@ -1,4 +1,4 @@
-import {Logger} from '../..';
+import {Logger} from '../../util/log';
 import type {Shader} from './Shader';
 import type {VertexBuffer} from './VertexBuffer';
 import type {VertexAttributeDefinition} from "./VertexAttributeDefinition";

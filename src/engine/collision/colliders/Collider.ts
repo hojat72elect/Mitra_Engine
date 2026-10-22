@@ -1,7 +1,7 @@
 import type {Color} from '../../color';
 import type {CollisionContact} from '../detection/CollisionContact';
 import type {BoundingBox} from '../BoundingBox';
-import type {Clonable} from '../../interfaces';
+import type {Clonable} from '../../interfaces/Clonable';
 import type {Id} from '../../id';
 import {createId} from '../../id';
 import type {MitraGraphicsContext} from '../../graphics/context/MitraGraphicsContext';

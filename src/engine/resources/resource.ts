@@ -1,4 +1,4 @@
-import type {Loadable} from '../interfaces';
+import type {Loadable} from '../interfaces/Loadable';
 import {EventEmitter} from '../EventEmitter.ts';
 import {Logger} from "../util/log.ts";
 

@@ -1,6 +1,6 @@
 import {Color} from "../../engine/color";
 import {ImageSource} from "../../engine/graphics/ImageSource";
-import type {Loadable} from "../../engine/interfaces";
+import type {Loadable} from "../../engine/interfaces/Loadable";
 import {Logger} from "../../engine/util/log";
 import {Scene} from "../../engine/scene";
 import {

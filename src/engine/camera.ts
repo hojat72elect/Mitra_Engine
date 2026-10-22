@@ -1,7 +1,8 @@
 import type {Engine} from './engine';
 import type {Screen} from './screen';
 import type {Actor} from './actor';
-import type {CanInitialize, CanUpdate} from './interfaces';
+import type {CanInitialize} from './interfaces/LifecycleEvents';
+import type {CanUpdate} from './interfaces/LifecycleEvents';
 import {InitializeEvent, PostUpdateEvent, PreUpdateEvent} from './events';
 import type {MitraGraphicsContext} from './graphics/context/MitraGraphicsContext';
 import type {EventKey, Handler, Subscription} from './EventEmitter';

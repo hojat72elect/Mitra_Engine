@@ -2,7 +2,7 @@ import {Resource} from './resource';
 import type {Sprite} from '../graphics/Sprite';
 import {SpriteSheet} from '../graphics/SpriteSheet';
 import {Animation} from '../graphics/Animation';
-import type {Loadable} from '../interfaces';
+import type {Loadable} from '../interfaces/Loadable';
 import {ImageSource} from '../graphics/ImageSource';
 
 /**

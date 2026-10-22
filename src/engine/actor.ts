@@ -17,10 +17,12 @@ import type {
 import {type KillEvent, PostKillEvent, PostUpdateEvent, PreKillEvent, PreUpdateEvent} from './events';
 import type {Engine} from './engine';
 import type {Color} from './color';
-import type {CanBeKilled, CanInitialize, CanUpdate} from './interfaces';
+import type {CanBeKilled} from './interfaces/LifecycleEvents';
+import type {CanInitialize} from './interfaces/LifecycleEvents';
+import type {CanUpdate} from './interfaces/LifecycleEvents';
 import type {Scene} from './scene';
-import type {Eventable} from './interfaces';
-import type {PointerEvents} from './interfaces';
+import type {Eventable} from './interfaces/Eventable';
+import type {PointerEvents} from './interfaces/PointerEvents';
 import {GraphicsComponent} from './graphics/GraphicsComponent';
 import {Rectangle} from './graphics/Rectangle';
 import {watch} from './util/watch';

@@ -20,7 +20,7 @@ import type {
     CanInitialize,
     CanUpdate,
     SceneActivationContext
-} from './interfaces';
+} from './interfaces/LifecycleEvents';
 import * as Util from './util/util';
 import {Trigger} from './trigger';
 import {GraphicsSystem} from './graphics/GraphicsSystem';
@@ -33,8 +33,8 @@ import type {Color} from './color';
 import {InputHost} from './input/InputHost';
 import {PointerScope} from './input/PointerScope';
 import {PauseSystem} from './util/PauseSystem';
-import {FlickerSystem} from './lighting';
-import {LightingSystem} from './lighting';
+import {FlickerSystem} from './lighting/FlickerSystem';
+import {LightingSystem} from './lighting/LightingSystem';
 import {getDefaultPhysicsConfig} from "./collision/getDefaultPhysicsConfig";
 import {SystemType} from "./entity-component-system/SystemType";
 import {ActionsSystem} from "./actions/ActionsSystem";

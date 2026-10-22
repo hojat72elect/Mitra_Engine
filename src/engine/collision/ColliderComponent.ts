@@ -10,7 +10,7 @@ import {Colliders} from './colliders/Colliders';
 import {EventEmitter} from '../EventEmitter.ts';
 import {Actor} from '../actor';
 import {Logger} from "../util/log.ts";
-import { Observable } from "../excalibur";
+import { Observable } from "../util/observable";
 import {Component} from "../entity-component-system/Component.ts";
 import {TransformComponent} from "../entity-component-system/components/TransformComponent.ts";
 import {Vector} from "../math/Vector.ts";

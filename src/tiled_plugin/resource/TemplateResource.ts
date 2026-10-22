@@ -1,5 +1,5 @@
 import {ImageSource} from "../../engine/graphics/ImageSource";
-import type {Loadable} from "../../engine/interfaces";
+import type {Loadable} from "../../engine/interfaces/Loadable";
 import {TiledParser, TiledTemplate} from "../parser/TiledParser.ts";
 import {FetchLoader, type FileLoader} from "./FileLoader.ts";
 import {LoaderCache} from "./LoaderCache.ts";

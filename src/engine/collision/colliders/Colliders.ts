@@ -4,7 +4,7 @@ import {EdgeCollider} from './EdgeCollider';
 import {BoundingBox} from '../BoundingBox';
 import {vec, Vector} from '../../math/Vector';
 import {CompositeCollider} from './CompositeCollider';
-import {Logger} from '../..';
+import {Logger} from '../../util/log';
 
 export class Colliders {
     /**

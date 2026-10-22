@@ -1,5 +1,5 @@
 import type {Actor} from '../actor';
-import {GameEvent} from '../';
+import {GameEvent} from '../events';
 import type {Sound} from "../resources/sound/sound.ts";
 
 export class MediaEvent extends GameEvent<Sound> {

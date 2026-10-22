@@ -12,7 +12,7 @@ import {isCrossOriginIframe, isIframe} from '../util/iframe';
 import type {EventKey, Handler, Subscription} from '../EventEmitter.ts';
 import {EventEmitter} from '../EventEmitter.ts';
 import type {PointerInitOptions} from "./PointerInitOptions";
-import type {PointerEvents} from "../interfaces";
+import type {PointerEvents} from "../interfaces/PointerEvents";
 import {GlobalCoordinates} from "../math/GlobalCoordinates.ts";
 import {vec, type Vector} from "../math/Vector.ts";
 import {fail} from "node:assert";

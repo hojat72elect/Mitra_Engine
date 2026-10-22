@@ -1,4 +1,4 @@
-import type {Clonable} from '../interfaces';
+import type {Clonable} from '../interfaces/Clonable';
 import {RotationType} from './RotationType';
 import {canonicalizeAngle, clamp, TwoPI} from './util';
 

@@ -1,5 +1,5 @@
 import {Color} from '../color';
-import type {Loadable} from '../interfaces';
+import type {Loadable} from '../interfaces/Loadable';
 import * as DrawUtil from '../util/draw-util';
 import logoImg from './Loader.logo.png';
 import loaderCss from './Loader.css?inline';

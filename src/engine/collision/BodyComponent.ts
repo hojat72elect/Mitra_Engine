@@ -1,5 +1,5 @@
 import {CollisionType} from './CollisionType';
-import type {Clonable} from '../interfaces';
+import type {Clonable} from '../interfaces/Clonable';
 import {CollisionGroup} from './group/CollisionGroup';
 import type {Id} from '../id';
 import {createId} from '../id';

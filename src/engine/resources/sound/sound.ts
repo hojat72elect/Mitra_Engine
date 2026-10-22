@@ -1,11 +1,11 @@
 import {ExResponse} from '../../interfaces/ExResponse';
-import type {Audio} from '../../interfaces';
+import type {Audio} from '../../interfaces/Audio';
 import type {Engine} from '../../engine';
 import {Resource} from '../resource';
 import {WebAudioInstance} from './WebAudioInstance';
 import {AudioContextFactory} from './AudioContextFactory';
 import {canPlayFile, canPlayMime} from '../../util/sound';
-import type {Loadable} from '../../interfaces';
+import type {Loadable} from '../../interfaces/Loadable';
 import type {EventKey, Handler, Subscription} from '../../EventEmitter.ts';
 import {EventEmitter} from '../../EventEmitter.ts';
 import {NativeSoundEvent} from "../../events/NativeSoundEvent";
