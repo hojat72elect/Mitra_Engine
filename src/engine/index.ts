@@ -1352,7 +1352,8 @@ export {
 } from './input/InputMapper';
 
 export {
-    Keyboard
+    Keyboard,
+    Keys
 } from './input/Keyboard';
 
 export {

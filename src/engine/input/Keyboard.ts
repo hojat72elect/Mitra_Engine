@@ -8,7 +8,7 @@ import {EventEmitter} from '../EventEmitter.ts';
  *
  * Spec: https://w3c.github.io/uievents-code/#key-alphanumeric-section
  */
-enum Keys {
+export enum Keys {
     // Writing System Keys https://w3c.github.io/uievents-code/#key-alphanumeric-writing-system
     Backquote = 'Backquote',
     Backslash = 'Backslash',
