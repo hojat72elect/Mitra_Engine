@@ -223,7 +223,7 @@ export enum Keys {
 /**
  * Event thrown on a game object for a key event
  */
-class KeyEvent extends Events.GameEvent<any> {
+export class KeyEvent extends Events.GameEvent<any> {
     /**
      * @param key  The key responsible for throwing the event
      * @param value The key's typed value the browser detected

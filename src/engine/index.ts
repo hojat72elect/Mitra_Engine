@@ -1353,7 +1353,8 @@ export {
 
 export {
     Keyboard,
-    Keys
+    Keys,
+    KeyEvent
 } from './input/Keyboard';
 
 export {
