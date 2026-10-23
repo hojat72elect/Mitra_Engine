@@ -294,7 +294,7 @@ export class Camera implements CanUpdate, CanInitialize {
      *
      * Enabled when `Engine.fixedUpdateFps` is enabled, in all other cases this will be the same as pos
      */
-    public drawPos: Vector = this.pos.clone();
+    public drawPos: Vector = Vector.Zero;
     /**
      * Get or set the camera's velocity
      */
