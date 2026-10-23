@@ -1500,8 +1500,10 @@ export type {
 } from './interfaces/Loadable';
 
 export type {
-    PointerEvents
-} from './interfaces/PointerEvents';
+    PointerEvents as MousePointerEvents
+} from './input/PointerEvents';
+
+export type {PointerEvents} from "./interfaces/PointerEvents";
 
 export {
     Label
