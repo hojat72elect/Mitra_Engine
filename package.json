@@ -1,6 +1,6 @@
 {
   "name": "mitra_engine",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "description": "A 2D game engine for the web",
   "keywords": ["game-engine","game","graphics","2d"],
