@@ -313,7 +313,7 @@ export class Camera implements CanUpdate, CanInitialize {
      */
     private _z = 1;
     private _posChanged = false;
-    private _oldPos = this.pos.clone();
+    private _oldPos: Vector = Vector.Zero;
     private _cameraMoving: boolean = false;
     private _currentLerpTime: number = 0;
     private _lerpDuration: number = 1000; // 1 second
